@@ -1,0 +1,16 @@
+node_modules/
+.next/
+app/
+components/
+config/
+data/
+*.zip
+mingit/
+.env
+package.json
+package-lock.json
+tsconfig.json
+postcss.config.js
+tailwind.config.js
+next.config.mjs
+scrape_rilastil.js
