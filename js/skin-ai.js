@@ -1061,10 +1061,12 @@ Hãy trả về DUY NHẤT một đối tượng JSON hợp lệ (không chứa 
   "skinTypeSummary": "Phân loại da ngắn gọn (vd: Da hỗn hợp thiên dầu nhạy cảm)",
   "analysis3Angles": "Đánh giá chi tiết tình trạng da dựa trên 3 góc độ ảnh (khoảng 3-4 câu tiếng Việt, chuyên nghiệp, tập trung vào kết cấu da, sắc tố, lỗ chân lông, dấu hiệu lão hóa)",
   "activeIngredients": ["Tên hoạt chất 1", "Tên hoạt chất 2", "Tên hoạt chất 3"],
+  "healthScore": 75,
   "moisture": 65,
   "elasticity": 70,
   "sebum": 85,
-  "pigmentation": 45
+  "pigmentation": 45,
+  "pores": 60
 }
 Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chuỗi JSON thuần.`;
 
@@ -1110,10 +1112,12 @@ Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chu�
             skinTypeSummary: skinType !== "Chưa rõ" ? skinType + " có dấu hiệu thiếu ẩm" : "Da hỗn hợp nhạy cảm",
             analysis3Angles: "Vùng chữ T có tiết nhờn nhẹ, lỗ chân lông có xu hướng mở rộng. Vùng chữ U hai bên má hơi khô, có dấu hiệu mẩn đỏ nhẹ. Phát hiện một số vùng sắc tố không đều màu tập trung ở hai gò má, da có dấu hiệu mất đàn hồi nhẹ ở rãnh cười.",
             activeIngredients: ["Niacinamide", "Hyaluronic Acid", "Retinol"],
+            healthScore: 72,
             moisture: 45,
             elasticity: 60,
             sebum: 75,
-            pigmentation: 55
+            pigmentation: 55,
+            pores: 65
         };
     }
 
@@ -1139,31 +1143,116 @@ function renderResults(data) {
     // Text
     document.getElementById('result-assessment').innerText = data.analysis3Angles;
     
-    // Ingredients
-    const ingrContainer = document.getElementById('result-ingredients');
-    ingrContainer.innerHTML = '';
-    data.activeIngredients.forEach(ing => {
-        ingrContainer.innerHTML += `<span class="bg-brand-blush text-brand-primary border border-brand-petal px-3 py-1 rounded-full text-sm font-semibold">${ing}</span>`;
-    });
+    // Tags (Keywords/Ingredients)
+    const tagsContainer = document.getElementById('result-tags');
+    if (tagsContainer) {
+        tagsContainer.innerHTML = '';
+        data.activeIngredients.forEach(ing => {
+            tagsContainer.innerHTML += `<span class="bg-brand-blush text-brand-primary px-3 py-1 rounded-full text-xs font-bold border border-brand-petal">${ing}</span>`;
+        });
+    }
     
-    // Metrics (animate after short delay)
-    setTimeout(() => {
-        document.getElementById('metric-moisture-val').innerText = data.moisture + '%';
-        document.getElementById('metric-moisture-bar').style.width = data.moisture + '%';
-        
-        document.getElementById('metric-elasticity-val').innerText = data.elasticity + '%';
-        document.getElementById('metric-elasticity-bar').style.width = data.elasticity + '%';
-        
-        document.getElementById('metric-sebum-val').innerText = data.sebum + '%';
-        document.getElementById('metric-sebum-bar').style.width = data.sebum + '%';
-        
-        document.getElementById('metric-pigmentation-val').innerText = data.pigmentation + '%';
-        document.getElementById('metric-pigmentation-bar').style.width = data.pigmentation + '%';
-    }, 100);
+    // Animate health score
+    let score = 0;
+    const targetScore = data.healthScore || 72;
+    const scoreText = document.getElementById('health-score-text');
+    const scoreRing = document.getElementById('health-score-ring');
+    if (scoreText && scoreRing) {
+        const interval = setInterval(() => {
+            if(score >= targetScore) { clearInterval(interval); return; }
+            score++;
+            scoreText.innerText = score;
+            scoreRing.style.strokeDasharray = `${score}, 100`;
+        }, 20);
+    }
+
+    // Render Metrics Accordion
+    const metricsContainer = document.getElementById('metrics-container');
+    if (metricsContainer) {
+        metricsContainer.innerHTML = '';
+        const metricDefs = [
+            { id: 'moisture', name: 'Độ ẩm', score: data.moisture || 50, isInverse: false, icon: 'droplet' },
+            { id: 'sebum', name: 'Dầu thừa', score: data.sebum || 50, isInverse: true, icon: 'wind' },
+            { id: 'pores', name: 'Lỗ chân lông', score: data.pores || 50, isInverse: true, icon: 'maximize' },
+            { id: 'pigmentation', name: 'Sắc tố', score: data.pigmentation || 50, isInverse: true, icon: 'sun' },
+            { id: 'elasticity', name: 'Độ đàn hồi', score: data.elasticity || 50, isInverse: false, icon: 'activity' }
+        ];
+
+        metricDefs.forEach(m => {
+            let goodScore = m.isInverse ? (100 - m.score) : m.score;
+            let level = "Cần cải thiện";
+            let textClass = "text-rose-600";
+            let bgClass = "bg-rose-100";
+            let progressClass = "bg-rose-500";
+            
+            if (goodScore >= 80) {
+                level = "Tốt"; textClass = "text-teal-600"; bgClass = "bg-teal-100"; progressClass = "bg-teal-400";
+            } else if (goodScore >= 60) {
+                level = "Khá"; textClass = "text-pink-400"; bgClass = "bg-pink-50"; progressClass = "bg-pink-300";
+            } else if (goodScore >= 40) {
+                level = "Cần chú ý"; textClass = "text-pink-600"; bgClass = "bg-pink-100"; progressClass = "bg-pink-500";
+            }
+
+            const html = `
+            <div class="border border-gray-100 rounded-xl overflow-hidden transition-all duration-300">
+                <!-- Header (Clickable) -->
+                <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between cursor-pointer hover:bg-gray-50 gap-4" onclick="this.nextElementSibling.classList.toggle('hidden'); const icon = this.querySelector('.chevron-icon'); icon.style.transform = icon.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';">
+                    <div class="flex items-center gap-3 sm:w-2/5">
+                        <div class="p-2 rounded-lg ${bgClass} ${textClass}">
+                            <i data-feather="${m.icon}" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800 text-sm">${m.name}</p>
+                            <p class="${textClass} text-xs font-semibold">${m.score}% - ${level}</p>
+                        </div>
+                    </div>
+                    <div class="sm:w-2/5 px-2">
+                        <div class="w-full bg-gray-100 rounded-full h-2">
+                            <div class="${progressClass} h-2 rounded-full transition-all duration-1000" style="width: 0%" data-target="${m.score}"></div>
+                        </div>
+                    </div>
+                    <div class="sm:w-1/5 text-right flex justify-end">
+                        <i data-feather="chevron-down" class="w-5 h-5 text-gray-400 transition-transform chevron-icon"></i>
+                    </div>
+                </div>
+                
+                <!-- Details (Accordion) -->
+                <div class="hidden border-t border-gray-100 bg-gray-50 p-4 text-sm space-y-3">
+                    <div class="flex gap-2">
+                        <span class="font-bold text-gray-700 min-w-[80px]">Vì sao?</span>
+                        <span class="text-gray-600 leading-relaxed">Chỉ số ${m.name.toLowerCase()} ở mức ${m.score}% cho thấy da đang phản ứng với môi trường hoặc thói quen sinh hoạt hiện tại.</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="font-bold text-gray-700 min-w-[80px]">Nên làm:</span>
+                        <span class="text-gray-600 leading-relaxed">Sử dụng sản phẩm chứa thành phần đặc trị phù hợp, làm sạch sâu và cấp ẩm đủ liều lượng.</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="font-bold text-gray-700 min-w-[80px]">Cần tránh:</span>
+                        <span class="text-gray-600 leading-relaxed">Hạn chế tiếp xúc trực tiếp tia UV không che chắn và các thói quen gây căng thẳng cho da.</span>
+                    </div>
+                </div>
+            </div>
+            `;
+            metricsContainer.innerHTML += html;
+        });
+
+        // Re-init feather icons for dynamically added content
+        if(window.feather) { feather.replace(); }
+
+        // Animate bars
+        setTimeout(() => {
+            metricsContainer.querySelectorAll('[data-target]').forEach(bar => {
+                bar.style.width = bar.getAttribute('data-target') + '%';
+            });
+        }, 100);
+    }
 
     // Routines
     buildRoutine('routine-morning', true);
     buildRoutine('routine-evening', false);
+    
+    // Recommendations
+    renderProductRecommendations();
     
     // smooth scroll to top of modal
     document.getElementById('ai-modal').scrollTo({ top: 0, behavior: 'smooth' });
@@ -1244,3 +1333,54 @@ document.addEventListener('DOMContentLoaded', () => {
     initCatalog();
     initScanSetup();
 });
+
+function renderProductRecommendations() {
+    const container = document.getElementById('product-recommendations');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    // Deduplicate routine IDs
+    const uniqueIds = [...new Set(window.currentRoutineIds)];
+    
+    uniqueIds.forEach(id => {
+        const product = PRODUCTS.find(p => p.id === id);
+        if (!product) return;
+        
+        const imgSrc = `public${product.image}`;
+        
+        const html = `
+        <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm group hover:border-brand-petal transition-all hover:shadow-md flex flex-col h-full relative">
+            <!-- Image Area -->
+            <div class="w-full h-48 bg-gray-50 flex items-center justify-center p-4 relative">
+                <img src="${imgSrc}" class="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105" onerror="this.outerHTML='<div class=\\'text-gray-400 text-sm font-medium\\'>${product.brand}</div>'">
+            </div>
+            <!-- Info Area -->
+            <div class="p-4 flex flex-col flex-grow">
+                <p class="text-xs text-gray-500 font-medium mb-1 uppercase tracking-wider">${product.brand}</p>
+                <h3 class="font-bold text-gray-900 mb-2 leading-snug line-clamp-2">${product.name}</h3>
+                <div class="mt-auto pt-3 border-t border-gray-50 flex items-end justify-between">
+                    <div>
+                        <p class="font-bold text-brand-primary text-lg">${formatPrice(product.price)}</p>
+                    </div>
+                    <button onclick="cartManager.addItem('${product.id}'); showToast('Đã thêm vào giỏ hàng');" class="w-10 h-10 rounded-full bg-brand-light text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-colors">
+                        <i data-feather="shopping-cart" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+        container.innerHTML += html;
+    });
+    
+    if(window.feather) { feather.replace(); }
+}
+
+function addAllToCart() {
+    const uniqueIds = [...new Set(window.currentRoutineIds)];
+    uniqueIds.forEach(id => {
+        if(window.cartManager) {
+            cartManager.addItem(id, true);
+        }
+    });
+    showToast(`Đã thêm ${uniqueIds.length} sản phẩm vào giỏ hàng!`);
+}
