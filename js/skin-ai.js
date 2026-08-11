@@ -807,6 +807,79 @@ function initCatalog() {
 }
 
 
+// PRIVACY MODAL FLOW
+function openPrivacyModal() {
+    const modal = document.getElementById('privacy-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    // Reset state
+    document.getElementById('privacy-consent-checkbox').checked = false;
+    togglePrivacyButton();
+
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+        document.getElementById('privacy-modal-content').classList.remove('scale-95');
+        document.getElementById('privacy-modal-content').classList.add('scale-100');
+    }, 10);
+}
+
+function closePrivacyModal() {
+    const modal = document.getElementById('privacy-modal');
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    document.getElementById('privacy-modal-content').classList.remove('scale-100');
+    document.getElementById('privacy-modal-content').classList.add('scale-95');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }, 300);
+}
+
+function togglePrivacyButton() {
+    const checkbox = document.getElementById('privacy-consent-checkbox');
+    const btn = document.getElementById('btn-privacy-continue');
+    
+    if (checkbox.checked) {
+        btn.disabled = false;
+        btn.classList.remove('bg-gray-300', 'cursor-not-allowed', 'text-white');
+        btn.classList.add('bg-brand-primary', 'text-white', 'shadow-lg', 'shadow-brand-primary/30', 'hover:-translate-y-0.5');
+    } else {
+        btn.disabled = true;
+        btn.classList.add('bg-gray-300', 'cursor-not-allowed', 'text-white');
+        btn.classList.remove('bg-brand-primary', 'shadow-lg', 'shadow-brand-primary/30', 'hover:-translate-y-0.5');
+    }
+}
+
+async function requestCameraPermissionAndProceed() {
+    try {
+        const btn = document.getElementById('btn-privacy-continue');
+        btn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Đang yêu cầu quyền...';
+        feather.replace();
+
+        // Request native camera permission
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        
+        // Stop the stream immediately because openScanModal will start it again properly
+        stream.getTracks().forEach(track => track.stop());
+
+        closePrivacyModal();
+        
+        setTimeout(() => {
+            openScanModal();
+        }, 300);
+
+    } catch (err) {
+        console.error("Camera permission denied:", err);
+        alert("SkinID cần quyền sử dụng Camera để phân tích da. Vui lòng nhấn vào biểu tượng ổ khóa 🔒 trên thanh địa chỉ trình duyệt để Cấp quyền cho Camera và thử lại.");
+        
+        const btn = document.getElementById('btn-privacy-continue');
+        btn.innerHTML = '<i data-feather="camera" class="w-4 h-4"></i> Cấp quyền Camera';
+        feather.replace();
+    }
+}
+
 // AI SCAN FLOW
 function openScanModal() {
     document.getElementById('ai-modal').classList.remove('hidden');
