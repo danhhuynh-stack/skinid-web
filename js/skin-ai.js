@@ -3147,3 +3147,17 @@ function addAllToCart() {
     });
     showToast(`Đã thêm ${uniqueIds.length} sản phẩm vào giỏ hàng!`);
 }
+
+
+// BOOTSTRAP INITIALIZATION
+function bootstrapApp() {
+    console.log("SkinID App Bootstrapping with", PRODUCTS.length, "products...");
+    initCatalog();
+    initScanSetup();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootstrapApp);
+} else {
+    bootstrapApp();
+}
