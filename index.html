@@ -745,6 +745,99 @@
     </div>
 
 
+    
+    <!-- ========================================== -->
+    <!-- PRODUCT DETAIL MODAL (RILASTIL FORMULA & INGREDIENT SPEC) -->
+    <!-- ========================================== -->
+    <div id="product-detail-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] hidden items-center justify-center p-3 sm:p-4 overflow-y-auto opacity-0 transition-opacity duration-300" onclick="if(event.target === this) closeProductDetailModal();">
+        <div id="product-detail-modal-content" class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl relative transform scale-95 opacity-0 transition-all duration-300 max-h-[90vh] flex flex-col overflow-hidden my-auto border border-gray-100">
+            
+            <!-- Close Button -->
+            <button onclick="closeProductDetailModal()" class="absolute top-4 right-4 w-9 h-9 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full flex items-center justify-center transition-colors z-20 shadow-sm">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Scrollable Body -->
+            <div class="overflow-y-auto pr-1 flex-grow space-y-4">
+                
+                <!-- Category Line Badge -->
+                <div>
+                    <span id="pmodal-line" class="inline-block text-xs font-black uppercase tracking-widest text-sky-700 bg-sky-50 px-3 py-1 rounded-md border border-sky-200 shadow-sm">
+                        ACNES
+                    </span>
+                </div>
+
+                <!-- Product Title -->
+                <h3 id="pmodal-title" class="text-base sm:text-xl font-black text-gray-900 leading-tight">
+                    BỌT RỬA MẶT DÀNH CHO DA MỤN – RILASTIL ACNESTIL CLEANSING MOUSSE 165ML
+                </h3>
+
+                <!-- Price Area -->
+                <div class="flex items-baseline gap-3">
+                    <span class="text-sm font-bold text-gray-600">Giá bán:</span>
+                    <span id="pmodal-price" class="text-xl sm:text-2xl font-black text-rose-600">550.000 ₫</span>
+                    <span id="pmodal-original-price" class="text-xs sm:text-sm text-gray-400 line-through">650.000 ₫</span>
+                </div>
+
+                <!-- Short Uses -->
+                <p id="pmodal-uses" class="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                    Bọt rửa mặt làm sạch sâu, loại bỏ dầu thừa nhưng vẫn giữ được độ ẩm cho da. Sản phẩm còn giúp giảm mụn, giảm sưng viêm, làm dịu làn da mụn.
+                </p>
+
+                <!-- Product Image Preview -->
+                <div class="w-full h-44 sm:h-52 bg-gray-50 rounded-2xl flex items-center justify-center p-4 border border-gray-100">
+                    <img id="pmodal-img" src="" alt="Product" class="h-full max-h-44 object-contain mix-blend-multiply transition-transform duration-300 hover:scale-105" />
+                </div>
+
+                <!-- Blue Framed Spec Box (Exact match to official manufacturer spec sheet) -->
+                <div class="border-2 border-sky-400 rounded-2xl p-4 sm:p-5 bg-sky-50/20 text-xs sm:text-sm shadow-sm">
+                    <h4 class="text-center font-black text-sky-800 text-sm sm:text-base tracking-wider uppercase mb-4 relative pb-2 after:content-[''] after:w-16 after:h-0.5 after:bg-sky-500 after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2">
+                        CHI TIẾT SẢN PHẨM
+                    </h4>
+
+                    <!-- Dung tích & Hướng dẫn sử dụng -->
+                    <div class="mb-3.5 space-y-1.5 text-gray-800">
+                        <div>
+                            <span class="font-bold text-gray-900">Dung tích:</span>
+                            <span id="pmodal-volume" class="font-semibold text-sky-900"> 165 ml</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-gray-900">Sử dụng:</span>
+                            <span id="pmodal-usage" class="font-medium text-gray-700"> Sử dụng hàng ngày vào sáng và tối.</span>
+                        </div>
+                    </div>
+
+                    <!-- Thành phần chính -->
+                    <div class="mb-4">
+                        <h5 class="font-bold text-gray-900 mb-2 text-xs sm:text-sm border-b border-sky-100 pb-1">Thành phần chính</h5>
+                        <div id="pmodal-key-actives" class="space-y-2 pl-0.5">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Bảng thành phần đầy đủ -->
+                    <div>
+                        <h5 class="font-bold text-gray-900 mb-1 text-xs sm:text-sm border-b border-sky-100 pb-1">Bảng thành phần</h5>
+                        <p id="pmodal-full-ingredients" class="text-[11px] sm:text-xs text-gray-500 italic leading-relaxed text-justify">
+                            Aqua (Water) • Propylene Glycol • Disodium Cocoamphodiacetate • C12-13 Pareth-9...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div class="pt-3.5 border-t border-gray-100 flex items-center justify-between gap-3 mt-3">
+                <button onclick="closeProductDetailModal()" class="w-1/3 py-3 rounded-xl border border-gray-200 text-gray-700 font-bold text-xs sm:text-sm hover:bg-gray-100 transition-colors flex items-center justify-center">
+                    Đóng
+                </button>
+                <button id="pmodal-add-cart-btn" class="w-2/3 py-3 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-brand-primary/30 flex items-center justify-center gap-2">
+                    <i data-feather="shopping-bag" class="w-4 h-4"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <script src="js/skin-ai.js"></script>
     <script src="js/camera-ai.js"></script>
     <script src="js/cart.js"></script>

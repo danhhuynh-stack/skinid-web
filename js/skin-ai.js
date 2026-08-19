@@ -2152,6 +2152,7 @@ window.openProductDetailModal = function(productId) {
             content.classList.remove('scale-95', 'opacity-0');
             content.classList.add('scale-100', 'opacity-100');
         }
+        if (typeof feather !== 'undefined') feather.replace();
     }, 10);
     document.body.style.overflow = 'hidden';
 };
