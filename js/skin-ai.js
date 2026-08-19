@@ -2442,20 +2442,41 @@ function closeScanModal() {
 
 function initScanSetup() {
     const budgetBtns = document.querySelectorAll('.budget-btn');
-    budgetBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            budgetBtns.forEach(b => {
-                b.classList.remove('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
-                b.classList.add('border-gray-200', 'text-gray-600');
+    if (budgetBtns) {
+        budgetBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                budgetBtns.forEach(b => {
+                    b.classList.remove('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
+                    b.classList.add('border-gray-200', 'text-gray-600');
+                });
+                e.target.classList.remove('border-gray-200', 'text-gray-600');
+                e.target.classList.add('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
+                currentBudget = e.target.dataset.budget;
             });
-            e.target.classList.remove('border-gray-200', 'text-gray-600');
-            e.target.classList.add('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
-            currentBudget = e.target.dataset.budget;
         });
-    });
+    }
     
-    document.getElementById('capture-btn').addEventListener('click', captureFrame);
-    document.getElementById('start-analysis-btn').addEventListener('click', startAnalysis);
+    const capBtn = document.getElementById('capture-btn');
+    if (capBtn) {
+        capBtn.onclick = () => {
+            if (typeof window.captureFrame === 'function') {
+                window.captureFrame();
+            } else if (typeof captureFrame === 'function') {
+                captureFrame();
+            }
+        };
+    }
+
+    const startBtn = document.getElementById('start-analysis-btn');
+    if (startBtn) {
+        startBtn.onclick = () => {
+            if (typeof window.startAnalysis === 'function') {
+                window.startAnalysis();
+            } else if (typeof startAnalysis === 'function') {
+                startAnalysis();
+            }
+        };
+    }
 }
 
 window.updateStepUI = function() {
