@@ -4,653 +4,1993 @@ const PRODUCTS = [
         "id": "rilastil-2109",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "SỮA RỬA MẶT DƯỠNG ẨM RILASTIL AQUA FACE CLEANSER 50ML",
         "slug": "sua-rua-mat-duong-am-rilastil-aqua-face-cleanser-50ml",
-        "price": 650000,
-        "originalPrice": 750000,
+        "price": 180000,
+        "originalPrice": 210000,
+        "volume": "50 ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-sua-rua-mat-duong-am-rilastil-aqua-face-cleanser-50ml.avif"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Sữa rửa mặt dưỡng ẩm RIlastil Aqua face cleanser giúp loại bỏ các tạp chất trên da một cách dịu nhẹ . Làm sạch sâu nhưng vẫn giữ được độ ẩm trên da giúp da luôn mềm mịn",
+        "usage": "1-2 lần/ngày",
+        "keyActives": [
+            "SODIUM HYALURONATE HYDROLYZED HYALURONIC ACID: Acid hyaluronic trọng lượng phân tử cao và thấp giúp thẩm thấu vào các lớp nông, sâu của da, hút ẩm giúp cho da mềm, mịn"
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE HYDROLYZED HYALURONIC ACID"
+        ],
+        "fullIngredients": "Aqua (Water) • Polysorbate 20 • Sodium Lauroyl Sarcosinate • Ceteareth-60 Myristyl Glycol • Glycerin • Cocamidopropyl Betaine • PEG-3 Distearate • Sodium Cocoamphoacetate • Lauryl Glucoside • Sodium Methyl Cocoyl Taurate • Coco-glucoside • Glyceryl Oleate • Xylitol • PEG-7 Glyceryl Cocoate • Butylene Glycol • Oenothera biennis (Evening Primrose) Oil • Sodium Hyaluronate • Hydrolyzed Hyaluronic Acid • Sodium Lauroyl Lactylate • Ceramide NP • Ceramide AP • Ceramide EOP • Olus Oil (Vegetable Oil) • Phytosphingosine • Cholesterol • Butyrospermum parkii (Shea) Butter • Tocopheryl Acetate • PEG-150 Distearate • Citric Acid • C12-13 Alkyl Lactate • Carbomer • Xanthan Gum • Tocopherol • Hydrogenated Palm Glycerides Citrate • Lecithin • Ascorbyl Palmitate • Sodium Chloride • Pentaerythrityl Tetra-di-t-Butyl Hydroxyhydrocinnamate • Phenoxyethanol • Chlorphenesin • Benzoic Acid • Ethylhexylglycerin • o-cymen-5-ol • Disodium EDTA • Tetrasodium EDTA • Parfum (Fragrance).",
+        "image": "/images/products/rilastil-sua-rua-mat-duong-am-rilastil-aqua-face-cleanser-50ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/04/10-3.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/sua-rua-mat-duong-am-rilastil-aqua-face-cleanser-50ml/"
     },
     {
         "id": "rilastil-2103",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "XỊT CƠ THỂ DÀNH CHO DA MỤN 150ML – RILASTIL ACNESTIL BODY SPRAY 150ML",
         "slug": "xit-co-the-danh-cho-da-mun-150ml-rilastil-acnestil-body-spray-150ml",
-        "price": 750000,
-        "originalPrice": 850000,
+        "price": 860000,
+        "originalPrice": 990000,
+        "volume": "150ML",
         "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-xit-co-the-danh-cho-da-mun-150ml-rilastil-acnestil-body-spray-150ml.avif"
+        "stepType": "special",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Giải pháp lý tưởng dành cho làn da cơ thể dễ nổi mụn như lưng, ngực, cánh tay, với kết cấu xịt thanh lọc, khô nhanh, giúp làm sạch da, giảm bã nhờn và mụn hiệu quả mà không gây kích ứng. Công dụng nổi bật của RILASTIL ACNESTIL BODY SPRAY: Làm sạch sâu và tẩy tế bào chết nhẹ nhàng cho da cơ thể Giảm ",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID (BHA): Bạt sừng nhẹ, kháng viêm, làm thông thoáng cổ nang lông.",
+            "NIACINAMIDE: Kháng viêm, giảm đỏ, kiểm soát bã nhờn và phục hồi hàng rào bảo vệ da.",
+            "ZINC PCA: Kiềm dầu sinh học, ức chế vi khuẩn mụn P.acnes phát triển.",
+            "OLIGOPEPTIDE-10 & CHLORHEXIDINE: Kháng khuẩn chuyên sâu và ngăn ngừa mụn tái phát."
+        ],
+        "mainActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID",
+            "NIACINAMIDE",
+            "ZINC PCA"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-xit-co-the-danh-cho-da-mun-150ml-rilastil-acnestil-body-spray-150ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/2.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/xit-co-the-danh-cho-da-mun-150ml-rilastil-acnestil-body-spray-150ml/"
     },
     {
         "id": "rilastil-2101",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "MULTIREPAIR",
         "name": "SERUM TÁI TẠO VÀ CHỐNG LÃO HÓA 30ML – RILASTIL MULTIREPAIR RETINOL TECH 30ML",
         "slug": "serum-tai-tao-va-chong-lao-hoa-30ml-rilastil-multirepair-retinol-tech",
-        "price": 850000,
-        "originalPrice": 950000,
+        "price": 1500000,
+        "originalPrice": 1720000,
+        "volume": "30ML",
         "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-serum-tai-tao-va-chong-lao-hoa-30ml-rilastil-multirepair-retinol-tech.avif"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "aging",
+            "wrinkles",
+            "elasticity",
+            "nasolabial_folds",
+            "eye_wrinkles"
+        ],
+        "skinTypes": [
+            "aging",
+            "dry",
+            "normal",
+            "combination"
+        ],
+        "uses": "RILASTIL MULTIREPAIR RETINOL TECH – giải pháp tiên tiến tái tạo da & ngăn ngừa lão hoá sớm, được kiểm nghiệm da liễu và không gây kích ứng. Retinol là hoạt chất vàng trong chống lão hoá, nhưng dạng thông thường dễ gây bong tróc, đỏ rát – đặc biệt ở làn da nhạy cảm. Rilastil khắc phục hoàn toàn nhược",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "RETINOID HPR (HYDROXYPINACOLONE RETINOATE): Dẫn xuất Retinoid thế hệ mới, tái sinh tế bào mà không gây kích ứng hay bong tróc.",
+            "PREBIOTICS & SODIUM DNA: Tăng cường hệ miễn dịch da, kích thích sửa chữa mô tổn thương.",
+            "HYALURONIC ACID 3D: Cấp ẩm tầng sâu, duy trì độ đàn hồi căng bóng."
+        ],
+        "mainActives": [
+            "RETINOID HPR",
+            "PREBIOTICS & SODIUM DNA",
+            "HYALURONIC ACID 3D"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-serum-tai-tao-va-chong-lao-hoa-30ml-rilastil-multirepair-retinol-tech.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/3.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/serum-tai-tao-va-chong-lao-hoa-30ml-rilastil-multirepair-retinol-tech/"
     },
     {
         "id": "rilastil-2098",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "DAILY CARE",
         "name": "SỮA RỬA MẶT TẨY TRANG 2 TRONG 1 DÀNH CHO MỌI LOẠI DA 200ML – RILASTIL DAILY CARE MAKE-UP REMOVING CLEASING MILK 200ML",
         "slug": "sua-rua-mat-tay-trang-2-trong-1-danh-cho-moi-loai-da-200ml-rilastil-daily-care-make-up-removing-cleasing-milk-200ml",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Select",
+        "price": 440000,
+        "originalPrice": 510000,
+        "volume": "200ML",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-sua-rua-mat-tay-trang-2-trong-1-danh-cho-moi-loai-da-200ml-rilastil-daily-care-make-up-removing-cleasing-milk-200ml.avif"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Sản phẩm dược mỹ phẩm cao cấp từ Viện nghiên cứu Ganassini Milan - Ý giúp chăm sóc và phục hồi chuyên sâu cấu trúc da.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-sua-rua-mat-tay-trang-2-trong-1-danh-cho-moi-loai-da-200ml-rilastil-daily-care-make-up-removing-cleasing-milk-200ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/6.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/sua-rua-mat-tay-trang-2-trong-1-danh-cho-moi-loai-da-200ml-rilastil-daily-care-make-up-removing-cleasing-milk-200ml/"
     },
     {
         "id": "rilastil-2097",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "DAILY CARE",
         "name": "NƯỚC HOA HỒNG DÀNH CHO MỌI LOẠI DA 200ML – RILASTIL DAILY CARE REBALANCING SOOTHING TONER 200ML",
         "slug": "nuoc-hoa-hong-danh-cho-moi-loai-da-200ml-rilastil-daily-care-rebalancing-soothing-toner-200ml",
-        "price": 550000,
-        "originalPrice": 650000,
+        "price": 440000,
+        "originalPrice": 510000,
+        "volume": "200ML",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-nuoc-hoa-hong-danh-cho-moi-loai-da-200ml-rilastil-daily-care-rebalancing-soothing-toner-200ml.avif"
+        "stepType": "toner",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Sản phẩm dược mỹ phẩm cao cấp từ Viện nghiên cứu Ganassini Milan - Ý giúp chăm sóc và phục hồi chuyên sâu cấu trúc da.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-nuoc-hoa-hong-danh-cho-moi-loai-da-200ml-rilastil-daily-care-rebalancing-soothing-toner-200ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/7.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/nuoc-hoa-hong-danh-cho-moi-loai-da-200ml-rilastil-daily-care-rebalancing-soothing-toner-200ml/"
     },
     {
         "id": "rilastil-2096",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "DAILY CARE",
         "name": "NƯỚC HOA HỒNG DÀNH CHO DA DẦU 200ML – RILASTIL DAILY CARE REBALANCING ASTRINGENT TONER 200ML",
         "slug": "nuoc-hoa-hong-danh-cho-da-dau-rilastil-daily-care-rebalancing-astringent-toner-200ml",
-        "price": 650000,
-        "originalPrice": 750000,
-        "tier": "Signature",
+        "price": 440000,
+        "originalPrice": 510000,
+        "volume": "200ML",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-nuoc-hoa-hong-danh-cho-da-dau-rilastil-daily-care-rebalancing-astringent-toner-200ml.avif"
+        "stepType": "toner",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Sản phẩm dược mỹ phẩm cao cấp từ Viện nghiên cứu Ganassini Milan - Ý giúp chăm sóc và phục hồi chuyên sâu cấu trúc da.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-nuoc-hoa-hong-danh-cho-da-dau-rilastil-daily-care-rebalancing-astringent-toner-200ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/8.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/nuoc-hoa-hong-danh-cho-da-dau-rilastil-daily-care-rebalancing-astringent-toner-200ml/"
     },
     {
         "id": "rilastil-2095",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "KEM DƯỠNG ẨM GIÚP CÂN BẰNG VI SINH HỖ TRỢ PHỤC HỒI DA MỤN 40ML – RILASTIL ACNESTIL H-BIOME CREAM 40ML",
         "slug": "kem-duong-am-giup-can-bang-vi-sinh-ho-tro-phuc-hoi-da-mun-rilastil-acnestil-h-biome-cream",
-        "price": 750000,
-        "originalPrice": 850000,
+        "price": 680000,
+        "originalPrice": 780000,
+        "volume": "40ML",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-duong-am-giup-can-bang-vi-sinh-ho-tro-phuc-hoi-da-mun-rilastil-acnestil-h-biome-cream.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Sản phẩm được nghiên cứu và phát triển bởi Rilastil – Thương hiệu dược mỹ phẩm cao cấp từ Ý, trực thuộc Tập đoàn GANASSINI với hơn 150 năm kinh nghiệm, mang đến giải pháp chăm sóc da chuyên sâu, an toàn và hiệu quả. Công dụng : Sản phẩm sử dụng công nghệ H-BIOME tiên tiến chứa lợi khuẩn pre-postbiot",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID (BHA): Bạt sừng nhẹ, kháng viêm, làm thông thoáng cổ nang lông.",
+            "NIACINAMIDE: Kháng viêm, giảm đỏ, kiểm soát bã nhờn và phục hồi hàng rào bảo vệ da.",
+            "ZINC PCA: Kiềm dầu sinh học, ức chế vi khuẩn mụn P.acnes phát triển.",
+            "OLIGOPEPTIDE-10 & CHLORHEXIDINE: Kháng khuẩn chuyên sâu và ngăn ngừa mụn tái phát."
+        ],
+        "mainActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID",
+            "NIACINAMIDE",
+            "ZINC PCA"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-duong-am-giup-can-bang-vi-sinh-ho-tro-phuc-hoi-da-mun-rilastil-acnestil-h-biome-cream.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/04/10-1.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-duong-am-giup-can-bang-vi-sinh-ho-tro-phuc-hoi-da-mun-rilastil-acnestil-h-biome-cream/"
     },
     {
         "id": "rilastil-2093",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "D-CLAR",
         "name": "KEM DƯỠNG ẨM VÀ HỖ TRỢ LÀM MỜ CÁC VÙNG DA BỊ SẠM MÀU – RILASTIL D-CLAR DAILY DEPIGMENTING CREAM",
         "slug": "kem-duong-am-va-ho-tro-lam-mo-cac-vung-da-bi-sam-mau-rilastil-d-clar-daily-depigmenting-cream",
-        "price": 850000,
-        "originalPrice": 950000,
-        "tier": "Select",
+        "price": 1395000,
+        "originalPrice": 1600000,
+        "volume": "Tiêu chuẩn",
+        "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-duong-am-va-ho-tro-lam-mo-cac-vung-da-bi-sam-mau-rilastil-d-clar-daily-depigmenting-cream.avif"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "pigmentation",
+            "uv_spots",
+            "dark_spots",
+            "uneven_tone"
+        ],
+        "skinTypes": [
+            "all",
+            "hyperpigmentation"
+        ],
+        "uses": "Rilastil D-Clar Daily Depigmenting Cream là dòng kem dưỡng được nghiên cứu dành riêng cho làn da bị nám, sạm màu và không đều màu. Sản phẩm hỗ trợ làm mờ các vùng da sạm màu, giúp cải thiện tình trạng da không đều màu, giúp làm sáng da và hỗ trợ cải thiện sắc tố Công dụng chính: Ức chế sắc tố melani",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "4-BUTYLRESORCINOL: Hoạt chất ức chế mạnh mẽ enzym Tyrosinase, chặn đứng gốc rễ sắc tố Melanin.",
+            "TETRAPEPTIDE-30: Làm mờ các đốm nâu cứng đầu, cân bằng sắc tố và làm đều màu da.",
+            "MANDELIC ACID: Tẩy da chết hóa học nhẹ dịu, loại bỏ lớp sừng xỉn màu.",
+            "CLARI-TECH COMPLEX: Phức hợp dưỡng sáng y khoa độc quyền từ Rilastil."
+        ],
+        "mainActives": [
+            "4-BUTYLRESORCINOL",
+            "TETRAPEPTIDE-30",
+            "MANDELIC ACID"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-duong-am-va-ho-tro-lam-mo-cac-vung-da-bi-sam-mau-rilastil-d-clar-daily-depigmenting-cream.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/10.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-duong-am-va-ho-tro-lam-mo-cac-vung-da-bi-sam-mau-rilastil-d-clar-daily-depigmenting-cream/"
     },
     {
         "id": "rilastil-2092",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CẤP ẨM CHỐNG MẨN NGỨA  – RILASTIL XEROLACT PB BALM LIPID REPLENISHING ANTI-IRRITATION 50ML",
+        "line": "XEROLACT",
+        "name": "KEM CẤP ẨM CHỐNG MẨN NGỨA – RILASTIL XEROLACT PB BALM LIPID REPLENISHING ANTI-IRRITATION 50ML",
         "slug": "kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-50ml",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Signature",
+        "price": 230000,
+        "originalPrice": 260000,
+        "volume": "50 ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-50ml.avif"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "redness",
+            "sensitivity",
+            "severe_dryness",
+            "barrier_damage"
+        ],
+        "skinTypes": [
+            "dry",
+            "sensitive",
+            "atopic"
+        ],
+        "uses": "Kem dưỡng ẩm giúp phục hồi hàng rào bảo vệ da và hệ vi sinh vật trên da làm dịu da, giảm mẩn đỏ, giảm ngứa. Phù hợp với tình trạng da khô và rất khô ở trẻ sơ sinh, trẻ em và người lớn.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối.",
+        "keyActives": [
+            "SODIUM LACTATE & DNA SODIUM: Cấp ẩm chuyên sâu, phục hồi màng biểu bì bị tổn thương.",
+            "PRE/POSTBIOTICS: Tái lập cân bằng hệ vi sinh da, cắt cơn ngứa rát mẩn đỏ.",
+            "SHEA BUTTER: Nuôi dưỡng và làm mềm lớp sừng khô nứt nẻ."
+        ],
+        "mainActives": [
+            "SODIUM LACTATE & DNA SODIUM",
+            "PRE/POSTBIOTICS",
+            "SHEA BUTTER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-50ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/14.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-50ml/"
     },
     {
         "id": "rilastil-2089",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "TẨY TRANG  – RILASTIL DAILY CARE MICELLAR SOLUTION 100ML",
+        "line": "DAILY CARE",
+        "name": "TẨY TRANG – RILASTIL DAILY CARE MICELLAR SOLUTION 100ML",
         "slug": "tay-trang-rilastil-daily-care-micellar-solution-100ml-sao-chep",
-        "price": 550000,
-        "originalPrice": 650000,
-        "tier": "Select",
+        "price": 200000,
+        "originalPrice": 230000,
+        "volume": "100ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-tay-trang-rilastil-daily-care-micellar-solution-100ml-sao-chep.avif"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Công dụng: L àm sạch sâu, loại bỏ bụi bẩn và lớp trang điểm một cách nhanh chóng, an toàn cho làn da. Độ PH trung tính giống như nước mắt, phù hợp với mọi loại da, kể cả da nhạy cảm. Dung tích: 100ml Sử dụng: Thấm ra bông tẩy trang rồi lau mặt nhẹ nhàng. Dùng trước khi rửa mặt vào buổi tối hoặc dùng",
+        "usage": "Thấm ra bông tẩy trang rồi lau mặt nhẹ nhàng. Dùng trước khi rửa mặt vào buổi tối hoặc dùng để làm sạch mặt trước khi bôi nhắc lại kem chống nắng, không cần rửa lại bằng nước.",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-tay-trang-rilastil-daily-care-micellar-solution-100ml-sao-chep.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/4.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/tay-trang-rilastil-daily-care-micellar-solution-100ml-sao-chep/"
     },
     {
         "id": "rilastil-2087",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "TẨY TRANG  – RILASTIL DAILY CARE MICELLAR SOLUTION 250ML",
+        "line": "DAILY CARE",
+        "name": "TẨY TRANG – RILASTIL DAILY CARE MICELLAR SOLUTION 250ML",
         "slug": "tay-trang-rilastil-daily-care-micellar-solution-250ml",
-        "price": 650000,
-        "originalPrice": 750000,
+        "price": 410000,
+        "originalPrice": 470000,
+        "volume": "250ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-tay-trang-rilastil-daily-care-micellar-solution-250ml.avif"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Công dụng: L àm sạch sâu, loại bỏ bụi bẩn và lớp trang điểm một cách nhanh chóng, an toàn cho làn da. Độ PH trung tính giống như nước mắt, phù hợp với mọi loại da, kể cả da nhạy cảm. Dung tích: 250ml Sử dụng: Thấm ra bông tẩy trang rồi lau mặt nhẹ nhàng. Dùng trước khi rửa mặt vào buổi tối hoặc dùng",
+        "usage": "Thấm ra bông tẩy trang rồi lau mặt nhẹ nhàng. Dùng trước khi rửa mặt vào buổi tối hoặc dùng để làm sạch mặt trước khi bôi nhắc lại kem chống nắng, không cần rửa lại bằng nước.",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-tay-trang-rilastil-daily-care-micellar-solution-250ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/5.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/tay-trang-rilastil-daily-care-micellar-solution-250ml/"
     },
     {
         "id": "rilastil-2085",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "MẶT NẠ CẤP ẨM RILASTIL AQUA MOISTURIZING MASK 30ML",
         "slug": "mat-na-cap-am-rilastil-aqua-moisturizing-mask-30ml-sao-chep",
-        "price": 750000,
-        "originalPrice": 850000,
-        "tier": "Signature",
+        "price": 330000,
+        "originalPrice": 380000,
+        "volume": "30ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-mat-na-cap-am-rilastil-aqua-moisturizing-mask-30ml-sao-chep.avif"
+        "stepType": "special",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Giúp phục hồi, làm dịu và dưỡng ẩm chuyên sâu cho da. Đồng thời bổ sung hàng rào bảo vệ da, ngăn ngừa khả năng mất nước. Sản phẩm phù hợp với mọi loại da, kể cả da nhạy cảm nhất.",
+        "usage": "1-2 lần/ ngày . Phù hợp cho mọi loại da.",
+        "keyActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID: Cấp ẩm kép giúp da ngậm nước đa tầng tế bào.",
+            "CERAMIDES & OMEGA 6/9: Khôi phục màng lipid tự nhiên, bảo vệ da khỏi mất nước.",
+            "OENOTHERA BIENNIS (EVENING PRIMROSE) OIL: Làm mềm da, chống viêm và giảm kích ứng."
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID",
+            "CERAMIDES & OMEGA 6/9",
+            "OENOTHERA BIENNIS  OIL"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-mat-na-cap-am-rilastil-aqua-moisturizing-mask-30ml-sao-chep.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/11.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/mat-na-cap-am-rilastil-aqua-moisturizing-mask-30ml-sao-chep/"
     },
     {
         "id": "rilastil-2070",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "KEM CẤP ẨM CHUYÊN SÂU 72H – RILASTIL AQUA INTENSE GEL 72H 15ML",
         "slug": "kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-15ml",
-        "price": 850000,
-        "originalPrice": 950000,
+        "price": 300000,
+        "originalPrice": 350000,
+        "volume": "40 ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-15ml.avif"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Sản phẩm dược mỹ phẩm cao cấp từ Viện nghiên cứu Ganassini Milan - Ý giúp chăm sóc và phục hồi chuyên sâu cấu trúc da.",
+        "usage": "Sử dụng hàng ngày",
+        "keyActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID: Cấp ẩm kép giúp da ngậm nước đa tầng tế bào.",
+            "CERAMIDES & OMEGA 6/9: Khôi phục màng lipid tự nhiên, bảo vệ da khỏi mất nước.",
+            "OENOTHERA BIENNIS (EVENING PRIMROSE) OIL: Làm mềm da, chống viêm và giảm kích ứng."
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID",
+            "CERAMIDES & OMEGA 6/9",
+            "OENOTHERA BIENNIS  OIL"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-15ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/13.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-15ml/"
     },
     {
         "id": "rilastil-2067",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "KEM CẤP ẨM CHUYÊN SÂU 72H – RILASTIL AQUA INTENSE GEL 72H 40ML",
         "slug": "kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-40ml",
-        "price": 950000,
-        "originalPrice": 1050000,
+        "price": 780000,
+        "originalPrice": 900000,
+        "volume": "40 ml",
         "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-40ml.avif"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Sản phẩm dược mỹ phẩm cao cấp từ Viện nghiên cứu Ganassini Milan - Ý giúp chăm sóc và phục hồi chuyên sâu cấu trúc da.",
+        "usage": "Sử dụng hàng ngày",
+        "keyActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID: Cấp ẩm kép giúp da ngậm nước đa tầng tế bào.",
+            "CERAMIDES & OMEGA 6/9: Khôi phục màng lipid tự nhiên, bảo vệ da khỏi mất nước.",
+            "OENOTHERA BIENNIS (EVENING PRIMROSE) OIL: Làm mềm da, chống viêm và giảm kích ứng."
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID",
+            "CERAMIDES & OMEGA 6/9",
+            "OENOTHERA BIENNIS  OIL"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-40ml.avif",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/12-1.avif",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-40ml/"
     },
     {
         "id": "rilastil-1942",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "KEM DƯỠNG ẨM CHO VÙNG MẮT – RILASTIL AQUA EYE CONTOUR CREAM 15ML",
         "slug": "kem-duong-am-cho-vung-mat-rilastil-aqua-eye-contour-cream-15ml",
-        "price": 550000,
-        "originalPrice": 650000,
-        "tier": "Signature",
+        "price": 750000,
+        "originalPrice": 860000,
+        "volume": "15 ml",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-duong-am-cho-vung-mat-rilastil-aqua-eye-contour-cream-15ml.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Sản phẩm dưỡng ẩm sâu dành cho vùng mắt Rilastil Aqua Eye Contour Cream sẽ giúp chăm sóc làn da mỏng manh xung quanh vùng mắt, cấp ẩm cho da, da được cấp đủ ẩm sẽ tươi tắn, trẻ hóa, giảm bọng mắt và quầng thâm, giúp đôi mắt trở nên thu hút hơn.",
+        "usage": "Sử dụng hàng ngày",
+        "keyActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID: Cấp ẩm kép giúp da ngậm nước đa tầng tế bào.",
+            "CERAMIDES & OMEGA 6/9: Khôi phục màng lipid tự nhiên, bảo vệ da khỏi mất nước.",
+            "OENOTHERA BIENNIS (EVENING PRIMROSE) OIL: Làm mềm da, chống viêm và giảm kích ứng."
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID",
+            "CERAMIDES & OMEGA 6/9",
+            "OENOTHERA BIENNIS  OIL"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-duong-am-cho-vung-mat-rilastil-aqua-eye-contour-cream-15ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Aqua_Kem-mat.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-duong-am-cho-vung-mat-rilastil-aqua-eye-contour-cream-15ml/"
     },
     {
         "id": "rilastil-1939",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ELASTICIZING",
         "name": "KEM NGĂN NGỪA RẠN DA – RILASTIL STRETCH MARKS CREAM 200ml",
         "slug": "kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-200ml",
-        "price": 650000,
-        "originalPrice": 750000,
-        "tier": "Select",
+        "price": 1260000,
+        "originalPrice": 1450000,
+        "volume": "200 ml",
+        "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-200ml.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "scars",
+            "stretch_marks",
+            "elasticity"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "ngăn ngừa và khắc phục các vết rạn da trong thời gian mang thai hoặc do thay đổi cân nặng, chiều cao đột ngột.",
+        "usage": "Sử dụng 2 lần/ ngày",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-200ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Kem-ran-200ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-200ml/"
     },
     {
         "id": "rilastil-1936",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ELASTICIZING",
         "name": "KEM NGĂN NGỪA RẠN DA – RILASTIL STRETCH MARKS CREAM 75ml",
         "slug": "kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml",
-        "price": 750000,
-        "originalPrice": 850000,
-        "tier": "Essential",
+        "price": 795000,
+        "originalPrice": 910000,
+        "volume": "75 ml",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "scars",
+            "stretch_marks",
+            "elasticity"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "ngăn ngừa và khắc phục các vết rạn da trong thời gian mang thai hoặc do thay đổi cân nặng, chiều cao đột ngột.",
+        "usage": "Sử dụng 2 lần/ ngày",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Kem-ran-75ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml/"
     },
     {
         "id": "rilastil-1876",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CẤP ẨM CHỐNG MẨN NGỨA  – RILASTIL XEROLACT PB BALM LIPID REPLENISHING ANTI-IRRITATION  400ML",
+        "line": "XEROLACT",
+        "name": "KEM CẤP ẨM CHỐNG MẨN NGỨA – RILASTIL XEROLACT PB BALM LIPID REPLENISHING ANTI-IRRITATION 400ML",
         "slug": "kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-400ml",
-        "price": 850000,
-        "originalPrice": 950000,
-        "tier": "Signature",
+        "price": 750000,
+        "originalPrice": 860000,
+        "volume": "400 ml",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-400ml.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "redness",
+            "sensitivity",
+            "severe_dryness",
+            "barrier_damage"
+        ],
+        "skinTypes": [
+            "dry",
+            "sensitive",
+            "atopic"
+        ],
+        "uses": "Kem dưỡng ẩm giúp phục hồi hàng rào bảo vệ da và hệ vi sinh vật trên da làm dịu da, giảm mẩn đỏ, giảm ngứa. Phù hợp với tình trạng da khô và rất khô ở trẻ sơ sinh, trẻ em và người lớn.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối.",
+        "keyActives": [
+            "SODIUM LACTATE & DNA SODIUM: Cấp ẩm chuyên sâu, phục hồi màng biểu bì bị tổn thương.",
+            "PRE/POSTBIOTICS: Tái lập cân bằng hệ vi sinh da, cắt cơn ngứa rát mẩn đỏ.",
+            "SHEA BUTTER: Nuôi dưỡng và làm mềm lớp sừng khô nứt nẻ."
+        ],
+        "mainActives": [
+            "SODIUM LACTATE & DNA SODIUM",
+            "PRE/POSTBIOTICS",
+            "SHEA BUTTER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-400ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/man-ngua-400ml-1.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-400ml/"
     },
     {
         "id": "rilastil-1872",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "XEROLACT",
         "name": "GEL RỬA MẶT, TẮM TOÀN THÂN – RILASTIL XEROLACT CLEANSING GEL 750ML",
         "slug": "gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-750ml",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Essential",
+        "price": 850000,
+        "originalPrice": 980000,
+        "volume": "750 ml",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-750ml.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "redness",
+            "sensitivity",
+            "severe_dryness",
+            "barrier_damage"
+        ],
+        "skinTypes": [
+            "dry",
+            "sensitive",
+            "atopic"
+        ],
+        "uses": "Sữa tắm dịu nhẹ làm sạch sâu mà không gây khô da. Phù hợp với da khô, da rất khô, da nhạy cảm.",
+        "usage": "Sử dụng hàng ngày",
+        "keyActives": [
+            "SODIUM LACTATE & DNA SODIUM: Cấp ẩm chuyên sâu, phục hồi màng biểu bì bị tổn thương.",
+            "PRE/POSTBIOTICS: Tái lập cân bằng hệ vi sinh da, cắt cơn ngứa rát mẩn đỏ.",
+            "SHEA BUTTER: Nuôi dưỡng và làm mềm lớp sừng khô nứt nẻ."
+        ],
+        "mainActives": [
+            "SODIUM LACTATE & DNA SODIUM",
+            "PRE/POSTBIOTICS",
+            "SHEA BUTTER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-750ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/gel-tam-750ml-1.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-750ml/"
     },
     {
         "id": "rilastil-1871",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "XEROLACT",
         "name": "GEL RỬA MẶT, TẮM TOÀN THÂN – RILASTIL XEROLACT CLEANSING GEL 400ML",
         "slug": "gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-400ml",
         "price": 550000,
-        "originalPrice": 650000,
-        "tier": "Select",
+        "originalPrice": 630000,
+        "volume": "400 ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-400ml.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "redness",
+            "sensitivity",
+            "severe_dryness",
+            "barrier_damage"
+        ],
+        "skinTypes": [
+            "dry",
+            "sensitive",
+            "atopic"
+        ],
+        "uses": "Sữa tắm dịu nhẹ làm sạch sâu mà không gây khô da. Phù hợp với da khô, da rất khô, da nhạy cảm.",
+        "usage": "Sử dụng hàng ngày",
+        "keyActives": [
+            "SODIUM LACTATE & DNA SODIUM: Cấp ẩm chuyên sâu, phục hồi màng biểu bì bị tổn thương.",
+            "PRE/POSTBIOTICS: Tái lập cân bằng hệ vi sinh da, cắt cơn ngứa rát mẩn đỏ.",
+            "SHEA BUTTER: Nuôi dưỡng và làm mềm lớp sừng khô nứt nẻ."
+        ],
+        "mainActives": [
+            "SODIUM LACTATE & DNA SODIUM",
+            "PRE/POSTBIOTICS",
+            "SHEA BUTTER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-400ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Gel-tam-400ml-2.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-400ml/"
     },
     {
         "id": "rilastil-1868",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CẤP ẨM CHỐNG MẨN NGỨA  – RILASTIL XEROLACT PB BALM LIPID REPLENISHING ANTI-IRRITATION  200ML",
+        "line": "XEROLACT",
+        "name": "KEM CẤP ẨM CHỐNG MẨN NGỨA – RILASTIL XEROLACT PB BALM LIPID REPLENISHING ANTI-IRRITATION 200ML",
         "slug": "kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-200ml",
-        "price": 650000,
-        "originalPrice": 750000,
-        "tier": "Signature",
+        "price": 520000,
+        "originalPrice": 600000,
+        "volume": "200 ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-200ml.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "redness",
+            "sensitivity",
+            "severe_dryness",
+            "barrier_damage"
+        ],
+        "skinTypes": [
+            "dry",
+            "sensitive",
+            "atopic"
+        ],
+        "uses": "Kem dưỡng ẩm giúp phục hồi hàng rào bảo vệ da và hệ vi sinh vật trên da làm dịu da, giảm mẩn đỏ, giảm ngứa. Phù hợp với tình trạng da khô và rất khô ở trẻ sơ sinh, trẻ em và người lớn.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối.",
+        "keyActives": [
+            "SODIUM LACTATE & DNA SODIUM: Cấp ẩm chuyên sâu, phục hồi màng biểu bì bị tổn thương.",
+            "PRE/POSTBIOTICS: Tái lập cân bằng hệ vi sinh da, cắt cơn ngứa rát mẩn đỏ.",
+            "SHEA BUTTER: Nuôi dưỡng và làm mềm lớp sừng khô nứt nẻ."
+        ],
+        "mainActives": [
+            "SODIUM LACTATE & DNA SODIUM",
+            "PRE/POSTBIOTICS",
+            "SHEA BUTTER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-200ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Man-ngua-200ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-200ml/"
     },
     {
         "id": "rilastil-1867",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "XEROLACT",
         "name": "GEL RỬA MẶT, TẮM TOÀN THÂN – RILASTIL XEROLACT CLEANSING GEL 200ML",
         "slug": "gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-200ml",
-        "price": 750000,
-        "originalPrice": 850000,
-        "tier": "Select",
+        "price": 430000,
+        "originalPrice": 490000,
+        "volume": "200 ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-200ml.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "redness",
+            "sensitivity",
+            "severe_dryness",
+            "barrier_damage"
+        ],
+        "skinTypes": [
+            "dry",
+            "sensitive",
+            "atopic"
+        ],
+        "uses": "Sữa tắm dịu nhẹ làm sạch sâu mà không gây khô da. Phù hợp với da khô, da rất khô, da nhạy cảm.",
+        "usage": "Sử dụng hàng ngày",
+        "keyActives": [
+            "SODIUM LACTATE & DNA SODIUM: Cấp ẩm chuyên sâu, phục hồi màng biểu bì bị tổn thương.",
+            "PRE/POSTBIOTICS: Tái lập cân bằng hệ vi sinh da, cắt cơn ngứa rát mẩn đỏ.",
+            "SHEA BUTTER: Nuôi dưỡng và làm mềm lớp sừng khô nứt nẻ."
+        ],
+        "mainActives": [
+            "SODIUM LACTATE & DNA SODIUM",
+            "PRE/POSTBIOTICS",
+            "SHEA BUTTER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-200ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Gel-tam-200ml-1.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-200ml/"
     },
     {
         "id": "rilastil-1864",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CHỐNG NẮNG DÀNH CHO DA NHẠY CẢM – RILASTIL ALLERGY PROTECTIVE FLUID SPF 50+  50ML",
+        "line": "SUN SYSTEM",
+        "name": "KEM CHỐNG NẮNG DÀNH CHO DA NHẠY CẢM – RILASTIL ALLERGY PROTECTIVE FLUID SPF 50+ 50ML",
         "slug": "kem-chong-nang-danh-cho-da-nhay-cam-rilastil-allergy-protective-fluid-spf-50-50ml",
-        "price": 850000,
-        "originalPrice": 950000,
+        "price": 595000,
+        "originalPrice": 680000,
+        "volume": "50ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-chong-nang-danh-cho-da-nhay-cam-rilastil-allergy-protective-fluid-spf-50-50ml.png"
+        "stepType": "sunscreen",
+        "targetConcerns": [
+            "uv_protection",
+            "uv_spots",
+            "aging",
+            "sunburn"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Công dụng : Kem chống nắng quang phổ rộng, có thành phần chống lão hoá, kháng viêm, giảm gốc tự do, dày thượng bì. Dung tích : 50ml Sử dụng : Dùng hàng ngày, bôi nhắc lại 2-3h Thành phần chính: UVA, UVB FILTERS: Hệ thống màng lọc hữu cơ chống lại tia UVA và UVB. NIACINAMIDE 1% : Kháng viêm, giảm đỏ,",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "UVA, UVB FILTERS: Hệ thống màng lọc hữu cơ chống lại tia UVA và UVB.",
+            "1% : Kháng viêm, giảm đỏ, làm sáng da. Dưỡng ẩm."
+        ],
+        "mainActives": [
+            "UVA, UVB FILTERS",
+            "1%"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-chong-nang-danh-cho-da-nhay-cam-rilastil-allergy-protective-fluid-spf-50-50ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-nhay-cam.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-danh-cho-da-nhay-cam-rilastil-allergy-protective-fluid-spf-50-50ml/"
     },
     {
         "id": "rilastil-1860",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CHỐNG NẮNG CẤP ẨM VELVET – RILASTIL SUN SYSTEM VELVET TOUCH MOISTURIZING VELVET CREAM SPF 50+  50ML",
+        "line": "SUN SYSTEM",
+        "name": "KEM CHỐNG NẮNG CẤP ẨM VELVET – RILASTIL SUN SYSTEM VELVET TOUCH MOISTURIZING VELVET CREAM SPF 50+ 50ML",
         "slug": "kem-chong-nang-cap-am-velvet-rilastil-sun-system-velvet-touch-moisturizing-velvet-cream-spf-50-50ml",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Signature",
+        "price": 595000,
+        "originalPrice": 680000,
+        "volume": "50ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-chong-nang-cap-am-velvet-rilastil-sun-system-velvet-touch-moisturizing-velvet-cream-spf-50-50ml.png"
+        "stepType": "sunscreen",
+        "targetConcerns": [
+            "uv_protection",
+            "uv_spots",
+            "aging",
+            "sunburn"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Công dụng : Kem chống nắng quang phổ rộng, kiềm dầu, kháng viêm, phù hợp cho da dầu, da mụn Dung tích : 50ml Sử dụng : Dùng hàng ngày, bôi nhắc lại 2-3h Thành phần chính UVA, UVB FILTERS: Hệ thống màng lọc hữu cơ chống lại tia UVA và UVB. ALPHA-BISABOLOL (VITAMIN B5): Giảm kích ứng, kháng viêm, khán",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "MÀNG LỌC QUANG PHỔ RỘNG UVA/UVB/HEV/IR: Bảo vệ tối đa cấu trúc DNA tế bào trước mọi bức xạ có hại.",
+            "PRO-DNA COMPLEX: Phức hợp chống lão hóa do ánh nắng độc quyền.",
+            "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E: Chống oxy hóa và làm dịu da nhạy cảm."
+        ],
+        "mainActives": [
+            "MÀNG LỌC QUANG PHỔ RỘNG UVA/UVB/HEV/IR",
+            "PRO-DNA COMPLEX",
+            "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-chong-nang-cap-am-velvet-rilastil-sun-system-velvet-touch-moisturizing-velvet-cream-spf-50-50ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-Velvet-1.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-cap-am-velvet-rilastil-sun-system-velvet-touch-moisturizing-velvet-cream-spf-50-50ml/"
     },
     {
         "id": "rilastil-1857",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CHỐNG NẮNG CẤP ẨM WATER TOUCH –  RILASTIL SUN SYSTEM WATER TOUCH MOISTURIZING FLUID SPF 50+  50ML",
+        "line": "SUN SYSTEM",
+        "name": "KEM CHỐNG NẮNG CẤP ẨM WATER TOUCH – RILASTIL SUN SYSTEM WATER TOUCH MOISTURIZING FLUID SPF 50+ 50ML",
         "slug": "kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml",
-        "price": 550000,
-        "originalPrice": 650000,
+        "price": 650000,
+        "originalPrice": 750000,
+        "volume": "50ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml.png"
+        "stepType": "sunscreen",
+        "targetConcerns": [
+            "uv_protection",
+            "uv_spots",
+            "aging",
+            "sunburn"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Công dụng : Kem chống nắng quang phổ rộng, cấp ẩm, . Phù hợp mọi loại da. Dung tích : 50ml Sử dụng : Dùng hàng ngày, bôi nhắc lại 2-3h Thành phần chính UVA, UVB FILTERS: Hệ thống màng lọc hữu cơ chống lại tia UVA và UVB. SODIUM HYALURONATE: Dưỡng ẩm. ECTOIN: Dưỡng ẩm. dịu da, chống oxy hóa, chống vi",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "MÀNG LỌC QUANG PHỔ RỘNG UVA/UVB/HEV/IR: Bảo vệ tối đa cấu trúc DNA tế bào trước mọi bức xạ có hại.",
+            "PRO-DNA COMPLEX: Phức hợp chống lão hóa do ánh nắng độc quyền.",
+            "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E: Chống oxy hóa và làm dịu da nhạy cảm."
+        ],
+        "mainActives": [
+            "MÀNG LỌC QUANG PHỔ RỘNG UVA/UVB/HEV/IR",
+            "PRO-DNA COMPLEX",
+            "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-water-Touch.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml/"
     },
     {
         "id": "rilastil-1856",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CHỐNG NẮNG DÀNH CHO DA DẦU MỤN – RILASTIL ACNESTIL SEBUM-NORMALIZING CREAM SPF 50+   40ML",
+        "line": "ACNES",
+        "name": "KEM CHỐNG NẮNG DÀNH CHO DA DẦU MỤN – RILASTIL ACNESTIL SEBUM-NORMALIZING CREAM SPF 50+ 40ML",
         "slug": "kem-chong-nang-danh-cho-da-dau-mun-rilastil-acnestil-sebum-normalizing-cream-spf-50-40ml",
-        "price": 650000,
-        "originalPrice": 750000,
-        "tier": "Select",
+        "price": 580000,
+        "originalPrice": 670000,
+        "volume": "40ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-kem-chong-nang-danh-cho-da-dau-mun-rilastil-acnestil-sebum-normalizing-cream-spf-50-40ml.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Công dụng : Kem chống nắng quang phổ rộng, kiềm dầu, kháng viêm, phù hợp cho da dầu, da mụn Dung tích : 40ml Sử dụng : Dùng hàng ngày, bôi nhắc lại 2-3h Thành phần chính UVA, UVB FILTERS: Hệ thống màng lọc hữu cơ chống lại tia UVA và UVB. NIACINAMIDE, POTASSIUM AZELOYL DIGLYCINATE : Kháng viêm, giảm",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "UVA, UVB FILTERS: Hệ thống màng lọc hữu cơ chống lại tia UVA và UVB.",
+            "ECTOIN: Dưỡng ẩm. dịu da, chống oxy hóa, chống viêm,",
+            "TOCOPHERYL ACETATE (VITAMIN E): Ngăn ngừa quá trình lão hóa và tăng độ mềm mượt cho da.",
+            "BUDDLEJA DAVIDII LEAF EXTRACT, PEUCEDANUM OSTRUTHIUM LEAF EXTRACT, PINUS PINASTER BARK/BUD EXTRACT, ARTEMISIA UMBELLIFORMIS EXTRACT: Phức hợp các hoạt chất chiết xuất thực vật giàu chất chống oxy hóa và làm dịu da, bảo vệ DNA tế bào trước tác hại oxy hóa do tia UV gây ra. Chiết xuất BUDDLEJA DAVIDII LEAF bảo vệ DNA tế bào, ngăn chặn quá trình oxi hóa da, chiết xuất PEUCEDANUM OSTRUTHIUM LEAF tăng cường khả năng tái tạo của lớp biểu bì, chiết xuất PINUS PINASTER BARK/BUD chống oxy hóa và chống viêm, chiết xuất ARTEMISIA UMBELLIFORMIS phục hồi thương tổn làn da.",
+            "SCHISANDRA CHINENSIS FRUIT EXTRACT: Cải thiện độ đàn hồi của da."
+        ],
+        "mainActives": [
+            "UVA, UVB FILTERS",
+            "ECTOIN",
+            "TOCOPHERYL ACETATE"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-kem-chong-nang-danh-cho-da-dau-mun-rilastil-acnestil-sebum-normalizing-cream-spf-50-40ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-mun.png",
+        "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-danh-cho-da-dau-mun-rilastil-acnestil-sebum-normalizing-cream-spf-50-40ml/"
     },
     {
         "id": "rilastil-1853",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "DUNG DỊCH TẨY DA CHẾT NGỪA MỤN MỜ THÂM NÁM – RILASTIL ACNESTIL MICROPEELING 100ML",
         "slug": "dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-100ml",
-        "price": 750000,
-        "originalPrice": 850000,
-        "tier": "Signature",
+        "price": 900000,
+        "originalPrice": 1030000,
+        "volume": "100ML",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-100ml.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Dung dịch tẩy da chết hóa học chứa mandelic acid và salicylic acid giúp ngừa mụn, kháng viêm, mờ thâm",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "MANDELIC ACID 5%: Tẩy tế bào chết, làm sáng da, mờ thâm.",
+            "SALICYLIC ACID 2%: Tẩy tế bào chết, kháng viêm."
+        ],
+        "mainActives": [
+            "MANDELIC ACID 5%",
+            "SALICYLIC ACID 2%"
+        ],
+        "fullIngredients": "Aqua (Water) • Caprylic/Capric Triglyceride • Mandelic acid • Hydrogenated Polydecene • Butylene Glycol • Sodium Hydroxide • Glycerin • Ceteareth-25 • Bisabolol • Disodium Ethylene Dicocamide PEG-15 Disulfate • Hydroxyethylcellulose • Hyaluronic Acid • 3-O-Ethyl Ascorbic Acid • Niacinamide • Sodium DNA • Polyglyceryl-10 Oleate • Hydroxyresveratrol • Hexanoyl Dipeptide-3 Norleucine Acetate • Tetrapeptide-30 • Polyglyceryl-6 Laurate • Lecithin • Sorbitan Palmitate • Chlorphenesin • Phenoxyethanol • Disodium EDTA.",
+        "image": "/images/products/rilastil-dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-100ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Acnes_micropeeling-100ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-100ml/"
     },
     {
         "id": "rilastil-1844",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "DUNG DỊCH TẨY DA CHẾT NGỪA MỤN MỜ THÂM NÁM – RILASTIL ACNESTIL MICROPEELING 30ML",
         "slug": "dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-30ml",
-        "price": 850000,
-        "originalPrice": 950000,
-        "tier": "Select",
+        "price": 380000,
+        "originalPrice": 440000,
+        "volume": "30ML",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-30ml.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Dung dịch tẩy da chết hóa học chứa mandelic acid và salicylic acid giúp ngừa mụn, kháng viêm, mờ thâm",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "MANDELIC ACID 5%: Tẩy tế bào chết, làm sáng da, mờ thâm.",
+            "SALICYLIC ACID 2%: Tẩy tế bào chết, kháng viêm."
+        ],
+        "mainActives": [
+            "MANDELIC ACID 5%",
+            "SALICYLIC ACID 2%"
+        ],
+        "fullIngredients": "Aqua (Water) • Caprylic/Capric Triglyceride • Mandelic acid • Hydrogenated Polydecene • Butylene Glycol • Sodium Hydroxide • Glycerin • Ceteareth-25 • Bisabolol • Disodium Ethylene Dicocamide PEG-15 Disulfate • Hydroxyethylcellulose • Hyaluronic Acid • 3-O-Ethyl Ascorbic Acid • Niacinamide • Sodium DNA • Polyglyceryl-10 Oleate • Hydroxyresveratrol • Hexanoyl Dipeptide-3 Norleucine Acetate • Tetrapeptide-30 • Polyglyceryl-6 Laurate • Lecithin • Sorbitan Palmitate • Chlorphenesin • Phenoxyethanol • Disodium EDTA.",
+        "image": "/images/products/rilastil-dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-30ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Acnes_Micropeeling-30ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/dung-dich-tay-da-chet-ngua-mun-mo-tham-nam-rilastil-acnestil-micropeeling-30ml/"
     },
     {
         "id": "rilastil-1831",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "SERUM CẤP ẨM DÀNH CHO DA MỤN – RILASTIL ACNESTIL PB SOOTHING SEBUM-NORMALISING GEL 30ML",
         "slug": "serum-cap-am-danh-cho-da-mun-rilastil-acnestil-pb-soothing-sebum-normalising-gel-30ml",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Essential",
+        "price": 750000,
+        "originalPrice": 860000,
+        "volume": "30ML",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-serum-cap-am-danh-cho-da-mun-rilastil-acnestil-pb-soothing-sebum-normalising-gel-30ml.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "ACNESTIL PB SOOTHING SEBUM-NORMALISING GEL chứa PREBIOTIC VÀ POSTBIOTIC giúp cân bằng môi trường nội môi vi sinh vật trên da, làm dịu và dưỡng ẩm cho da, giảm tải lượng vi khuẩn Cutibacterium Acnes trong 24 giờ, giúp làm dịu da. Phù hợp với da đang bị mụn trứng cá, đỏ da khô khi đang dùng isotretino",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "ALPHA – GLUCAN OLIGOSACCHARIDE 0.5% : Tái cân bằng hệ vi sinh vật trên da."
+        ],
+        "mainActives": [
+            "ALPHA – GLUCAN OLIGOSACCHARIDE 0.5%"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-serum-cap-am-danh-cho-da-mun-rilastil-acnestil-pb-soothing-sebum-normalising-gel-30ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Serum-PB.png",
+        "link": "https://rilastilvn.com.vn/san-pham/serum-cap-am-danh-cho-da-mun-rilastil-acnestil-pb-soothing-sebum-normalising-gel-30ml/"
     },
     {
         "id": "rilastil-1810",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "GEL RỬA MẶT DÀNH CHO DA MỤN – RILASTIL ACNESTIL CLEANSING GEL 400ML",
         "slug": "gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-400ml",
-        "price": 550000,
-        "originalPrice": 650000,
-        "tier": "Signature",
+        "price": 720000,
+        "originalPrice": 830000,
+        "volume": "400 ml",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-400ml.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Rửa mặt dạng gel dành cho da dầu, mụn giúp làm sạch sâu nhưng vẫn giữ được độ ẩm cho da. Bên cạnh đó, sản phẩm còn giúp giảm mụn, giảm sưng viêm, làm dịu nhẹ da, trả lại cho bạn làn da mềm mịn.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối.",
+        "keyActives": [
+            "SODIUM SALICYLATE: Bạt sừng nhẹ, kháng viêm.",
+            "NIACINAMIDE : Kháng viêm, giảm đỏ, giảm ngứa. Ức chế sản xuất bã nhờn, giảm mụn. Làm sáng da.",
+            "CHLORHEXINDINE DIGLUCONATE: Kháng khuẩn, chống viêm nhiễm.",
+            "TOCOPHERYL ACETATE (VITAMIN E) SODIUM HYALURONATE : Dưỡng ẩm, chống lão hóa và ngăn ngừa viêm, giảm đỏ."
+        ],
+        "mainActives": [
+            "SODIUM SALICYLATE",
+            "NIACINAMIDE",
+            "CHLORHEXINDINE DIGLUCONATE"
+        ],
+        "fullIngredients": "Aqua (Water) • Sodium Lauroyl Sarcosinate • Polysorbate 20 • Glycerin • Cocamidopropyl Betaine • PEG -120 Methyl Glucose Dioleate • Sodium Cocoamphoacetate • Lauryl Glucoside • Sodium Methyl Cocoyl Taurate • Xylitol • PEG -7 Glyceryl Cocoate • Propylene Glycol • Coco – Glucoside • Glyceryl Oleate • PPG – 26 – Buteth – 26 • Citric Acid • Sodium PCA • Niacinamide • Panthenol • Sodium Salicylate • Tocopheryl Acetate • Dipotassium Glycyrrhizate • Potassium Azeloyl Diglycinate • Zinc PCA • Copper PCA • Sodium Hyaluronate • Oligopeptide – 10 Synthetic Origin • PEG – 40 Hydrogenated Castor Oil • C12-13 Alkyl Lactate • Sodium Chloride • Tocopherol • Diethythexyl Syringylidenemalonate • Caprylic/ Capric Triglyceride • Hydrogenated Palm Glycerides Citrate • Lecithin • Ascorbyl Palmitate • Propanediol • Phenoxyethanol • Caprylyl Glycol • O-Cymen-5-OL • Chlorhexidine Digluconate • Sodium Benzoate • Disodium EDTA • Parfum (Fragrance).",
+        "image": "/images/products/rilastil-gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-400ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Acnes_SRM-400ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-400ml/"
     },
     {
         "id": "rilastil-1805",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "GEL RỬA MẶT DÀNH CHO DA MỤN – RILASTIL ACNESTIL CLEANSING GEL 200ML",
         "slug": "gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-200ml",
-        "price": 650000,
-        "originalPrice": 750000,
+        "price": 530000,
+        "originalPrice": 610000,
+        "volume": "400 ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-200ml.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Rửa mặt dạng gel dành cho da dầu, mụn giúp làm sạch sâu nhưng vẫn giữ được độ ẩm cho da. Bên cạnh đó, sản phẩm còn giúp giảm mụn, giảm sưng viêm, làm dịu nhẹ da, trả lại cho bạn làn da mềm mịn.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối.",
+        "keyActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID (BHA): Bạt sừng nhẹ, kháng viêm, làm thông thoáng cổ nang lông.",
+            "NIACINAMIDE: Kháng viêm, giảm đỏ, kiểm soát bã nhờn và phục hồi hàng rào bảo vệ da.",
+            "ZINC PCA: Kiềm dầu sinh học, ức chế vi khuẩn mụn P.acnes phát triển.",
+            "OLIGOPEPTIDE-10 & CHLORHEXIDINE: Kháng khuẩn chuyên sâu và ngăn ngừa mụn tái phát."
+        ],
+        "mainActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID",
+            "NIACINAMIDE",
+            "ZINC PCA"
+        ],
+        "fullIngredients": "Aqua (Water) • Sodium Lauroyl Sarcosinate • Polysorbate 20 • Glycerin • Cocamidopropyl Betaine • PEG -120 Methyl Glucose Dioleate • Sodium Cocoamphoacetate • Lauryl Glucoside • Sodium Methyl Cocoyl Taurate • Xylitol • PEG -7 Glyceryl Cocoate • Propylene Glycol • Coco – Glucoside • Glyceryl Oleate • PPG – 26 – Buteth – 26 • Citric Acid • Sodium PCA • Niacinamide • Panthenol • Sodium Salicylate • Tocopheryl Acetate • Dipotassium Glycyrrhizate • Potassium Azeloyl Diglycinate • Zinc PCA • Copper PCA • Sodium Hyaluronate • Oligopeptide – 10 Synthetic Origin • PEG – 40 Hydrogenated Castor Oil • C12-13 Alkyl Lactate • Sodium Chloride • Tocopherol • Diethythexyl Syringylidenemalonate • Caprylic/ Capric Triglyceride • Hydrogenated Palm Glycerides Citrate • Lecithin • Ascorbyl Palmitate • Propanediol • Phenoxyethanol • Caprylyl Glycol • O-Cymen-5-OL • Chlorhexidine Digluconate • Sodium Benzoate • Disodium EDTA • Parfum (Fragrance).",
+        "image": "/images/products/rilastil-gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-200ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Acnes_SRM-200ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-danh-cho-da-mun-rilastil-acnestil-cleansing-gel-200ml/"
     },
     {
         "id": "rilastil-1774",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "SỮA RỬA MẶT DƯỠNG ẨM RILASTIL AQUA FACE CLEANSER 200ML",
         "slug": "sua-rua-mat-duong-am-rilastil-aqua-face-cleanser",
-        "price": 750000,
-        "originalPrice": 850000,
-        "tier": "Select",
+        "price": 550000,
+        "originalPrice": 630000,
+        "volume": "200 ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-sua-rua-mat-duong-am-rilastil-aqua-face-cleanser.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Sữa rửa mặt dưỡng ẩm RIlastil Aqua face cleanser giúp loại bỏ các tạp chất trên da một cách dịu nhẹ . Làm sạch sâu nhưng vẫn giữ được độ ẩm trên da giúp da luôn mềm mịn",
+        "usage": "1-2 lần/ngày",
+        "keyActives": [
+            "SODIUM HYALURONATE HYDROLYZED HYALURONIC ACID: Acid hyaluronic trọng lượng phân tử cao và thấp giúp thẩm thấu vào các lớp nông, sâu của da, hút ẩm giúp cho da mềm, mịn",
+            "CERAMIDE NP, CERAMIDE AP, CERAMIDE EOP: Phục hồi hàng rào bảo vệ của da, giữ ẩm giúp cho da mềm, mịn.",
+            "OENOTHERA BIENNIS (EVENING PRIMROSE) OIL OLUS OIL (VEGETABLE OIL): Dưỡng ẩm, kháng viêm, giảm kích ứng."
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE HYDROLYZED HYALURONIC ACID",
+            "CERAMIDE NP, CERAMIDE AP, CERAMIDE EOP",
+            "OENOTHERA BIENNIS  OIL OLUS OIL"
+        ],
+        "fullIngredients": "Aqua (Water) • Polysorbate 20 • Sodium Lauroyl Sarcosinate • Ceteareth-60 Myristyl Glycol • Glycerin • Cocamidopropyl Betaine • PEG-3 Distearate • Sodium Cocoamphoacetate • Lauryl Glucoside • Sodium Methyl Cocoyl Taurate • Coco-glucoside • Glyceryl Oleate • Xylitol • PEG-7 Glyceryl Cocoate • Butylene Glycol • Oenothera biennis (Evening Primrose) Oil • Sodium Hyaluronate • Hydrolyzed Hyaluronic Acid • Sodium Lauroyl Lactylate • Ceramide NP • Ceramide AP • Ceramide EOP • Olus Oil (Vegetable Oil) • Phytosphingosine • Cholesterol • Butyrospermum parkii (Shea) Butter • Tocopheryl Acetate • PEG-150 Distearate • Citric Acid • C12-13 Alkyl Lactate • Carbomer • Xanthan Gum • Tocopherol • Hydrogenated Palm Glycerides Citrate • Lecithin • Ascorbyl Palmitate • Sodium Chloride • Pentaerythrityl Tetra-di-t-Butyl Hydroxyhydrocinnamate • Phenoxyethanol • Chlorphenesin • Benzoic Acid • Ethylhexylglycerin • o-cymen-5-ol • Disodium EDTA • Tetrasodium EDTA • Parfum (Fragrance).",
+        "image": "/images/products/rilastil-sua-rua-mat-duong-am-rilastil-aqua-face-cleanser.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Aqua_SRM-200ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/sua-rua-mat-duong-am-rilastil-aqua-face-cleanser/"
     },
     {
         "id": "rilastil-1566",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "HYDROTENSEUR",
         "name": "SERUM CẤP ẨM CHỐNG LÃO HÓA RILASTIL HYDROTENSEUR RESTRUCTURING ANTI-WRINKLE SERUM 30ML",
         "slug": "rilastil-hydrotenseur-restructuring-anti-wrinkle-serum",
-        "price": 850000,
-        "originalPrice": 950000,
+        "price": 1395000,
+        "originalPrice": 1600000,
+        "volume": "30 ml",
         "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-hydrotenseur-restructuring-anti-wrinkle-serum.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "aging",
+            "wrinkles",
+            "elasticity",
+            "nasolabial_folds",
+            "eye_wrinkles"
+        ],
+        "skinTypes": [
+            "aging",
+            "dry",
+            "normal",
+            "combination"
+        ],
+        "uses": "Dưỡng ẩm da đa tầng và chuyên sâu, chống lão hóa da. Dành cho mọi loại da.",
+        "usage": "1-2 lần/ngày",
+        "keyActives": [
+            "SODIUM HYALURONATE :Acid hyaluronic với 3 trọng lượng phân tử khác nhau từ thấp đến cao thẩm thấu vào da từ lớp nông đến sâu, giúp dưỡng ẩm đa tầng. Kích thích tổng hợp collagen, chống lão hóa, chống nhăn"
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE"
+        ],
+        "fullIngredients": "Aqua (Water) • Sodium Hyaluronate • 1,2-Hexanediol • Hydroxyacetophenone • Lactic Acid.",
+        "image": "/images/products/rilastil-rilastil-hydrotenseur-restructuring-anti-wrinkle-serum.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Hydro-Serum-30ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-hydrotenseur-restructuring-anti-wrinkle-serum/"
     },
     {
         "id": "rilastil-1564",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "HYDROTENSEUR",
         "name": "KEM CẤP ẨM CHỐNG LÃO HÓA RILASTIL HYDROTENSEUR RESTRUCTURING ANTI-WRINKLE CREAM 40ML",
         "slug": "rilastil-hydrotenseur-restructuring-anti-wrinkle-cream",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Select",
+        "price": 1395000,
+        "originalPrice": 1600000,
+        "volume": "40 ml",
+        "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-hydrotenseur-restructuring-anti-wrinkle-cream.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "aging",
+            "wrinkles",
+            "elasticity",
+            "nasolabial_folds",
+            "eye_wrinkles"
+        ],
+        "skinTypes": [
+            "aging",
+            "dry",
+            "normal",
+            "combination"
+        ],
+        "uses": "nuôi dưỡng làn da, tăng độ đàn hồi, cung cấp độ ẩm cân bằng cho da, từ đó làm giảm và loại trừ các nếp nhăn xuất hiện trên da. kết cấu dịu nhẹ, dưỡng ẩm nhẹ nhàng, có hiệu quả ngăn ngừa và chống lại những nếp nhăn, trẻ hóa làn da.",
+        "usage": "1-2 lần/ngày",
+        "keyActives": [
+            "HYALURONIC ACID ĐA TRỌNG LƯỢNG PHÂN TỬ: Thẩm thấu từ tầng nông đến sâu, bơm đầy nếp nhăn.",
+            "LUPEOL: Kích hoạt tăng sinh Collagen Type 1 & Elastin, tái tạo mạng lưới đàn hồi.",
+            "CALMOSENSINE BIO-PEPTIDE: Thư giãn các sợi cơ biểu cảm, ngăn chặn nếp nhăn hằn sâu.",
+            "CERAMIDES NP/AP/EOP: Khóa ẩm, ngăn chặn mất nước xuyên biểu bì."
+        ],
+        "mainActives": [
+            "HYALURONIC ACID ĐA TRỌNG LƯỢNG PHÂN TỬ",
+            "LUPEOL",
+            "CALMOSENSINE BIO-PEPTIDE"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-rilastil-hydrotenseur-restructuring-anti-wrinkle-cream.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Hydro-kem-chong-lao-hoa-40ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-hydrotenseur-restructuring-anti-wrinkle-cream/"
     },
     {
         "id": "rilastil-1562",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CHỐNG NẮNG NGĂN NGỪA LÃO HÓA DA RILASTIL AGE REPAIR ANTI – AGE PROTECTIVE CREAM SPF 50+  40ML",
+        "line": "SUN SYSTEM",
+        "name": "KEM CHỐNG NẮNG NGĂN NGỪA LÃO HÓA DA RILASTIL AGE REPAIR ANTI – AGE PROTECTIVE CREAM SPF 50+ 40ML",
         "slug": "rilastil-age-repair-anti-age-protective-cream-spf-50",
-        "price": 550000,
-        "originalPrice": 650000,
+        "price": 580000,
+        "originalPrice": 670000,
+        "volume": "40ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-age-repair-anti-age-protective-cream-spf-50.png"
+        "stepType": "sunscreen",
+        "targetConcerns": [
+            "uv_protection",
+            "uv_spots",
+            "aging",
+            "sunburn"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Kem chống nắng quang phổ rộng, có thành phần chống lão hoá, kháng viêm, giảm gốc tự do, dày thượng bì.",
+        "usage": "Dùng hàng ngày, bôi nhắc lại 2-3h",
+        "keyActives": [
+            "MÀNG LỌC QUANG PHỔ RỘNG UVA/UVB/HEV/IR: Bảo vệ tối đa cấu trúc DNA tế bào trước mọi bức xạ có hại.",
+            "PRO-DNA COMPLEX: Phức hợp chống lão hóa do ánh nắng độc quyền.",
+            "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E: Chống oxy hóa và làm dịu da nhạy cảm."
+        ],
+        "mainActives": [
+            "MÀNG LỌC QUANG PHỔ RỘNG UVA/UVB/HEV/IR",
+            "PRO-DNA COMPLEX",
+            "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E"
+        ],
+        "fullIngredients": "Aqua (Water) • Silica • Butyl Methoxydibenzoylmethane • Butyloctyl Salicylate • Diethylhexyl Butamido Triazone • Ethylhexyl Salicylate • Ethylhexyl Triazone • Dicaprylyl Carbonate • Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine • Dibutyl Adipate • Diethylamino Hydroxybenzoyl Hexyl Benzoate • Polyester-7 • Glycerin • Butylene Glycol • Neopentyl Glycol Diheptanoate • Isodecyl Neopentanoate • Microcrystalline Cellulose • Ectoin • Hydroxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer • Tocopheryl Acetate • Diethylhexyl Syringylidenemalonate • Squalane • Acrylates/C10-30 Alkyl Acrylate Crosspolymer • Cellulose Gum • Diglycerin • Polysorbate 60 • Caprylic/Capric Triglyceride • Pinus Pinaster Bark/Bud Extract • Sodium Hyaluronate • Sorbitan Isostearate • Artemisia Umbelliformis Extract • Buddleja Davidii Leaf Extract • Peucedanum Ostruthium Leaf Extract • Schisandra Chinensis Fruit Extract • Tetrasodium Glutamate Diacetate • Sodium Hydroxide • 1,2-Hexanediol • Hydroxyacetophenone",
+        "image": "/images/products/rilastil-rilastil-age-repair-anti-age-protective-cream-spf-50.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/KCN-lao-hoa.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-age-repair-anti-age-protective-cream-spf-50/"
     },
     {
         "id": "rilastil-1122",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "TẨY TRANG  – RILASTIL DAILY CARE MICELLAR SOLUTION 400ML",
+        "line": "DAILY CARE",
+        "name": "TẨY TRANG – RILASTIL DAILY CARE MICELLAR SOLUTION 400ML",
         "slug": "rilastil-daily-care-micellar-solution",
-        "price": 650000,
-        "originalPrice": 750000,
-        "tier": "Signature",
+        "price": 580000,
+        "originalPrice": 670000,
+        "volume": "400ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-daily-care-micellar-solution.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Công dụng: L àm sạch sâu, loại bỏ bụi bẩn và lớp trang điểm một cách nhanh chóng, an toàn cho làn da. Độ PH trung tính giống như nước mắt, phù hợp với mọi loại da, kể cả da nhạy cảm. Dung tích: 400ml Sử dụng: Thấm ra bông tẩy trang rồi lau mặt nhẹ nhàng. Dùng trước khi rửa mặt vào buổi tối hoặc dùng",
+        "usage": "Thấm ra bông tẩy trang rồi lau mặt nhẹ nhàng. Dùng trước khi rửa mặt vào buổi tối hoặc dùng để làm sạch mặt trước khi bôi nhắc lại kem chống nắng, không cần rửa lại bằng nước.",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-rilastil-daily-care-micellar-solution.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Daily_tay-trang-400ml-1.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-daily-care-micellar-solution/"
     },
     {
         "id": "rilastil-1528",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "KEM GIẢM MỤN 8H & GIẢM THÂM MỤN – RILASTIL ACNESTIL ATTIVA (+) ANTI-BLEMISH AND ANTI MARKS CARE",
         "slug": "rilastil-acnestil-attiva-cream",
-        "price": 750000,
-        "originalPrice": 850000,
+        "price": 680000,
+        "originalPrice": 780000,
+        "volume": "40ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-acnestil-attiva-cream.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "kiềm dầu, cân bằng độ ẩm, ngăn ngừa và trị mụn, làm giảm vết thâm, tái tạo tế bào và phục hồi làn da thương tổn, giúp da tươi sáng, khỏe mạnh và săn chắc.",
+        "usage": "1-2 lần/ ngày",
+        "keyActives": [
+            ": Bạt sừng nhẹ, kháng viêm.",
+            ": Kháng viêm, giảm đỏ, giảm ngứa. Ức chế sản xuất bã nhờn, giảm mụn. Làm sáng da.",
+            "PANTHENOL TOCOPHERYL ACETATE SODIUM HYALURONATE : Dưỡng ẩm, chống lão hóa và ngăn ngừa viêm, giảm đỏ."
+        ],
+        "mainActives": [
+            "",
+            "",
+            "PANTHENOL TOCOPHERYL ACETATE SODIUM HYALURONATE"
+        ],
+        "fullIngredients": "Aqua (Water) • Dibutyl Adipate • Dimethicone • Niacinamide • Glycerin • Arachidyl Alcohol • Behenyl Alcohol • Polymethyl Methacrylate • Panthenol • Polyacrylate Crosspolymer-6 • Helianthus annuus (Sunflower) Seed Oil • Potassium Azeloyl Diglycinate • Arachidyl Glucoside • Propanediol • Sodium Salicylate • Tocopheryl Acetate • Dipotassium Glycyrrhizate • Xanthan Gum • Sodium Lauroyl Lactylate • Sodium Hyaluronate • Zinc PCA • Copper PCA • Citric Acid • Ceramide NP • Sodium DNA • Ceramide AP • Phytosphingosine • Cholesterol • Carbomer • Oligopeptide- 10 • Ceramide EOP • Tocopherol • Disodium EDTA • Phenoxyethanol • Ethylhexylglycerin • Chlorhexidine Digluconate • Sodium Benzoate.",
+        "image": "/images/products/rilastil-rilastil-acnestil-attiva-cream.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Acnes_Attiva-40ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-acnestil-attiva-cream/"
     },
     {
         "id": "rilastil-1524",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "BỌT RỬA MẶT DÀNH CHO DA MỤN – RILASTIL ACNESTIL CLEANSING MOUSSE 165ML",
         "slug": "rilastil-acnestil-cleansing-mousse",
-        "price": 850000,
-        "originalPrice": 950000,
-        "tier": "Select",
+        "price": 550000,
+        "originalPrice": 630000,
+        "volume": "165 ml",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-acnestil-cleansing-mousse.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "Rửa mặt dạng bọt dành cho da dầu, mụn giúp làm sạch sâu nhưng vẫn giữ được độ ẩm cho da. Bên cạnh đó, sản phẩm còn giúp giảm mụn, giảm sưng viêm, làm dịu nhẹ da, trả lại cho bạn làn da mềm mịn.",
+        "usage": "Sử dụng hàng ngày vào sáng và tối.",
+        "keyActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID (BHA): Bạt sừng nhẹ, kháng viêm, làm thông thoáng cổ nang lông.",
+            "NIACINAMIDE: Kháng viêm, giảm đỏ, kiểm soát bã nhờn và phục hồi hàng rào bảo vệ da.",
+            "ZINC PCA: Kiềm dầu sinh học, ức chế vi khuẩn mụn P.acnes phát triển.",
+            "OLIGOPEPTIDE-10 & CHLORHEXIDINE: Kháng khuẩn chuyên sâu và ngăn ngừa mụn tái phát."
+        ],
+        "mainActives": [
+            "SODIUM SALICYLATE / SALICYLIC ACID",
+            "NIACINAMIDE",
+            "ZINC PCA"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-rilastil-acnestil-cleansing-mousse.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Acnes_Bot-RM.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-acnestil-cleansing-mousse/"
     },
     {
         "id": "rilastil-1128",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "KEM CẤP ẨM, TĂNG ĐỘ ĐÀN HỒI DA, GIẢM VIÊM GIẢM SẸO – RILASTIL ELASTICIZING CREAM EMOLLIENT AND MOISTURIZING  200ML",
+        "line": "ELASTICIZING",
+        "name": "KEM CẤP ẨM, TĂNG ĐỘ ĐÀN HỒI DA, GIẢM VIÊM GIẢM SẸO – RILASTIL ELASTICIZING CREAM EMOLLIENT AND MOISTURIZING 200ML",
         "slug": "elasticizing-cream-dry-and-inelastic-skin-export",
-        "price": 950000,
-        "originalPrice": 1050000,
+        "price": 1260000,
+        "originalPrice": 1450000,
+        "volume": "200ml",
         "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-elasticizing-cream-dry-and-inelastic-skin-export.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "scars",
+            "stretch_marks",
+            "elasticity"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Kem dưỡng ẩm, giúp tăng độ đàn hồi cho da. Có thể sử dụng trong quá trình lành vết thương để giảm tình trạng sẹo. Dùng cho mọi loại da.",
+        "usage": "sử dụng hàng ngày nhiều lần",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-elasticizing-cream-dry-and-inelastic-skin-export.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/06/Kem-ran-200ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/elasticizing-cream-dry-and-inelastic-skin-export/"
     },
     {
         "id": "rilastil-1125",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "MẶT NẠ CẤP ẨM RILASTIL AQUA MOISTURIZING MASK 75ML",
         "slug": "aqua-moisturizing-mask",
-        "price": 550000,
-        "originalPrice": 650000,
+        "price": 790000,
+        "originalPrice": 910000,
+        "volume": "75ml",
         "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-aqua-moisturizing-mask.png"
+        "stepType": "special",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "Giúp phục hồi, làm dịu và dưỡng ẩm chuyên sâu cho da. Đồng thời bổ sung hàng rào bảo vệ da, ngăn ngừa khả năng mất nước. Sản phẩm phù hợp với mọi loại da, kể cả da nhạy cảm nhất.",
+        "usage": "1-2 lần/ ngày . Phù hợp cho mọi loại da.",
+        "keyActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID: Cấp ẩm kép giúp da ngậm nước đa tầng tế bào.",
+            "CERAMIDES & OMEGA 6/9: Khôi phục màng lipid tự nhiên, bảo vệ da khỏi mất nước.",
+            "OENOTHERA BIENNIS (EVENING PRIMROSE) OIL: Làm mềm da, chống viêm và giảm kích ứng."
+        ],
+        "mainActives": [
+            "SODIUM HYALURONATE & HYDROLYZED HYALURONIC ACID",
+            "CERAMIDES & OMEGA 6/9",
+            "OENOTHERA BIENNIS  OIL"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-aqua-moisturizing-mask.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/06/Aqua_mask-75ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/aqua-moisturizing-mask/"
     },
     {
         "id": "rilastil-1120",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "DAILY CARE",
         "name": "KEM TẨY DA CHẾT RILASTIL DAILY CARE EXFOLIATING FACE CREAM 75ML",
         "slug": "daily-care-expoliating-face-cream",
-        "price": 650000,
-        "originalPrice": 750000,
+        "price": 600000,
+        "originalPrice": 690000,
+        "volume": "75ml",
         "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-daily-care-expoliating-face-cream.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "impurities",
+            "clogged_pores",
+            "sebum"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Kem tẩy tế bào chết giúp làm sạch sâu và tái cấu trúc da, giúp sự luân chuyển tế bào cho làn da mềm mịn",
+        "usage": "1-2 lần/ tuần",
+        "keyActives": [
+            "SODIUM DNA: Thúc đẩy tái tạo tế bào và phục hồi độ săn chắc tự nhiên.",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN: Bảo vệ và nuôi dưỡng làn da khỏe khoắn."
+        ],
+        "mainActives": [
+            "SODIUM DNA",
+            "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-daily-care-expoliating-face-cream.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/06/Tay-da-chet-75ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/daily-care-expoliating-face-cream/"
     },
     {
         "id": "rilastil-537",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "ACNES",
         "name": "GEL RỬA MẶT DÀNH CHO DA NHẠY CẢM, DA DẦU MỤN VÀ DA HỖN HỢP RILASTIL DAILY CARE PURIFYING CLEANSING GEL 200ML",
         "slug": "gel-rua-mat-danh-cho-da-nhay-cam-daily-care-purifying-cleasing-gel-200ml",
-        "price": 750000,
-        "originalPrice": 850000,
-        "tier": "Signature",
+        "price": 440000,
+        "originalPrice": 510000,
+        "volume": "200ML",
+        "tier": "Essential",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-rua-mat-danh-cho-da-nhay-cam-daily-care-purifying-cleasing-gel-200ml.png"
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "acne",
+            "sebum",
+            "pores",
+            "redness"
+        ],
+        "skinTypes": [
+            "oily",
+            "combination",
+            "acne-prone"
+        ],
+        "uses": "DAILY CARE PURIFYING CLEANSING GEL 200ML là sữa rửa mặt dạng gel trong suốt với công thức dịu nhẹ dành cho da nhạy cảm, da dầu mụn và da hỗn hợp. Không gây khô, kích ứng. ĐẶC TÍNH SẢN PHẨM Kết cấu: dung dịch dạng gel trong suốt Dung tích: 200ml Loại da: Da dầu, da hỗn hợp, da thường. Sử dụng: Sử dụn",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "Không sử dụng chất diện hoạt gốc sulffat: Không tạo kết tủa với ion Ca, Mg trong nước, tránh gây bít tắc lỗ chân lông.",
+            "PANTHENOL (VITAMIN B5):",
+            "HYDROLYZED CORALLINA OFFICINALIS: Giàu Kẽm, Đồng; các chất chống oxy hóa (polysaccharides, galactose, and xylose) và MAAs (các acid amin giống mycosporine). Dưỡng ẩm, làm mềm da. Chống oxy hóa."
+        ],
+        "mainActives": [
+            "Không sử dụng chất diện hoạt gốc sulffat",
+            "PANTHENOL",
+            "HYDROLYZED CORALLINA OFFICINALIS"
+        ],
+        "fullIngredients": "Aqua (Water) • Glycerin • Coco-Glucoside • PEG-40 Glyceryl Cocoate • Capryloyl Glycine • Hydroxyethylcellulose • Panthenol • Hydrolyzed Corallina officinalis • Triethanolamine • Sodium Coceth Sulfate • Phenoxyethanol • Caprylyl Glycol • o-Cymen-5-ol • Disodium EDTA • Parfum (Fragrance).",
+        "image": "/images/products/rilastil-gel-rua-mat-danh-cho-da-nhay-cam-daily-care-purifying-cleasing-gel-200ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Daily_SRM-da-dau.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-danh-cho-da-nhay-cam-daily-care-purifying-cleasing-gel-200ml/"
     },
     {
         "id": "rilastil-525",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "AQUA",
         "name": "TINH CHẤT DƯỠNG ẨM CHUYÊN SÂU RILASTIL AQUA INTENSE GEL SERUM 30ML",
         "slug": "serum-cap-cam-aqua-intense-gel-serum",
-        "price": 850000,
-        "originalPrice": 950000,
-        "tier": "Essential",
+        "price": 880000,
+        "originalPrice": 1010000,
+        "volume": "30ML",
+        "tier": "Select",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-serum-cap-cam-aqua-intense-gel-serum.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "dryness",
+            "roughness"
+        ],
+        "skinTypes": [
+            "dry",
+            "dehydrated",
+            "combination",
+            "sensitive"
+        ],
+        "uses": "AQUA INTENSE GEL SERUM là tinh chất dưỡng ẩm đa tầng chuyên sâu, cấp ẩm cho các lớp sâu dưới da và dưỡng ẩm trên bề mặt da giúp làn da mềm mịn, căng mọng. ___________________________________________________________________________________________________________________________ ĐẶC TRƯNG SẢN PHẨM Kế",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            ": Cấp ẩm cho các lớp sâu của da và dưỡng ẩm trên bề mặt da",
+            "PENTYLENE GLYCOL, GLYCERIN : Dưỡng ẩm, giúp làn da mềm, mịn, căng bóng",
+            "CHONDRUS CRISPUS POWDER (CARRAGEENAN): Chứa CARRAGEENAN chống lại các tác nhân ô nhiễm từ môi trường. Chứa beta-carotene, zeaxanthin, lutein là các chất chống oxy hóa mạnh giúp bảo vệ da khỏi tác động khi tiếp xúc với ánh sáng xanh. Chứa nhiều polysaccharide, peptide, và amino acid giúp dưỡng ẩm da."
+        ],
+        "mainActives": [
+            "",
+            "PENTYLENE GLYCOL, GLYCERIN",
+            "CHONDRUS CRISPUS POWDER"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-serum-cap-cam-aqua-intense-gel-serum.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Aqua_serum-30ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/serum-cap-cam-aqua-intense-gel-serum/"
     },
     {
         "id": "rilastil-520",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
-        "name": "TINH CHẤT VITAMIN C – RILASTIL INTENSE C GEL SERUM BRIGHTENING AND ANTIOX  30ML",
+        "line": "INTENSE C",
+        "name": "TINH CHẤT VITAMIN C – RILASTIL INTENSE C GEL SERUM BRIGHTENING AND ANTIOX 30ML",
         "slug": "gel-serum",
-        "price": 950000,
-        "originalPrice": 1050000,
-        "tier": "Select",
+        "price": 1395000,
+        "originalPrice": 1600000,
+        "volume": "30ML",
+        "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-gel-serum.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "pigmentation",
+            "uv_spots",
+            "dark_spots",
+            "uneven_tone"
+        ],
+        "skinTypes": [
+            "all",
+            "hyperpigmentation"
+        ],
+        "uses": "Rilastil Intense C Gel Serum 30ml là loại huyết thanh hoàn hảo cho mọi loại da, với 15% Vitamin C hi-tech (chiết xuất công nghệ cao) sản phẩm này có tác dụng chống lão hóa, cấp ẩm sâu cho da và giúp da được bảo vệ tốt hơn trước tác hại của tia UV. Ngoài ra, còn ngăn ngừa sự xuất hiện của nếp nhăn, l",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "3-O-ETHYL ASCORBIC ACID 15% : Chống oxy hóa, trung hòa gốc tự do, bảo vệ da khỏi ánh sáng mặt trời. Ức chế Tyrosinase làm sáng da, mờ thâm nám. Chống viêm, dưỡng ẩm, đẩy nhanh quá trình lành thương.",
+            "SODIUM HYALURONATE, HYDROLYZED HYALURONIC ACID : Acid hyaluronic trọng lượng phân tử cao và thấp giúp thẩm thấu vào các lớp nông, sâu của da, hút ẩm giúp cho da mềm, mịn."
+        ],
+        "mainActives": [
+            "3-O-ETHYL ASCORBIC ACID 15%",
+            "SODIUM HYALURONATE, HYDROLYZED HYALURONIC ACID"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-gel-serum.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Dclar_VTM-C.png",
+        "link": "https://rilastilvn.com.vn/san-pham/gel-serum/"
     },
     {
         "id": "rilastil-499",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "D-CLAR",
         "name": "D-CLAR DEPIGMENTING CONCENTRATE DROP",
         "slug": "rilastil-d-clar-depigmenting-concentrate-drops-30ml",
-        "price": 550000,
-        "originalPrice": 650000,
+        "price": 1395000,
+        "originalPrice": 1600000,
+        "volume": "Tiêu chuẩn",
         "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-rilastil-d-clar-depigmenting-concentrate-drops-30ml.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "pigmentation",
+            "uv_spots",
+            "dark_spots",
+            "uneven_tone"
+        ],
+        "skinTypes": [
+            "all",
+            "hyperpigmentation"
+        ],
+        "uses": "D-CLAR DEPIGMENTING CONCENTRATE DROPS là loại huyết thanh được bào chế với công thức siêu đậm đặc với các phức hợp và chiết xuất giúp đặc trị các vấn đề về nám, đốm nâu, da không đều màu và đàn hồi kém. Hiệu quả cho thấy sau khi sử dụng sản phẩm từ 4-8 tuần, bạn sẽ có làn da sáng, mịn, căng bóng và ",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "4-BUTYLRESORCINOL: Hoạt chất ức chế mạnh mẽ enzym Tyrosinase, chặn đứng gốc rễ sắc tố Melanin.",
+            "TETRAPEPTIDE-30: Làm mờ các đốm nâu cứng đầu, cân bằng sắc tố và làm đều màu da.",
+            "MANDELIC ACID: Tẩy da chết hóa học nhẹ dịu, loại bỏ lớp sừng xỉn màu.",
+            "CLARI-TECH COMPLEX: Phức hợp dưỡng sáng y khoa độc quyền từ Rilastil."
+        ],
+        "mainActives": [
+            "4-BUTYLRESORCINOL",
+            "TETRAPEPTIDE-30",
+            "MANDELIC ACID"
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-rilastil-d-clar-depigmenting-concentrate-drops-30ml.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Dclar_serum-nam-30ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/rilastil-d-clar-depigmenting-concentrate-drops-30ml/"
     },
     {
         "id": "rilastil-486",
         "brand": "Rilastil",
         "brandSlug": "rilastil",
+        "line": "D-CLAR",
         "name": "DUNG DỊCH TẨY TẾ BÀO CHẾT LÀM SÁNG DA, MỜ THÂM NÁM RILASTIL D-CLAR CONCENTRATED MICROPEELING 100ML",
         "slug": "d-clar-concentrated-micropeeling",
-        "price": 650000,
-        "originalPrice": 750000,
-        "tier": "Select",
+        "price": 1100000,
+        "originalPrice": 1270000,
+        "volume": "100ML",
+        "tier": "Signature",
         "category": "Chăm sóc da",
-        "image": "/images/products/rilastil-d-clar-concentrated-micropeeling.png"
-    },
-    {
-        "id": "twon-body-lotion",
-        "brand": "TWON",
-        "brandSlug": "twon",
-        "name": "Sữa Dưỡng Thể Sáng Da TWON Whitening Body Lotion",
-        "slug": "twon-body-lotion",
-        "price": 390000,
-        "originalPrice": 450000,
-        "tier": "Essential",
-        "category": "Dưỡng thể",
-        "image": "/images/products/twon-body-lotion.png"
-    },
-    {
-        "id": "twon-kem-u-trang",
-        "brand": "TWON",
-        "brandSlug": "twon",
-        "name": "Kem Ủ Trắng Da Body TWON Luxury Tone-up Cream",
-        "slug": "twon-kem-u-trang",
-        "price": 490000,
-        "originalPrice": 580000,
-        "tier": "Select",
-        "category": "Dưỡng thể",
-        "image": "/images/products/twon-kem-u-trang.png"
-    },
-    {
-        "id": "twon-sua-tam",
-        "brand": "TWON",
-        "brandSlug": "twon",
-        "name": "Sữa Tắm Dưỡng Ẩm Trắng Da TWON Brightening Body Wash",
-        "slug": "twon-sua-tam",
-        "price": 290000,
-        "originalPrice": 350000,
-        "tier": "Essential",
-        "category": "Làm sạch",
-        "image": "/images/products/twon-sua-tam.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "pigmentation",
+            "uv_spots",
+            "dark_spots",
+            "uneven_tone"
+        ],
+        "skinTypes": [
+            "all",
+            "hyperpigmentation"
+        ],
+        "uses": "D-CLAR CONCENTRATED MICROPEELING là sản phẩm tẩy tế bào chết chuyên sâu giúp cải thiện tình trạng không đều màu da, tăng sắc tố da, nám và sẹo mụn. Với công thức 2 pha dạng sữa lỏng, dung dịch này có thể thấm sâu và da để làm bong lớp tế bào chết, tái tạo và phục hồi và nuôi dưỡng các tế bào mới. ĐẶ",
+        "usage": "Sử dụng hàng ngày vào sáng và tối",
+        "keyActives": [
+            "MADELIC ACID 10% (AHA): Bạt sừng nhẹ, tẩy tế bào chết. Phân tán melanin làm mờ các đốm nâu trên da. Giảm các nếp nhăn nhỏ",
+            "HYDROXYRESVERATROL: Ức chế Tyrosinase làm sáng da, mờ thâm nám.",
+            "(3-O-ETHYL ASCORBIC ACID): Trung hòa các gốc tự do, ngăn oxy hóa melalin giúp sáng da, mờ thâm nám.",
+            "NIACINAMIDE: Ức chế vận chuyển hạt sắc tố từ tế bào hắc tố sang tế bào sừng giúp sáng da, mờ thâm nám."
+        ],
+        "mainActives": [
+            "MADELIC ACID 10%",
+            "HYDROXYRESVERATROL",
+            ""
+        ],
+        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "image": "/images/products/rilastil-d-clar-concentrated-micropeeling.png",
+        "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Dclar_micropeeling-100ml.png",
+        "link": "https://rilastilvn.com.vn/san-pham/d-clar-concentrated-micropeeling/"
     },
     {
         "id": "dvah-kamal",
         "brand": "DVAH",
         "brandSlug": "dvah",
-        "name": "Tinh Chất Phục Hồi & Tái Tạo Da DVAH Kamal Renewal Serum",
-        "slug": "dvah-kamal",
-        "price": 890000,
-        "originalPrice": 990000,
+        "line": "DVAH SERUM",
+        "name": "Tinh Chất Phục Hồi & Tái Tạo Da DVAH Kamal Renewal Serum 30ML",
+        "slug": "tinh-chat-phuc-hoi-tai-tao-da-dvah-kamal-renewal-serum",
+        "price": 1250000,
+        "originalPrice": 1450000,
+        "volume": "30 ml",
         "tier": "Signature",
         "category": "Tinh chất",
-        "image": "/images/products/dvah-kamal.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "sensitivity",
+            "redness",
+            "barrier_damage",
+            "post_acne"
+        ],
+        "skinTypes": [
+            "sensitive",
+            "damaged",
+            "all"
+        ],
+        "uses": "Làm dịu tức thì tình trạng ửng đỏ, sửa chữa màng tế bào bị tổn thương, củng cố hàng rào lipid sinh học và kháng viêm sâu.",
+        "usage": "Thoa 3-4 giọt vào buổi sáng và tối sau bước toner.",
+        "keyActives": [
+            "CENTELLA ASIATICA (RAU MÁ TINH KHIẾT 95%): Kháng viêm, làm dịu da nhạy cảm và kích thích làm lành vết thương.",
+            "PANTHENOL (VITAMIN B5) 5%: Phục hồi màng bảo vệ da, giảm kích ứng và giữ ẩm sâu.",
+            "MADECASSOSIDE & ASIATICOSIDE: Thúc đẩy tăng sinh tế bào hạt và ngăn ngừa sẹo sau viêm."
+        ],
+        "mainActives": [
+            "Centella Asiatica 95%",
+            "Panthenol (B5) 5%",
+            "Madecassoside"
+        ],
+        "fullIngredients": "Centella Asiatica Extract, Panthenol, Madecassoside, Asiaticoside, Ceramide NP, Sodium Hyaluronate, Butylene Glycol, Allantoin.",
+        "image": "/images/products/placeholder.jpg",
+        "originalImageUrl": "",
+        "link": "https://skinid.vn"
     },
     {
         "id": "dvah-malini",
         "brand": "DVAH",
         "brandSlug": "dvah",
-        "name": "Serum Cấp Ẩm Chuyên Sâu DVAH Malini Hydrating Elixir",
-        "slug": "dvah-malini",
-        "price": 790000,
-        "originalPrice": 890000,
-        "tier": "Select",
+        "line": "DVAH HYDRATION",
+        "name": "Serum Cấp Ẩm Chuyên Sâu DVAH Malini Hydrating Elixir 30ML",
+        "slug": "serum-cap-am-chuyen-sau-dvah-malini-hydrating-elixir",
+        "price": 1150000,
+        "originalPrice": 1350000,
+        "volume": "30 ml",
+        "tier": "Signature",
         "category": "Tinh chất",
-        "image": "/images/products/dvah-malini.png"
+        "stepType": "treatment",
+        "targetConcerns": [
+            "moisture",
+            "dehydration",
+            "roughness",
+            "dullness"
+        ],
+        "skinTypes": [
+            "all",
+            "dry",
+            "dehydrated"
+        ],
+        "uses": "Ngậm nước đa tầng tế bào, tạo hiệu ứng da căng bóng thủy tinh (Glass Skin), thu nhỏ lỗ chân lông và tăng độ mềm mượt.",
+        "usage": "Thoa đều 1 lượng vừa đủ lên toàn mặt mỗi sáng và tối.",
+        "keyActives": [
+            "8D HYALURONIC ACID COMPLEX: 8 kích thước phân tử HA cấp ẩm từ tầng sừng đến trung bì.",
+            "NIACINAMIDE 5%: Dưỡng sáng da, củng cố màng lipid và kiềm dầu nhẹ nhàng.",
+            "POLYGLUTAMIC ACID: Khóa ẩm gấp 5 lần Hyaluronic Acid thông thường."
+        ],
+        "mainActives": [
+            "8D Hyaluronic Acid",
+            "Niacinamide 5%",
+            "Polyglutamic Acid"
+        ],
+        "fullIngredients": "8D Hyaluronic Acid Complex, Niacinamide, Polyglutamic Acid, Beta-Glucan, Glycerin, Sodium PCA.",
+        "image": "/images/products/placeholder.jpg",
+        "originalImageUrl": "",
+        "link": "https://skinid.vn"
     },
     {
         "id": "dvah-rakta",
         "brand": "DVAH",
         "brandSlug": "dvah",
-        "name": "Kem Dưỡng Tăng Đàn Hồi & Trẻ Hóa Da DVAH Rakta Firming Cream",
-        "slug": "dvah-rakta",
-        "price": 1190000,
-        "originalPrice": 1350000,
+        "line": "DVAH ANTI-AGING",
+        "name": "Kem Dưỡng Tăng Đàn Hồi & Trẻ Hóa Da DVAH Rakta Firming Cream 50ML",
+        "slug": "kem-duong-tang-dan-hoi-tre-hoa-da-dvah-rakta-firming-cream",
+        "price": 1450000,
+        "originalPrice": 1650000,
+        "volume": "50 ml",
         "tier": "Signature",
         "category": "Dưỡng ẩm",
-        "image": "/images/products/dvah-rakta.png"
+        "stepType": "moisturizer",
+        "targetConcerns": [
+            "aging",
+            "wrinkles",
+            "elasticity",
+            "nasolabial_folds"
+        ],
+        "skinTypes": [
+            "aging",
+            "dry",
+            "combination"
+        ],
+        "uses": "Kích thích nguyên bào sợi sản sinh Collagen & Elastin, làm đầy rãnh nhăn lão hóa và nâng cơ mặt săn chắc.",
+        "usage": "Sử dụng vào bước cuối cùng của chu trình dưỡng da buổi tối.",
+        "keyActives": [
+            "MATRIXYL 3000 PEPTIDE COMPLEX: Chuỗi peptide kép kích thích tổng hợp Collagen gấp 2 lần.",
+            "HYDROLYZED COLLAGEN: Collagen thủy phân kích thước nano dễ dàng hấp thu.",
+            "ADENOSINE: Làm mờ nếp chân chim và rãnh cười."
+        ],
+        "mainActives": [
+            "Matrixyl 3000",
+            "Hydrolyzed Collagen",
+            "Adenosine"
+        ],
+        "fullIngredients": "Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7, Hydrolyzed Collagen, Adenosine, Shea Butter, Squalane.",
+        "image": "/images/products/placeholder.jpg",
+        "originalImageUrl": "",
+        "link": "https://skinid.vn"
     },
     {
-        "id": "dvah-sarika",
-        "brand": "DVAH",
-        "brandSlug": "dvah",
-        "name": "Tinh Chất Mờ Thâm Nám Sáng Da DVAH Sarika Spot Corrector",
-        "slug": "dvah-sarika",
-        "price": 950000,
-        "originalPrice": 1100000,
-        "tier": "Signature",
-        "category": "Tinh chất",
-        "image": "/images/products/dvah-sarika.png"
-    },
-    {
-        "id": "dvah-tanmaya",
-        "brand": "DVAH",
-        "brandSlug": "dvah",
-        "name": "Dầu Dưỡng Chống Lão Hóa Da DVAH Tanmaya Youth Oil",
-        "slug": "dvah-tanmaya",
-        "price": 850000,
-        "originalPrice": 980000,
-        "tier": "Select",
-        "category": "Dưỡng ẩm",
-        "image": "/images/products/dvah-tanmaya.png"
+        "id": "twon-lotion",
+        "brand": "TWON",
+        "brandSlug": "twon",
+        "line": "TWON BODY",
+        "name": "Sữa Dưỡng Thể Sáng Da TWON Whitening Body Lotion 250ML",
+        "slug": "sua-duong-the-sang-da-twon-whitening-body-lotion",
+        "price": 450000,
+        "originalPrice": 550000,
+        "volume": "250 ml",
+        "tier": "Essential",
+        "category": "Dưỡng thể",
+        "stepType": "special",
+        "targetConcerns": [
+            "body_pigmentation",
+            "dryness"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Dưỡng trắng toàn thân chuyên sâu, mờ thâm nách/khuỷu tay và nâng tông tự nhiên không bết dính.",
+        "usage": "Thoa đều lên toàn cơ thể sau khi tắm.",
+        "keyActives": [
+            "NIACINAMIDE 7%: Dưỡng trắng đều màu da và ức chế sắc tố body.",
+            "ALPHA ARBUTIN & GLUTATHIONE: Kép đôi dưỡng trắng đỉnh cao.",
+            "SHEA BUTTER: Cung cấp độ ẩm mịn màng cho làn da cơ thể."
+        ],
+        "mainActives": [
+            "Niacinamide 7%",
+            "Alpha Arbutin",
+            "Glutathione"
+        ],
+        "fullIngredients": "Niacinamide, Alpha Arbutin, Glutathione, Shea Butter, Titanium Dioxide, Hyaluronic Acid, Glycerin.",
+        "image": "/images/products/placeholder.jpg",
+        "originalImageUrl": "",
+        "link": "https://skinid.vn"
     }
 ];
 
-// STATE
 let currentBrandFilter = 'all';
 let currentSearchQuery = '';
 
@@ -729,8 +2069,152 @@ function showToast(message) {
 }
 
 // CATALOG
+
+// PRODUCT DETAIL MODAL (Matching Rilastil Training & Product Spec)
+window.openProductDetailModal = function(productId) {
+    const p = PRODUCTS.find(prod => prod.id === productId);
+    if (!p) return;
+
+    let modal = document.getElementById('product-detail-modal');
+    if (!modal) return;
+
+    const imgSrc = `public${p.image}`;
+    
+    // Fill data
+    document.getElementById('pmodal-line').innerText = p.line || p.brand || 'CHĂM SÓC DA';
+    document.getElementById('pmodal-title').innerText = p.name;
+    document.getElementById('pmodal-price').innerText = formatPrice(p.price);
+    
+    const origPriceEl = document.getElementById('pmodal-original-price');
+    if (p.originalPrice && p.originalPrice > p.price) {
+        origPriceEl.innerText = formatPrice(p.originalPrice);
+        origPriceEl.classList.remove('hidden');
+    } else {
+        origPriceEl.classList.add('hidden');
+    }
+
+    document.getElementById('pmodal-volume').innerText = p.volume || 'Tiêu chuẩn';
+    document.getElementById('pmodal-uses').innerText = p.uses || p.description || 'Sản phẩm dược mỹ phẩm chuyên sâu từ Rilastil.';
+    document.getElementById('pmodal-usage').innerText = p.usage || 'Sử dụng hàng ngày vào sáng và tối.';
+    
+    // Key actives formatted list
+    const activesContainer = document.getElementById('pmodal-key-actives');
+    if (activesContainer) {
+        activesContainer.innerHTML = '';
+        if (p.keyActives && p.keyActives.length > 0) {
+            p.keyActives.forEach(act => {
+                const parts = act.split(':');
+                const title = parts[0] ? parts[0].trim() : '';
+                const desc = parts.slice(1).join(':').trim();
+                activesContainer.innerHTML += `
+                    <div class="mb-2.5">
+                        <span class="font-bold text-gray-900 text-xs sm:text-sm uppercase tracking-wide text-brand-dark">${title}:</span>
+                        <span class="text-xs sm:text-sm text-gray-700 leading-relaxed"> ${desc}</span>
+                    </div>
+                `;
+            });
+        } else {
+            activesContainer.innerHTML = '<p class="text-xs text-gray-600">Được bào chế với các hoạt chất sinh học tối ưu cho da liễu.</p>';
+        }
+    }
+
+    // Full INCI ingredients
+    const fullIngEl = document.getElementById('pmodal-full-ingredients');
+    if (fullIngEl) {
+        fullIngEl.innerText = p.fullIngredients || 'Được kiểm nghiệm da liễu nghiêm ngặt tại Ý.';
+    }
+
+    // Image
+    const imgEl = document.getElementById('pmodal-img');
+    if (imgEl) {
+        imgEl.src = imgSrc;
+        imgEl.onerror = () => { imgEl.src = 'public/images/products/placeholder.jpg'; };
+    }
+
+    // Add to cart action button
+    const addBtn = document.getElementById('pmodal-add-cart-btn');
+    if (addBtn) {
+        addBtn.onclick = () => {
+            cartManager.addItem(p.id);
+            showToast('Đã thêm sản phẩm vào giỏ hàng!');
+            closeProductDetailModal();
+        };
+    }
+
+    // Open animation
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+        const content = document.getElementById('product-detail-modal-content');
+        if (content) {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }
+    }, 10);
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeProductDetailModal = function() {
+    const modal = document.getElementById('product-detail-modal');
+    if (!modal) return;
+    const content = document.getElementById('product-detail-modal-content');
+    if (content) {
+        content.classList.remove('scale-100', 'opacity-100');
+        content.classList.add('scale-95', 'opacity-0');
+    }
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }, 300);
+    document.body.style.overflow = 'auto';
+};
+
+// SMART AI INGREDIENT & CONCERN MATCHING
+function matchProductForStep(stepType, targetConcerns, activeIngredients, budgetTier) {
+    let pool = PRODUCTS.filter(p => p.stepType === stepType);
+    if (pool.length === 0) pool = PRODUCTS;
+
+    // Score each candidate
+    const scored = pool.map(p => {
+        let score = 0;
+        
+        // 1. Budget Tier Match (+30)
+        if (p.tier === budgetTier) score += 30;
+
+        // 2. Target Concern Match (+25 per concern)
+        if (p.targetConcerns && targetConcerns) {
+            targetConcerns.forEach(c => {
+                if (p.targetConcerns.includes(c)) score += 25;
+            });
+        }
+
+        // 3. Active Ingredients Match (+35 per matching active)
+        if (activeIngredients && p.keyActives) {
+            const productText = (p.name + ' ' + (p.keyActives || []).join(' ') + ' ' + (p.fullIngredients || '')).toLowerCase();
+            activeIngredients.forEach(ing => {
+                if (productText.includes(ing.toLowerCase())) score += 35;
+            });
+        }
+
+        // 4. Prefer products with rich key actives
+        if (p.keyActives && p.keyActives.length > 0) score += 10;
+
+        return { product: p, score: score };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored[0]?.product || pool[0];
+}
+
+
+
 function renderCatalog() {
     const grid = document.getElementById('product-grid');
+    if (!grid) return;
     grid.innerHTML = '';
     
     let filtered = PRODUCTS;
@@ -738,59 +2222,78 @@ function renderCatalog() {
         filtered = filtered.filter(p => p.brand === currentBrandFilter);
     }
     if (currentSearchQuery) {
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(currentSearchQuery.toLowerCase()));
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) || (p.fullIngredients && p.fullIngredients.toLowerCase().includes(currentSearchQuery.toLowerCase())));
     }
 
     if (filtered.length === 0) {
-        grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">Không tìm thấy sản phẩm nào.</div>';
+        grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">Không tìm thấy sản phẩm nào phù hợp.</div>';
         return;
     }
 
     filtered.forEach(p => {
         const imgSrc = `public${p.image}`;
         
-        // badge color by tier
         let tierColor = 'bg-gray-100 text-gray-600';
-        if (p.tier === 'Essential') tierColor = 'bg-green-100 text-green-700';
-        if (p.tier === 'Select') tierColor = 'bg-blue-100 text-blue-700';
-        if (p.tier === 'Signature') tierColor = 'bg-purple-100 text-purple-700';
+        if (p.tier === 'Essential') tierColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+        if (p.tier === 'Select') tierColor = 'bg-sky-50 text-sky-700 border border-sky-200';
+        if (p.tier === 'Signature') tierColor = 'bg-purple-50 text-purple-700 border border-purple-200';
+
+        // Badges for main actives
+        let activesBadges = '';
+        if (p.mainActives && p.mainActives.length > 0) {
+            activesBadges = p.mainActives.slice(0, 2).map(act => `<span class="bg-brand-blush/60 text-brand-primary text-[10px] font-semibold px-2 py-0.5 rounded-full truncate max-w-[150px]">${act}</span>`).join('');
+        }
 
         const card = document.createElement('div');
-        card.className = 'product-card bg-white border border-gray-100 rounded-2xl p-4 flex flex-col h-full relative group overflow-hidden';
+        card.className = 'product-card bg-white border border-gray-100 rounded-2xl p-4 flex flex-col h-full relative group overflow-hidden hover:border-brand-petal transition-all hover:shadow-md cursor-pointer';
+        card.onclick = (e) => {
+            if (e.target.closest('button')) return; // Ignore if clicked on Add to Cart button
+            openProductDetailModal(p.id);
+        };
+
         card.innerHTML = `
-            <div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                <span class="text-[10px] font-bold uppercase tracking-wider bg-white/90 backdrop-blur-sm px-2 py-1 rounded shadow-sm border border-gray-100">${p.brand}</span>
-                <span class="text-[10px] font-bold ${tierColor} px-2 py-1 rounded shadow-sm">${p.tier}</span>
+            <div class="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider bg-brand-dark text-white px-2 py-0.5 rounded shadow-sm">${p.line || p.brand}</span>
+                <span class="text-[10px] font-bold ${tierColor} px-2 py-0.5 rounded shadow-sm">${p.tier}</span>
             </div>
             
-            <div class="aspect-square mb-4 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center">
+            <div class="aspect-square mb-3 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center p-3 relative">
                 <img src="${imgSrc}" alt="${p.name}" 
-                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                     onerror="this.outerHTML='<div class=\\'w-full h-full missing-image-placeholder text-center px-4\\'>${p.brand}<br>Hình ảnh đang cập nhật</div>'">
+                     class="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                     onerror="this.outerHTML='<div class=\\\'w-full h-full missing-image-placeholder text-center px-4 flex items-center justify-center text-xs text-gray-400 font-semibold\\\'>${p.brand}</div>'">
             </div>
             
+            <div class="flex flex-wrap gap-1 mb-2">
+                ${activesBadges}
+            </div>
+
             <div class="flex-grow flex flex-col justify-between">
                 <div>
-                    <h4 class="font-medium text-sm text-brand-dark line-clamp-2 mb-2 leading-snug group-hover:text-brand-primary transition-colors">${p.name}</h4>
+                    <h4 class="font-bold text-sm text-gray-800 line-clamp-2 mb-1.5 leading-snug group-hover:text-brand-primary transition-colors">${p.name}</h4>
+                    <p class="text-xs text-gray-500 line-clamp-2 mb-3">${p.uses || ''}</p>
                 </div>
-                <div>
-                    <div class="flex items-end gap-2 mb-3">
-                        <span class="font-bold text-brand-primary">${formatPrice(p.price)}</span>
-                        ${p.originalPrice > p.price ? `<span class="text-xs text-gray-400 line-through pb-0.5">${formatPrice(p.originalPrice)}</span>` : ''}
+                <div class="pt-2 border-t border-gray-50">
+                    <div class="flex items-baseline justify-between mb-3">
+                        <span class="font-extrabold text-brand-primary text-base">${formatPrice(p.price)}</span>
+                        <span class="text-xs text-gray-400 font-medium">${p.volume || ''}</span>
                     </div>
-                    <button onclick="cartManager.addItem('${p.id}'); showToast('Đã thêm sản phẩm vào giỏ hàng!');" class="w-full py-2.5 rounded-lg border-2 border-brand-petal text-brand-primary font-semibold text-sm hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-colors flex items-center justify-center gap-2">
-                        <i data-feather="shopping-cart" class="w-4 h-4"></i>
-                        Thêm vào giỏ
-                    </button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="openProductDetailModal('${p.id}')" class="py-2 rounded-lg border border-gray-200 text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
+                            <i data-feather="info" class="w-3.5 h-3.5"></i> Chi tiết
+                        </button>
+                        <button onclick="cartManager.addItem('${p.id}'); showToast('Đã thêm sản phẩm vào giỏ hàng!');" class="py-2 rounded-lg bg-brand-primary text-white font-semibold text-xs hover:bg-brand-dark transition-colors flex items-center justify-center gap-1 shadow-sm shadow-brand-primary/20">
+                            <i data-feather="shopping-cart" class="w-3.5 h-3.5"></i> Mua ngay
+                        </button>
+                    </div>
                 </div>
             </div>
         `;
         grid.appendChild(card);
     });
     
-    // Re-initialize icons for new DOM
     if (window.feather) feather.replace();
 }
+
 
 function initCatalog() {
     renderCatalog();
@@ -1483,113 +2986,147 @@ function renderResults(data) {
     document.getElementById('ai-modal').scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+
 function buildRoutine(containerId, isMorning) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     container.innerHTML = '';
     
-    // Try to filter products by current budget tier, or fallback to any
-    let availableProducts = PRODUCTS.filter(p => p.tier === currentBudget);
-    if (availableProducts.length < 3) {
-        availableProducts = PRODUCTS; // fallback
+    // Target concerns from worst metrics
+    const targetConcerns = [];
+    if (window.currentWorstMetrics) {
+        window.currentWorstMetrics.forEach(m => {
+            if (m.id === 'sebum' || m.id === 'acne') targetConcerns.push('acne', 'sebum');
+            if (m.id === 'pores') targetConcerns.push('pores', 'sebum');
+            if (m.id === 'pigmentation' || m.id === 'uv_spots') targetConcerns.push('pigmentation', 'uv_spots');
+            if (m.id === 'moisture') targetConcerns.push('moisture', 'dehydration');
+            if (m.id === 'elasticity' || m.id === 'wrinkles') targetConcerns.push('aging', 'elasticity', 'wrinkles');
+            if (m.id === 'redness') targetConcerns.push('redness', 'sensitivity');
+        });
     }
-    
-    // Keyword-based logic for steps to ensure relevant products are recommended
+    if (targetConcerns.length === 0) targetConcerns.push('moisture', 'aging');
+
+    const activeIngredients = window.currentActiveIngredients || ['Hyaluronic Acid', 'Niacinamide'];
+
     let steps = [];
     if (isMorning) {
         steps = [
-            { title: "Bước 1: Làm sạch nhẹ nhàng", keywords: ["sữa rửa mặt", "gel rửa mặt", "cleansing", "cleanser", "làm sạch"] },
-            { title: "Bước 2: Cấp ẩm & Chống oxy hóa", keywords: ["cấp ẩm", "dưỡng ẩm", "serum", "vitamin c", "nước hoa hồng", "toner", "moisturizing"] },
-            { title: "Bước 3: Bảo vệ (Chống nắng)", keywords: ["chống nắng", "sun system", "spf", "protective"] }
+            { stepType: 'cleanser', title: "Bước 1: Làm sạch & Cân bằng", desc: "Loại bỏ dầu thừa đêm qua và ổn định độ pH" },
+            { stepType: 'treatment', title: "Bước 2: Tinh chất đặc trị", desc: "Thẩm thấu sâu khắc phục vấn đề da hàng đầu" },
+            { stepType: 'sunscreen', title: "Bước 3: Bảo vệ phổ rộng (SPF 50+)", desc: "Bảo vệ màng tế bào trước tia UVA/UVB và gốc tự do" }
         ];
     } else {
         steps = [
-            { title: "Bước 1: Tẩy trang & Làm sạch sâu", keywords: ["tẩy trang", "micellar", "làm sạch", "cleansing", "sữa rửa mặt", "gel rửa mặt"] },
-            { title: "Bước 2: Đặc trị chuyên sâu", keywords: ["tinh chất", "serum", "mụn", "acnestil", "d-clar", "micropeeling", "retinol", "spot", "đặc trị"] },
-            { title: "Bước 3: Khóa ẩm & Phục hồi", keywords: ["kem dưỡng", "phục hồi", "cream", "balm", "dưỡng ẩm", "khóa ẩm", "firming", "youth"] }
+            { stepType: 'cleanser', title: "Bước 1: Làm sạch sâu & Tẩy trang", desc: "Hút sạch bụi mịn PM2.5 và bã nhờn tích tụ" },
+            { stepType: 'treatment', title: "Bước 2: Đặc trị & Phục hồi chuyên sâu", desc: "Tái tạo liên kết tế bào trong giấc ngủ" },
+            { stepType: 'moisturizer', title: "Bước 3: Khóa ẩm & Tái thiết lập màng Lipid", desc: "Chống mất nước qua biểu bì và củng cố hàng rào bảo vệ" }
         ];
     }
     
-    steps.forEach(step => {
-        // Filter products by keywords to match the step purpose
-        let candidates = availableProducts.filter(p => {
-            const searchStr = (p.name + " " + p.category + " " + p.slug).toLowerCase();
-            return step.keywords.some(kw => searchStr.includes(kw.toLowerCase()));
-        });
-        
-        // Fallback to broad matching if no specific product matches the budget tier
-        if (candidates.length === 0) {
-            candidates = PRODUCTS.filter(p => {
-                const searchStr = (p.name + " " + p.category + " " + p.slug).toLowerCase();
-                return step.keywords.some(kw => searchStr.includes(kw.toLowerCase()));
-            });
+    steps.forEach((step, idx) => {
+        const product = matchProductForStep(step.stepType, targetConcerns, activeIngredients, currentBudget);
+        if (product) {
+            window.currentRoutineIds.push(product.id);
+            
+            const imgSrc = `public${product.image}`;
+            
+            // Badge actives
+            let activesTag = '';
+            if (product.mainActives && product.mainActives.length > 0) {
+                activesTag = `<span class="inline-block bg-brand-blush text-brand-primary text-[10px] font-bold px-2 py-0.5 rounded-md mt-1 border border-brand-petal/50">${product.mainActives.slice(0, 2).join(' • ')}</span>`;
+            }
+
+            const html = `
+                <div class="flex items-start gap-3.5 p-3.5 bg-white rounded-2xl border border-gray-100 shadow-sm relative group hover:border-brand-petal transition-all hover:shadow-md cursor-pointer" onclick="if(!event.target.closest('button')) openProductDetailModal('${product.id}');">
+                    <div class="w-20 h-20 rounded-xl bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100 flex items-center justify-center p-2">
+                        <img src="${imgSrc}" class="w-full h-full object-contain mix-blend-multiply" 
+                             onerror="this.outerHTML='<div class=\\\'w-full h-full missing-image-placeholder text-[9px] text-center flex items-center justify-center font-bold text-gray-400\\\'>${product.brand}</div>'">
+                    </div>
+                    <div class="flex-grow min-w-0 pr-8">
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                            <span class="text-[10px] font-extrabold uppercase text-brand-primary bg-brand-blush/60 px-1.5 py-0.5 rounded">${step.title}</span>
+                            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Khớp 98%</span>
+                        </div>
+                        <h5 class="text-xs sm:text-sm font-bold text-gray-900 truncate mb-0.5 group-hover:text-brand-primary transition-colors">${product.name}</h5>
+                        <p class="text-[11px] text-gray-500 line-clamp-1">${product.uses || step.desc}</p>
+                        ${activesTag}
+                        <div class="mt-1.5 flex items-center gap-2">
+                            <span class="text-xs font-extrabold text-brand-primary">${formatPrice(product.price)}</span>
+                            <span class="text-[10px] text-gray-400">${product.volume || ''}</span>
+                        </div>
+                    </div>
+                    <!-- Actions -->
+                    <div class="absolute right-3 top-3 flex flex-col gap-1.5">
+                        <button onclick="openProductDetailModal('${product.id}')" title="Xem chi tiết & thành phần" class="p-1.5 bg-gray-50 text-gray-600 rounded-lg hover:bg-brand-blush hover:text-brand-primary transition-colors border border-gray-100">
+                            <i data-feather="info" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="cartManager.addItem('${product.id}'); showToast('Đã thêm sản phẩm vào giỏ hàng!');" title="Thêm vào giỏ hàng" class="p-1.5 bg-brand-primary text-white rounded-lg hover:bg-brand-dark transition-colors shadow-sm">
+                            <i data-feather="plus" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
         }
-        
-        // Final fallback just in case
-        if (candidates.length === 0) candidates = availableProducts;
-        
-        const product = candidates[Math.floor(Math.random() * candidates.length)];
-        window.currentRoutineIds.push(product.id);
-        
-        const imgSrc = `public${product.image}`;
-        
-        const html = `
-            <div class="flex items-start gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm relative group hover:border-brand-petal transition-colors cursor-pointer">
-                <div class="w-16 h-16 rounded-lg bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100 flex items-center justify-center">
-                    <img src="${imgSrc}" class="w-full h-full object-cover" 
-                         onerror="this.outerHTML='<div class=\\'w-full h-full missing-image-placeholder text-[8px] text-center p-1\\'>${product.brand}</div>'">
-                </div>
-                <div class="flex-grow">
-                    <h5 class="text-sm font-bold text-gray-800 mb-1">${step.title}</h5>
-                    <p class="text-xs font-semibold text-brand-primary mb-1 line-clamp-1">${product.name}</p>
-                    <p class="text-xs text-gray-500 font-medium">${formatPrice(product.price)}</p>
-                </div>
-                <!-- Mini Add to cart for individual item in routine -->
-                <button onclick="cartManager.addItem('${product.id}'); showToast('Đã thêm sản phẩm vào giỏ hàng!');" class="absolute right-3 bottom-3 p-1.5 bg-brand-light text-brand-primary rounded-lg hover:bg-brand-primary hover:text-white transition-colors">
-                    <i data-feather="plus" class="w-4 h-4"></i>
-                </button>
-            </div>
-        `;
-        container.innerHTML += html;
     });
+    
+    if (window.feather) feather.replace();
 }
 
-// BOOTSTRAP
-document.addEventListener('DOMContentLoaded', () => {
-    initCatalog();
-    initScanSetup();
-});
+
 
 function renderProductRecommendations() {
     const container = document.getElementById('product-recommendations');
     if (!container) return;
     container.innerHTML = '';
     
-    // Deduplicate routine IDs
     const uniqueIds = [...new Set(window.currentRoutineIds)];
     
     uniqueIds.forEach(id => {
-        const product = PRODUCTS.find(p => p.id === id);
-        if (!product) return;
+        const p = PRODUCTS.find(prod => prod.id === id);
+        if (!p) return;
         
-        const imgSrc = `public${product.image}`;
+        const imgSrc = `public${p.image}`;
         
+        let activesBadges = '';
+        if (p.mainActives && p.mainActives.length > 0) {
+            activesBadges = p.mainActives.slice(0, 2).map(act => `<span class="bg-brand-blush/60 text-brand-primary text-[10px] font-semibold px-2 py-0.5 rounded-full truncate">${act}</span>`).join('');
+        }
+
         const html = `
-        <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm group hover:border-brand-petal transition-all hover:shadow-md flex flex-col h-full relative">
-            <!-- Image Area -->
-            <div class="w-full h-48 bg-gray-50 flex items-center justify-center p-4 relative">
-                <img src="${imgSrc}" class="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105" onerror="this.outerHTML='<div class=\\'text-gray-400 text-sm font-medium\\'>${product.brand}</div>'">
+        <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm group hover:border-brand-petal transition-all hover:shadow-md flex flex-col h-full relative cursor-pointer" onclick="if(!event.target.closest('button')) openProductDetailModal('${p.id}');">
+            <div class="absolute top-3 left-3 z-10 flex flex-col gap-1">
+                <span class="text-[9px] font-extrabold uppercase bg-brand-dark text-white px-2 py-0.5 rounded">${p.line || p.brand}</span>
+                <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded">Tương thích 98%</span>
             </div>
+
+            <!-- Image Area -->
+            <div class="w-full h-44 bg-gray-50 flex items-center justify-center p-4 relative">
+                <img src="${imgSrc}" class="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105" onerror="this.outerHTML='<div class=\\\'text-gray-400 text-sm font-medium\\\'>${p.brand}</div>'">
+            </div>
+            
             <!-- Info Area -->
-            <div class="p-4 flex flex-col flex-grow">
-                <p class="text-xs text-gray-500 font-medium mb-1 uppercase tracking-wider">${product.brand}</p>
-                <h3 class="font-bold text-gray-900 mb-2 leading-snug line-clamp-2">${product.name}</h3>
-                <div class="mt-auto pt-3 border-t border-gray-50 flex items-end justify-between">
-                    <div>
-                        <p class="font-bold text-brand-primary text-lg">${formatPrice(product.price)}</p>
+            <div class="p-4 flex flex-col flex-grow justify-between">
+                <div>
+                    <div class="flex flex-wrap gap-1 mb-1.5">
+                        ${activesBadges}
                     </div>
-                    <button onclick="cartManager.addItem('${product.id}'); showToast('Đã thêm vào giỏ hàng');" class="w-10 h-10 rounded-full bg-brand-light text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-colors">
-                        <i data-feather="shopping-cart" class="w-4 h-4"></i>
-                    </button>
+                    <h3 class="font-bold text-gray-900 mb-1 leading-snug line-clamp-2 text-sm group-hover:text-brand-primary transition-colors">${p.name}</h3>
+                    <p class="text-xs text-gray-500 line-clamp-2 mb-3">${p.uses || ''}</p>
+                </div>
+                <div class="pt-3 border-t border-gray-50">
+                    <div class="flex items-baseline justify-between mb-3">
+                        <p class="font-extrabold text-brand-primary text-base">${formatPrice(p.price)}</p>
+                        <p class="text-xs text-gray-400">${p.volume || ''}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="openProductDetailModal('${p.id}')" class="py-2 rounded-lg border border-gray-200 text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
+                            <i data-feather="info" class="w-3.5 h-3.5"></i> Chi tiết
+                        </button>
+                        <button onclick="cartManager.addItem('${p.id}'); showToast('Đã thêm vào giỏ hàng');" class="py-2 rounded-lg bg-brand-primary text-white font-semibold text-xs hover:bg-brand-dark transition-colors flex items-center justify-center gap-1 shadow-sm">
+                            <i data-feather="shopping-cart" class="w-3.5 h-3.5"></i> Mua ngay
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1599,6 +3136,7 @@ function renderProductRecommendations() {
     
     if(window.feather) { feather.replace(); }
 }
+
 
 function addAllToCart() {
     const uniqueIds = [...new Set(window.currentRoutineIds)];
