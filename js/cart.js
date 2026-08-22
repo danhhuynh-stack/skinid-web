@@ -32,6 +32,16 @@ class ShoppingCart {
             this.items.push({ productId, quantity });
         }
         this.saveCart();
+
+        if (typeof window.trackSkinIDEvent === 'function') {
+            const prod = this.getProductDetails(productId);
+            window.trackSkinIDEvent('add_to_cart', {
+                item_id: productId,
+                item_name: prod ? prod.name : productId,
+                price: prod ? prod.price : 0,
+                quantity: quantity
+            });
+        }
     }
 
     removeItem(productId) {
@@ -191,6 +201,13 @@ class ShoppingCart {
         });
 
         message += `\nTổng tạm tính: ${formatPrice(subtotal)}`;
+
+        if (typeof window.trackSkinIDEvent === 'function') {
+            window.trackSkinIDEvent('checkout_zalo', {
+                total_value: subtotal,
+                item_count: this.getTotalItems()
+            });
+        }
         
         const zaloUrl = `https://zalo.me/0924093461?text=${encodeURIComponent(message)}`;
         window.open(zaloUrl, '_blank');

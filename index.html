@@ -3,18 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkinID.vn - Phân tích da AI & Dược mỹ phẩm</title>
-    <!-- Open Graph Meta Tags for Link Sharing -->
-    <meta property="og:title" content="SkinID.vn - Phân tích da AI & Dược mỹ phẩm">
-    <meta property="og:description" content="Trải nghiệm công nghệ phân tích da AI độc quyền từ SkinID. Cá nhân hóa phác đồ chăm sóc da chuẩn y khoa dành riêng cho bạn.">
-    <meta property="og:image" content="https://skinid.vn/skinid_lifestyle_banner_1786423625612.jpg">
-    <meta property="og:url" content="https://skinid.vn">
+    <title>SkinID.vn - Phân tích da AI & Dược mỹ phẩm Chính Hãng</title>
+    <meta name="description" content="Nền tảng phân tích da 3 góc độ độc quyền bằng Trí tuệ Nhân tạo (AI). Nhận phác đồ skincare cá nhân hóa và lựa chọn dược mỹ phẩm Rilastil, TWON, DVAH chính hãng.">
+    <meta name="keywords" content="soi da AI, phân tích da AI, dược mỹ phẩm, Rilastil, TWON, DVAH, phác đồ chăm sóc da, skincare routine">
+    <meta name="author" content="SkinID.vn">
+    <link rel="canonical" href="https://skinid.vn/">
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skinid.vn/">
+    <meta property="og:title" content="SkinID.vn - Phân tích da AI & Dược mỹ phẩm Chính Hãng">
+    <meta property="og:description" content="Trải nghiệm công nghệ phân tích da AI 3 góc chuyên sâu từ SkinID. Cá nhân hóa phác đồ chăm sóc da chuẩn y khoa dành riêng cho bạn.">
+    <meta property="og:image" content="https://skinid.vn/public/images/banners/hero-banner-v4.jpg">
+    <meta property="og:site_name" content="SkinID.vn">
+    <meta property="og:locale" content="vi_VN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://skinid.vn/">
+    <meta name="twitter:title" content="SkinID.vn - Phân tích da AI & Dược mỹ phẩm">
+    <meta name="twitter:description" content="Phân tích da AI 3 góc độ thời gian thực & phác đồ dược mỹ phẩm cá nhân hóa.">
+    <meta name="twitter:image" content="https://skinid.vn/public/images/banners/hero-banner-v4.jpg">
+
+    <!-- JSON-LD Structured Data Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "SkinID.vn - Phân tích da AI & Dược mỹ phẩm",
+      "url": "https://skinid.vn",
+      "logo": "https://skinid.vn/public/images/logo.png",
+      "image": "https://skinid.vn/public/images/banners/hero-banner-v4.jpg",
+      "description": "Nền tảng phân tích da 3D AI và dược mỹ phẩm chính hãng tại Việt Nam.",
+      "telephone": "+84924093461",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "71 Trạng Trình, Phường 9",
+        "addressLocality": "TP. Đà Lạt",
+        "addressRegion": "Lâm Đồng",
+        "addressCountry": "VN"
+      },
+      "priceRange": "$$",
+      "sameAs": [
+        "https://zalo.me/0924093461"
+      ]
+    }
+    </script>
+
+    <!-- Analytics & Tracking Event Helper -->
+    <script>
+        window.trackSkinIDEvent = function(eventName, eventParams = {}) {
+            console.log(`[Analytics Event] ${eventName}:`, eventParams);
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, eventParams);
+            }
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', eventName, eventParams);
+            }
+        };
+    </script>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts & Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -234,20 +287,32 @@
             </div>
             
             <!-- Filters -->
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
-                
-                <!-- Brand Tabs -->
-                <div class="flex bg-white rounded-full p-1 border border-gray-200 shadow-sm" id="brand-filters">
-                    <button class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold bg-brand-primary text-white" data-brand="all">Tất cả</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="Rilastil">Rilastil</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="TWON">TWON</button>
-                    <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="DVAH">DVAH</button>
+            <div class="flex flex-col gap-4 mb-10">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <!-- Brand Tabs -->
+                    <div class="flex flex-wrap bg-white rounded-full p-1 border border-gray-200 shadow-sm" id="brand-filters">
+                        <button class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold bg-brand-primary text-white" data-brand="all">Tất cả thương hiệu</button>
+                        <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="Rilastil">Rilastil</button>
+                        <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="TWON">TWON</button>
+                        <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="DVAH">DVAH</button>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="relative w-full md:w-72">
+                        <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                        <input type="text" id="product-search" placeholder="Tìm kiếm tên, hoạt chất..." class="w-full bg-white border border-gray-200 rounded-full py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all text-sm">
+                    </div>
                 </div>
-                
-                <!-- Search -->
-                <div class="relative w-full md:w-72">
-                    <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                    <input type="text" id="product-search" placeholder="Tìm kiếm sản phẩm..." class="w-full bg-white border border-gray-200 rounded-full py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all">
+
+                <!-- Skincare Step Category Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="step-filters">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap mr-2">Bước Skincare:</span>
+                    <button class="step-filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-900 text-white transition-colors whitespace-nowrap" data-step="all">Tất cả</button>
+                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="cleanser">Sữa rửa mặt / Tẩy trang</button>
+                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="toner">Toner / Lotion</button>
+                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="treatment">Serum / Đặc trị</button>
+                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="moisturizer">Kem dưỡng ẩm</button>
+                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="sunscreen">Kem chống nắng</button>
                 </div>
             </div>
             

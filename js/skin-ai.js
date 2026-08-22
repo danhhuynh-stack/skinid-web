@@ -1979,7 +1979,7 @@ const PRODUCTS = [
             "ALPHA ARBUTIN & GLUTATHIONE: Kép đôi dưỡng trắng đỉnh cao.",
             "SHEA BUTTER: Cung cấp độ ẩm mịn màng cho làn da cơ thể."
         ],
-        "mainActives": [
+"mainActives": [
             "Niacinamide 7%",
             "Alpha Arbutin",
             "Glutathione"
@@ -1991,7 +1991,9 @@ const PRODUCTS = [
     }
 ];
 
+// GLOBAL CATALOG FILTER STATE
 let currentBrandFilter = 'all';
+let currentStepFilter = 'all';
 let currentSearchQuery = '';
 
 let currentBudget = 'Essential';
@@ -2069,6 +2071,158 @@ function showToast(message) {
 }
 
 // CATALOG
+
+function renderCatalog() {
+    const grid = document.getElementById('product-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    
+    let filtered = PRODUCTS;
+    if (currentBrandFilter !== 'all') {
+        filtered = filtered.filter(p => p.brand === currentBrandFilter);
+    }
+    if (currentStepFilter !== 'all') {
+        filtered = filtered.filter(p => p.stepType === currentStepFilter);
+    }
+    if (currentSearchQuery) {
+        const q = currentSearchQuery.toLowerCase();
+        filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(q) || 
+            (p.fullIngredients && p.fullIngredients.toLowerCase().includes(q)) ||
+            (p.keyActives && p.keyActives.some(a => a.toLowerCase().includes(q)))
+        );
+    }
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-12 bg-white rounded-2xl border border-gray-100"><i data-feather="package" class="w-10 h-10 mx-auto text-gray-300 mb-2"></i>Không tìm thấy sản phẩm nào phù hợp với bộ lọc.</div>';
+        if (window.feather) feather.replace();
+        return;
+    }
+
+    filtered.forEach(p => {
+        const imgSrc = `public${p.image}`;
+        
+        let tierColor = 'bg-gray-100 text-gray-600';
+        if (p.tier === 'Essential') tierColor = 'bg-emerald-50 text-emerald-700 border border-emerald-200';
+        if (p.tier === 'Select') tierColor = 'bg-sky-50 text-sky-700 border border-sky-200';
+        if (p.tier === 'Signature') tierColor = 'bg-purple-50 text-purple-700 border border-purple-200';
+
+        // Badges for main actives
+        let activesBadges = '';
+        if (p.mainActives && p.mainActives.length > 0) {
+            activesBadges = p.mainActives.slice(0, 2).map(act => `<span class="bg-brand-blush/60 text-brand-primary text-[10px] font-semibold px-2 py-0.5 rounded-full truncate max-w-[150px]">${act}</span>`).join('');
+        }
+
+        // Promotion / Tag Badge
+        let promoBadge = '';
+        if (p.originalPrice && p.originalPrice > p.price) {
+            const discount = Math.round((1 - p.price / p.originalPrice) * 100);
+            promoBadge = `<span class="text-[10px] font-extrabold bg-rose-500 text-white px-2 py-0.5 rounded shadow-sm">Giảm ${discount}%</span>`;
+        } else if (p.tier === 'Signature') {
+            promoBadge = `<span class="text-[10px] font-extrabold bg-amber-500 text-white px-2 py-0.5 rounded shadow-sm">Bán chạy</span>`;
+        } else if (p.tier === 'Select') {
+            promoBadge = `<span class="text-[10px] font-extrabold bg-emerald-500 text-white px-2 py-0.5 rounded shadow-sm">Khuyên dùng</span>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'product-card bg-white border border-gray-100 rounded-2xl p-4 flex flex-col h-full relative group overflow-hidden hover:border-brand-petal transition-all hover:shadow-md cursor-pointer';
+        card.onclick = (e) => {
+            if (e.target.closest('button')) return; // Ignore if clicked on Add to Cart button
+            openProductDetailModal(p.id);
+        };
+
+        card.innerHTML = `
+            <div class="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider bg-brand-dark text-white px-2 py-0.5 rounded shadow-sm">${p.line || p.brand}</span>
+                <span class="text-[10px] font-bold ${tierColor} px-2 py-0.5 rounded shadow-sm">${p.tier}</span>
+                ${promoBadge}
+            </div>
+            
+            <div class="aspect-square mb-3 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center p-3 relative">
+                <img src="${imgSrc}" alt="${p.name}" loading="lazy"
+                     class="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                     onerror="this.outerHTML='<div class=\\\'w-full h-full missing-image-placeholder text-center px-4 flex items-center justify-center text-xs text-gray-400 font-semibold\\\'>${p.brand}</div>'">
+            </div>
+            
+            <div class="flex flex-wrap gap-1 mb-2">
+                ${activesBadges}
+            </div>
+
+            <div class="flex-grow flex flex-col justify-between">
+                <div>
+                    <h4 class="font-bold text-sm text-gray-800 line-clamp-2 mb-1.5 leading-snug group-hover:text-brand-primary transition-colors">${p.name}</h4>
+                    <p class="text-xs text-gray-500 line-clamp-2 mb-3">${p.uses || ''}</p>
+                </div>
+                <div class="pt-2 border-t border-gray-50">
+                    <div class="flex items-baseline justify-between mb-3">
+                        <div>
+                            <span class="font-extrabold text-brand-primary text-base">${formatPrice(p.price)}</span>
+                            ${p.originalPrice && p.originalPrice > p.price ? `<span class="text-[10px] text-gray-400 line-through ml-1">${formatPrice(p.originalPrice)}</span>` : ''}
+                        </div>
+                        <span class="text-xs text-gray-400 font-medium">${p.volume || ''}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="openProductDetailModal('${p.id}')" class="py-2 rounded-lg border border-gray-200 text-gray-700 font-semibold text-xs hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
+                            <i data-feather="info" class="w-3.5 h-3.5"></i> Chi tiết
+                        </button>
+                        <button onclick="cartManager.addItem('${p.id}'); showToast('Đã thêm sản phẩm vào giỏ hàng!');" class="py-2 rounded-lg bg-brand-primary text-white font-semibold text-xs hover:bg-brand-dark transition-colors flex items-center justify-center gap-1 shadow-sm shadow-brand-primary/20">
+                            <i data-feather="shopping-cart" class="w-3.5 h-3.5"></i> Mua ngay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+    
+    if (window.feather) feather.replace();
+}
+
+
+function initCatalog() {
+    renderCatalog();
+    
+    // Setup brand filters
+    const brandBtns = document.querySelectorAll('#brand-filters .filter-btn');
+    brandBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            brandBtns.forEach(b => {
+                b.classList.remove('bg-brand-primary', 'text-white', 'active');
+                b.classList.add('text-gray-600', 'hover:bg-brand-blush');
+            });
+            e.target.classList.remove('text-gray-600', 'hover:bg-brand-blush');
+            e.target.classList.add('bg-brand-primary', 'text-white', 'active');
+            
+            currentBrandFilter = e.target.dataset.brand;
+            renderCatalog();
+        });
+    });
+
+    // Setup step category filters
+    const stepBtns = document.querySelectorAll('#step-filters .step-filter-btn');
+    stepBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            stepBtns.forEach(b => {
+                b.classList.remove('bg-gray-900', 'text-white', 'active');
+                b.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+            });
+            e.target.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
+            e.target.classList.add('bg-gray-900', 'text-white', 'active');
+            
+            currentStepFilter = e.target.dataset.step;
+            renderCatalog();
+        });
+    });
+
+    // Setup search
+    const searchInput = document.getElementById('product-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            renderCatalog();
+        });
+    }
+}
 
 // PRODUCT DETAIL MODAL (Matching Rilastil Training & Product Spec)
 window.openProductDetailModal = function(productId) {
