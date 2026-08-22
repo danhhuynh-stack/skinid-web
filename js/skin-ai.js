@@ -2659,11 +2659,13 @@ function updateStepUI() {
 let webcamStream = null;
 
 async function startWebcam() {
-    const video = document.getElementById('webcam-video');
+    const video = document.getElementById('webcam') || document.getElementById('webcam-video');
     if (!video) return;
     try {
         webcamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } } });
         video.srcObject = webcamStream;
+        const loading = document.getElementById('camera-loading');
+        if (loading) loading.classList.add('hidden');
     } catch (err) {
         console.warn("Webcam unavailable, file upload is enabled.", err);
     }
@@ -2677,9 +2679,9 @@ function stopWebcam() {
 }
 
 function captureFrame() {
-    const video = document.getElementById('webcam-video');
+    const video = document.getElementById('webcam') || document.getElementById('webcam-video');
     const canvas = document.createElement('canvas');
-    if (video && video.videoWidth > 0 && webcamStream) {
+    if (video && video.videoWidth > 0) {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext('2d');
@@ -2687,8 +2689,17 @@ function captureFrame() {
         const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
         saveCapturedImage(dataUrl.split(',')[1]);
     } else {
-        const fileInput = document.getElementById('file-upload-input');
-        if (fileInput) fileInput.click();
+        let fileInput = document.getElementById('file-upload-input');
+        if (!fileInput) {
+            fileInput = document.createElement('input');
+            fileInput.id = 'file-upload-input';
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+            fileInput.onchange = handleFileUpload;
+            document.body.appendChild(fileInput);
+        }
+        fileInput.click();
     }
 }
 
