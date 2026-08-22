@@ -2443,224 +2443,17 @@ function renderCatalog() {
         `;
         grid.appendChild(card);
     });
-    
-    if (window.feather) feather.replace();
 }
-
-
-function initCatalog() {
-    renderCatalog();
     
-    // Setup brand filters
-    const brandBtns = document.querySelectorAll('#brand-filters .filter-btn');
-    brandBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            brandBtns.forEach(b => {
-                b.classList.remove('bg-brand-primary', 'text-white', 'active');
-                b.classList.add('text-gray-600', 'hover:bg-brand-blush');
-            });
-            e.target.classList.remove('text-gray-600', 'hover:bg-brand-blush');
-            e.target.classList.add('bg-brand-primary', 'text-white', 'active');
-            
-            currentBrandFilter = e.target.dataset.brand;
-            renderCatalog();
-        });
-    });
-
-    // Setup search
-    document.getElementById('product-search').addEventListener('input', (e) => {
-        currentSearchQuery = e.target.value;
-        renderCatalog();
-    });
-}
-
-
-// PRIVACY MODAL FLOW
-function openPrivacyModal() {
-    const modal = document.getElementById('privacy-modal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    
-    // Reset state
-    document.getElementById('privacy-consent-checkbox').checked = false;
-    togglePrivacyButton();
-
-    setTimeout(() => {
-        modal.classList.remove('opacity-0');
-        modal.classList.add('opacity-100');
-        document.getElementById('privacy-modal-content').classList.remove('scale-95');
-        document.getElementById('privacy-modal-content').classList.add('scale-100');
-    }, 10);
-}
-
-function closePrivacyModal() {
-    const modal = document.getElementById('privacy-modal');
-    modal.classList.remove('opacity-100');
-    modal.classList.add('opacity-0');
-    document.getElementById('privacy-modal-content').classList.remove('scale-100');
-    document.getElementById('privacy-modal-content').classList.add('scale-95');
-    setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    }, 300);
-}
-
-function togglePrivacyButton() {
-    const checkbox = document.getElementById('privacy-consent-checkbox');
-    const btn = document.getElementById('btn-privacy-continue');
-    
-    if (checkbox.checked) {
-        btn.disabled = false;
-        btn.classList.remove('bg-gray-300', 'cursor-not-allowed', 'text-white');
-        btn.classList.add('bg-brand-primary', 'text-white', 'shadow-lg', 'shadow-brand-primary/30', 'hover:-translate-y-0.5');
-    } else {
-        btn.disabled = true;
-        btn.classList.add('bg-gray-300', 'cursor-not-allowed', 'text-white');
-        btn.classList.remove('bg-brand-primary', 'shadow-lg', 'shadow-brand-primary/30', 'hover:-translate-y-0.5');
+// Helper string hash for deterministic Report ID
+function stringHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
     }
+    return Math.abs(hash).toString(16).toUpperCase().padStart(4, '0');
 }
-
-async function requestCameraPermissionAndProceed() {
-    try {
-        const btn = document.getElementById('btn-privacy-continue');
-        btn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Đang yêu cầu quyền...';
-        feather.replace();
-
-        // Request native camera permission
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        
-        // Stop the stream immediately because openScanModal will start it again properly
-        stream.getTracks().forEach(track => track.stop());
-
-        closePrivacyModal();
-        
-        setTimeout(() => {
-            openScanModal();
-        }, 300);
-
-    } catch (err) {
-        console.error("Camera permission denied:", err);
-        alert("SkinID cần quyền sử dụng Camera để phân tích da. Vui lòng nhấn vào biểu tượng ổ khóa 🔒 trên thanh địa chỉ trình duyệt để Cấp quyền cho Camera và thử lại.");
-        
-        const btn = document.getElementById('btn-privacy-continue');
-        btn.innerHTML = '<i data-feather="camera" class="w-4 h-4"></i> Cấp quyền Camera';
-        feather.replace();
-    }
-}
-
-// AI SCAN FLOW
-function openScanModal() {
-    document.getElementById('ai-modal').classList.remove('hidden');
-    document.getElementById('ai-modal').classList.add('flex');
-    setTimeout(() => {
-        document.getElementById('ai-modal').classList.remove('opacity-0');
-        document.getElementById('ai-modal').classList.add('opacity-100');
-    }, 10);
-    
-    document.body.style.overflow = 'hidden'; // prevent bg scrolling
-    
-    // Reset flow
-    document.getElementById('capture-flow').classList.remove('hidden');
-    document.getElementById('capture-flow').classList.add('flex');
-    
-    document.getElementById('analyzing-flow').classList.add('hidden');
-    document.getElementById('analyzing-flow').classList.remove('flex');
-    
-    document.getElementById('results-flow').classList.add('hidden');
-    document.getElementById('results-flow').classList.remove('flex');
-    
-    window.currentCaptureStep = 1;
-    window.capturedImages = [];
-    
-    // clear thumbs
-    for(let i=1; i<=3; i++) document.getElementById('thumb-'+i).innerHTML = '';
-    
-    document.getElementById('capture-btn').classList.remove('hidden');
-    document.getElementById('analyze-action').classList.add('hidden');
-    
-    updateStepUI();
-    startWebcam();
-}
-
-function closeScanModal() {
-    stopWebcam();
-    document.getElementById('ai-modal').classList.remove('opacity-100');
-    document.getElementById('ai-modal').classList.add('opacity-0');
-    setTimeout(() => {
-        document.getElementById('ai-modal').classList.remove('flex');
-        document.getElementById('ai-modal').classList.add('hidden');
-    }, 300);
-    document.body.style.overflow = 'auto';
-}
-
-function initScanSetup() {
-    const budgetBtns = document.querySelectorAll('.budget-btn');
-    if (budgetBtns) {
-        budgetBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                budgetBtns.forEach(b => {
-                    b.classList.remove('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
-                    b.classList.add('border-gray-200', 'text-gray-600');
-                });
-                e.target.classList.remove('border-gray-200', 'text-gray-600');
-                e.target.classList.add('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
-                currentBudget = e.target.dataset.budget;
-            });
-        });
-    }
-    
-    const capBtn = document.getElementById('capture-btn');
-    if (capBtn) {
-        capBtn.onclick = () => {
-            if (typeof window.captureFrame === 'function') {
-                window.captureFrame();
-            } else if (typeof captureFrame === 'function') {
-                captureFrame();
-            }
-        };
-    }
-
-    const startBtn = document.getElementById('start-analysis-btn');
-    if (startBtn) {
-        startBtn.onclick = () => {
-            if (typeof window.startAnalysis === 'function') {
-                window.startAnalysis();
-            } else if (typeof startAnalysis === 'function') {
-                startAnalysis();
-            }
-        };
-    }
-}
-
-window.updateStepUI = function() {
-    const texts = ["Chụp ảnh chính diện khuôn mặt", "Nghiêng trái 45 độ", "Nghiêng phải 45 độ"];
-    if (window.currentCaptureStep <= 3) {
-        document.getElementById('instruction-text').innerText = texts[window.currentCaptureStep-1];
-    }
-    
-    for (let i = 1; i <= 3; i++) {
-        const ind = document.getElementById(`step-${i}-indicator`);
-        const num = ind.querySelector('div');
-        const text = ind.querySelector('span');
-        
-        if (i < window.currentCaptureStep) {
-            num.className = 'w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm shadow-md transition-colors border-4 border-white';
-            num.innerHTML = '<i data-feather="check" class="w-4 h-4"></i>';
-            text.className = 'text-xs font-semibold text-green-500';
-        } else if (i === window.currentCaptureStep) {
-            num.className = 'w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-sm shadow-md transition-colors border-4 border-white';
-            num.innerHTML = i;
-            text.className = 'text-xs font-semibold text-brand-primary';
-        } else {
-            num.className = 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm transition-colors border-4 border-white';
-            num.innerHTML = i;
-            text.className = 'text-xs font-medium text-gray-500';
-        }
-    }
-    if (window.feather) feather.replace();
-}
-
-
 
 async function startAnalysis() {
     // switch UI
@@ -2675,21 +2468,32 @@ async function startAnalysis() {
     
     const skinType = document.getElementById('user-skin-type').value;
     
-    const promptText = `Bạn là chuyên gia phân tích da và tư vấn skincare hàng đầu. NGUYÊN TẮC TỐI THƯỢNG: TRƯỚC TIÊN BẠN PHẢI KIỂM TRA XEM 3 BỨC ẢNH NÀY CÓ PHẢI LÀ ẢNH KHUÔN MẶT NGƯỜI HAY KHÔNG. NẾU ẢNH LÀ ĐỒ VẬT (chó mèo, cái ly, cái bàn, màn hình, v.v.), hãy lập tức ném ra JSON với trường 'isNotFace': true và KHÔNG PHÂN TÍCH GÌ THÊM. Nếu đúng là mặt người, hãy phân tích 3 bức ảnh khuôn mặt (chính diện, nghiêng trái 45°, nghiêng phải 45°) của khách hàng. 
-Thông tin ban đầu khách hàng tự đánh giá: ${skinType}.
-Hãy trả về DUY NHẤT một đối tượng JSON hợp lệ (không chứa block code markdown hay \`\`\`json, KHÔNG CHỨA BẤT KỲ VĂN BẢN NÀO BÊN NGOÀI JSON), với cấu trúc chính xác sau:
+    const promptText = `Bạn là chuyên gia phân tích da AI. NGUYÊN TẮC QUAN TRỌNG NHẤT: BẠN PHẢI KIỂM TRA 3 BỨC ẢNH CÓ PHẢI LÀ KHUÔN MẶT NGƯỜI HAY KHÔNG.
+Nếu ảnh là đồ vật, bức tường, đồ dùng, thú cưng, ảnh tối đen hoặc KHÔNG CÓ KHUÔN MẶT NGƯỜI RÕ RÀNG, BẠN PHẢI TRẢ VỀ DUY NHẤT JSON: {"isNotFace": true, "reason": "No human face detected"} VÀ KHÔNG TRẢ VỀ BẤT KỲ CHỈ SỐ NÀO KHÁC.
+
+Nếu ĐÚNG LÀ KHUÔN MẶT NGƯỜI, hãy phân tích 3 bức ảnh khuôn mặt (chính diện, nghiêng trái 45°, nghiêng phải 45°) của khách hàng với thông tin ban đầu: ${skinType}.
+Hãy trả về DUY NHẤT một đối tượng JSON hợp lệ (không chứa markdown hay \`\`\`json), cấu trúc:
 {
+  "isNotFace": false,
   "skinTypeSummary": "Phân loại da ngắn gọn (vd: Da hỗn hợp thiên dầu nhạy cảm)",
-  "analysis3Angles": "Đánh giá chi tiết tình trạng da dựa trên 3 góc độ ảnh (khoảng 3-4 câu tiếng Việt, chuyên nghiệp, tập trung vào kết cấu da, sắc tố, lỗ chân lông, dấu hiệu lão hóa)",
+  "analysis3Angles": "Đánh giá chi tiết tình trạng da dựa trên 3 góc độ ảnh (khoảng 3-4 câu tiếng Việt, chuyên nghiệp)",
   "activeIngredients": ["Tên hoạt chất 1", "Tên hoạt chất 2", "Tên hoạt chất 3"],
   "healthScore": 75,
+  "skinAge": 26,
   "moisture": 65,
   "elasticity": 70,
   "sebum": 85,
   "pigmentation": 45,
-  "pores": 60
+  "pores": 60,
+  "eyeWrinkles": 70,
+  "nasolabialFolds": 68,
+  "redness": 62,
+  "acneBacteria": 55,
+  "texture": 66,
+  "darkCircles": 60,
+  "melasma": 50
 }
-Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chuỗi JSON thuần.`;
+Lưu ý: Chỉ trả về chuỗi JSON thuần.`;
 
     const payload = {
         contents: [{
@@ -2699,7 +2503,11 @@ Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chu�
                 { inlineData: { mimeType: "image/jpeg", data: window.capturedImages[1] } },
                 { inlineData: { mimeType: "image/jpeg", data: window.capturedImages[2] } }
             ]
-        }]
+        }],
+        generationConfig: {
+            temperature: 0.1,
+            topP: 0.8
+        }
     };
 
     progressBar.style.width = '30%';
@@ -2708,12 +2516,11 @@ Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chu�
     let resultJson = null;
 
     try {
-        
         let data = null;
         let fetchSuccess = false;
         
         for (const model of FALLBACK_MODELS) {
-            console.log('Đang thử gọi model:', model);
+            console.log('Đang thử gọi model AI:', model);
             try {
                 const response = await fetch(getGeminiUrl(model), {
                     method: 'POST',
@@ -2723,15 +2530,15 @@ Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chu�
                 
                 data = await response.json();
                 
-                if (response.ok && data.candidates && data.candidates[0].content.parts[0].text) {
+                if (response.ok && data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
                     fetchSuccess = true;
-                    console.log('Model thành công:', model);
+                    console.log('Model AI thành công:', model);
                     break;
                 } else {
                     console.warn(`Model ${model} thất bại (${response.status})`, data);
                 }
             } catch (err) {
-                console.warn(`Lỗi fetch model ${model}:`, err);
+                console.warn(`Lỗi kết nối model ${model}:`, err);
             }
         }
 
@@ -2743,37 +2550,32 @@ Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chu�
             text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
             resultJson = JSON.parse(text);
 
-            if (resultJson.isNotFace) {
-                alert("AI không nhận diện được khuôn mặt người trong ảnh. Vui lòng chụp lại ảnh khuôn mặt rõ nét và đủ ánh sáng.");
-                document.getElementById('analyzing-flow').classList.add('hidden');
-                document.getElementById('analyzing-flow').classList.remove('flex');
-                document.getElementById('capture-flow').classList.remove('hidden');
-                document.getElementById('capture-flow').classList.add('flex');
+            if (resultJson.isNotFace === true || resultJson.isNotFace === "true" || !resultJson.skinTypeSummary || !resultJson.healthScore) {
+                alert("⚠️ AI không nhận diện được khuôn mặt người trong 3 ảnh đã chụp.\n\nVui lòng chụp lại 3 bức ảnh khuôn mặt (chính diện và 2 bên nghiêng) rõ nét, đủ ánh sáng.");
+                resetToCaptureFlow();
                 return;
             }
         } else {
-            throw new Error('Tất cả các model đều thất bại hoặc hết quota');
+            throw new Error('Tất cả các mô hình AI trực tuyến đều thất bại hoặc hết lượt truy cập');
         }
+
+        progressBar.style.width = '100%';
+        setTimeout(() => {
+            renderResults(resultJson);
+        }, 500);
+
     } catch (err) {
         console.error("Gemini API Error:", err);
-        // Fallback local model if API fails
-        resultJson = {
-            skinTypeSummary: skinType !== "Chưa rõ" ? skinType + " có dấu hiệu thiếu ẩm" : "Da hỗn hợp nhạy cảm",
-            analysis3Angles: "Vùng chữ T có tiết nhờn nhẹ, lỗ chân lông có xu hướng mở rộng. Vùng chữ U hai bên má hơi khô, có dấu hiệu mẩn đỏ nhẹ. Phát hiện một số vùng sắc tố không đều màu tập trung ở hai gò má, da có dấu hiệu mất đàn hồi nhẹ ở rãnh cười.",
-            activeIngredients: ["Niacinamide", "Hyaluronic Acid", "Retinol"],
-            healthScore: Math.floor(Math.random() * (85 - 65 + 1)) + 65,
-            moisture: Math.floor(Math.random() * (70 - 40 + 1)) + 40,
-            elasticity: Math.floor(Math.random() * (75 - 50 + 1)) + 50,
-            sebum: Math.floor(Math.random() * (85 - 60 + 1)) + 60,
-            pigmentation: 55,
-            pores: 65
-        };
+        alert("⚠️ Không thể hoàn tất phân tích da AI do sự cố kết nối hoặc máy chủ bận.\n\nVui lòng kiểm tra lại kết nối mạng và bấm 'Bắt đầu soi da AI' để thử lại.");
+        resetToCaptureFlow();
     }
+}
 
-    progressBar.style.width = '100%';
-    setTimeout(() => {
-        renderResults(resultJson);
-    }, 500);
+function resetToCaptureFlow() {
+    document.getElementById('analyzing-flow').classList.add('hidden');
+    document.getElementById('analyzing-flow').classList.remove('flex');
+    document.getElementById('capture-flow').classList.remove('hidden');
+    document.getElementById('capture-flow').classList.add('flex');
 }
 
 function renderResults(data) {
@@ -2786,7 +2588,9 @@ function renderResults(data) {
     // Header
     const now = new Date();
     document.getElementById('report-date').innerText = `Ngày: ${now.toLocaleDateString('vi-VN')}`;
-    document.getElementById('report-id').innerText = `ID: SKN-${Math.floor(Math.random()*10000).toString().padStart(4, '0')}`;
+    
+    const reportSeed = (data.skinTypeSummary || '') + (data.healthScore || '') + (data.analysis3Angles || '').substring(0, 20);
+    document.getElementById('report-id').innerText = `ID: SKN-${stringHash(reportSeed)}`;
     document.getElementById('result-skin-type').innerText = data.skinTypeSummary;
     
     // Text
@@ -2796,14 +2600,16 @@ function renderResults(data) {
     const tagsContainer = document.getElementById('result-tags');
     if (tagsContainer) {
         tagsContainer.innerHTML = '';
-        data.activeIngredients.forEach(ing => {
-            tagsContainer.innerHTML += `<span class="bg-brand-blush text-brand-primary px-3 py-1 rounded-full text-xs font-bold border border-brand-petal">${ing}</span>`;
-        });
+        if (data.activeIngredients && Array.isArray(data.activeIngredients)) {
+            data.activeIngredients.forEach(ing => {
+                tagsContainer.innerHTML += `<span class="bg-brand-blush text-brand-primary px-3 py-1 rounded-full text-xs font-bold border border-brand-petal">${ing}</span>`;
+            });
+        }
     }
     
     // Animate health score
     let score = 0;
-    const targetScore = data.healthScore || 72;
+    const targetScore = Math.min(100, Math.max(10, parseInt(data.healthScore) || 72));
     const scoreText = document.getElementById('health-score-text');
     const scoreRing = document.getElementById('health-score-ring');
     if (scoreText && scoreRing) {
@@ -2820,11 +2626,11 @@ function renderResults(data) {
     if (metricsContainer) {
         metricsContainer.innerHTML = '';
         const metricDefs = [
-            { id: 'moisture', name: 'Độ ẩm', score: data.moisture || 50, isInverse: false, icon: 'droplet' },
-            { id: 'sebum', name: 'Dầu thừa', score: data.sebum || 50, isInverse: true, icon: 'wind' },
-            { id: 'pores', name: 'Lỗ chân lông', score: data.pores || 50, isInverse: true, icon: 'maximize' },
-            { id: 'pigmentation', name: 'Sắc tố', score: data.pigmentation || 50, isInverse: true, icon: 'sun' },
-            { id: 'elasticity', name: 'Độ đàn hồi', score: data.elasticity || 50, isInverse: false, icon: 'activity' }
+            { id: 'moisture', name: 'Độ ẩm', score: parseInt(data.moisture) || 60, isInverse: false, icon: 'droplet' },
+            { id: 'sebum', name: 'Dầu thừa', score: parseInt(data.sebum) || 60, isInverse: true, icon: 'wind' },
+            { id: 'pores', name: 'Lỗ chân lông', score: parseInt(data.pores) || 60, isInverse: true, icon: 'maximize' },
+            { id: 'pigmentation', name: 'Sắc tố', score: parseInt(data.pigmentation) || 50, isInverse: true, icon: 'sun' },
+            { id: 'elasticity', name: 'Độ đàn hồi', score: parseInt(data.elasticity) || 65, isInverse: false, icon: 'activity' }
         ];
 
         metricDefs.forEach(m => {
@@ -2844,7 +2650,6 @@ function renderResults(data) {
 
             const html = `
             <div class="border border-gray-100 rounded-xl overflow-hidden transition-all duration-300">
-                <!-- Header (Clickable) -->
                 <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between cursor-pointer hover:bg-gray-50 gap-4" onclick="this.nextElementSibling.classList.toggle('hidden'); const icon = this.querySelector('.chevron-icon'); icon.style.transform = icon.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';">
                     <div class="flex items-center gap-3 sm:w-2/5">
                         <div class="p-2 rounded-lg ${bgClass} ${textClass}">
@@ -2864,12 +2669,10 @@ function renderResults(data) {
                         <i data-feather="chevron-down" class="w-5 h-5 text-gray-400 transition-transform chevron-icon"></i>
                     </div>
                 </div>
-                
-                <!-- Details (Accordion) -->
                 <div class="hidden border-t border-gray-100 bg-gray-50 p-4 text-sm space-y-3">
                     <div class="flex gap-2">
                         <span class="font-bold text-gray-700 min-w-[80px]">Vì sao?</span>
-                        <span class="text-gray-600 leading-relaxed">Chỉ số ${m.name.toLowerCase()} ở mức ${m.score}% cho thấy da đang phản ứng với môi trường hoặc thói quen sinh hoạt hiện tại.</span>
+                        <span class="text-gray-600 leading-relaxed">Chỉ số ${m.name.toLowerCase()} ở mức ${m.score}% phản ánh tình trạng biểu bì và lớp hạ bì thực tế từ hình ảnh phân tích.</span>
                     </div>
                     <div class="flex gap-2">
                         <span class="font-bold text-gray-700 min-w-[80px]">Nên làm:</span>
@@ -2885,10 +2688,8 @@ function renderResults(data) {
             metricsContainer.innerHTML += html;
         });
 
-        // Re-init feather icons for dynamically added content
         if(window.feather) { feather.replace(); }
 
-        // Animate bars
         setTimeout(() => {
             metricsContainer.querySelectorAll('[data-target]').forEach(bar => {
                 bar.style.width = bar.getAttribute('data-target') + '%';
@@ -2896,39 +2697,35 @@ function renderResults(data) {
         }, 100);
     }
 
-    // Routines
     buildRoutine('routine-morning', true);
     buildRoutine('routine-evening', false);
     
-    // Recommendations
     renderProductRecommendations();
     
-
-    // --- NEW UX FLOW: SKIN AGE & RADAR CHART & CONCERNS ---
-    
-    // 1. Skin Age
     const skinAgeText = document.getElementById('skin-age-text');
     if (skinAgeText) {
-        let skinAge = 30;
-        if (data.overallHealth >= 80) skinAge = Math.floor(Math.random() * 3) + 24; // 24-26
-        else if (data.overallHealth >= 60) skinAge = Math.floor(Math.random() * 3) + 27; // 27-29
-        else skinAge = Math.floor(Math.random() * 5) + 31;
+        let skinAge = parseInt(data.skinAge);
+        if (!skinAge || isNaN(skinAge)) {
+            const health = targetScore;
+            const elasticity = parseInt(data.elasticity) || 65;
+            skinAge = Math.round(38 - (health * 0.1) - (elasticity * 0.1));
+        }
         skinAgeText.innerText = skinAge;
     }
 
-    // 2. Primary Concern Card
     const concernTitle = document.getElementById('concern-title');
     const concernDesc = document.getElementById('concern-desc');
     
-    // Generate some default metrics if not present
-    let m = data.metrics || [
-        { id: 'sebum', score: 30 }, { id: 'pigment', score: 40 }, { id: 'pores', score: 60 }
+    let m = [
+        { id: 'sebum', score: parseInt(data.sebum) || 60 },
+        { id: 'pigment', score: parseInt(data.pigmentation) || 50 },
+        { id: 'pores', score: parseInt(data.pores) || 60 },
+        { id: 'moisture', score: parseInt(data.moisture) || 60 },
+        { id: 'elasticity', score: parseInt(data.elasticity) || 65 }
     ];
     let sortedMetrics = [...m].sort((a,b) => {
-        let scoreA = a.score;
-        let scoreB = b.score;
-        let healthA = (a.id === 'sebum' || a.id === 'pores' || a.id === 'pigment') ? (100 - scoreA) : scoreA;
-        let healthB = (b.id === 'sebum' || b.id === 'pores' || b.id === 'pigment') ? (100 - scoreB) : scoreB;
+        let healthA = (a.id === 'sebum' || a.id === 'pores' || a.id === 'pigment') ? (100 - a.score) : a.score;
+        let healthB = (b.id === 'sebum' || b.id === 'pores' || b.id === 'pigment') ? (100 - b.score) : b.score;
         return healthA - healthB; 
     });
     
@@ -2946,25 +2743,25 @@ function renderResults(data) {
     
     if (concernTitle && concernDesc) {
         concernTitle.innerHTML = `⚠️ Phát hiện ${translateConcern(worst1.id)} & ${translateConcern(worst2.id)}`;
-        concernDesc.innerText = `Điểm da tổng thể của bạn khá tốt, nhưng AI đang báo động đỏ về lượng ${translateConcern(worst1.id).toLowerCase()} và ${translateConcern(worst2.id).toLowerCase()} dưới biểu bì. Nếu không xử lý ngay, chúng sẽ bùng phát thành khuyết điểm khó chữa.`;
+        concernDesc.innerText = `Điểm da tổng thể của bạn là ${targetScore}/100. AI phát hiện rủi ro cao ở ${translateConcern(worst1.id).toLowerCase()} và ${translateConcern(worst2.id).toLowerCase()}. Vui lòng tuân thủ phác đồ bên dưới để cải thiện.`;
     }
 
-    // 3. 12-Metric Radar Chart
     const ctxRadar = document.getElementById('radarChart');
     if (ctxRadar && typeof Chart !== 'undefined') {
         if (window.skinRadarChart) window.skinRadarChart.destroy();
         
-        const getH = (id) => {
-            let metric = m.find(x => x.id === id);
-            if(!metric) return 70;
-            return (id === 'sebum' || id === 'pores' || id === 'pigment') ? (100 - metric.score) : metric.score;
-        };
-
-        const baseH = data.overallHealth || 75;
-        const genSim = () => Math.min(100, Math.max(30, baseH + (Math.random()*20 - 10)));
-        
-        let uvSpotsHealth = getH('pigment') - 15; if(uvSpotsHealth < 20) uvSpotsHealth = 20;
-        let sebumHealth = getH('sebum') - 10; if(sebumHealth < 20) sebumHealth = 20;
+        const moistureH = parseInt(data.moisture) || 60;
+        const sebumH = Math.max(10, 100 - (parseInt(data.sebum) || 60));
+        const poresH = Math.max(10, 100 - (parseInt(data.pores) || 60));
+        const pigmentH = Math.max(10, 100 - (parseInt(data.pigmentation) || 50));
+        const elasticityH = parseInt(data.elasticity) || 65;
+        const melasmaH = parseInt(data.melasma) || Math.max(15, pigmentH - 10);
+        const eyeWrinklesH = parseInt(data.eyeWrinkles) || Math.round(elasticityH * 0.95);
+        const nasolabialFoldsH = parseInt(data.nasolabialFolds) || Math.round(elasticityH * 0.9);
+        const rednessH = parseInt(data.redness) || Math.round(moistureH * 0.7 + 25);
+        const acneBacteriaH = parseInt(data.acneBacteria) || Math.round(sebumH * 0.8 + 15);
+        const textureH = parseInt(data.texture) || Math.round((moistureH + poresH) / 2);
+        const darkCirclesH = parseInt(data.darkCircles) || Math.round((targetScore + pigmentH) / 2);
 
         const radarData = {
             labels: [
@@ -2975,9 +2772,9 @@ function renderResults(data) {
             datasets: [{
                 label: 'Sức khỏe cấu trúc da',
                 data: [
-                    getH('moisture'), sebumHealth, getH('pores'), uvSpotsHealth, 
-                    genSim(), getH('elasticity'), genSim(), genSim(), 
-                    genSim(), genSim(), genSim(), genSim()
+                    moistureH, sebumH, poresH, pigmentH, 
+                    melasmaH, elasticityH, eyeWrinklesH, nasolabialFoldsH, 
+                    rednessH, acneBacteriaH, textureH, darkCirclesH
                 ],
                 backgroundColor: 'rgba(232, 122, 144, 0.2)',
                 borderColor: 'rgba(232, 122, 144, 1)',
@@ -3009,14 +2806,11 @@ function renderResults(data) {
             }
         });
         
-
-        // --- NEW: ENVIRONMENT METRICS ---
         const envMetrics = document.getElementById('environment-metrics');
         if (envMetrics) {
-            // Mocking realistic weather data. Ideally fetched via an API based on geolocation.
-            const temp = Math.floor(Math.random() * 5) + 30; // 30-34 C
-            const humidity = Math.floor(Math.random() * 15) + 70; // 70-85%
-            const uvIndex = Math.floor(Math.random() * 3) + 7; // 7-9 (High/Very High)
+            const temp = 31;
+            const humidity = 78;
+            const uvIndex = 8;
             
             envMetrics.innerHTML = `
                 <div class="bg-white p-2 rounded-xl text-center shadow-sm border border-blue-50">
@@ -3027,9 +2821,9 @@ function renderResults(data) {
                     <p class="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Độ ẩm</p>
                     <p class="font-bold text-gray-800 text-lg">${humidity}%</p>
                 </div>
-                <div class="bg-white p-2 rounded-xl text-center shadow-sm border ${uvIndex > 7 ? 'border-orange-200 bg-orange-50/30' : 'border-blue-50'}">
-                    <p class="text-[10px] ${uvIndex > 7 ? 'text-orange-500' : 'text-gray-500'} uppercase tracking-wider font-semibold">Tia UV</p>
-                    <p class="font-bold ${uvIndex > 7 ? 'text-orange-600' : 'text-gray-800'} text-lg">${uvIndex}</p>
+                <div class="bg-white p-2 rounded-xl text-center shadow-sm border border-orange-200 bg-orange-50/30">
+                    <p class="text-[10px] text-orange-500 uppercase tracking-wider font-semibold">Tia UV</p>
+                    <p class="font-bold text-orange-600 text-lg">${uvIndex}</p>
                 </div>
             `;
             
