@@ -2005,12 +2005,10 @@ window.currentRoutineIds = [];
 const GEMINI_API_KEY = atob('QVEuQWI4Uk42STNxRmluMEpPSDJDdm9zSkxmX2JMdjNrZ0djMFptT0pQamczenV6TXF4b1E=');
 const FALLBACK_MODELS = [
     'gemini-2.5-flash',
-    'gemini-3.7-flash',
-    'gemini-3.5-flash',
-    'gemini-3-flash',
-    'gemini-3.6-flash',
-    'gemini-3.1-flash-lite',
-    'gemini-2.5-flash-lite'
+    'gemini-2.0-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
+    'gemini-1.5-flash-8b'
 ];
 
 function getGeminiUrl(modelName) {
@@ -2744,6 +2742,15 @@ Lưu ý: Kết quả chỉ mang tính chất tham khảo. Chỉ trả về chu�
             let text = data.candidates[0].content.parts[0].text.trim();
             text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
             resultJson = JSON.parse(text);
+
+            if (resultJson.isNotFace) {
+                alert("AI không nhận diện được khuôn mặt người trong ảnh. Vui lòng chụp lại ảnh khuôn mặt rõ nét và đủ ánh sáng.");
+                document.getElementById('analyzing-flow').classList.add('hidden');
+                document.getElementById('analyzing-flow').classList.remove('flex');
+                document.getElementById('capture-flow').classList.remove('hidden');
+                document.getElementById('capture-flow').classList.add('flex');
+                return;
+            }
         } else {
             throw new Error('Tất cả các model đều thất bại hoặc hết quota');
         }
