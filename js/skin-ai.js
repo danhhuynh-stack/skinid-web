@@ -2444,7 +2444,284 @@ function renderCatalog() {
         grid.appendChild(card);
     });
 }
+
+function initCatalog() {
+    renderCatalog();
     
+    // Setup brand filters
+    const brandBtns = document.querySelectorAll('#brand-filters .filter-btn');
+    brandBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            brandBtns.forEach(b => {
+                b.classList.remove('bg-brand-primary', 'text-white', 'active');
+                b.classList.add('text-gray-600', 'hover:bg-brand-blush');
+            });
+            e.target.classList.remove('text-gray-600', 'hover:bg-brand-blush');
+            e.target.classList.add('bg-brand-primary', 'text-white', 'active');
+            
+            currentBrandFilter = e.target.dataset.brand;
+            renderCatalog();
+        });
+    });
+
+    // Setup search
+    const searchInput = document.getElementById('product-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            renderCatalog();
+        });
+    }
+}
+
+// PRIVACY MODAL FLOW
+function openPrivacyModal() {
+    const modal = document.getElementById('privacy-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    // Reset state
+    const checkbox = document.getElementById('privacy-consent-checkbox');
+    if (checkbox) checkbox.checked = false;
+    togglePrivacyButton();
+
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+        const content = document.getElementById('privacy-modal-content');
+        if (content) {
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+    }, 10);
+}
+
+function closePrivacyModal() {
+    const modal = document.getElementById('privacy-modal');
+    if (!modal) return;
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    const content = document.getElementById('privacy-modal-content');
+    if (content) {
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+    }
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }, 300);
+}
+
+function togglePrivacyButton() {
+    const checkbox = document.getElementById('privacy-consent-checkbox');
+    const btn = document.getElementById('btn-privacy-continue');
+    if (!btn) return;
+    
+    if (checkbox && checkbox.checked) {
+        btn.disabled = false;
+        btn.classList.remove('bg-gray-300', 'cursor-not-allowed', 'text-white');
+        btn.classList.add('bg-brand-primary', 'text-white', 'shadow-lg', 'shadow-brand-primary/30', 'hover:-translate-y-0.5');
+    } else {
+        btn.disabled = true;
+        btn.classList.add('bg-gray-300', 'cursor-not-allowed', 'text-white');
+        btn.classList.remove('bg-brand-primary', 'shadow-lg', 'shadow-brand-primary/30', 'hover:-translate-y-0.5');
+    }
+}
+
+async function requestCameraPermissionAndProceed() {
+    try {
+        const btn = document.getElementById('btn-privacy-continue');
+        if (btn) {
+            btn.innerHTML = '<i data-feather="loader" class="w-4 h-4 animate-spin"></i> Đang mở giao diện...';
+            if (window.feather) feather.replace();
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            stream.getTracks().forEach(track => track.stop());
+        } catch (e) {
+            console.warn("Camera access not available or denied, file upload is supported.");
+        }
+
+        closePrivacyModal();
+        
+        setTimeout(() => {
+            openScanModal();
+        }, 300);
+
+    } catch (err) {
+        console.error("Camera permission error:", err);
+        closePrivacyModal();
+        openScanModal();
+    }
+}
+
+// AI SCAN FLOW
+function openScanModal() {
+    const modal = document.getElementById('ai-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+    }, 10);
+    
+    document.body.style.overflow = 'hidden';
+    
+    document.getElementById('capture-flow').classList.remove('hidden');
+    document.getElementById('capture-flow').classList.add('flex');
+    
+    document.getElementById('analyzing-flow').classList.add('hidden');
+    document.getElementById('analyzing-flow').classList.remove('flex');
+    
+    document.getElementById('results-flow').classList.add('hidden');
+    document.getElementById('results-flow').classList.remove('flex');
+    
+    window.currentCaptureStep = 1;
+    window.capturedImages = [];
+    
+    for(let i=1; i<=3; i++) {
+        const thumb = document.getElementById('thumb-'+i);
+        if (thumb) thumb.innerHTML = '';
+    }
+    
+    const capBtn = document.getElementById('capture-btn');
+    if (capBtn) capBtn.classList.remove('hidden');
+    const actBtn = document.getElementById('analyze-action');
+    if (actBtn) actBtn.classList.add('hidden');
+    
+    updateStepUI();
+    startWebcam();
+}
+
+function closeScanModal() {
+    stopWebcam();
+    const modal = document.getElementById('ai-modal');
+    if (!modal) return;
+    modal.classList.remove('opacity-100');
+    modal.classList.add('opacity-0');
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 300);
+    document.body.style.overflow = 'auto';
+}
+
+function initScanSetup() {
+    const budgetBtns = document.querySelectorAll('.budget-btn');
+    if (budgetBtns) {
+        budgetBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                budgetBtns.forEach(b => {
+                    b.classList.remove('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
+                    b.classList.add('border-gray-200', 'text-gray-600');
+                });
+                e.target.classList.remove('border-gray-200', 'text-gray-600');
+                e.target.classList.add('border-brand-primary', 'bg-brand-blush', 'text-brand-primary');
+                currentBudget = e.target.dataset.budget;
+            });
+        });
+    }
+}
+
+function updateStepUI() {
+    const texts = ["Chụp/Tải ảnh chính diện khuôn mặt", "Nghiêng trái 45 độ", "Nghiêng phải 45 độ"];
+    if (window.currentCaptureStep <= 3) {
+        const inst = document.getElementById('instruction-text');
+        if (inst) inst.innerText = texts[window.currentCaptureStep-1];
+    }
+    
+    for (let i = 1; i <= 3; i++) {
+        const ind = document.getElementById(`step-${i}-indicator`);
+        if (!ind) continue;
+        const num = ind.querySelector('div');
+        const text = ind.querySelector('span');
+        
+        if (i < window.currentCaptureStep) {
+            num.className = 'w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm shadow-md transition-colors border-4 border-white';
+            num.innerHTML = '<i data-feather="check" class="w-4 h-4"></i>';
+            if (text) text.className = 'text-xs font-semibold text-green-500';
+        } else if (i === window.currentCaptureStep) {
+            num.className = 'w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-sm shadow-md transition-colors border-4 border-white';
+            num.innerHTML = i;
+            if (text) text.className = 'text-xs font-semibold text-brand-primary';
+        } else {
+            num.className = 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm transition-colors border-4 border-white';
+            num.innerHTML = i;
+            if (text) text.className = 'text-xs font-medium text-gray-500';
+        }
+    }
+    if (window.feather) feather.replace();
+}
+
+let webcamStream = null;
+
+async function startWebcam() {
+    const video = document.getElementById('webcam-video');
+    if (!video) return;
+    try {
+        webcamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } } });
+        video.srcObject = webcamStream;
+    } catch (err) {
+        console.warn("Webcam unavailable, file upload is enabled.", err);
+    }
+}
+
+function stopWebcam() {
+    if (webcamStream) {
+        webcamStream.getTracks().forEach(track => track.stop());
+        webcamStream = null;
+    }
+}
+
+function captureFrame() {
+    const video = document.getElementById('webcam-video');
+    const canvas = document.createElement('canvas');
+    if (video && video.videoWidth > 0 && webcamStream) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        saveCapturedImage(dataUrl.split(',')[1]);
+    } else {
+        const fileInput = document.getElementById('file-upload-input');
+        if (fileInput) fileInput.click();
+    }
+}
+
+function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Data = e.target.result.split(',')[1];
+        saveCapturedImage(base64Data);
+    };
+    reader.readAsDataURL(file);
+}
+
+function saveCapturedImage(base64Image) {
+    if (!window.capturedImages) window.capturedImages = [];
+    window.capturedImages.push(base64Image);
+    
+    const thumb = document.getElementById('thumb-' + window.currentCaptureStep);
+    if (thumb) {
+        thumb.innerHTML = `<img src="data:image/jpeg;base64,${base64Image}" class="w-full h-full object-cover rounded-xl border border-brand-petal shadow-sm">`;
+    }
+    
+    window.currentCaptureStep++;
+    if (window.currentCaptureStep > 3) {
+        document.getElementById('capture-btn').classList.add('hidden');
+        document.getElementById('analyze-action').classList.remove('hidden');
+        document.getElementById('instruction-text').innerText = 'Đã hoàn tất 3 góc chụp! Hãy nhấn nút Phân tích da.';
+    } else {
+        updateStepUI();
+    }
+}
+
 // Helper string hash for deterministic Report ID
 function stringHash(str) {
     let hash = 0;
