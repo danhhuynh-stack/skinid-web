@@ -21,8 +21,10 @@ async function initFaceMesh() {
 
 const originalStartWebcam = window.startWebcam || async function() {};
 window.startWebcam = async function() {
-    const video = document.getElementById('webcam');
-    document.getElementById('camera-loading').classList.remove('hidden');
+    const video = document.getElementById('webcam') || document.getElementById('webcam-video');
+    if (!video) return;
+    const loading = document.getElementById('camera-loading');
+    if (loading) loading.classList.remove('hidden');
     try {
         window.webcamStream = await navigator.mediaDevices.getUserMedia({ 
             video: { facingMode: 'user', width: { ideal: 720 }, height: { ideal: 960 } }, 
@@ -30,9 +32,9 @@ window.startWebcam = async function() {
         });
         video.srcObject = window.webcamStream;
         video.onloadedmetadata = async () => {
-            document.getElementById('camera-loading').classList.add('hidden');
+            if (loading) loading.classList.add('hidden');
             
-            if (!faceMesh) {
+            if (typeof FaceMesh !== 'undefined' && !faceMesh) {
                 await initFaceMesh();
             }
             aiActive = true;
@@ -41,8 +43,12 @@ window.startWebcam = async function() {
             async function processFrame() {
                 if (!loopActive) return;
                 
-                if (aiActive && video.videoWidth > 0) {
-                    await faceMesh.send({image: video});
+                if (aiActive && video.videoWidth > 0 && faceMesh) {
+                    try {
+                        await faceMesh.send({image: video});
+                    } catch (e) {
+                        console.warn("FaceMesh send frame error", e);
+                    }
                 }
                 
                 if (loopActive) {
@@ -53,10 +59,12 @@ window.startWebcam = async function() {
         };
     } catch (err) {
         console.error("Camera access denied or failed", err);
-        document.getElementById('camera-loading').innerHTML = `
-            <i data-feather="camera-off" class="w-8 h-8 mb-4 text-red-500"></i>
-            <p class="text-center px-4">Không thể kết nối Camera.<br>Vui lòng cấp quyền truy cập Camera trong trình duyệt.</p>
-        `;
+        if (loading) {
+            loading.innerHTML = `
+                <i data-feather="camera-off" class="w-8 h-8 mb-4 text-red-500"></i>
+                <p class="text-center px-4">Không thể kết nối Camera.<br>Vui lòng cấp quyền truy cập Camera trong trình duyệt hoặc sử dụng tính năng Tải ảnh lên.</p>
+            `;
+        }
         if (window.feather) feather.replace();
     }
 };

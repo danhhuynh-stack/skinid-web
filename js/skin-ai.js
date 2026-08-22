@@ -2624,6 +2624,20 @@ function initScanSetup() {
             });
         });
     }
+
+    const capBtn = document.getElementById('capture-btn');
+    if (capBtn) {
+        capBtn.onclick = function() {
+            if (typeof captureFrame === 'function') captureFrame();
+        };
+    }
+
+    const startBtn = document.getElementById('start-analysis-btn');
+    if (startBtn) {
+        startBtn.onclick = function() {
+            if (typeof startAnalysis === 'function') startAnalysis();
+        };
+    }
 }
 
 function updateStepUI() {
