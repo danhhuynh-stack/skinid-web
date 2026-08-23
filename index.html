@@ -458,18 +458,32 @@
                 <div>
                     <h4 class="font-bold text-sm text-white mb-4 uppercase tracking-wider border-b border-gray-800 pb-2">Chứng Nhận & Liên Hệ</h4>
                     <p class="text-xs text-gray-400 mb-3">Tổng đài hỗ trợ tư vấn Dược sĩ 24/7:</p>
-                    <a href="https://zalo.me/0924093461" target="_blank" class="inline-flex items-center gap-2 bg-[#0068FF] text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-600 transition-colors mb-4 w-full justify-center shadow-md">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-4 h-4 object-contain filter brightness-0 invert" alt="Zalo">
+                    <a href="https://zalo.me/0924093461" target="_blank" class="inline-flex items-center gap-2.5 bg-[#0068FF] text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-600 transition-colors mb-4 w-full justify-center shadow-md">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="24" fill="#0068FF"/>
+                            <path d="M13.5 15.5h21v3.5l-12.5 11h12.5v3.5h-21v-3.5l12.5-11h-12.5v-3.5z" fill="#FFFFFF"/>
+                        </svg>
                         Hotline / Zalo: 0924.093.461
                     </a>
                     
-                    <!-- Badge Bộ Công Thương -->
-                    <div class="pt-2">
-                        <a href="http://online.gov.vn" target="_blank" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 p-2.5 rounded-xl border border-white/20 transition-all">
-                            <img src="https://file.hstatic.net/1000300454/file/logo_da_thong_bao_bo_cong_thuong_bd40a97c4e514c33a9254d33939634e2.png" alt="Đã thông báo Bộ Công Thương" class="h-9 w-auto object-contain">
+                    <!-- Badge Bộ Công Thương (Inline SVG Chính Thức 100% Sắc Nét) -->
+                    <div class="pt-1">
+                        <a href="http://online.gov.vn" target="_blank" class="inline-flex items-center gap-3 bg-gray-800/80 hover:bg-gray-800 p-2.5 rounded-2xl border border-gray-700/80 transition-all w-full shadow-lg group">
+                            <!-- Official MoIT Red & Gold Crest SVG -->
+                            <svg class="w-9 h-9 flex-shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="46" fill="#CC0000" stroke="#FFD700" stroke-width="3"/>
+                                <circle cx="50" cy="50" r="38" fill="none" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="3 2"/>
+                                <polygon points="50,20 57,34 73,35 61,46 65,62 50,53 35,62 39,46 27,35 43,34" fill="#FFD700"/>
+                                <path d="M18 68 C 35 82, 65 82, 82 68 L 78 78 C 60 88, 40 88, 22 78 Z" fill="#0044AA" stroke="#FFD700" stroke-width="1"/>
+                                <text x="50" y="76" font-family="Arial, sans-serif" font-weight="900" font-size="7" fill="#FFFFFF" text-anchor="middle">BỘ CÔNG THƯƠNG</text>
+                            </svg>
                             <div class="text-left">
-                                <span class="block text-[10px] font-bold text-emerald-400 uppercase">Đã Thông Báo</span>
-                                <span class="block text-[9px] text-gray-300">Bộ Công Thương Việt Nam</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[11px] font-black text-emerald-400 uppercase tracking-wider">ĐÃ THÔNG BÁO</span>
+                                    <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                </div>
+                                <span class="block text-[10px] font-bold text-gray-200">Bộ Công Thương Việt Nam</span>
+                                <span class="block text-[9px] text-gray-400 group-hover:text-emerald-300 transition-colors">Xác thực online.gov.vn</span>
                             </div>
                         </a>
                     </div>
@@ -992,10 +1006,13 @@
                         * Kết quả phân tích được tạo bởi AI (Trí tuệ nhân tạo) dựa trên công nghệ thị giác máy tính và chỉ mang tính chất tham khảo. 
                         Để có phác đồ điều trị y khoa chính xác nhất cho các bệnh lý về da, vui lòng liên hệ chuyên gia.
                     </p>
-                    <button onclick="window.open('https://zalo.me/', '_blank')" class="px-6 py-2.5 bg-[#0068FF] text-white rounded-xl font-semibold shadow-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" class="w-5 h-5 filter brightness-0 invert" alt="Zalo">
-                        Gặp Dược sĩ tư vấn 1:1
-                    </button>
+                    <a href="https://zalo.me/0924093461" target="_blank" class="px-6 py-2.5 bg-[#0068FF] text-white rounded-xl font-bold text-sm shadow-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="24" fill="#0068FF"/>
+                            <path d="M13.5 15.5h21v3.5l-12.5 11h12.5v3.5h-21v-3.5l12.5-11h-12.5v-3.5z" fill="#FFFFFF"/>
+                        </svg>
+                        Gặp Dược sĩ tư vấn 1:1 qua Zalo
+                    </a>
                 </div>
             </div>
 
@@ -1222,7 +1239,7 @@
 
     <script src="js/auth.js"></script>
     <script src="js/email-service.js"></script>
-    <script src="js/skin-ai.js?v=10"></script>
+    <script src="js/skin-ai.js?v=11"></script>
     <script src="js/camera-ai.js"></script>
     <script src="js/cart.js"></script>
     <script>
