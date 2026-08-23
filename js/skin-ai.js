@@ -2214,7 +2214,7 @@ function showToast(message) {
 
 // AUTOMATIC SKINCARE STEP TYPE CLASSIFICATION FOR ALL PRODUCTS
 function getProductStepType(p) {
-    if (p.stepType) return p.stepType;
+    if (p.stepType) return String(p.stepType).toLowerCase().trim();
     const text = (p.name + ' ' + (p.slug || '') + ' ' + (p.uses || '') + ' ' + (p.category || '')).toLowerCase();
     
     if (text.includes('rửa mặt') || text.includes('tẩy trang') || text.includes('cleanser') || text.includes('mousse') || text.includes('micellar') || text.includes('sữa tắm')) {
@@ -2244,16 +2244,21 @@ function renderCatalog() {
     grid.innerHTML = '';
     
     let filtered = PRODUCTS;
-    if (currentBrandFilter !== 'all') {
-        filtered = filtered.filter(p => p.brand === currentBrandFilter || (p.brandSlug && p.brandSlug.toLowerCase() === currentBrandFilter.toLowerCase()));
+    if (currentBrandFilter && currentBrandFilter !== 'all') {
+        const targetB = currentBrandFilter.toLowerCase();
+        filtered = filtered.filter(p => 
+            (p.brand && p.brand.toLowerCase() === targetB) || 
+            (p.brandSlug && p.brandSlug.toLowerCase() === targetB)
+        );
     }
-    if (currentStepFilter !== 'all') {
-        filtered = filtered.filter(p => getProductStepType(p) === currentStepFilter);
+    if (currentStepFilter && currentStepFilter !== 'all') {
+        const targetS = currentStepFilter.toLowerCase();
+        filtered = filtered.filter(p => getProductStepType(p) === targetS);
     }
     if (currentSearchQuery) {
-        const q = currentSearchQuery.toLowerCase();
+        const q = currentSearchQuery.toLowerCase().trim();
         filtered = filtered.filter(p => 
-            p.name.toLowerCase().includes(q) || 
+            (p.name && p.name.toLowerCase().includes(q)) || 
             (p.fullIngredients && p.fullIngredients.toLowerCase().includes(q)) ||
             (p.keyActives && p.keyActives.some(a => a.toLowerCase().includes(q)))
         );
