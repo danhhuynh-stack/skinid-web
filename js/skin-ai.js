@@ -2253,7 +2253,30 @@ function renderCatalog() {
     }
     if (currentStepFilter && currentStepFilter !== 'all') {
         const targetS = currentStepFilter.toLowerCase();
-        filtered = filtered.filter(p => getProductStepType(p) === targetS);
+        const stepFiltered = filtered.filter(p => getProductStepType(p) === targetS);
+        
+        // Smart Fallback: Nếu thương hiệu hiện tại không có bước skincare này, tự động tìm trên tất cả thương hiệu
+        if (stepFiltered.length === 0 && currentBrandFilter !== 'all') {
+            const allStepFiltered = PRODUCTS.filter(p => getProductStepType(p) === targetS);
+            if (allStepFiltered.length > 0) {
+                currentBrandFilter = 'all';
+                // Reset active brand UI tab to 'all'
+                const brandBtns = document.querySelectorAll('#brand-filters .filter-btn');
+                brandBtns.forEach(b => {
+                    b.classList.remove('bg-brand-primary', 'text-white', 'active');
+                    b.classList.add('text-gray-600', 'hover:bg-brand-blush');
+                    if (b.dataset.brand === 'all') {
+                        b.classList.remove('text-gray-600', 'hover:bg-brand-blush');
+                        b.classList.add('bg-brand-primary', 'text-white', 'active');
+                    }
+                });
+                filtered = allStepFiltered;
+            } else {
+                filtered = stepFiltered;
+            }
+        } else {
+            filtered = stepFiltered;
+        }
     }
     if (currentSearchQuery) {
         const q = currentSearchQuery.toLowerCase().trim();
@@ -2262,6 +2285,12 @@ function renderCatalog() {
             (p.fullIngredients && p.fullIngredients.toLowerCase().includes(q)) ||
             (p.keyActives && p.keyActives.some(a => a.toLowerCase().includes(q)))
         );
+    }
+
+    // Update Result Count UI Indicator
+    const countEl = document.getElementById('filter-result-count');
+    if (countEl) {
+        countEl.innerHTML = `Hiển thị <span class="font-extrabold text-brand-primary">${filtered.length}</span> sản phẩm`;
     }
 
     if (filtered.length === 0) {
