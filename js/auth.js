@@ -92,6 +92,37 @@ class AuthManager {
         return { success: true, user: user };
     }
 
+    loginOrRegisterGoogle(googleUser) {
+        const users = this.getUsers();
+        let user = users.find(u => u.email.toLowerCase() === googleUser.email.toLowerCase().trim());
+        if (!user) {
+            user = {
+                id: 'usr_gg_' + Date.now(),
+                name: googleUser.name || 'Khách Hàng Google',
+                email: googleUser.email.toLowerCase().trim(),
+                phone: googleUser.phone || '',
+                password: 'google_auth_sso',
+                createdAt: new Date().toISOString()
+            };
+            users.push(user);
+            localStorage.setItem(this.STORAGE_USERS_KEY, JSON.stringify(users));
+        }
+        this.setCurrentSession(user);
+        return { success: true, user: user };
+    }
+
+    resetPassword(email) {
+        const users = this.getUsers();
+        const user = users.find(u => u.email.toLowerCase() === email.toLowerCase().trim());
+        if (!user) {
+            return { success: false, message: 'Email này chưa đăng ký tài khoản trên hệ thống SkinID!' };
+        }
+        const tempPassword = 'SKN' + Math.floor(100000 + Math.random() * 900000);
+        user.password = tempPassword;
+        localStorage.setItem(this.STORAGE_USERS_KEY, JSON.stringify(users));
+        return { success: true, user: user, tempPassword: tempPassword };
+    }
+
     logout() {
         localStorage.removeItem(this.STORAGE_CURRENT_USER_KEY);
         this.updateHeaderUI();
