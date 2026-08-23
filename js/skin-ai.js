@@ -2345,6 +2345,40 @@ function renderCatalog() {
 }
 
 
+window.filterByBrand = function(brand, el) {
+    currentBrandFilter = brand;
+    const brandBtns = document.querySelectorAll('#brand-filters .filter-btn');
+    brandBtns.forEach(b => {
+        b.classList.remove('bg-brand-primary', 'text-white', 'active');
+        b.classList.add('text-gray-600', 'hover:bg-brand-blush');
+    });
+    if (el) {
+        const targetBtn = el.closest ? el.closest('.filter-btn') : el;
+        if (targetBtn) {
+            targetBtn.classList.remove('text-gray-600', 'hover:bg-brand-blush');
+            targetBtn.classList.add('bg-brand-primary', 'text-white', 'active');
+        }
+    }
+    renderCatalog();
+};
+
+window.filterByStep = function(step, el) {
+    currentStepFilter = step;
+    const stepBtns = document.querySelectorAll('#step-filters .step-filter-btn');
+    stepBtns.forEach(b => {
+        b.classList.remove('bg-gray-900', 'text-white', 'active');
+        b.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
+    });
+    if (el) {
+        const targetBtn = el.closest ? el.closest('.step-filter-btn') : el;
+        if (targetBtn) {
+            targetBtn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
+            targetBtn.classList.add('bg-gray-900', 'text-white', 'active');
+        }
+    }
+    renderCatalog();
+};
+
 function initCatalog() {
     renderCatalog();
     
@@ -2354,15 +2388,7 @@ function initCatalog() {
         btn.addEventListener('click', (e) => {
             const targetBtn = e.target.closest('.filter-btn');
             if (!targetBtn) return;
-            brandBtns.forEach(b => {
-                b.classList.remove('bg-brand-primary', 'text-white', 'active');
-                b.classList.add('text-gray-600', 'hover:bg-brand-blush');
-            });
-            targetBtn.classList.remove('text-gray-600', 'hover:bg-brand-blush');
-            targetBtn.classList.add('bg-brand-primary', 'text-white', 'active');
-            
-            currentBrandFilter = targetBtn.dataset.brand;
-            renderCatalog();
+            filterByBrand(targetBtn.dataset.brand, targetBtn);
         });
     });
 
@@ -2372,15 +2398,7 @@ function initCatalog() {
         btn.addEventListener('click', (e) => {
             const targetBtn = e.target.closest('.step-filter-btn');
             if (!targetBtn) return;
-            stepBtns.forEach(b => {
-                b.classList.remove('bg-gray-900', 'text-white', 'active');
-                b.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
-            });
-            targetBtn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
-            targetBtn.classList.add('bg-gray-900', 'text-white', 'active');
-            
-            currentStepFilter = targetBtn.dataset.step;
-            renderCatalog();
+            filterByStep(targetBtn.dataset.step, targetBtn);
         });
     });
 

@@ -342,10 +342,10 @@
                 <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                     <!-- Brand Tabs -->
                     <div class="flex flex-wrap bg-white rounded-full p-1 border border-gray-200 shadow-sm" id="brand-filters">
-                        <button class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold bg-brand-primary text-white" data-brand="all">Tất cả thương hiệu</button>
-                        <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="Rilastil">Rilastil</button>
-                        <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="TWON">TWON</button>
-                        <button class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="DVAH">DVAH</button>
+                        <button onclick="filterByBrand('all', this)" class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold bg-brand-primary text-white" data-brand="all">Tất cả thương hiệu</button>
+                        <button onclick="filterByBrand('Rilastil', this)" class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="Rilastil">Rilastil</button>
+                        <button onclick="filterByBrand('TWON', this)" class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="TWON">TWON</button>
+                        <button onclick="filterByBrand('DVAH', this)" class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="DVAH">DVAH</button>
                     </div>
                     
                     <!-- Search -->
@@ -358,13 +358,13 @@
                 <!-- Skincare Step Category Filter Pills -->
                 <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="step-filters">
                     <span class="text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap mr-2">Bước Skincare:</span>
-                    <button class="step-filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-900 text-white transition-colors whitespace-nowrap" data-step="all">Tất cả</button>
-                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="cleanser">Sữa rửa mặt / Tẩy trang</button>
-                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="toner">Toner / Lotion</button>
-                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="treatment">Serum / Đặc trị</button>
-                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="moisturizer">Kem dưỡng ẩm</button>
-                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="sunscreen">Kem chống nắng</button>
-                    <button class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="special">Nước hoa & Khác</button>
+                    <button onclick="filterByStep('all', this)" class="step-filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-900 text-white transition-colors whitespace-nowrap" data-step="all">Tất cả</button>
+                    <button onclick="filterByStep('cleanser', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="cleanser">Sữa rửa mặt / Tẩy trang</button>
+                    <button onclick="filterByStep('toner', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="toner">Toner / Lotion</button>
+                    <button onclick="filterByStep('treatment', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="treatment">Serum / Đặc trị</button>
+                    <button onclick="filterByStep('moisturizer', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="moisturizer">Kem dưỡng ẩm</button>
+                    <button onclick="filterByStep('sunscreen', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="sunscreen">Kem chống nắng</button>
+                    <button onclick="filterByStep('special', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="special">Nước hoa & Khác</button>
                 </div>
             </div>
             
@@ -1050,7 +1050,7 @@
     </div>
 
 
-    <script src="js/skin-ai.js?v=4"></script>
+    <script src="js/skin-ai.js?v=6"></script>
     <script src="js/camera-ai.js"></script>
     <script src="js/cart.js"></script>
     <script>
