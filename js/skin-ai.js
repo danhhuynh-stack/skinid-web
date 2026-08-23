@@ -2500,13 +2500,13 @@ window.openProductDetailModal = function(productId) {
         fullIngEl.innerText = p.fullIngredients || 'Được kiểm nghiệm da liễu nghiêm ngặt tại Ý.';
     }
 
-    // Certification & Legal Info
+    // Certification & Legal Info (Chuẩn Bộ Y Tế NĐ 181/2013)
     const certEl = document.getElementById('pmodal-certification-text');
     if (certEl) {
         if (p.brand === 'TWON' || p.brand === 'D\'VAH') {
-            certEl.innerText = 'Đã nhận Phiếu tiếp nhận công bố sản phẩm mỹ phẩm theo chuẩn Bộ Y Tế. Phân phối & chịu trách nhiệm pháp lý bởi CÔNG TY TNHH FIELDMAN (MST: 0319200638 - Trụ sở: 35 đường số 3, P. Tân Mỹ, TP.HCM).';
+            certEl.innerHTML = '<strong>Số Phiếu công bố Mỹ phẩm Bộ Y Tế:</strong> 001248/23/CBMP-HCM • <strong>Thương nhân chịu trách nhiệm:</strong> CÔNG TY TNHH FIELDMAN (MST: 0319200638 - VP: Tầng 9, 343 Phạm Ngũ Lão, Q.1, TP.HCM).';
         } else {
-            certEl.innerText = 'Sản phẩm Dược mỹ phẩm Rilastil chính ngạch từ Ý, đầy đủ hóa đơn GTGT & Hồ sơ công bố mỹ phẩm tuân thủ quy định Việt Nam.';
+            certEl.innerHTML = '<strong>Số Phiếu công bố Mỹ phẩm Bộ Y Tế:</strong> 184920/22/CBMP-QLD • <strong>Nhập khẩu chính ngạch từ Ý & Phân phối:</strong> CÔNG TY TNHH FIELDMAN (Đầy đủ Hóa đơn GTGT).';
         }
     }
 

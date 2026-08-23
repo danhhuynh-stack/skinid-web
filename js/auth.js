@@ -285,7 +285,17 @@ class AuthManager {
             return;
         }
 
-        let html = '';
+        let html = `
+            <div class="flex items-center justify-between bg-rose-50 border border-rose-100 p-3 rounded-2xl mb-3">
+                <div class="flex items-center gap-2 text-xs text-rose-800">
+                    <i data-feather="shield-off" class="w-4 h-4 text-rose-600 flex-shrink-0"></i>
+                    <span>Quyền bảo vệ dữ liệu (NĐ 13/2023):</span>
+                </div>
+                <button onclick="window.authManager.clearAllUserHistory()" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline flex items-center gap-1">
+                    <i data-feather="trash-2" class="w-3.5 h-3.5"></i> Xóa dữ liệu
+                </button>
+            </div>
+        `;
         historyList.forEach((item, index) => {
             let scoreColor = 'text-emerald-600 bg-emerald-50 border-emerald-200';
             if (item.healthScore < 60) scoreColor = 'text-rose-600 bg-rose-50 border-rose-200';
@@ -330,6 +340,25 @@ class AuthManager {
 
         container.innerHTML = html;
         if (typeof feather !== 'undefined') feather.replace();
+    }
+
+    clearAllUserHistory() {
+        const user = this.getCurrentUser();
+        if (!user) return;
+        if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử soi da & dữ liệu cá nhân theo Nghị định 13/2023/NĐ-CP?")) {
+            try {
+                const allHistory = JSON.parse(localStorage.getItem(this.STORAGE_HISTORY_KEY)) || {};
+                delete allHistory[user.id];
+                localStorage.setItem(this.STORAGE_HISTORY_KEY, JSON.stringify(allHistory));
+                this.renderHistoryContent();
+                this.updateHeaderUI();
+                if (typeof showToast === 'function') {
+                    showToast('Đã xóa toàn bộ lịch sử & dữ liệu cá nhân thành công');
+                }
+            } catch (e) {
+                console.error("Failed to delete user history:", e);
+            }
+        }
     }
 }
 
