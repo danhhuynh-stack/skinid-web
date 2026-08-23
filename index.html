@@ -815,11 +815,11 @@
                                 <!-- Injected by JS -->
                             </div>
                             <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                                <button class="px-6 py-2.5 bg-brand-primary text-white rounded-xl font-semibold shadow-md shadow-brand-primary/20 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-                                    <i data-feather="save" class="w-4 h-4"></i> Lưu kết quả
+                                <button onclick="window.emailService.promptSendEmail()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                    <i data-feather="mail" class="w-4 h-4"></i> Gửi báo cáo về Email
                                 </button>
-                                <button class="px-6 py-2.5 bg-white text-brand-dark border border-gray-200 rounded-xl font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-                                    <i data-feather="share-2" class="w-4 h-4"></i> Chia sẻ
+                                <button onclick="if(window.authManager) window.authManager.openHistoryModal();" class="px-5 py-2.5 bg-brand-primary text-white rounded-xl font-semibold text-xs sm:text-sm shadow-md shadow-brand-primary/20 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                    <i data-feather="clock" class="w-4 h-4"></i> Xem lịch sử cá nhân
                                 </button>
                             </div>
                         </div>
@@ -1239,7 +1239,7 @@
 
     <script src="js/auth.js"></script>
     <script src="js/email-service.js"></script>
-    <script src="js/skin-ai.js?v=11"></script>
+    <script src="js/skin-ai.js?v=12"></script>
     <script src="js/camera-ai.js"></script>
     <script src="js/cart.js"></script>
     <script>
