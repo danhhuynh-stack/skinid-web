@@ -2212,6 +2212,32 @@ function showToast(message) {
 
 // CATALOG
 
+// AUTOMATIC SKINCARE STEP TYPE CLASSIFICATION FOR ALL PRODUCTS
+function getProductStepType(p) {
+    if (p.stepType) return p.stepType;
+    const text = (p.name + ' ' + (p.slug || '') + ' ' + (p.uses || '') + ' ' + (p.category || '')).toLowerCase();
+    
+    if (text.includes('rửa mặt') || text.includes('tẩy trang') || text.includes('cleanser') || text.includes('mousse') || text.includes('micellar') || text.includes('sữa tắm')) {
+        return 'cleanser';
+    }
+    if (text.includes('toner') || text.includes('nước hoa hồng') || text.includes('lotion')) {
+        return 'toner';
+    }
+    if (text.includes('chống nắng') || text.includes('sun') || text.includes('spf')) {
+        return 'sunscreen';
+    }
+    if (text.includes('dưỡng ẩm') || text.includes('cream') || text.includes('kem') || text.includes('balm') || text.includes('gel-72h') || text.includes('mask') || text.includes('mặt nạ')) {
+        return 'moisturizer';
+    }
+    if (text.includes('serum') || text.includes('micropeeling') || text.includes('đặc trị') || text.includes('drops') || text.includes('tinh chất') || text.includes('tẩy da chết') || text.includes('exfoliating') || text.includes('attiva') || text.includes('retinol')) {
+        return 'treatment';
+    }
+    if (text.includes('nước hoa') || text.includes('perfume')) {
+        return 'special';
+    }
+    return 'treatment';
+}
+
 function renderCatalog() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
@@ -2219,10 +2245,10 @@ function renderCatalog() {
     
     let filtered = PRODUCTS;
     if (currentBrandFilter !== 'all') {
-        filtered = filtered.filter(p => p.brand === currentBrandFilter);
+        filtered = filtered.filter(p => p.brand === currentBrandFilter || (p.brandSlug && p.brandSlug.toLowerCase() === currentBrandFilter.toLowerCase()));
     }
     if (currentStepFilter !== 'all') {
-        filtered = filtered.filter(p => p.stepType === currentStepFilter);
+        filtered = filtered.filter(p => getProductStepType(p) === currentStepFilter);
     }
     if (currentSearchQuery) {
         const q = currentSearchQuery.toLowerCase();
@@ -2326,14 +2352,16 @@ function initCatalog() {
     const brandBtns = document.querySelectorAll('#brand-filters .filter-btn');
     brandBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
+            const targetBtn = e.target.closest('.filter-btn');
+            if (!targetBtn) return;
             brandBtns.forEach(b => {
                 b.classList.remove('bg-brand-primary', 'text-white', 'active');
                 b.classList.add('text-gray-600', 'hover:bg-brand-blush');
             });
-            e.target.classList.remove('text-gray-600', 'hover:bg-brand-blush');
-            e.target.classList.add('bg-brand-primary', 'text-white', 'active');
+            targetBtn.classList.remove('text-gray-600', 'hover:bg-brand-blush');
+            targetBtn.classList.add('bg-brand-primary', 'text-white', 'active');
             
-            currentBrandFilter = e.target.dataset.brand;
+            currentBrandFilter = targetBtn.dataset.brand;
             renderCatalog();
         });
     });
@@ -2342,14 +2370,16 @@ function initCatalog() {
     const stepBtns = document.querySelectorAll('#step-filters .step-filter-btn');
     stepBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
+            const targetBtn = e.target.closest('.step-filter-btn');
+            if (!targetBtn) return;
             stepBtns.forEach(b => {
                 b.classList.remove('bg-gray-900', 'text-white', 'active');
                 b.classList.add('bg-white', 'text-gray-600', 'border', 'border-gray-200');
             });
-            e.target.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
-            e.target.classList.add('bg-gray-900', 'text-white', 'active');
+            targetBtn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
+            targetBtn.classList.add('bg-gray-900', 'text-white', 'active');
             
-            currentStepFilter = e.target.dataset.step;
+            currentStepFilter = targetBtn.dataset.step;
             renderCatalog();
         });
     });

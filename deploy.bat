@@ -16,13 +16,13 @@ echo ----------------------------------------------------
 echo [2/3] Committing and Pushing to skinid.vn (GitHub Main Branch)...
 echo ----------------------------------------------------
 "C:\Users\Danh Huynh\.gemini\antigravity\scratch\skinid-v2\mingit\cmd\git.exe" add .
-"C:\Users\Danh Huynh\.gemini\antigravity\scratch\skinid-v2\mingit\cmd\git.exe" commit -m "FIXED: Overwrite DVAH perfume images with original JPG files from NUOC HOA Drive folder"
+"C:\Users\Danh Huynh\.gemini\antigravity\scratch\skinid-v2\mingit\cmd\git.exe" commit -m "FIXED: Skincare step filter logic for all products and updated DVAH perfume JPG photos"
 "C:\Users\Danh Huynh\.gemini\antigravity\scratch\skinid-v2\mingit\cmd\git.exe" push origin main
 
 echo ----------------------------------------------------
 echo [3/3] Creating ZIP Backup on Desktop...
 echo ----------------------------------------------------
-powershell -Command "Compress-Archive -Path 'C:\Users\Danh Huynh\.gemini\antigravity\scratch\skinid-v2\*' -DestinationPath 'C:\Users\Danh Huynh\OneDrive\Desktop\SkinID_Web_Deploy_v11.zip' -Force"
+powershell -Command "Compress-Archive -Path 'C:\Users\Danh Huynh\.gemini\antigravity\scratch\skinid-v2\*' -DestinationPath 'C:\Users\Danh Huynh\OneDrive\Desktop\SkinID_Web_Deploy_v12.zip' -Force"
 
 echo DEPLOYMENT SUCCESSFUL! Please refresh skinid.vn (Ctrl + F5).
 pause
