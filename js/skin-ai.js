@@ -1830,164 +1830,306 @@ const PRODUCTS = [
         "link": "https://rilastilvn.com.vn/san-pham/d-clar-concentrated-micropeeling/"
     },
     {
-        "id": "dvah-kamal",
-        "brand": "DVAH",
-        "brandSlug": "dvah",
-        "line": "DVAH SERUM",
-        "name": "Tinh Chất Phục Hồi & Tái Tạo Da DVAH Kamal Renewal Serum 30ML",
-        "slug": "tinh-chat-phuc-hoi-tai-tao-da-dvah-kamal-renewal-serum",
-        "price": 1250000,
-        "originalPrice": 1450000,
-        "volume": "30 ml",
-        "tier": "Signature",
-        "category": "Tinh chất",
-        "stepType": "treatment",
+        "id": "twon-body-lotion",
+        "brand": "TWON",
+        "brandSlug": "twon",
+        "line": "TWON BODY",
+        "name": "Kem Body Lotion TWON 200ml",
+        "slug": "kem-body-lotion-twon-200ml",
+        "price": 279000,
+        "originalPrice": 320000,
+        "volume": "200ml",
+        "tier": "Essential",
+        "category": "Chăm sóc thể thao & Body",
+        "stepType": "moisturizer",
         "targetConcerns": [
-            "sensitivity",
-            "redness",
-            "barrier_damage",
-            "post_acne"
-        ],
-        "skinTypes": [
-            "sensitive",
-            "damaged",
-            "all"
-        ],
-        "uses": "Làm dịu tức thì tình trạng ửng đỏ, sửa chữa màng tế bào bị tổn thương, củng cố hàng rào lipid sinh học và kháng viêm sâu.",
-        "usage": "Thoa 3-4 giọt vào buổi sáng và tối sau bước toner.",
-        "keyActives": [
-            "CENTELLA ASIATICA (RAU MÁ TINH KHIẾT 95%): Kháng viêm, làm dịu da nhạy cảm và kích thích làm lành vết thương.",
-            "PANTHENOL (VITAMIN B5) 5%: Phục hồi màng bảo vệ da, giảm kích ứng và giữ ẩm sâu.",
-            "MADECASSOSIDE & ASIATICOSIDE: Thúc đẩy tăng sinh tế bào hạt và ngăn ngừa sẹo sau viêm."
-        ],
-        "mainActives": [
-            "Centella Asiatica 95%",
-            "Panthenol (B5) 5%",
-            "Madecassoside"
-        ],
-        "fullIngredients": "Centella Asiatica Extract, Panthenol, Madecassoside, Asiaticoside, Ceramide NP, Sodium Hyaluronate, Butylene Glycol, Allantoin.",
-        "image": "/images/products/placeholder.jpg",
-        "originalImageUrl": "",
-        "link": "https://skinid.vn"
-    },
-    {
-        "id": "dvah-malini",
-        "brand": "DVAH",
-        "brandSlug": "dvah",
-        "line": "DVAH HYDRATION",
-        "name": "Serum Cấp Ẩm Chuyên Sâu DVAH Malini Hydrating Elixir 30ML",
-        "slug": "serum-cap-am-chuyen-sau-dvah-malini-hydrating-elixir",
-        "price": 1150000,
-        "originalPrice": 1350000,
-        "volume": "30 ml",
-        "tier": "Signature",
-        "category": "Tinh chất",
-        "stepType": "treatment",
-        "targetConcerns": [
-            "moisture",
-            "dehydration",
-            "roughness",
-            "dullness"
+            "dryness",
+            "body_pigmentation",
+            "roughness"
         ],
         "skinTypes": [
             "all",
             "dry",
-            "dehydrated"
+            "normal"
         ],
-        "uses": "Ngậm nước đa tầng tế bào, tạo hiệu ứng da căng bóng thủy tinh (Glass Skin), thu nhỏ lỗ chân lông và tăng độ mềm mượt.",
-        "usage": "Thoa đều 1 lượng vừa đủ lên toàn mặt mỗi sáng và tối.",
+        "uses": "Dòng dưỡng thể cao cấp điểm nhấn hương nước hoa sang trọng, hỗ trợ dưỡng ẩm chuyên sâu và làm sáng da tự nhiên.",
+        "usage": "Thoa đều một lượng lotion vừa đủ lên toàn thân sau khi tắm sạch. Massage nhẹ nhàng theo chuyển động tròn để dưỡng chất thẩm thấu tốt nhất.",
         "keyActives": [
-            "8D HYALURONIC ACID COMPLEX: 8 kích thước phân tử HA cấp ẩm từ tầng sừng đến trung bì.",
-            "NIACINAMIDE 5%: Dưỡng sáng da, củng cố màng lipid và kiềm dầu nhẹ nhàng.",
-            "POLYGLUTAMIC ACID: Khóa ẩm gấp 5 lần Hyaluronic Acid thông thường."
+            "NIACINAMIDE (VITAMIN B3): Dưỡng thể sáng da, mờ thâm body và củng cố độ ẩm tự nhiên.",
+            "GLYCERIN & CHIẾT XUẤT THẢO MỘC: Cấp ẩm dịu nhẹ, cho da mịn màng ngậm nước.",
+            "TINH DẦU HƯƠNG NƯỚC HOA PHÁP: Lưu hương thơm quyến rũ tinh tế suốt nhiều giờ."
         ],
         "mainActives": [
-            "8D Hyaluronic Acid",
-            "Niacinamide 5%",
-            "Polyglutamic Acid"
+            "NIACINAMIDE (VITAMIN B3)",
+            "GLYCERIN",
+            "TINH DẦU HƯƠNG NƯỚC HOA"
         ],
-        "fullIngredients": "8D Hyaluronic Acid Complex, Niacinamide, Polyglutamic Acid, Beta-Glucan, Glycerin, Sodium PCA.",
-        "image": "/images/products/placeholder.jpg",
-        "originalImageUrl": "",
-        "link": "https://skinid.vn"
+        "fullIngredients": "Aqua (Water), Glycerin, Niacinamide (Vitamin B3), Caprylic/Capric Triglyceride, Dimethicone, Cetearyl Alcohol, Titanium Dioxide, Fragrance, Phenoxyethanol, Ethylhexylglycerin, Xanthan Gum.",
+        "image": "/images/products/twon-body-lotion.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/twon-body-lotion.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=twon-body-lotion"
+    },
+    {
+        "id": "twon-kem-u-trang",
+        "brand": "TWON",
+        "brandSlug": "twon",
+        "line": "TWON BODY",
+        "name": "Kem Ủ Trắng TWON 250ml",
+        "slug": "kem-u-trang-twon-250ml",
+        "price": 249000,
+        "originalPrice": 290000,
+        "volume": "250ml",
+        "tier": "Essential",
+        "category": "Chăm sóc thể thao & Body",
+        "stepType": "special",
+        "targetConcerns": [
+            "body_pigmentation",
+            "uneven_tone",
+            "roughness"
+        ],
+        "skinTypes": [
+            "all",
+            "hyperpigmentation"
+        ],
+        "uses": "Liệu trình chăm sóc dưỡng sáng da toàn thân tại nhà, hỗ trợ làm đều màu da và nuôi dưỡng da căng mịn rạng rỡ.",
+        "usage": "Thoa một lớp kem vừa đủ lên da toàn thân (tránh vết thương hở), ủ trong 15-20 phút sau đó xả lại bằng nước sạch. Sử dụng 2-3 lần/tuần.",
+        "keyActives": [
+            "ALPHA ARBUTIN & GLUTATHIONE: Khắc phục vùng da xỉn màu, dưỡng trắng hồng tự nhiên.",
+            "PEARL POWDER (BỘT NGỌC TRAI): Cho da căng bóng mịn màng và bắt sáng.",
+            "NIACINAMIDE: Cân bằng sắc tố và củng cố hàng rào lipid."
+        ],
+        "mainActives": [
+            "ALPHA ARBUTIN",
+            "GLUTATHIONE",
+            "PEARL POWDER"
+        ],
+        "fullIngredients": "Aqua (Water), Glycerin, Alpha Arbutin, Niacinamide, Pearl Powder, Glutathione, Stearic Acid, Cetyl Alcohol, Titanium Dioxide, Fragrance, Phenoxyethanol.",
+        "image": "/images/products/twon-kem-u-trang.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/twon-kem-u-trang.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=twon-kem-u-trang"
+    },
+    {
+        "id": "twon-sua-tam",
+        "brand": "TWON",
+        "brandSlug": "twon",
+        "line": "TWON BODY",
+        "name": "Sữa Tắm Hương Nước Hoa TWON 450ml",
+        "slug": "sua-tam-huong-nuoc-hoa-twon-450ml",
+        "price": 179000,
+        "originalPrice": 210000,
+        "volume": "450ml",
+        "tier": "Essential",
+        "category": "Làm sạch Body",
+        "stepType": "cleanser",
+        "targetConcerns": [
+            "impurities",
+            "dryness",
+            "body_odor"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Sữa tắm chăm sóc da êm dịu kết hợp nốt hương nước hoa tinh tế, bọt mịn giúp làm sạch sâu mà không gây khô da.",
+        "usage": "Lấy một lượng sữa tắm vừa đủ ra lòng bàn tay hoặc bông tắm, tạo bọt mịn rồi thoa đều lên cơ thể. Tắm sạch lại với nước.",
+        "keyActives": [
+            "TINH DẦU NƯỚC HOA PHÁP: Hương thơm thư thái, quý phái bám tỏa nhẹ nhàng.",
+            "GLYCERIN & DƯỠNG CHẤT THIÊN NHIÊN: Cấp ẩm dịu nhẹ, không làm khô căng da sau khi tắm.",
+            "VITAMIN E: Chống oxy hóa và bảo vệ màng da."
+        ],
+        "mainActives": [
+            "TINH DẦU NƯỚC HOA PHÁP",
+            "GLYCERIN",
+            "VITAMIN E"
+        ],
+        "fullIngredients": "Aqua (Water), Sodium Laureth Sulfate, Cocamidopropyl Betaine, Glycerin, Sodium Chloride, Parfum (Fragrance), Tocopheryl Acetate, Citric Acid, Disodium EDTA, Phenoxyethanol.",
+        "image": "/images/products/twon-sua-tam.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/twon-sua-tam.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=twon-sua-tam"
+    },
+    {
+        "id": "dvah-sarika",
+        "brand": "DVAH",
+        "brandSlug": "dvah",
+        "line": "D'VAH PERFUME",
+        "name": "Nước Hoa D'VAH SARIKA 10ml",
+        "slug": "nuoc-hoa-dvah-sarika-10ml",
+        "price": 159000,
+        "originalPrice": 190000,
+        "volume": "10ml",
+        "tier": "Essential",
+        "category": "Nước hoa",
+        "stepType": "special",
+        "targetConcerns": [
+            "body_odor",
+            "fragrance"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Phong cách tươi sáng, trẻ trung và tràn đầy năng lượng tươi mới. Mùi hương thanh mát của trái cây mùa hạ hòa quyện cùng hương hoa trắng dịu ngọt.",
+        "usage": "Xịt trực tiếp vào các điểm mạch trên cơ thể như cổ tay, sau tai, vùng cổ để mùi hương tỏa ra tự nhiên và bám hương lâu.",
+        "keyActives": [
+            "NỐT HƯƠNG TRÁI CÂY MÙA HẠ: Thanh mát, năng động.",
+            "HƯƠNG HOA TRẮNG TINH KHÔI: Nhẹ nhàng, trẻ trung.",
+            "TINH DẦU THIÊN NHIÊN LƯU HƯƠNG: Bám mùi từ 6-8 tiếng."
+        ],
+        "mainActives": [
+            "TRÁI CÂY MÙA HẠ",
+            "HOA TRẮNG TINH KHÔI",
+            "TINH DẦU LƯU HƯƠNG"
+        ],
+        "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Citral, Benzyl Salicylate.",
+        "image": "/images/products/dvah-sarika.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-sarika.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-sarika"
+    },
+    {
+        "id": "dvah-kamal",
+        "brand": "DVAH",
+        "brandSlug": "dvah",
+        "line": "D'VAH PERFUME",
+        "name": "Nước Hoa D'VAH KAMAL 10ml",
+        "slug": "nuoc-hoa-dvah-kamal-10ml",
+        "price": 159000,
+        "originalPrice": 190000,
+        "volume": "10ml",
+        "tier": "Essential",
+        "category": "Nước hoa",
+        "stepType": "special",
+        "targetConcerns": [
+            "body_odor",
+            "fragrance"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Hương thơm dịu dàng, lấy cảm hứng từ vẻ đẹp thanh khiết của hoa sen Việt Nam. Thuần khiết, thư thái và e ấp.",
+        "usage": "Xịt nhẹ lên quần áo hoặc các vùng điểm mạch nhiệt độ cơ thể từ khoảng cách 15-20cm.",
+        "keyActives": [
+            "TINH CHẤT HOA SEN VIỆT NAM: Thanh tao, đằm thắm.",
+            "TẦNG HƯƠNG PHẤN NỮ TÍNH: Dịu dàng, thanh lịch.",
+            "TINH DẦU NƯỚC HOA CAO CẤP: Lưu hương tinh tế."
+        ],
+        "mainActives": [
+            "TINH CHẤT HOA SEN",
+            "HƯƠNG PHẤN NỮ TÍNH",
+            "TINH DẦU NƯỚC HOA"
+        ],
+        "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Nelumbo Nucifera (Lotus) Flower Extract, Hydroxycitronellal, Geraniol.",
+        "image": "/images/products/dvah-kamal.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-kamal.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-kamal"
     },
     {
         "id": "dvah-rakta",
         "brand": "DVAH",
         "brandSlug": "dvah",
-        "line": "DVAH ANTI-AGING",
-        "name": "Kem Dưỡng Tăng Đàn Hồi & Trẻ Hóa Da DVAH Rakta Firming Cream 50ML",
-        "slug": "kem-duong-tang-dan-hoi-tre-hoa-da-dvah-rakta-firming-cream",
-        "price": 1450000,
-        "originalPrice": 1650000,
-        "volume": "50 ml",
-        "tier": "Signature",
-        "category": "Dưỡng ẩm",
-        "stepType": "moisturizer",
-        "targetConcerns": [
-            "aging",
-            "wrinkles",
-            "elasticity",
-            "nasolabial_folds"
-        ],
-        "skinTypes": [
-            "aging",
-            "dry",
-            "combination"
-        ],
-        "uses": "Kích thích nguyên bào sợi sản sinh Collagen & Elastin, làm đầy rãnh nhăn lão hóa và nâng cơ mặt săn chắc.",
-        "usage": "Sử dụng vào bước cuối cùng của chu trình dưỡng da buổi tối.",
-        "keyActives": [
-            "MATRIXYL 3000 PEPTIDE COMPLEX: Chuỗi peptide kép kích thích tổng hợp Collagen gấp 2 lần.",
-            "HYDROLYZED COLLAGEN: Collagen thủy phân kích thước nano dễ dàng hấp thu.",
-            "ADENOSINE: Làm mờ nếp chân chim và rãnh cười."
-        ],
-        "mainActives": [
-            "Matrixyl 3000",
-            "Hydrolyzed Collagen",
-            "Adenosine"
-        ],
-        "fullIngredients": "Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7, Hydrolyzed Collagen, Adenosine, Shea Butter, Squalane.",
-        "image": "/images/products/placeholder.jpg",
-        "originalImageUrl": "",
-        "link": "https://skinid.vn"
-    },
-    {
-        "id": "twon-lotion",
-        "brand": "TWON",
-        "brandSlug": "twon",
-        "line": "TWON BODY",
-        "name": "Sữa Dưỡng Thể Sáng Da TWON Whitening Body Lotion 250ML",
-        "slug": "sua-duong-the-sang-da-twon-whitening-body-lotion",
-        "price": 450000,
-        "originalPrice": 550000,
-        "volume": "250 ml",
+        "line": "D'VAH PERFUME",
+        "name": "Nước Hoa D'VAH RAKTA 10ml",
+        "slug": "nuoc-hoa-dvah-rakta-10ml",
+        "price": 179000,
+        "originalPrice": 210000,
+        "volume": "10ml",
         "tier": "Essential",
-        "category": "Dưỡng thể",
+        "category": "Nước hoa",
         "stepType": "special",
         "targetConcerns": [
-            "body_pigmentation",
-            "dryness"
+            "body_odor",
+            "fragrance"
         ],
         "skinTypes": [
             "all"
         ],
-        "uses": "Dưỡng trắng toàn thân chuyên sâu, mờ thâm nách/khuỷu tay và nâng tông tự nhiên không bết dính.",
-        "usage": "Thoa đều lên toàn cơ thể sau khi tắm.",
+        "uses": "Nồng nàn, quyến rũ và để lại dấu ấn ấn tượng khó phai. Hương gỗ gụ ấm áp kết hợp cùng phong vị vani nồng nàn lôi cuốn.",
+        "usage": "Xịt vào sau gáy, cổ tay hoặc ngực để tạo nét quyến rũ tinh tế.",
         "keyActives": [
-            "NIACINAMIDE 7%: Dưỡng trắng đều màu da và ức chế sắc tố body.",
-            "ALPHA ARBUTIN & GLUTATHIONE: Kép đôi dưỡng trắng đỉnh cao.",
-            "SHEA BUTTER: Cung cấp độ ẩm mịn màng cho làn da cơ thể."
+            "HƯƠNG GỖ GỤ ẤM ÁP: Sang trọng, bí ẩn.",
+            "VANI NỒNG NÀN: Ngọt đằm, quyến rũ.",
+            "TINH DẦU ĐẬM ĐẶC: Lưu hương vượt trội."
         ],
-"mainActives": [
-            "Niacinamide 7%",
-            "Alpha Arbutin",
-            "Glutathione"
+        "mainActives": [
+            "HƯƠNG GỖ GỤ",
+            "VANI NỒNG NÀN",
+            "TINH DẦU ĐẬM ĐẶC"
         ],
-        "fullIngredients": "Niacinamide, Alpha Arbutin, Glutathione, Shea Butter, Titanium Dioxide, Hyaluronic Acid, Glycerin.",
-        "image": "/images/products/placeholder.jpg",
-        "originalImageUrl": "",
-        "link": "https://skinid.vn"
+        "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Vanillin, Coumarin, Eugenol, Benzyl Benzoate.",
+        "image": "/images/products/dvah-rakta.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-rakta.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-rakta"
+    },
+    {
+        "id": "dvah-tanmaya",
+        "brand": "DVAH",
+        "brandSlug": "dvah",
+        "line": "D'VAH PERFUME",
+        "name": "Nước Hoa D'VAH TANMAYA 10ml",
+        "slug": "nuoc-hoa-dvah-tanmaya-10ml",
+        "price": 179000,
+        "originalPrice": 210000,
+        "volume": "10ml",
+        "tier": "Essential",
+        "category": "Nước hoa",
+        "stepType": "special",
+        "targetConcerns": [
+            "body_odor",
+            "fragrance"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Sâu lắng, tinh tế, thích hợp cho không gian sang trọng và lãng mạn. Tầng hương gỗ trầm ấm phối hợp cùng hương thảo mộc.",
+        "usage": "Giữ chai xịt cách cơ thể 15cm và xịt nhẹ nhàng lên vùng da mong muốn.",
+        "keyActives": [
+            "HƯƠNG GỖ TRẦM ẤM: Quý phái, sâu lắng.",
+            "THẢO MỘC TINH TẾ: Dịu nhẹ, cuốn hút.",
+            "TINH DẦU NƯỚC HOA PHÁP: Lưu hương dài lâu."
+        ],
+        "mainActives": [
+            "GỖ TRẦM ẤM",
+            "THẢO MỘC TINH TẾ",
+            "TINH DẦU NƯỚC HOA"
+        ],
+        "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Santalum Album (Sandalwood) Oil, Alpha-Isomethyl Ionone, Isoeugenol.",
+        "image": "/images/products/dvah-tanmaya.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-tanmaya.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-tanmaya"
+    },
+    {
+        "id": "dvah-malini",
+        "brand": "DVAH",
+        "brandSlug": "dvah",
+        "line": "D'VAH PERFUME",
+        "name": "Nước Hoa D'VAH MALINI 10ml",
+        "slug": "nuoc-hoa-dvah-malini-10ml",
+        "price": 179000,
+        "originalPrice": 210000,
+        "volume": "10ml",
+        "tier": "Essential",
+        "category": "Nước hoa",
+        "stepType": "special",
+        "targetConcerns": [
+            "body_odor",
+            "fragrance"
+        ],
+        "skinTypes": [
+            "all"
+        ],
+        "uses": "Ngọt ngào, nữ tính, dịu dàng tựa như những cánh hoa trong nắng ban mai. Sự kết hợp giữa hương quả ngọt nhẹ và tầng hương phấn dịu.",
+        "usage": "Xịt nhẹ lên tóc, cổ tay hoặc trang phục để hương thơm ngập tràn nhẹ nhàng suốt cả ngày.",
+        "keyActives": [
+            "HƯƠNG QUẢ NGỌT NHẸ: Thơ mộng, tươi trẻ.",
+            "HƯƠNG PHẤN NỮ TÍNH: Ngọt ngào, gần gũi.",
+            "TINH DẦU LƯU HƯƠNG CAO CẤP: Tỏa hương dễ chịu."
+        ],
+        "mainActives": [
+            "HƯƠNG QUẢ NGỌT",
+            "HƯƠNG PHẤN NỮ TÍNH",
+            "TINH DẦU LƯU HƯƠNG"
+        ],
+        "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Citronellol, Hexyl Cinnamal, Benzyl Alcohol.",
+        "image": "/images/products/dvah-malini.png",
+        "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-malini.png",
+        "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-malini"
     }
 ];
 
@@ -2280,7 +2422,11 @@ window.openProductDetailModal = function(productId) {
     const imgEl = document.getElementById('pmodal-img');
     if (imgEl) {
         imgEl.src = imgSrc;
-        imgEl.onerror = () => { imgEl.src = 'public/images/products/placeholder.jpg'; };
+        imgEl.onerror = () => {
+            if (p.originalImageUrl && imgEl.src !== p.originalImageUrl) {
+                imgEl.src = p.originalImageUrl;
+            }
+        };
     }
 
     // Add to cart action button
