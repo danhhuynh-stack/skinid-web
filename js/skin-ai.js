@@ -3228,6 +3228,21 @@ function renderResults(data, weatherData) {
                 pointHoverBorderColor: 'rgba(232, 122, 144, 1)',
                 borderWidth: 2,
             }]
+        };
+
+        window.skinRadarChart = new Chart(ctxRadar, {
+            type: 'radar',
+            data: radarData,
+            options: {
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0,0,0,0.05)' },
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        pointLabels: {
+                            font: { size: 10, family: "'Inter', sans-serif", weight: '600' },
+                            color: '#4A5568'
+                        },
+                        ticks: { display: false, min: 0, max: 100 }
                     }
                 },
                 plugins: { legend: { display: false } },
