@@ -2757,6 +2757,59 @@ function stringHash(str) {
     return Math.abs(hash).toString(16).toUpperCase().padStart(4, '0');
 }
 
+// --- Scan step animation helper ---
+function activateScanStep(stepNum, totalSteps) {
+    const steps = document.querySelectorAll('#scan-steps-list .scan-step');
+    const titles = [
+        { title: '🔍 Đang nhận diện khuôn mặt...', desc: 'Xác định vùng da từ 3 góc chụp' },
+        { title: '🧬 Phân tích cấu trúc biểu bì...', desc: 'Quét lớp biểu bì và hạ bì' },
+        { title: '💧 Đo lường chỉ số da...', desc: 'Đo độ ẩm, dầu, sắc tố melanin' },
+        { title: '📊 Tổng hợp 12 chỉ số...', desc: 'Kết xuất biểu đồ cấu trúc da' },
+        { title: '✨ Hoàn tất phân tích!', desc: 'Đang tạo báo cáo cá nhân hóa' }
+    ];
+
+    steps.forEach((s, i) => {
+        s.classList.remove('active', 'done');
+        if (i + 1 < stepNum) s.classList.add('done');
+        else if (i + 1 === stepNum) s.classList.add('active');
+    });
+
+    const titleEl = document.getElementById('scan-step-title');
+    const descEl = document.getElementById('scan-step-desc');
+    if (titleEl && titles[stepNum - 1]) {
+        titleEl.textContent = titles[stepNum - 1].title;
+        descEl.textContent = titles[stepNum - 1].desc;
+    }
+
+    const progressBar = document.getElementById('analysis-progress');
+    if (progressBar) {
+        progressBar.style.width = Math.round((stepNum / totalSteps) * 100) + '%';
+    }
+
+    if (window.feather) feather.replace();
+}
+
+// --- Weather API (Open-Meteo, no key needed) ---
+async function fetchWeatherData() {
+    try {
+        const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, () => reject('no-geo'), { timeout: 5000 });
+        });
+        const lat = pos.coords.latitude.toFixed(2);
+        const lon = pos.coords.longitude.toFixed(2);
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,uv_index&timezone=auto`);
+        const data = await res.json();
+        return {
+            temp: Math.round(data.current.temperature_2m),
+            humidity: Math.round(data.current.relative_humidity_2m),
+            uvIndex: Math.round(data.current.uv_index)
+        };
+    } catch (e) {
+        console.warn('Weather fallback to defaults', e);
+        return { temp: 31, humidity: 78, uvIndex: 7 };
+    }
+}
+
 async function startAnalysis() {
     // switch UI
     document.getElementById('capture-flow').classList.add('hidden');
@@ -2764,13 +2817,28 @@ async function startAnalysis() {
     
     document.getElementById('analyzing-flow').classList.remove('hidden');
     document.getElementById('analyzing-flow').classList.add('flex');
-    
-    const progressBar = document.getElementById('analysis-progress');
-    progressBar.style.width = '10%';
-    
+
+    // Show scan thumbnails with captured images
+    if (window.capturedImages) {
+        for (let i = 0; i < Math.min(3, window.capturedImages.length); i++) {
+            const thumb = document.getElementById('scan-thumb-' + (i + 1));
+            if (thumb) {
+                const img = document.createElement('img');
+                img.src = 'data:image/jpeg;base64,' + window.capturedImages[i];
+                img.className = 'w-full h-full object-cover';
+                thumb.prepend(img);
+            }
+        }
+    }
+
+    if (window.feather) feather.replace();
+
+    // Animate step 1
+    activateScanStep(1, 5);
+
     const skinType = document.getElementById('user-skin-type').value;
     
-    const promptText = `Bạn là chuyên gia phân tích da AI. NGUYÊN TẮC QUAN TRỌNG NHẤT: BẠN PHẢI KIỂM TRA 3 BỨC ẢNH CÓ PHẢI LÀ KHUÔN MẶT NGƯỜI HAY KHÔNG.
+    const promptText = `Bạn là chuyên gia phân tích da AI cấp chuyên viên da liễu. NGUYÊN TẮC QUAN TRỌNG NHẤT: BẠN PHẢI KIỂM TRA 3 BỨC ẢNH CÓ PHẢI LÀ KHUÔN MẶT NGƯỜI HAY KHÔNG.
 Nếu ảnh là đồ vật, bức tường, đồ dùng, thú cưng, ảnh tối đen hoặc KHÔNG CÓ KHUÔN MẶT NGƯỜI RÕ RÀNG, BẠN PHẢI TRẢ VỀ DUY NHẤT JSON: {"isNotFace": true, "reason": "No human face detected"} VÀ KHÔNG TRẢ VỀ BẤT KỲ CHỈ SỐ NÀO KHÁC.
 
 Nếu ĐÚNG LÀ KHUÔN MẶT NGƯỜI, hãy phân tích 3 bức ảnh khuôn mặt (chính diện, nghiêng trái 45°, nghiêng phải 45°) của khách hàng với thông tin ban đầu: ${skinType}.
@@ -2778,8 +2846,14 @@ Hãy trả về DUY NHẤT một đối tượng JSON hợp lệ (không chứa 
 {
   "isNotFace": false,
   "skinTypeSummary": "Phân loại da ngắn gọn (vd: Da hỗn hợp thiên dầu nhạy cảm)",
-  "analysis3Angles": "Đánh giá chi tiết tình trạng da dựa trên 3 góc độ ảnh (khoảng 3-4 câu tiếng Việt, chuyên nghiệp)",
+  "analysis3Angles": "Đánh giá chi tiết tình trạng da dựa trên 3 góc độ ảnh (khoảng 4-5 câu tiếng Việt, chuyên nghiệp, đề cập cụ thể vùng da nào có vấn đề gì)",
   "activeIngredients": ["Tên hoạt chất 1", "Tên hoạt chất 2", "Tên hoạt chất 3"],
+  "overallGrade": "A hoặc B hoặc C hoặc D hoặc F",
+  "overallGradeComment": "Nhận xét 1 câu ngắn về xếp hạng tổng thể, ví dụ: Làn da khỏe mạnh, chỉ cần duy trì",
+  "skinConditions": [
+    {"name": "Tên tình trạng da cụ thể phát hiện được", "severity": "Nhẹ hoặc Trung bình hoặc Nặng", "location": "Vùng da bị ảnh hưởng", "description": "Mô tả ngắn 1 câu"}
+  ],
+  "recoveryTimeline": "Dự đoán thời gian phục hồi nếu tuân thủ phác đồ, ví dụ: 4-6 tuần",
   "healthScore": 75,
   "skinAge": 26,
   "moisture": 65,
@@ -2793,9 +2867,16 @@ Hãy trả về DUY NHẤT một đối tượng JSON hợp lệ (không chứa 
   "acneBacteria": 55,
   "texture": 66,
   "darkCircles": 60,
-  "melasma": 50
+  "melasma": 50,
+  "detailedAdvice": {
+    "moisture": {"why": "Giải thích vì sao chỉ số này ở mức đó dựa trên ảnh", "shouldDo": "Lời khuyên cụ thể nên làm", "avoid": "Điều cần tránh"},
+    "sebum": {"why": "...", "shouldDo": "...", "avoid": "..."},
+    "pores": {"why": "...", "shouldDo": "...", "avoid": "..."},
+    "pigmentation": {"why": "...", "shouldDo": "...", "avoid": "..."},
+    "elasticity": {"why": "...", "shouldDo": "...", "avoid": "..."}
+  }
 }
-Lưu ý: Chỉ trả về chuỗi JSON thuần.`;
+Lưu ý: Chỉ trả về chuỗi JSON thuần. Tất cả nội dung phải bằng tiếng Việt. Phân tích phải DỰA TRÊN ẢNH THỰC TẾ, không được bịa số liệu.`;
 
     const payload = {
         contents: [{
@@ -2812,12 +2893,16 @@ Lưu ý: Chỉ trả về chuỗi JSON thuần.`;
         }
     };
 
-    progressBar.style.width = '30%';
-    document.getElementById('analysis-status').innerText = 'Đang phân tích cấu trúc da...';
+    // Animate step 2 after 1.5s
+    setTimeout(() => activateScanStep(2, 5), 1500);
 
     let resultJson = null;
+    let weatherData = null;
 
     try {
+        // Fetch weather in parallel
+        const weatherPromise = fetchWeatherData();
+
         let data = null;
         let fetchSuccess = false;
         
@@ -2844,8 +2929,8 @@ Lưu ý: Chỉ trả về chuỗi JSON thuần.`;
             }
         }
 
-        progressBar.style.width = '60%';
-        document.getElementById('analysis-status').innerText = 'Đang xử lý kết quả...';
+        // Step 3
+        activateScanStep(3, 5);
 
         if (fetchSuccess) {
             let text = data.candidates[0].content.parts[0].text.trim();
@@ -2861,10 +2946,18 @@ Lưu ý: Chỉ trả về chuỗi JSON thuần.`;
             throw new Error('Tất cả các mô hình AI trực tuyến đều thất bại hoặc hết lượt truy cập');
         }
 
-        progressBar.style.width = '100%';
-        setTimeout(() => {
-            renderResults(resultJson);
-        }, 500);
+        // Step 4
+        activateScanStep(4, 5);
+        await new Promise(r => setTimeout(r, 800));
+
+        // Get weather result
+        weatherData = await weatherPromise;
+
+        // Step 5 – complete
+        activateScanStep(5, 5);
+        await new Promise(r => setTimeout(r, 600));
+
+        renderResults(resultJson, weatherData);
 
     } catch (err) {
         console.error("Gemini API Error:", err);
@@ -2878,9 +2971,17 @@ function resetToCaptureFlow() {
     document.getElementById('analyzing-flow').classList.remove('flex');
     document.getElementById('capture-flow').classList.remove('hidden');
     document.getElementById('capture-flow').classList.add('flex');
+    // Reset scan thumbnails
+    for (let i = 1; i <= 3; i++) {
+        const thumb = document.getElementById('scan-thumb-' + i);
+        if (thumb) {
+            const img = thumb.querySelector('img');
+            if (img) img.remove();
+        }
+    }
 }
 
-function renderResults(data) {
+function renderResults(data, weatherData) {
     document.getElementById('analyzing-flow').classList.add('hidden');
     document.getElementById('analyzing-flow').classList.remove('flex');
     
@@ -2908,15 +3009,56 @@ function renderResults(data) {
             });
         }
     }
+
+    // --- B1: Overall Grade Badge ---
+    const gradeBadge = document.getElementById('overall-grade-badge');
+    const gradeLetter = document.getElementById('overall-grade-letter');
+    const gradeText = document.getElementById('overall-grade-text');
+    if (gradeBadge && data.overallGrade) {
+        const gradeColors = {
+            'A': { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700' },
+            'B': { bg: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700' },
+            'C': { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-700' },
+            'D': { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' },
+            'F': { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700' }
+        };
+        const gc = gradeColors[data.overallGrade.toUpperCase()] || gradeColors['C'];
+        gradeBadge.className = `inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold mb-3 border transition-all duration-500 ${gc.bg} ${gc.border} ${gc.text}`;
+        gradeBadge.style.display = 'inline-flex';
+        gradeLetter.textContent = data.overallGrade.toUpperCase();
+        gradeText.textContent = data.overallGradeComment || 'Đánh giá tổng thể';
+    }
     
-    // Animate health score
+    // Animate health score with GLOW effect
     let score = 0;
     const targetScore = Math.min(100, Math.max(10, parseInt(data.healthScore) || 72));
     const scoreText = document.getElementById('health-score-text');
     const scoreRing = document.getElementById('health-score-ring');
+    const scoreGlow = document.getElementById('score-glow');
+    
+    // Determine color based on score
+    let ringColor, glowColor;
+    if (targetScore >= 75) {
+        ringColor = '#10b981'; glowColor = 'rgba(16,185,129,0.4)';
+    } else if (targetScore >= 55) {
+        ringColor = '#f59e0b'; glowColor = 'rgba(245,158,11,0.4)';
+    } else {
+        ringColor = '#ef4444'; glowColor = 'rgba(239,68,68,0.4)';
+    }
+
     if (scoreText && scoreRing) {
+        scoreRing.style.stroke = ringColor;
         const interval = setInterval(() => {
-            if(score >= targetScore) { clearInterval(interval); return; }
+            if(score >= targetScore) { 
+                clearInterval(interval);
+                // Apply glow after animation completes
+                if (scoreGlow) {
+                    scoreGlow.style.boxShadow = `0 0 30px ${glowColor}, 0 0 60px ${glowColor}`;
+                }
+                // Confetti for good scores
+                if (targetScore >= 80) triggerConfetti();
+                return; 
+            }
             score++;
             scoreText.innerText = score;
             scoreRing.style.strokeDasharray = `${score}, 100`;
@@ -2974,15 +3116,15 @@ function renderResults(data) {
                 <div class="hidden border-t border-gray-100 bg-gray-50 p-4 text-sm space-y-3">
                     <div class="flex gap-2">
                         <span class="font-bold text-gray-700 min-w-[80px]">Vì sao?</span>
-                        <span class="text-gray-600 leading-relaxed">Chỉ số ${m.name.toLowerCase()} ở mức ${m.score}% phản ánh tình trạng biểu bì và lớp hạ bì thực tế từ hình ảnh phân tích.</span>
+                        <span class="text-gray-600 leading-relaxed">${(data.detailedAdvice && data.detailedAdvice[m.id] && data.detailedAdvice[m.id].why) || `Chỉ số ${m.name.toLowerCase()} ở mức ${m.score}% cho thấy tình trạng thực tế từ phân tích hình ảnh AI.`}</span>
                     </div>
                     <div class="flex gap-2">
                         <span class="font-bold text-gray-700 min-w-[80px]">Nên làm:</span>
-                        <span class="text-gray-600 leading-relaxed">Sử dụng sản phẩm chứa thành phần đặc trị phù hợp, làm sạch sâu và cấp ẩm đủ liều lượng.</span>
+                        <span class="text-gray-600 leading-relaxed">${(data.detailedAdvice && data.detailedAdvice[m.id] && data.detailedAdvice[m.id].shouldDo) || 'Sử dụng sản phẩm chứa thành phần đặc trị phù hợp với chỉ số này.'}</span>
                     </div>
                     <div class="flex gap-2">
                         <span class="font-bold text-gray-700 min-w-[80px]">Cần tránh:</span>
-                        <span class="text-gray-600 leading-relaxed">Hạn chế tiếp xúc trực tiếp tia UV không che chắn và các thói quen gây căng thẳng cho da.</span>
+                        <span class="text-gray-600 leading-relaxed">${(data.detailedAdvice && data.detailedAdvice[m.id] && data.detailedAdvice[m.id].avoid) || 'Hạn chế tiếp xúc trực tiếp tia UV và các thói quen gây hại cho da.'}</span>
                     </div>
                 </div>
             </div>
@@ -3086,21 +3228,6 @@ function renderResults(data) {
                 pointHoverBorderColor: 'rgba(232, 122, 144, 1)',
                 borderWidth: 2,
             }]
-        };
-
-        window.skinRadarChart = new Chart(ctxRadar, {
-            type: 'radar',
-            data: radarData,
-            options: {
-                scales: {
-                    r: {
-                        angleLines: { color: 'rgba(0,0,0,0.05)' },
-                        grid: { color: 'rgba(0,0,0,0.05)' },
-                        pointLabels: {
-                            font: { size: 10, family: "'Inter', sans-serif", weight: '600' },
-                            color: '#4A5568'
-                        },
-                        ticks: { display: false, min: 0, max: 100 }
                     }
                 },
                 plugins: { legend: { display: false } },
@@ -3110,9 +3237,10 @@ function renderResults(data) {
         
         const envMetrics = document.getElementById('environment-metrics');
         if (envMetrics) {
-            const temp = 31;
-            const humidity = 78;
-            const uvIndex = 8;
+            const temp = (weatherData && weatherData.temp) || 31;
+            const humidity = (weatherData && weatherData.humidity) || 78;
+            const uvIndex = (weatherData && weatherData.uvIndex) || 7;
+            const isRealtime = weatherData && weatherData.temp;
             
             envMetrics.innerHTML = `
                 <div class="bg-white p-2 rounded-xl text-center shadow-sm border border-blue-50">
@@ -3132,8 +3260,12 @@ function renderResults(data) {
             let impactText = "Thời tiết ổn định, phù hợp để duy trì chu trình dưỡng da hiện tại.";
             if (uvIndex > 7 && humidity > 75) {
                 impactText = "Tác động: Tia UV và độ ẩm cao đang kích thích tuyến bã nhờn hoạt động mạnh, làm tăng nguy cơ bít tắc lỗ chân lông và sạm nám ẩn.";
+            } else if (uvIndex > 5 && temp > 30) {
+                impactText = "Tác động: Nắng nóng và tia UV ở mức trung bình-cao. Cần chống nắng SPF50+ và tăng cấp ẩm.";
             } else if (temp > 32) {
                 impactText = "Tác động: Nhiệt độ cao làm da mất nước nhanh, cần tăng cường cấp ẩm và chống nắng.";
+            } else if (humidity < 50) {
+                impactText = "Tác động: Độ ẩm thấp khiến da dễ khô, cần tăng cường serum cấp ẩm và kem dưỡng khóa ẩm.";
             }
             document.getElementById('environment-impact').innerText = impactText;
         }
@@ -3266,6 +3398,21 @@ function renderResults(data) {
 }
 
 
+function calcMatchScore(product, targetConcerns) {
+    let score = 88;
+    if (product && product.targetConcerns && targetConcerns) {
+        product.targetConcerns.forEach(c => {
+            if (targetConcerns.includes(c)) score += 3;
+        });
+    }
+    if (product && product.mainActives && window.currentActiveIngredients) {
+        product.mainActives.forEach(act => {
+            if (window.currentActiveIngredients.some(ai => ai.toLowerCase().includes(act.toLowerCase()))) score += 2;
+        });
+    }
+    return Math.min(99, Math.max(86, score));
+}
+
 function buildRoutine(containerId, isMorning) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -3306,7 +3453,7 @@ function buildRoutine(containerId, isMorning) {
         const product = matchProductForStep(step.stepType, targetConcerns, activeIngredients, currentBudget);
         if (product) {
             window.currentRoutineIds.push(product.id);
-            
+            const matchScore = calcMatchScore(product, targetConcerns);
             const imgSrc = `public${product.image}`;
             
             // Badge actives
@@ -3324,7 +3471,7 @@ function buildRoutine(containerId, isMorning) {
                     <div class="flex-grow min-w-0 pr-8">
                         <div class="flex items-center gap-1.5 mb-0.5">
                             <span class="text-[10px] font-extrabold uppercase text-brand-primary bg-brand-blush/60 px-1.5 py-0.5 rounded">${step.title}</span>
-                            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Khớp 98%</span>
+                            <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Khớp ${matchScore}%</span>
                         </div>
                         <h5 class="text-xs sm:text-sm font-bold text-gray-900 truncate mb-0.5 group-hover:text-brand-primary transition-colors">${product.name}</h5>
                         <p class="text-[11px] text-gray-500 line-clamp-1">${product.uses || step.desc}</p>
@@ -3366,6 +3513,7 @@ function renderProductRecommendations() {
         if (!p) return;
         
         const imgSrc = `public${p.image}`;
+        const matchScore = calcMatchScore(p, window.currentWorstMetrics ? window.currentWorstMetrics.map(m => m.id) : []);
         
         let activesBadges = '';
         if (p.mainActives && p.mainActives.length > 0) {
@@ -3376,7 +3524,7 @@ function renderProductRecommendations() {
         <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm group hover:border-brand-petal transition-all hover:shadow-md flex flex-col h-full relative cursor-pointer" onclick="if(!event.target.closest('button')) openProductDetailModal('${p.id}');">
             <div class="absolute top-3 left-3 z-10 flex flex-col gap-1">
                 <span class="text-[9px] font-extrabold uppercase bg-brand-dark text-white px-2 py-0.5 rounded">${p.line || p.brand}</span>
-                <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded">Tương thích 98%</span>
+                <span class="text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded">Tương thích ${matchScore}%</span>
             </div>
 
             <!-- Image Area -->
