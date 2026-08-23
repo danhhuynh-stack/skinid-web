@@ -75,7 +75,7 @@ const PRODUCTS = [
             "NIACINAMIDE",
             "ZINC PCA"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Alcohol Denat. • Disodium Phosphate • Niacinamide • Salicylic Acid • Sodium Hydroxide • Zinc PCA • Oligopeptide-10 • Chlorhexidine Digluconate • Citric Acid.",
         "image": "/images/products/rilastil-xit-co-the-danh-cho-da-mun-150ml-rilastil-acnestil-body-spray-150ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/2.avif",
         "link": "https://rilastilvn.com.vn/san-pham/xit-co-the-danh-cho-da-mun-150ml-rilastil-acnestil-body-spray-150ml/"
@@ -118,7 +118,7 @@ const PRODUCTS = [
             "PREBIOTICS & SODIUM DNA",
             "HYALURONIC ACID 3D"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Hydroxypinacolone Retinoate • Dimethyl Isosorbide • Glycerin • Sodium DNA • Hydrolyzed Hyaluronic Acid • Sodium Hyaluronate • Alpha-Glucan Oligosaccharide • Tocopheryl Acetate • Xanthan Gum • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-serum-tai-tao-va-chong-lao-hoa-30ml-rilastil-multirepair-retinol-tech.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/3.avif",
         "link": "https://rilastilvn.com.vn/san-pham/serum-tai-tao-va-chong-lao-hoa-30ml-rilastil-multirepair-retinol-tech/"
@@ -154,7 +154,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Ethylhexyl Palmitate • Glycerin • Cetearyl Alcohol • PEG-6 Stearate • Glyceryl Stearate • PEG-32 Stearate • Centaurea cyanus Flower Extract • Chamomilla recutita (Matricaria) Flower Extract • Sodium DNA • Tocopheryl Acetate • Ceteth-20 • Steareth-20 • Carbomer • Triethanolamine • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-sua-rua-mat-tay-trang-2-trong-1-danh-cho-moi-loai-da-200ml-rilastil-daily-care-make-up-removing-cleasing-milk-200ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/6.avif",
         "link": "https://rilastilvn.com.vn/san-pham/sua-rua-mat-tay-trang-2-trong-1-danh-cho-moi-loai-da-200ml-rilastil-daily-care-make-up-removing-cleasing-milk-200ml/"
@@ -190,7 +190,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Methylpropanediol • Centaurea cyanus Flower Extract • Hamamelis virginiana (Witch Hazel) Leaf Extract • Rutin • Disodium EDTA • Sodium Citrate • Citric Acid • Phenoxyethanol • Ethylhexylglycerin • Parfum (Fragrance).",
         "image": "/images/products/rilastil-nuoc-hoa-hong-danh-cho-moi-loai-da-200ml-rilastil-daily-care-rebalancing-soothing-toner-200ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/7.avif",
         "link": "https://rilastilvn.com.vn/san-pham/nuoc-hoa-hong-danh-cho-moi-loai-da-200ml-rilastil-daily-care-rebalancing-soothing-toner-200ml/"
@@ -226,7 +226,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Alcohol Denat. • Glycerin • Hamamelis virginiana (Witch Hazel) Leaf Extract • Zinc PCA • Copper PCA • Salicylic Acid • PEG-40 Hydrogenated Castor Oil • Sodium Citrate • Citric Acid • Disodium EDTA • Phenoxyethanol • Parfum (Fragrance).",
         "image": "/images/products/rilastil-nuoc-hoa-hong-danh-cho-da-dau-rilastil-daily-care-rebalancing-astringent-toner-200ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/8.avif",
         "link": "https://rilastilvn.com.vn/san-pham/nuoc-hoa-hong-danh-cho-da-dau-rilastil-daily-care-rebalancing-astringent-toner-200ml/"
@@ -268,7 +268,7 @@ const PRODUCTS = [
             "NIACINAMIDE",
             "ZINC PCA"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • C15-19 Alkane • Niacinamide • Pentylene Glycol • Squalane • Potassium Azeloyl Diglycinate • Cetearyl Alcohol • Sodium Polyacrylate • Ectoin • Alpha-Glucan Oligosaccharide • Polymnia sonchifolia Root Juice • Lactobacillus • Zinc PCA • Copper PCA • Sodium DNA • Dipotassium Glycyrrhizate • Tocopheryl Acetate • Maltodextrin • Xanthan Gum • Hydroxyacetophenone • Tetrasodium Glutamate Diacetate.",
         "image": "/images/products/rilastil-kem-duong-am-giup-can-bang-vi-sinh-ho-tro-phuc-hoi-da-mun-rilastil-acnestil-h-biome-cream.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/04/10-1.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-duong-am-giup-can-bang-vi-sinh-ho-tro-phuc-hoi-da-mun-rilastil-acnestil-h-biome-cream/"
@@ -309,7 +309,7 @@ const PRODUCTS = [
             "TETRAPEPTIDE-30",
             "MANDELIC ACID"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Cetearyl Alcohol • Diethylhexyl Carbonate • Niacinamide • Helianthus annuus (Sunflower) Seed Oil • Bis-PEG/PPG-16/16 PEG/PPG-16/16 Dimethicone • 3-O-Ethyl Ascorbic Acid • Hydroxyresveratrol • Tetrapeptide-30 • Sodium Hyaluronate • Tocopheryl Acetate • Caprylic/Capric Triglyceride • Cetearyl Glucoside • Carbomer • Dimethicone • Tocopherol • Sodium Hydroxide • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-kem-duong-am-va-ho-tro-lam-mo-cac-vung-da-bi-sam-mau-rilastil-d-clar-daily-depigmenting-cream.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/10.avif",
         "link": "https://rilastilvn.com.vn/san-pham/kem-duong-am-va-ho-tro-lam-mo-cac-vung-da-bi-sam-mau-rilastil-d-clar-daily-depigmenting-cream/"
@@ -350,7 +350,7 @@ const PRODUCTS = [
             "PRE/POSTBIOTICS",
             "SHEA BUTTER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Triethylhexanoin • Glycerin • Polyglyceryl-3 Polyricinoleate • Butyrospermum parkii (Shea) Butter • Plukenetia volubilis Seed Oil • Cyclopentasiloxane • C12-15 Alkyl Benzoate • Magnesium Sulfate • Dipotassium Glycyrrhizate • Sodium DNA • Tocopheryl Acetate • Alpha-Glucan Oligosaccharide • Lactobacillus Ferment • Allantoin • Niacinamide • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-50ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/14.avif",
         "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-50ml/"
@@ -386,7 +386,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • PEG-6 Caprylic/Capric Glycerides • Glycerin • Bisabolol • Cetrimonium Bromide • Disodium Phosphate • Disodium EDTA • Citric Acid.",
         "image": "/images/products/rilastil-tay-trang-rilastil-daily-care-micellar-solution-100ml-sao-chep.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/4.avif",
         "link": "https://rilastilvn.com.vn/san-pham/tay-trang-rilastil-daily-care-micellar-solution-100ml-sao-chep/"
@@ -422,7 +422,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • PEG-6 Caprylic/Capric Glycerides • Glycerin • Bisabolol • Cetrimonium Bromide • Disodium Phosphate • Disodium EDTA • Citric Acid.",
         "image": "/images/products/rilastil-tay-trang-rilastil-daily-care-micellar-solution-250ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/5.avif",
         "link": "https://rilastilvn.com.vn/san-pham/tay-trang-rilastil-daily-care-micellar-solution-250ml/"
@@ -464,7 +464,7 @@ const PRODUCTS = [
             "CERAMIDES & OMEGA 6/9",
             "OENOTHERA BIENNIS  OIL"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Paraffinum Liquidum (Mineral Oil) • Glyceryl Stearate • Cetearyl Alcohol • Glycerin • Oleyl Erucate • Cyclopentasiloxane • Sodium Hyaluronate • Hydrolyzed Hyaluronic Acid • Oenothera biennis (Evening Primrose) Oil • Sodium Lauroyl Lactylate • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Tocopheryl Acetate • Carbomer • Xanthan Gum • Citric Acid • Phenoxyethanol • Ethylhexylglycerin • Parfum (Fragrance).",
         "image": "/images/products/rilastil-mat-na-cap-am-rilastil-aqua-moisturizing-mask-30ml-sao-chep.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/11.avif",
         "link": "https://rilastilvn.com.vn/san-pham/mat-na-cap-am-rilastil-aqua-moisturizing-mask-30ml-sao-chep/"
@@ -506,7 +506,7 @@ const PRODUCTS = [
             "CERAMIDES & OMEGA 6/9",
             "OENOTHERA BIENNIS  OIL"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Dimethicone • 1,2-Hexanediol • Hydroxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer • Bis-PEG-18 Methyl Ether Dimethyl Silane • Hydrolyzed Hyaluronic Acid • Sodium Hyaluronate • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Sodium Lauroyl Lactylate • Tocopheryl Acetate • Polysorbate 60 • Sorbitan Isostearate • Carbomer • Xanthan Gum • Citric Acid • Sodium Hydroxide • Hydroxyacetophenone • Tetrasodium Glutamate Diacetate • Parfum (Fragrance).",
         "image": "/images/products/rilastil-kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-15ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/13.avif",
         "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-15ml/"
@@ -548,7 +548,7 @@ const PRODUCTS = [
             "CERAMIDES & OMEGA 6/9",
             "OENOTHERA BIENNIS  OIL"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Dimethicone • 1,2-Hexanediol • Hydroxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer • Bis-PEG-18 Methyl Ether Dimethyl Silane • Hydrolyzed Hyaluronic Acid • Sodium Hyaluronate • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Sodium Lauroyl Lactylate • Tocopheryl Acetate • Polysorbate 60 • Sorbitan Isostearate • Carbomer • Xanthan Gum • Citric Acid • Sodium Hydroxide • Hydroxyacetophenone • Tetrasodium Glutamate Diacetate • Parfum (Fragrance).",
         "image": "/images/products/rilastil-kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-40ml.avif",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2026/01/12-1.avif",
         "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chuyen-sau-72h-rilastil-aqua-intense-gel-72h-40ml/"
@@ -590,7 +590,7 @@ const PRODUCTS = [
             "CERAMIDES & OMEGA 6/9",
             "OENOTHERA BIENNIS  OIL"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Cetearyl Alcohol • Oleyl Erucate • Glyceryl Stearate • Simmondsia chinensis (Jojoba) Seed Oil • Sodium Hyaluronate • Hydrolyzed Hyaluronic Acid • Oenothera biennis (Evening Primrose) Oil • Sodium Lauroyl Lactylate • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Tocopheryl Acetate • Hydrolyzed Rice Bran Protein • Glycine Soja (Soybean) Protein • Superoxide Dismutase • Carbomer • Xanthan Gum • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-kem-duong-am-cho-vung-mat-rilastil-aqua-eye-contour-cream-15ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Aqua_Kem-mat.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-duong-am-cho-vung-mat-rilastil-aqua-eye-contour-cream-15ml/"
@@ -626,7 +626,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • PEG-8 Beeswax • PEG-8 • Olus Oil (Vegetable Oil) • PEG-6 Stearate • Ethylhexyl Palmitate • Oryza sativa (Rice) Bran Oil • C12-15 Alkyl Benzoate • Dimethicone • Sodium DNA • Tocopheryl Acetate • Hydrolyzed Glycosaminoglycans • Leucine • Isoleucine • Valine • Allantoin • Glyceryl Stearate • PEG-32 Stearate • Carbomer • Triethanolamine • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-200ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Kem-ran-200ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-200ml/"
@@ -662,7 +662,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • PEG-8 Beeswax • PEG-8 • Olus Oil (Vegetable Oil) • PEG-6 Stearate • Ethylhexyl Palmitate • Oryza sativa (Rice) Bran Oil • C12-15 Alkyl Benzoate • Dimethicone • Sodium DNA • Tocopheryl Acetate • Hydrolyzed Glycosaminoglycans • Leucine • Isoleucine • Valine • Allantoin • Glyceryl Stearate • PEG-32 Stearate • Carbomer • Triethanolamine • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Kem-ran-75ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml/"
@@ -703,7 +703,7 @@ const PRODUCTS = [
             "PRE/POSTBIOTICS",
             "SHEA BUTTER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Triethylhexanoin • Glycerin • Polyglyceryl-3 Polyricinoleate • Butyrospermum parkii (Shea) Butter • Plukenetia volubilis Seed Oil • Cyclopentasiloxane • C12-15 Alkyl Benzoate • Magnesium Sulfate • Dipotassium Glycyrrhizate • Sodium DNA • Tocopheryl Acetate • Alpha-Glucan Oligosaccharide • Lactobacillus Ferment • Allantoin • Niacinamide • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-400ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/man-ngua-400ml-1.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-400ml/"
@@ -744,7 +744,7 @@ const PRODUCTS = [
             "PRE/POSTBIOTICS",
             "SHEA BUTTER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Sodium Lauroyl Sarcosinate • Cocamidopropyl Betaine • Disodium Cocoamphodiacetate • Sodium Chloride • PEG-75 Shea Butter Glycerides • PEG-7 Glyceryl Cocoate • Caprylyl Glycol • PEG-120 Methyl Glucose Dioleate • Lactic Acid • Sodium Lactate • Sodium DNA • Disodium EDTA • Phenoxyethanol • Parfum (Fragrance).",
         "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-750ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/gel-tam-750ml-1.png",
         "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-750ml/"
@@ -785,7 +785,7 @@ const PRODUCTS = [
             "PRE/POSTBIOTICS",
             "SHEA BUTTER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Sodium Lauroyl Sarcosinate • Cocamidopropyl Betaine • Disodium Cocoamphodiacetate • Sodium Chloride • PEG-75 Shea Butter Glycerides • PEG-7 Glyceryl Cocoate • Caprylyl Glycol • PEG-120 Methyl Glucose Dioleate • Lactic Acid • Sodium Lactate • Sodium DNA • Disodium EDTA • Phenoxyethanol • Parfum (Fragrance).",
         "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-400ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Gel-tam-400ml-2.png",
         "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-400ml/"
@@ -826,7 +826,7 @@ const PRODUCTS = [
             "PRE/POSTBIOTICS",
             "SHEA BUTTER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Triethylhexanoin • Glycerin • Polyglyceryl-3 Polyricinoleate • Butyrospermum parkii (Shea) Butter • Plukenetia volubilis Seed Oil • Cyclopentasiloxane • C12-15 Alkyl Benzoate • Magnesium Sulfate • Dipotassium Glycyrrhizate • Sodium DNA • Tocopheryl Acetate • Alpha-Glucan Oligosaccharide • Lactobacillus Ferment • Allantoin • Niacinamide • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-200ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Man-ngua-200ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-cap-am-chong-man-ngua-rilastil-xerolact-pb-balm-lipid-replenishing-anti-irritation-200ml/"
@@ -867,7 +867,7 @@ const PRODUCTS = [
             "PRE/POSTBIOTICS",
             "SHEA BUTTER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Sodium Lauroyl Sarcosinate • Cocamidopropyl Betaine • Disodium Cocoamphodiacetate • Sodium Chloride • PEG-75 Shea Butter Glycerides • PEG-7 Glyceryl Cocoate • Caprylyl Glycol • PEG-120 Methyl Glucose Dioleate • Lactic Acid • Sodium Lactate • Sodium DNA • Disodium EDTA • Phenoxyethanol • Parfum (Fragrance).",
         "image": "/images/products/rilastil-gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-200ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Gel-tam-200ml-1.png",
         "link": "https://rilastilvn.com.vn/san-pham/gel-rua-mat-tam-toan-than-rilastil-xerolact-cleansing-gel-200ml/"
@@ -904,7 +904,7 @@ const PRODUCTS = [
             "UVA, UVB FILTERS",
             "1%"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Cyclopentasiloxane • Diethylhexyl Carbonate • Octocrylene • Alcohol Denat. • Cyclohexasiloxane • Butyl Methoxydibenzoylmethane • Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine • Dibutyl Adipate • PEG-30 Dipolyhydroxystearate • Titanium Dioxide (Nano) • PEG-10 Dimethicone • Polymethyl Methacrylate • Sodium Chloride • Ectoin • Bisabolol • Tocopheryl Acetate • Disteardimonium Hectorite • Silica • Dimethicone • Glyceryl Stearate • PEG-8 • Tocopherol • Ascorbyl Palmitate • Ascorbic Acid • Citric Acid • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA.",
         "image": "/images/products/rilastil-kem-chong-nang-danh-cho-da-nhay-cam-rilastil-allergy-protective-fluid-spf-50-50ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-nhay-cam.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-danh-cho-da-nhay-cam-rilastil-allergy-protective-fluid-spf-50-50ml/"
@@ -943,7 +943,7 @@ const PRODUCTS = [
             "PRO-DNA COMPLEX",
             "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Silica • Butyl Methoxydibenzoylmethane • Butyloctyl Salicylate • Diethylhexyl Butamido Triazone • Ethylhexyl Salicylate • Ethylhexyl Triazone • Dicaprylyl Carbonate • Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine • Dibutyl Adipate • Diethylamino Hydroxybenzoyl Hexyl Benzoate • Glycerin • Ectoin • Sodium Hyaluronate • Tocopheryl Acetate • Pinus Pinaster Bark/Bud Extract • Artemisia Umbelliformis Extract • Buddleja Davidii Leaf Extract • Peucedanum Ostruthium Leaf Extract • Schisandra Chinensis Fruit Extract • Hydroxyacetophenone.",
         "image": "/images/products/rilastil-kem-chong-nang-cap-am-velvet-rilastil-sun-system-velvet-touch-moisturizing-velvet-cream-spf-50-50ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-Velvet-1.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-cap-am-velvet-rilastil-sun-system-velvet-touch-moisturizing-velvet-cream-spf-50-50ml/"
@@ -982,7 +982,7 @@ const PRODUCTS = [
             "PRO-DNA COMPLEX",
             "SCHISANDRA CHINENSIS EXTRACT & VITAMIN E"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Ethylhexyl Methoxycinnamate • Butylene Glycol • Propylene Glycol • Polymethyl Methacrylate • Butyl Methoxydibenzoylmethane • Octocrylene • Dimethicone • Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine • Cyclopentasiloxane • Silica • Ectoin • Sodium Hyaluronate • Tocopheryl Acetate • PEG-8 • Tocopherol • Ascorbyl Palmitate • Ascorbic Acid • Citric Acid • Sodium Hydroxide • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA.",
         "image": "/images/products/rilastil-kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-water-Touch.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml/"
@@ -1025,7 +1025,7 @@ const PRODUCTS = [
             "ECTOIN",
             "TOCOPHERYL ACETATE"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Dibutyl Adipate • Dimethicone • Niacinamide • Glycerin • Arachidyl Alcohol • Behenyl Alcohol • Polymethyl Methacrylate • Panthenol • Polyacrylate Crosspolymer-6 • Helianthus annuus (Sunflower) Seed Oil • Potassium Azeloyl Diglycinate • Arachidyl Glucoside • Propanediol • Sodium Salicylate • Tocopheryl Acetate • Dipotassium Glycyrrhizate • Xanthan Gum • Sodium Lauroyl Lactylate • Sodium Hyaluronate • Zinc PCA • Copper PCA • Citric Acid • Ceramide NP • Sodium DNA • Ceramide AP • Phytosphingosine • Cholesterol • Carbomer • Oligopeptide-10 • Ceramide EOP • Tocopherol • Disodium EDTA • Phenoxyethanol • Ethylhexylglycerin • Chlorhexidine Digluconate • Sodium Benzoate.",
         "image": "/images/products/rilastil-kem-chong-nang-danh-cho-da-dau-mun-rilastil-acnestil-sebum-normalizing-cream-spf-50-40ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/KCN-mun.png",
         "link": "https://rilastilvn.com.vn/san-pham/kem-chong-nang-danh-cho-da-dau-mun-rilastil-acnestil-sebum-normalizing-cream-spf-50-40ml/"
@@ -1140,7 +1140,7 @@ const PRODUCTS = [
         "mainActives": [
             "ALPHA – GLUCAN OLIGOSACCHARIDE 0.5%"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Pentylene Glycol • Dipropylene Glycol • Niacinamide • Ectoin • Alpha-Glucan Oligosaccharide • Polymnia sonchifolia Root Juice • Lactobacillus • Sodium DNA • Chlorhexidine Digluconate • Potassium Azeloyl Diglycinate • Zinc PCA • Copper PCA • Sodium Hyaluronate • Hydroxyethylcellulose • Sodium Hydroxide • Maltodextrin • Chlorphenesin • Disodium EDTA.",
         "image": "/images/products/rilastil-serum-cap-am-danh-cho-da-mun-rilastil-acnestil-pb-soothing-sebum-normalising-gel-30ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2024/09/Serum-PB.png",
         "link": "https://rilastilvn.com.vn/san-pham/serum-cap-am-danh-cho-da-mun-rilastil-acnestil-pb-soothing-sebum-normalising-gel-30ml/"
@@ -1349,7 +1349,7 @@ const PRODUCTS = [
             "LUPEOL",
             "CALMOSENSINE BIO-PEPTIDE"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Cetearyl Alcohol • Glycerin • Diethylhexyl Carbonate • Helianthus annuus (Sunflower) Seed Oil • Caprylic/Capric Triglyceride • Glyceryl Stearate • Cetearyl Glucoside • Sodium Hyaluronate • Hydrolyzed Hyaluronic Acid • Sodium DNA • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Acetyl Tetrapeptide-5 • Tocopheryl Acetate • Carbomer • Xanthan Gum • Tocopherol • Sodium Hydroxide • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-rilastil-hydrotenseur-restructuring-anti-wrinkle-cream.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Hydro-kem-chong-lao-hoa-40ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/rilastil-hydrotenseur-restructuring-anti-wrinkle-cream/"
@@ -1424,7 +1424,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • PEG-6 Caprylic/Capric Glycerides • Glycerin • Bisabolol • Cetrimonium Bromide • Disodium Phosphate • Disodium EDTA • Citric Acid.",
         "image": "/images/products/rilastil-rilastil-daily-care-micellar-solution.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Daily_tay-trang-400ml-1.png",
         "link": "https://rilastilvn.com.vn/san-pham/rilastil-daily-care-micellar-solution/"
@@ -1507,7 +1507,7 @@ const PRODUCTS = [
             "NIACINAMIDE",
             "ZINC PCA"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Sodium Lauroyl Sarcosinate • Polysorbate 20 • Glycerin • Cocamidopropyl Betaine • PEG-120 Methyl Glucose Dioleate • Sodium Cocoamphoacetate • Lauryl Glucoside • Sodium Methyl Cocoyl Taurate • Xylitol • PEG-7 Glyceryl Cocoate • Propylene Glycol • Coco-Glucoside • Glyceryl Oleate • PPG-26-Buteth-26 • Citric Acid • Sodium PCA • Niacinamide • Panthenol • Sodium Salicylate • Tocopheryl Acetate • Dipotassium Glycyrrhizate • Potassium Azeloyl Diglycinate • Zinc PCA • Copper PCA • Sodium Hyaluronate • Oligopeptide-10 • PEG-40 Hydrogenated Castor Oil • C12-13 Alkyl Lactate • Sodium Chloride • Tocopherol • Caprylic/Capric Triglyceride • Hydrogenated Palm Glycerides Citrate • Lecithin • Ascorbyl Palmitate • Propanediol • Phenoxyethanol • Caprylyl Glycol • O-Cymen-5-OL • Chlorhexidine Digluconate • Sodium Benzoate • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-rilastil-acnestil-cleansing-mousse.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/10/Acnes_Bot-RM.png",
         "link": "https://rilastilvn.com.vn/san-pham/rilastil-acnestil-cleansing-mousse/"
@@ -1543,7 +1543,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • PEG-8 Beeswax • PEG-8 • Olus Oil (Vegetable Oil) • PEG-6 Stearate • Ethylhexyl Palmitate • Oryza sativa (Rice) Bran Oil • C12-15 Alkyl Benzoate • Dimethicone • Sodium DNA • Tocopheryl Acetate • Hydrolyzed Glycosaminoglycans • Leucine • Isoleucine • Valine • Allantoin • Glyceryl Stearate • PEG-32 Stearate • Carbomer • Triethanolamine • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-elasticizing-cream-dry-and-inelastic-skin-export.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/06/Kem-ran-200ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/elasticizing-cream-dry-and-inelastic-skin-export/"
@@ -1585,7 +1585,7 @@ const PRODUCTS = [
             "CERAMIDES & OMEGA 6/9",
             "OENOTHERA BIENNIS  OIL"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Paraffinum Liquidum (Mineral Oil) • Glyceryl Stearate • Cetearyl Alcohol • Glycerin • Oleyl Erucate • Cyclopentasiloxane • Sodium Hyaluronate • Hydrolyzed Hyaluronic Acid • Oenothera biennis (Evening Primrose) Oil • Sodium Lauroyl Lactylate • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Tocopheryl Acetate • Carbomer • Xanthan Gum • Citric Acid • Phenoxyethanol • Ethylhexylglycerin • Parfum (Fragrance).",
         "image": "/images/products/rilastil-aqua-moisturizing-mask.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/06/Aqua_mask-75ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/aqua-moisturizing-mask/"
@@ -1621,7 +1621,7 @@ const PRODUCTS = [
             "SODIUM DNA",
             "VITAMIN E & DƯỢC LIỆU THIÊN NHIÊN"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glyceryl Stearate • Jojoba Esters • Cetearyl Alcohol • Glycerin • Helianthus annuus (Sunflower) Seed Oil • Sodium Lauroyl Glutamate • Stearic Acid • Prunus amygdalus dulcis (Sweet Almond) Oil • Mandelic Acid • Glycolic Acid • Tocopheryl Acetate • Xanthan Gum • Sodium Hydroxide • Phenoxyethanol • Ethylhexylglycerin • Disodium EDTA • Parfum (Fragrance).",
         "image": "/images/products/rilastil-daily-care-expoliating-face-cream.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/06/Tay-da-chet-75ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/daily-care-expoliating-face-cream/"
@@ -1704,7 +1704,7 @@ const PRODUCTS = [
             "PENTYLENE GLYCOL, GLYCERIN",
             "CHONDRUS CRISPUS POWDER"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Dimethicone • 1,2-Hexanediol • Hydroxyethyl Acrylate/Sodium Acryloyldimethyl Taurate Copolymer • Bis-PEG-18 Methyl Ether Dimethyl Silane • Hydrolyzed Hyaluronic Acid • Sodium Hyaluronate • Ceramide NP • Ceramide AP • Ceramide EOP • Phytosphingosine • Cholesterol • Sodium Lauroyl Lactylate • Tocopheryl Acetate • Polysorbate 60 • Sorbitan Isostearate • Carbomer • Xanthan Gum • Citric Acid • Sodium Hydroxide • Hydroxyacetophenone • Tetrasodium Glutamate Diacetate • Parfum (Fragrance).",
         "image": "/images/products/rilastil-serum-cap-cam-aqua-intense-gel-serum.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Aqua_serum-30ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/serum-cap-cam-aqua-intense-gel-serum/"
@@ -1742,7 +1742,7 @@ const PRODUCTS = [
             "3-O-ETHYL ASCORBIC ACID 15%",
             "SODIUM HYALURONATE, HYDROLYZED HYALURONIC ACID"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • 3-O-Ethyl Ascorbic Acid • Glycerin • Pentylene Glycol • Sodium DNA • Hydrolyzed Hyaluronic Acid • Sodium Hyaluronate • Tocopheryl Acetate • Hydroxyethylcellulose • Sodium Citrate • Citric Acid • Disodium EDTA • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-gel-serum.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Dclar_VTM-C.png",
         "link": "https://rilastilvn.com.vn/san-pham/gel-serum/"
@@ -1783,7 +1783,7 @@ const PRODUCTS = [
             "TETRAPEPTIDE-30",
             "MANDELIC ACID"
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Glycerin • Methylpropanediol • Pentylene Glycol • Glycolic Acid • Niacinamide • 3-O-Ethyl Ascorbic Acid • Sodium Hydroxide • Sodium DNA • Hydroxyresveratrol • Tetrapeptide-30 • Sodium Hyaluronate • Tocopheryl Acetate • Xanthan Gum • Hydroxyethylcellulose • Disodium EDTA • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-rilastil-d-clar-depigmenting-concentrate-drops-30ml.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Dclar_serum-nam-30ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/rilastil-d-clar-depigmenting-concentrate-drops-30ml/"
@@ -1824,7 +1824,7 @@ const PRODUCTS = [
             "HYDROXYRESVERATROL",
             ""
         ],
-        "fullIngredients": "Được kiểm nghiệm da liễu nghiêm ngặt tại Ý, an toàn cho mọi loại da.",
+        "fullIngredients": "Aqua (Water) • Mandelic Acid • Glycerin • Sodium Hydroxide • Niacinamide • Hydroxyresveratrol • 3-O-Ethyl Ascorbic Acid • Sodium Hyaluronate • Tocopheryl Acetate • Disodium EDTA • Phenoxyethanol • Ethylhexylglycerin.",
         "image": "/images/products/rilastil-d-clar-concentrated-micropeeling.png",
         "originalImageUrl": "https://rilastilvn.com.vn/wp-content/uploads/2022/03/Dclar_micropeeling-100ml.png",
         "link": "https://rilastilvn.com.vn/san-pham/d-clar-concentrated-micropeeling/"
