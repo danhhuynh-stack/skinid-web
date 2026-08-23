@@ -1865,7 +1865,7 @@ const PRODUCTS = [
             "TINH DẦU HƯƠNG NƯỚC HOA"
         ],
         "fullIngredients": "Aqua (Water), Glycerin, Niacinamide (Vitamin B3), Caprylic/Capric Triglyceride, Dimethicone, Cetearyl Alcohol, Titanium Dioxide, Fragrance, Phenoxyethanol, Ethylhexylglycerin, Xanthan Gum.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/twon-body-lotion.png",
+        "image": "/images/products/twon-body-lotion.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/twon-body-lotion.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=twon-body-lotion"
     },
@@ -1904,7 +1904,7 @@ const PRODUCTS = [
             "PEARL POWDER"
         ],
         "fullIngredients": "Aqua (Water), Glycerin, Alpha Arbutin, Niacinamide, Pearl Powder, Glutathione, Stearic Acid, Cetyl Alcohol, Titanium Dioxide, Fragrance, Phenoxyethanol.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/twon-kem-u-trang.png",
+        "image": "/images/products/twon-kem-u-trang.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/twon-kem-u-trang.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=twon-kem-u-trang"
     },
@@ -1942,7 +1942,7 @@ const PRODUCTS = [
             "VITAMIN E"
         ],
         "fullIngredients": "Aqua (Water), Sodium Laureth Sulfate, Cocamidopropyl Betaine, Glycerin, Sodium Chloride, Parfum (Fragrance), Tocopheryl Acetate, Citric Acid, Disodium EDTA, Phenoxyethanol.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/twon-sua-tam.png",
+        "image": "/images/products/twon-sua-tam.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/twon-sua-tam.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=twon-sua-tam"
     },
@@ -1979,7 +1979,7 @@ const PRODUCTS = [
             "TINH DẦU LƯU HƯƠNG"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Citral, Benzyl Salicylate.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-sarika.png",
+        "image": "/images/products/dvah-sarika.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-sarika.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-sarika"
     },
@@ -2016,7 +2016,7 @@ const PRODUCTS = [
             "TINH DẦU NƯỚC HOA"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Nelumbo Nucifera (Lotus) Flower Extract, Hydroxycitronellal, Geraniol.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-kamal.png",
+        "image": "/images/products/dvah-kamal.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-kamal.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-kamal"
     },
@@ -2053,7 +2053,7 @@ const PRODUCTS = [
             "TINH DẦU ĐẬM ĐẶC"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Vanillin, Coumarin, Eugenol, Benzyl Benzoate.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-rakta.png",
+        "image": "/images/products/dvah-rakta.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-rakta.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-rakta"
     },
@@ -2090,7 +2090,7 @@ const PRODUCTS = [
             "TINH DẦU NƯỚC HOA"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Santalum Album (Sandalwood) Oil, Alpha-Isomethyl Ionone, Isoeugenol.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-tanmaya.png",
+        "image": "/images/products/dvah-tanmaya.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-tanmaya.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-tanmaya"
     },
@@ -2127,7 +2127,7 @@ const PRODUCTS = [
             "TINH DẦU LƯU HƯƠNG"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Citronellol, Hexyl Cinnamal, Benzyl Alcohol.",
-        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-malini.png",
+        "image": "/images/products/dvah-malini.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-malini.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-malini"
     }
@@ -2416,6 +2416,16 @@ window.openProductDetailModal = function(productId) {
     const fullIngEl = document.getElementById('pmodal-full-ingredients');
     if (fullIngEl) {
         fullIngEl.innerText = p.fullIngredients || 'Được kiểm nghiệm da liễu nghiêm ngặt tại Ý.';
+    }
+
+    // Certification & Legal Info
+    const certEl = document.getElementById('pmodal-certification-text');
+    if (certEl) {
+        if (p.brand === 'TWON' || p.brand === 'D\'VAH') {
+            certEl.innerText = 'Đã nhận Phiếu tiếp nhận công bố sản phẩm mỹ phẩm theo chuẩn Bộ Y Tế. Phân phối & chịu trách nhiệm pháp lý bởi CÔNG TY TNHH FIELDMAN (MST: 0319200638 - Trụ sở: 35 đường số 3, P. Tân Mỹ, TP.HCM).';
+        } else {
+            certEl.innerText = 'Sản phẩm Dược mỹ phẩm Rilastil chính ngạch từ Ý, đầy đủ hóa đơn GTGT & Hồ sơ công bố mỹ phẩm tuân thủ quy định Việt Nam.';
+        }
     }
 
     // Image
