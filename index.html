@@ -255,19 +255,22 @@
             </nav>
             
             <!-- Actions -->
-            <div class="flex items-center gap-4">
-                <a href="https://zalo.me/0924093461" target="_blank" class="hidden lg:flex items-center gap-2 text-sm font-medium text-brand-dark hover:text-brand-primary transition-colors">
-                    <i data-feather="phone-call" class="w-4 h-4"></i>
+            <div class="flex items-center gap-3">
+                <a href="https://zalo.me/0924093461" target="_blank" class="hidden lg:flex items-center gap-1.5 text-xs font-medium text-brand-dark hover:text-brand-primary transition-colors">
+                    <i data-feather="phone-call" class="w-3.5 h-3.5"></i>
                     0924.093.461
                 </a>
                 
-                <button onclick="openPrivacyModal()" class="hidden md:flex btn-hover-effect items-center gap-2 bg-brand-primary text-white px-5 py-2.5 rounded-full font-medium">
-                    <i data-feather="camera" class="w-4 h-4"></i>
+                <!-- Auth Section (Injected by auth.js) -->
+                <div id="header-auth-section"></div>
+
+                <button onclick="openPrivacyModal()" class="hidden md:flex btn-hover-effect items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-full font-semibold text-xs shadow-md shadow-brand-primary/20">
+                    <i data-feather="camera" class="w-3.5 h-3.5"></i>
                     Soi da AI
                 </button>
                 
                 <button onclick="cartManager.toggleCartUI()" class="relative p-2 text-brand-dark hover:text-brand-primary transition-colors">
-                    <i data-feather="shopping-cart" class="w-6 h-6"></i>
+                    <i data-feather="shopping-cart" class="w-5 h-5"></i>
                     <span id="cart-badge" class="absolute top-0 right-0 bg-brand-accent text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
                 </button>
             </div>
@@ -1057,10 +1060,148 @@
     </div>
 
 
-    <script src="js/skin-ai.js?v=8"></script>
+    <!-- AUTH MODAL (Login / Register) -->
+    <div id="auth-modal" class="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="auth-modal-content" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative border border-gray-100">
+            <button onclick="window.authManager.closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-brand-blush rounded-2xl flex items-center justify-center mx-auto mb-3 text-brand-primary shadow-sm">
+                    <i data-feather="user-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-black text-brand-dark" id="auth-tab-title">Tài Khoản SkinID</h3>
+                <p id="auth-modal-notice" class="text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-100 p-2.5 rounded-xl mt-2 hidden"></p>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="flex bg-gray-100 p-1 rounded-2xl mb-6">
+                <button id="auth-tab-login" onclick="toggleAuthForm('login')" class="w-1/2 py-2 text-xs font-bold rounded-xl bg-white text-gray-900 shadow-sm transition-all">Đăng nhập</button>
+                <button id="auth-tab-register" onclick="toggleAuthForm('register')" class="w-1/2 py-2 text-xs font-bold rounded-xl text-gray-500 hover:text-gray-900 transition-all">Đăng ký mới</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email đăng nhập</label>
+                    <input type="email" id="login-email" required placeholder="nhapemail@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                </div>
+                <button type="submit" class="w-full bg-brand-primary hover:bg-brand-dark text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all">
+                    Đăng nhập ngay
+                </button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5 hidden">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Họ và tên</label>
+                    <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
+                    <input type="email" id="reg-email" required placeholder="email@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Số điện thoại</label>
+                    <input type="tel" id="reg-phone" placeholder="0901234567" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Mật khẩu</label>
+                    <input type="password" id="reg-password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary">
+                </div>
+                <button type="submit" class="w-full bg-brand-primary hover:bg-brand-dark text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-all mt-2">
+                    Tạo tài khoản & Bắt đầu
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- HISTORY MODAL (View Past Scans) -->
+    <div id="history-modal" class="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="history-modal-content" class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative border border-gray-100 max-h-[85vh] flex flex-col">
+            <button onclick="window.authManager.closeHistoryModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
+                <div class="w-10 h-10 bg-brand-blush rounded-xl flex items-center justify-center text-brand-primary shadow-sm">
+                    <i data-feather="activity" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-brand-dark">Lịch Sử Phân Tích Da Cá Nhân</h3>
+                    <p class="text-xs text-gray-500 font-medium">Theo dõi tiến trình và sự cải thiện của làn da qua từng lần quét</p>
+                </div>
+            </div>
+
+            <!-- List Container -->
+            <div id="history-list-container" class="overflow-y-auto space-y-3 pr-1 flex-grow scrollbar-thin">
+                <!-- Injected by auth.js -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/email-service.js"></script>
+    <script src="js/skin-ai.js?v=9"></script>
     <script src="js/camera-ai.js"></script>
     <script src="js/cart.js"></script>
     <script>
+        function toggleAuthForm(mode) {
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+            const tabLogin = document.getElementById('auth-tab-login');
+            const tabRegister = document.getElementById('auth-tab-register');
+
+            if (mode === 'login') {
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+                tabLogin.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+                tabLogin.classList.remove('text-gray-500');
+                tabRegister.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+                tabRegister.classList.add('text-gray-500');
+            } else {
+                formLogin.classList.add('hidden');
+                formRegister.classList.remove('hidden');
+                tabRegister.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+                tabRegister.classList.remove('text-gray-500');
+                tabLogin.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+                tabLogin.classList.add('text-gray-500');
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const res = window.authManager.login(email, pass);
+            if (res.success) {
+                window.authManager.closeAuthModal();
+                showToast(`Xin chào mừng ${res.user.name} quay trở lại!`);
+            } else {
+                alert(res.message);
+            }
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const phone = document.getElementById('reg-phone').value;
+            const pass = document.getElementById('reg-password').value;
+            const res = window.authManager.register(name, email, phone, pass);
+            if (res.success) {
+                window.authManager.closeAuthModal();
+                showToast(`Chúc mừng ${res.user.name} đã đăng ký tài khoản thành công!`);
+            } else {
+                alert(res.message);
+            }
+        }
+
         // Initialize Feather icons
         feather.replace();
     </script>

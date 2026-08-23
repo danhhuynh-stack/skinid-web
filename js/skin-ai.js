@@ -2714,6 +2714,10 @@ function initCatalog() {
 
 // PRIVACY MODAL FLOW
 function openPrivacyModal() {
+    if (window.authManager && !window.authManager.getCurrentUser()) {
+        window.authManager.openAuthModal('Vui lòng đăng nhập hoặc tạo tài khoản để thực hiện Soi Da AI & lưu phác đồ cá nhân!');
+        return;
+    }
     const modal = document.getElementById('privacy-modal');
     if (!modal) return;
     modal.classList.remove('hidden');
@@ -3116,6 +3120,16 @@ Hãy trả về DUY NHẤT một đối tượng JSON hợp lệ (không chứa 
 }
 Lưu ý: Chỉ trả về chuỗi JSON thuần. Tất cả nội dung phải bằng tiếng Việt. Phân tích phải DỰA TRÊN ẢNH THỰC TẾ, không được bịa số liệu.`;
 
+    // Inject User Scan History Context to anchor AI baseline & reduce statistical variance
+    if (window.authManager && window.authManager.getCurrentUser()) {
+        const history = window.authManager.getScanHistory();
+        if (history && history.length > 0) {
+            const lastScan = history[0];
+            const historyPrompt = `\n\n[USER HISTORICAL BASELINE CONTEXT - LỊCH SỬ QUÉT CỦA NGUỜI DÙNG]: Người dùng đã soi da ${history.length} lần trước đó. Kết quả lần soi gần nhất (${lastScan.dateFormatted}): Điểm sức khỏe: ${lastScan.healthScore}/100, Loại da: "${lastScan.skinType}", Tuổi da: ${lastScan.skinAge}. NGUYÊN TẮC: Hãy dùng thông tin lịch sử nền này để định chuẩn (baseline context), giúp cân bằng các sai số do góc chụp/ánh sáng thay đổi và đảm bảo tiến trình điểm số biến động hợp lý, nhất quán giữa các lần soi.`;
+            promptText += historyPrompt;
+        }
+    }
+
     const payload = {
         contents: [{
             parts: [
@@ -3441,6 +3455,45 @@ function renderResults(data, weatherData) {
         const eyeWrinklesH = parseInt(data.eyeWrinkles) || Math.round(elasticityH * 0.95);
         const nasolabialFoldsH = parseInt(data.nasolabialFolds) || Math.round(elasticityH * 0.9);
         const rednessH = parseInt(data.redness) || Math.round(moistureH * 0.7 + 25);
+        
+        // smooth scroll to top of modal
+        document.getElementById('ai-modal').scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Automatically Save Scan History & Dispatch Email Report to Logged-in User
+        if (window.authManager && window.authManager.getCurrentUser()) {
+            const currentUser = window.authManager.getCurrentUser();
+            const routineProducts = (window.currentRoutineProducts && window.currentRoutineProducts.length > 0) 
+                ? window.currentRoutineProducts 
+                : (window.currentRoutineIds ? PRODUCTS.filter(p => window.currentRoutineIds.includes(p.id)) : []);
+
+            const savedRecord = window.authManager.saveScanHistory({
+                userName: currentUser.name,
+                healthScore: targetScore,
+                skinType: data.skinTypeSummary || 'Da hỗn hợp',
+                skinAge: parseInt(data.skinAge) || 25,
+                primaryConcerns: data.activeIngredients || [],
+                metrics: {
+                    moisture: data.moisture,
+                    sebum: data.sebum,
+                    pores: data.pores,
+                    pigmentation: data.pigmentation,
+                    elasticity: data.elasticity
+                },
+                recommendedRoutine: window.currentRoutineIds || [],
+                recommendedRoutineProducts: routineProducts
+            });
+
+            if (savedRecord && window.emailService && currentUser.email) {
+                window.emailService.sendSkinReportEmail(currentUser.email, {
+                    userName: currentUser.name,
+                    healthScore: targetScore,
+                    skinType: data.skinTypeSummary || 'Da hỗn hợp',
+                    skinAge: parseInt(data.skinAge) || 25,
+                    recommendedRoutineProducts: routineProducts
+                });
+            }
+        }
+        
         const acneBacteriaH = parseInt(data.acneBacteria) || Math.round(sebumH * 0.8 + 15);
         const textureH = parseInt(data.texture) || Math.round((moistureH + poresH) / 2);
         const darkCirclesH = parseInt(data.darkCircles) || Math.round((targetScore + pigmentH) / 2);
