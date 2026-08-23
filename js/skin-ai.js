@@ -1979,7 +1979,7 @@ const PRODUCTS = [
             "TINH DẦU LƯU HƯƠNG"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Citral, Benzyl Salicylate.",
-        "image": "/images/products/dvah-sarika.png",
+        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-sarika.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-sarika.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-sarika"
     },
@@ -2016,7 +2016,7 @@ const PRODUCTS = [
             "TINH DẦU NƯỚC HOA"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Nelumbo Nucifera (Lotus) Flower Extract, Hydroxycitronellal, Geraniol.",
-        "image": "/images/products/dvah-kamal.png",
+        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-kamal.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-kamal.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-kamal"
     },
@@ -2053,7 +2053,7 @@ const PRODUCTS = [
             "TINH DẦU ĐẬM ĐẶC"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Vanillin, Coumarin, Eugenol, Benzyl Benzoate.",
-        "image": "/images/products/dvah-rakta.png",
+        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-rakta.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-rakta.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-rakta"
     },
@@ -2090,7 +2090,7 @@ const PRODUCTS = [
             "TINH DẦU NƯỚC HOA"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Santalum Album (Sandalwood) Oil, Alpha-Isomethyl Ionone, Isoeugenol.",
-        "image": "/images/products/dvah-tanmaya.png",
+        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-tanmaya.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-tanmaya.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-tanmaya"
     },
@@ -2127,7 +2127,7 @@ const PRODUCTS = [
             "TINH DẦU LƯU HƯƠNG"
         ],
         "fullIngredients": "Alcohol Denat, Parfum (Fragrance), Aqua (Water), Citronellol, Hexyl Cinnamal, Benzyl Alcohol.",
-        "image": "/images/products/dvah-malini.png",
+        "image": "https://twon-website.danh-huynh.workers.dev/assets/dvah-malini.png",
         "originalImageUrl": "https://twon-website.danh-huynh.workers.dev/assets/dvah-malini.png",
         "link": "https://twon-website.danh-huynh.workers.dev/san-pham.html?id=dvah-malini"
     }
