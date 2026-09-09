@@ -274,3 +274,5 @@ if (typeof window.formatPrice === 'undefined') {
 
 // Initialize global CartManager
 const cartManager = new ShoppingCart();
+window.cartManager = cartManager;
+window.ShoppingCart = ShoppingCart;
