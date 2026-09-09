@@ -236,6 +236,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Identity Services (GIS) Official SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="antialiased min-h-screen flex flex-col pt-20">
 
@@ -1122,9 +1124,9 @@
     </div>
 
 
-    <!-- AUTH MODAL ULTRA PRO (Google Sign-In, Show/Hide Password, Forgot Password, Glassmorphic UI) -->
-    <div id="auth-modal" class="fixed inset-0 z-[999] bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden opacity-0 transition-all duration-300">
-        <div id="auth-modal-content" class="bg-white/95 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-all duration-300 relative border border-white/20 backdrop-blur-xl">
+    <!-- AUTH MODAL ULTRA PRO (Real Google Sign-In, Password Strength, Confirm Password, Remember Me) -->
+    <div id="auth-modal" class="fixed inset-0 z-[999] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden opacity-0 transition-all duration-300">
+        <div id="auth-modal-content" class="bg-white/95 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-all duration-300 relative border border-white/40 backdrop-blur-2xl max-h-[90vh] overflow-y-auto">
             <!-- Close Button -->
             <button onclick="window.authManager.closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100/80 transition-colors z-10">
                 <i data-feather="x" class="w-5 h-5"></i>
@@ -1137,14 +1139,16 @@
                 </div>
                 <h3 class="text-2xl font-black text-brand-dark tracking-tight" id="auth-tab-title">Chào Mừng Đến SkinID</h3>
                 <p class="text-xs text-gray-500 font-medium mt-1">Đăng nhập để lưu lịch sử soi da & nhận phác đồ cá nhân hóa</p>
-                <p id="auth-modal-notice" class="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-100 p-3 rounded-xl mt-3 hidden text-left flex items-center gap-2">
+                <div id="auth-modal-notice" class="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-100 p-3 rounded-xl mt-3 hidden text-left flex items-center gap-2">
                     <i data-feather="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
                     <span id="auth-notice-text"></span>
-                </p>
+                </div>
             </div>
 
-            <!-- GOOGLE SIGN-IN BUTTON (ULTRA PRO) -->
-            <button onclick="handleGoogleSignIn()" class="w-full bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 py-3 px-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 shadow-sm hover:shadow transition-all mb-4 group">
+            <!-- GOOGLE SIGN-IN BUTTON & CONTAINER (REAL GOOGLE AUTHENTICATION) -->
+            <div id="google-signin-btn-container" class="mb-3 flex justify-center w-full min-h-[44px]"></div>
+            
+            <button onclick="window.authManager.triggerGoogleSignIn()" class="w-full bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 py-3 px-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 shadow-sm hover:shadow transition-all mb-4 group">
                 <!-- Google Multicolored SVG Logo -->
                 <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 48 48">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -1152,13 +1156,13 @@
                     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.28-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                 </svg>
-                <span>Tiếp tục với Google</span>
+                <span>Tiếp tục với Google Xác Thực</span>
             </button>
 
             <!-- Divider -->
             <div class="relative flex py-2 items-center mb-4">
                 <div class="flex-grow border-t border-gray-200"></div>
-                <span class="flex-shrink mx-3 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Hoặc đăng nhập bằng Email</span>
+                <span class="flex-shrink mx-3 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Hoặc tài khoản Email</span>
                 <div class="flex-grow border-t border-gray-200"></div>
             </div>
 
@@ -1185,7 +1189,6 @@
                     <div class="relative">
                         <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
                         <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5"></i>
-                        <!-- Show/Hide Password Eye Toggle -->
                         <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors">
                             <i data-feather="eye" class="w-4 h-4"></i>
                         </button>
@@ -1207,35 +1210,60 @@
             <!-- 2. REGISTER FORM -->
             <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5 hidden">
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Họ và tên</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Họ và tên *</label>
                     <div class="relative">
                         <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
                         <i data-feather="user" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Email chính xác (Nhận báo cáo)</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email chính xác (Nhận báo cáo) *</label>
                     <div class="relative">
                         <input type="email" id="reg-email" required placeholder="email@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
                         <i data-feather="mail" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Số điện thoại</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Số điện thoại (Nhận tư vấn)</label>
                     <div class="relative">
                         <input type="tel" id="reg-phone" placeholder="0901234567" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
                         <i data-feather="phone" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">Tạo mật khẩu</label>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tạo mật khẩu (Tối thiểu 6 ký tự) *</label>
                     <div class="relative">
-                        <input type="password" id="reg-password" required placeholder="Tối thiểu 6 ký tự" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <input type="password" id="reg-password" required oninput="handlePasswordStrengthInput(this.value)" placeholder="Tối thiểu 6 ký tự" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
                         <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
                         <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-3.5 top-3 text-gray-400 hover:text-gray-600 transition-colors">
                             <i data-feather="eye" class="w-4 h-4"></i>
                         </button>
                     </div>
+                    <!-- Live Password Strength Meter -->
+                    <div class="mt-1.5 flex items-center gap-2">
+                        <div class="h-1.5 flex-grow bg-gray-200 rounded-full overflow-hidden">
+                            <div id="reg-strength-bar" class="h-full w-0 bg-gray-300 transition-all duration-300"></div>
+                        </div>
+                        <span id="reg-strength-label" class="text-[10px] font-bold text-gray-400 min-w-[60px] text-right">Chưa nhập</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Xác nhận mật khẩu *</label>
+                    <div class="relative">
+                        <input type="password" id="reg-confirm-password" required oninput="handleConfirmPasswordInput()" placeholder="Nhập lại mật khẩu" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="check-circle" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
+                        <button type="button" onclick="togglePasswordVisibility('reg-confirm-password', this)" class="absolute right-3.5 top-3 text-gray-400 hover:text-gray-600 transition-colors">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p id="reg-confirm-msg" class="text-[10px] font-bold mt-1 hidden"></p>
+                </div>
+
+                <div class="pt-1">
+                    <label class="flex items-start gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="reg-terms" required checked class="w-4 h-4 mt-0.5 rounded text-brand-primary focus:ring-brand-primary border-gray-300">
+                        <span class="text-[11px] text-gray-500 leading-tight">Tôi đồng ý với <a href="#" class="text-brand-primary font-bold hover:underline">Điều khoản sử dụng</a> và <a href="#" class="text-brand-primary font-bold hover:underline">Chính sách bảo mật</a> SkinID.</span>
+                    </label>
                 </div>
 
                 <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-dark hover:opacity-95 text-white py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-brand-primary/30 transition-all mt-2 flex items-center justify-center gap-2">
@@ -1431,7 +1459,7 @@
         function togglePasswordVisibility(inputId, btn) {
             const input = document.getElementById(inputId);
             if (!input) return;
-            const icon = btn.querySelector('i');
+            const icon = btn.querySelector('i') || btn.querySelector('svg');
             if (input.type === 'password') {
                 input.type = 'text';
                 if (icon) icon.setAttribute('data-feather', 'eye-off');
@@ -1440,6 +1468,41 @@
                 if (icon) icon.setAttribute('data-feather', 'eye');
             }
             if (window.feather) feather.replace();
+        }
+
+        function handlePasswordStrengthInput(val) {
+            if (!window.authManager) return;
+            const res = window.authManager.checkPasswordStrength(val);
+            const bar = document.getElementById('reg-strength-bar');
+            const label = document.getElementById('reg-strength-label');
+            if (bar && label) {
+                bar.className = `h-full ${res.color} transition-all duration-300`;
+                bar.style.width = res.width;
+                label.className = `text-[10px] font-bold ${res.textClass} min-w-[60px] text-right`;
+                label.innerText = res.label;
+            }
+            handleConfirmPasswordInput();
+        }
+
+        function handleConfirmPasswordInput() {
+            const pass = document.getElementById('reg-password')?.value || '';
+            const confirmPass = document.getElementById('reg-confirm-password')?.value || '';
+            const msgEl = document.getElementById('reg-confirm-msg');
+            if (!msgEl) return;
+
+            if (!confirmPass) {
+                msgEl.classList.add('hidden');
+                return;
+            }
+
+            msgEl.classList.remove('hidden');
+            if (pass === confirmPass) {
+                msgEl.className = 'text-[10px] font-bold text-emerald-600 mt-1 flex items-center gap-1';
+                msgEl.innerHTML = '✓ Mật khẩu khớp hoàn hảo';
+            } else {
+                msgEl.className = 'text-[10px] font-bold text-rose-500 mt-1 flex items-center gap-1';
+                msgEl.innerHTML = '✗ Mật khẩu không trùng khớp';
+            }
         }
 
         function toggleAuthForm(mode) {
@@ -1485,17 +1548,7 @@
 
         function handleGoogleSignIn() {
             if (window.authManager) {
-                const demoGoogleUser = {
-                    name: 'Khách Hàng Google',
-                    email: 'user.google@gmail.com'
-                };
-                const res = window.authManager.loginOrRegisterGoogle(demoGoogleUser);
-                if (res.success) {
-                    window.authManager.closeAuthModal();
-                    if (typeof showToast === 'function') {
-                        showToast(`Đã đăng nhập thành công qua Google (${res.user.email})!`);
-                    }
-                }
+                window.authManager.triggerGoogleSignIn();
             }
         }
 
@@ -1503,10 +1556,14 @@
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-password').value;
-            const res = window.authManager.login(email, pass);
+            const remember = document.getElementById('login-remember')?.checked ?? true;
+            
+            const res = window.authManager.login(email, pass, remember);
             if (res.success) {
                 window.authManager.closeAuthModal();
-                showToast(`Xin chào mừng ${res.user.name} quay trở lại!`);
+                if (typeof showToast === 'function') {
+                    showToast(`Xin chào mừng ${res.user.name} quay trở lại!`);
+                }
             } else {
                 alert(res.message);
             }
@@ -1518,10 +1575,14 @@
             const email = document.getElementById('reg-email').value;
             const phone = document.getElementById('reg-phone').value;
             const pass = document.getElementById('reg-password').value;
-            const res = window.authManager.register(name, email, phone, pass);
+            const confirmPass = document.getElementById('reg-confirm-password').value;
+            
+            const res = window.authManager.register(name, email, phone, pass, confirmPass, true);
             if (res.success) {
                 window.authManager.closeAuthModal();
-                showToast(`Chúc mừng ${res.user.name} đã đăng ký tài khoản thành công!`);
+                if (typeof showToast === 'function') {
+                    showToast(`Chúc mừng ${res.user.name} đã đăng ký tài khoản thành công!`);
+                }
             } else {
                 alert(res.message);
             }
