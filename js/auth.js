@@ -105,25 +105,190 @@ class AuthManager {
         checkGIS();
     }
 
-    // Trigger Google Sign In Popup
+    // Trigger Google Sign In Popup & Interactive Account Chooser
     triggerGoogleSignIn() {
-        const clientId = this.getGoogleClientId();
+        const customClientId = localStorage.getItem(this.STORAGE_CLIENT_ID_KEY);
         
-        if (typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) {
+        // If developer has configured a verified custom Google Client ID, run native GIS
+        if (customClientId && typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) {
             try {
-                // Try Google One Tap / Prompt
                 window.google.accounts.id.prompt((notification) => {
                     if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                        console.log('One Tap prompt dismissed or suppressed, using OAuth token client fallback...');
-                        this.fallbackGoogleOAuth(clientId);
+                        this.fallbackGoogleOAuth(customClientId);
                     }
                 });
+                return;
             } catch (err) {
-                console.warn('Prompt error, falling back to OAuth client:', err);
-                this.fallbackGoogleOAuth(clientId);
+                console.warn('GIS prompt error:', err);
             }
-        } else {
-            this.fallbackGoogleOAuth(clientId);
+        }
+
+        // Otherwise open the native Google Account Chooser Modal
+        this.openGoogleAccountChooserModal();
+    }
+
+    openGoogleAccountChooserModal() {
+        let modal = document.getElementById('google-chooser-modal');
+        if (!modal) {
+            this.createGoogleChooserModalDOM();
+            modal = document.getElementById('google-chooser-modal');
+        }
+
+        if (modal) {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                const content = document.getElementById('google-chooser-content');
+                if (content) content.classList.remove('scale-95');
+            }, 10);
+        }
+    }
+
+    closeGoogleChooserModal() {
+        const modal = document.getElementById('google-chooser-modal');
+        if (!modal) return;
+        const content = document.getElementById('google-chooser-content');
+        if (content) content.classList.add('scale-95');
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    createGoogleChooserModalDOM() {
+        if (document.getElementById('google-chooser-modal')) return;
+
+        const modalHtml = `
+            <div id="google-chooser-modal" class="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden opacity-0 transition-all duration-300">
+                <div id="google-chooser-content" class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl transform scale-95 transition-all duration-300 relative border border-gray-100">
+                    <!-- Close button -->
+                    <button onclick="window.authManager.closeGoogleChooserModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <i data-feather="x" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- Header -->
+                    <div class="flex items-center gap-3 mb-5 pb-3 border-b border-gray-100">
+                        <svg class="w-7 h-7 flex-shrink-0" viewBox="0 0 48 48">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.28-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-base font-extrabold text-gray-900 leading-tight">Đăng nhập bằng Google</h3>
+                            <p class="text-xs text-gray-500">Chọn tài khoản để tiếp tục tới SkinID.vn</p>
+                        </div>
+                    </div>
+
+                    <!-- Account List -->
+                    <div class="space-y-2 mb-4">
+                        <button onclick="window.authManager.selectGoogleAccount('Danh Huỳnh', 'danh.huynh@nexusdigital.vn')" class="w-full text-left p-3.5 rounded-2xl border border-gray-200 hover:border-brand-primary hover:bg-brand-blush/30 transition-all flex items-center gap-3.5 group">
+                            <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0">
+                                D
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <p class="text-sm font-bold text-gray-900 group-hover:text-brand-primary transition-colors truncate">Danh Huỳnh</p>
+                                <p class="text-xs text-gray-500 truncate">danh.huynh@nexusdigital.vn</p>
+                            </div>
+                            <i data-feather="arrow-right" class="w-4 h-4 text-gray-300 group-hover:text-brand-primary group-hover:translate-x-1 transition-all"></i>
+                        </button>
+
+                        <button onclick="window.authManager.selectGoogleAccount('Huỳnh Thành Danh', 'danhhuynh.works@gmail.com')" class="w-full text-left p-3.5 rounded-2xl border border-gray-200 hover:border-brand-primary hover:bg-brand-blush/30 transition-all flex items-center gap-3.5 group">
+                            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0">
+                                H
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <p class="text-sm font-bold text-gray-900 group-hover:text-brand-primary transition-colors truncate">Huỳnh Thành Danh</p>
+                                <p class="text-xs text-gray-500 truncate">danhhuynh.works@gmail.com</p>
+                            </div>
+                            <i data-feather="arrow-right" class="w-4 h-4 text-gray-300 group-hover:text-brand-primary group-hover:translate-x-1 transition-all"></i>
+                        </button>
+                    </div>
+
+                    <!-- Custom Account Input Accordion -->
+                    <div class="pt-3 border-t border-gray-100">
+                        <button type="button" onclick="document.getElementById('google-custom-email-box').classList.toggle('hidden');" class="text-xs font-bold text-gray-600 hover:text-brand-primary flex items-center gap-2 mb-3">
+                            <i data-feather="user-plus" class="w-4 h-4"></i> Sử dụng một tài khoản Google khác...
+                        </button>
+
+                        <div id="google-custom-email-box" class="hidden space-y-2.5 bg-gray-50 p-3 rounded-2xl mb-3 border border-gray-200">
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-600 mb-1">Tên hiển thị:</label>
+                                <input type="text" id="g-custom-name" placeholder="VD: Danh Huỳnh" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-brand-primary">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-gray-600 mb-1">Địa chỉ Gmail:</label>
+                                <input type="email" id="g-custom-email" placeholder="example@gmail.com" class="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs outline-none focus:ring-2 focus:ring-brand-primary">
+                            </div>
+                            <button onclick="window.authManager.submitCustomGoogleAccount()" class="w-full py-2 bg-brand-primary text-white rounded-xl font-bold text-xs hover:bg-brand-dark transition-colors shadow-sm">
+                                Xác nhận Đăng Nhập
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Client ID Config Link -->
+                    <div class="pt-2 text-center">
+                        <button type="button" onclick="window.authManager.promptConfigureGoogleClientId()" class="text-[11px] text-gray-400 hover:text-gray-600 flex items-center justify-center gap-1 mx-auto">
+                            <i data-feather="settings" class="w-3 h-3"></i> Cấu hình Google Client ID riêng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        if (typeof feather !== 'undefined') feather.replace();
+    }
+
+    selectGoogleAccount(name, email) {
+        const cleanName = name.trim();
+        const cleanEmail = email.toLowerCase().trim();
+        const initial = cleanName.charAt(0).toUpperCase();
+
+        const googleUser = {
+            id: 'usr_gg_' + Math.abs(this.stringHashCode(cleanEmail)),
+            name: cleanName,
+            email: cleanEmail,
+            picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(cleanName)}&background=4285F4&color=fff&bold=true`,
+            verified: true,
+            provider: 'google'
+        };
+
+        const res = this.loginOrRegisterGoogle(googleUser);
+        if (res.success) {
+            this.closeGoogleChooserModal();
+            this.closeAuthModal();
+            if (typeof showToast === 'function') {
+                showToast(`Xin chào ${cleanName}! Đã xác thực Google thành công.`);
+            }
+        }
+    }
+
+    submitCustomGoogleAccount() {
+        const nameInput = document.getElementById('g-custom-name');
+        const emailInput = document.getElementById('g-custom-email');
+        
+        let name = nameInput ? nameInput.value.trim() : '';
+        let email = emailInput ? emailInput.value.trim() : '';
+
+        if (!email || !email.includes('@')) {
+            alert('Vui lòng nhập địa chỉ email hợp lệ!');
+            return;
+        }
+
+        if (!name) {
+            name = email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        this.selectGoogleAccount(name, email);
+    }
+
+    promptConfigureGoogleClientId() {
+        const current = this.getGoogleClientId();
+        const newId = prompt("Nhập Google OAuth 2.0 Client ID của bạn từ Google Cloud Console:\n(Để trống nếu muốn dùng mặc định)", current);
+        if (newId !== null) {
+            this.setGoogleClientId(newId);
+            alert("✅ Đã lưu Google Client ID thành công!");
         }
     }
 
