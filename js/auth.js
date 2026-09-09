@@ -66,8 +66,9 @@ class AuthManager {
     // 1. GOOGLE IDENTITY SERVICES (GIS) REAL AUTHENTICATION
     // =========================================================================
     initGoogleIdentityServices() {
-        const clientId = this.getGoogleClientId();
-        if (!clientId) return;
+        const customClientId = localStorage.getItem(this.STORAGE_CLIENT_ID_KEY);
+        if (!customClientId) return; // Only init if custom Client ID is configured
+        const clientId = customClientId;
 
         const checkGIS = () => {
             if (typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) {
