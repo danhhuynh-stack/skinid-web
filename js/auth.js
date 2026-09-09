@@ -841,12 +841,67 @@ class AuthManager {
         }, 300);
     }
 
-    openProfileModal() {
+    
+    updateUserProfile(updatedData) {
+        const user = this.getCurrentUser();
+        if (!user) return { success: false, message: 'Chưa đăng nhập!' };
+
+        const users = this.getUsers();
+        const existing = users.find(u => u.id === user.id || u.email.toLowerCase() === user.email.toLowerCase());
+        
+        if (existing) {
+            Object.assign(existing, updatedData);
+            localStorage.setItem(this.STORAGE_USERS_KEY, JSON.stringify(users));
+            this.setCurrentSession(existing, true);
+            return { success: true, user: existing };
+        }
+        return { success: false, message: 'Không tìm thấy người dùng!' };
+    }
+
+    changePassword(oldPassword, newPassword) {
+        const user = this.getCurrentUser();
+        if (!user) return { success: false, message: 'Chưa đăng nhập!' };
+
+        if (user.provider === 'google') {
+            return { success: false, message: 'Tài khoản đăng nhập bằng Google OAuth không sử dụng mật khẩu hệ thống!' };
+        }
+
+        const users = this.getUsers();
+        const existing = users.find(u => u.id === user.id);
+        if (!existing || existing.password !== oldPassword) {
+            return { success: false, message: 'Mật khẩu hiện tại không chính xác!' };
+        }
+
+        if (newPassword.length < 6) {
+            return { success: false, message: 'Mật khẩu mới phải có tối thiểu 6 ký tự!' };
+        }
+
+        existing.password = newPassword;
+        localStorage.setItem(this.STORAGE_USERS_KEY, JSON.stringify(users));
+        return { success: true };
+    }
+
+    exportUserDataJSON() {
         const user = this.getCurrentUser();
         if (!user) return;
-        
-        let info = `Họ và tên: ${user.name}\nEmail: ${user.email}\nSố điện thoại: ${user.phone || 'Chưa cập nhật'}\nPhương thức đăng nhập: ${user.provider === 'google' ? 'Google OAuth' : 'Email/Mật khẩu'}`;
-        alert(`=== THÔNG TIN HỒ SƠ CÁ NHÂN ===\n\n${info}`);
+
+        const data = {
+            profile: user,
+            scanHistory: this.getScanHistory(),
+            exportedAt: new Date().toISOString()
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `skinid-profile-${user.name.replace(/\s+/g, '_')}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    openProfileModal() {
+        window.location.href = 'profile.html';
     }
 
     renderHistoryContent() {
