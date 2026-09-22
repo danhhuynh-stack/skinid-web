@@ -2147,10 +2147,10 @@ window.currentRoutineIds = [];
 const GEMINI_API_KEY = atob('QVEuQWI4Uk42STNxRmluMEpPSDJDdm9zSkxmX2JMdjNrZ0djMFptT0pQamczenV6TXF4b1E=');
 const FALLBACK_MODELS = [
     'gemini-2.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-flash',
-    'gemini-1.5-pro',
-    'gemini-1.5-flash-8b'
+    'gemini-3.6-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-3.7-flash',
+    'gemini-2.5-pro'
 ];
 
 function getGeminiUrl(modelName) {
