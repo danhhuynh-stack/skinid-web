@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinID.vn - Phân tích da AI & Dược mỹ phẩm Chính Hãng</title>
+    <meta name="description" content="Nền tảng phân tích da 3 góc độ độc quyền bằng Trí tuệ Nhân tạo (AI). Nhận phác đồ skincare cá nhân hóa và lựa chọn dược mỹ phẩm Rilastil, TWON, DVAH chính hãng.">
+    <meta name="keywords" content="soi da AI, phân tích da AI, dược mỹ phẩm, Rilastil, TWON, DVAH, phác đồ chăm sóc da, skincare routine">
+    <meta name="author" content="SkinID.vn">
+    <link rel="canonical" href="https://skinid.vn/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skinid.vn/">
+    <meta property="og:title" content="SkinID.vn - Phân tích da AI & Dược mỹ phẩm Chính Hãng">
+    <meta property="og:description" content="Trải nghiệm công nghệ phân tích da AI 3 góc chuyên sâu từ SkinID. Cá nhân hóa phác đồ chăm sóc da chuẩn y khoa dành riêng cho bạn.">
+    <meta property="og:image" content="https://skinid.vn/public/images/banners/hero-banner-v4.jpg">
+    <meta property="og:site_name" content="SkinID.vn">
+    <meta property="og:locale" content="vi_VN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://skinid.vn/">
+    <meta name="twitter:title" content="SkinID.vn - Phân tích da AI & Dược mỹ phẩm">
+    <meta name="twitter:description" content="Phân tích da AI 3 góc độ thời gian thực & phác đồ dược mỹ phẩm cá nhân hóa.">
+    <meta name="twitter:image" content="https://skinid.vn/public/images/banners/hero-banner-v4.jpg">
+
+    <!-- JSON-LD Structured Data Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HealthAndBeautyBusiness",
+      "name": "SkinID.vn - Phân tích da AI & Dược mỹ phẩm",
+      "url": "https://skinid.vn",
+      "logo": "https://skinid.vn/public/images/logo.png",
+      "image": "https://skinid.vn/public/images/banners/hero-banner-v4.jpg",
+      "description": "Nền tảng phân tích da 3D AI và dược mỹ phẩm chính hãng tại Việt Nam.",
+      "telephone": "+84924093461",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "71 Trạng Trình, Phường 9",
+        "addressLocality": "TP. Đà Lạt",
+        "addressRegion": "Lâm Đồng",
+        "addressCountry": "VN"
+      },
+      "priceRange": "$$",
+      "sameAs": [
+        "https://zalo.me/0924093461"
+      ]
+    }
+    </script>
+
+    <!-- Analytics & Tracking Event Helper -->
+    <script>
+        window.trackSkinIDEvent = function(eventName, eventParams = {}) {
+            console.log(`[Analytics Event] ${eventName}:`, eventParams);
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, eventParams);
+            }
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', eventName, eventParams);
+            }
+        };
+    </script>
+    
+    <!-- Google Fonts & Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#E87A90',
+                            accent: '#FF6B8B',
+                            blush: '#FFF2F4',
+                            petal: '#FFD6DE',
+                            'soft-bg': '#FFFAFB',
+                            dark: '#2D1F23',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    lineHeight: {
+                        body: '1.6',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            background-color: #FFFAFB;
+            color: #2D1F23;
+        }
+        
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .missing-image-placeholder {
+            background: linear-gradient(135deg, #FFF2F4 0%, #FFD6DE 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #E87A90;
+            font-weight: 600;
+        }
+
+        .video-overlay-guide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 350px;
+            border: 2px dashed #E87A90;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+        
+        .metric-bar-fill {
+            transition: width 1s ease-in-out;
+        }
+
+        .btn-hover-effect {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hover-effect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 122, 144, 0.3);
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFFAFB; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD6DE; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E87A90; 
+        }
+
+        /* Scan-line animation for thumbnail previews */
+        @keyframes scanLine {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+        .scan-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: -10%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(232,122,144,0.8), transparent);
+            box-shadow: 0 0 12px rgba(232,122,144,0.6);
+            animation: scanLine 1.8s ease-in-out infinite;
+        }
+
+        /* Scan step active state */
+        .scan-step.active {
+            border-color: #E87A90;
+            background: #FFF2F4;
+        }
+        .scan-step.active .scan-step-icon {
+            background: #E87A90 !important;
+            color: white !important;
+        }
+        .scan-step.active .scan-step-text {
+            color: #E87A90 !important;
+            font-weight: 700 !important;
+        }
+
+        /* Scan step done state */
+        .scan-step.done {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+        .scan-step.done .scan-step-icon {
+            background: #10b981 !important;
+            color: white !important;
+        }
+        .scan-step.done .scan-step-text {
+            color: #059669 !important;
+            text-decoration: line-through;
+        }
+
+        /* Confetti particle */
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+    <!-- MediaPipe Face Mesh -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Identity Services (GIS) Official SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="antialiased min-h-screen flex flex-col pt-20">
+
+    <!-- HEADER -->
+    <header class="glass-header fixed top-0 w-full z-40 transition-all duration-300">
+        <div class="container mx-auto px-4 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2">
+                <img src="public/images/logo.png" alt="SkinID" class="h-12 w-auto object-contain" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\'><text x=\'0\' y=\'30\' font-family=\'Arial\' font-size=\'24\' font-weight=\'bold\' fill=\'%23E87A90\'>SkinID.vn</text></svg>'">
+            </a>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#" class="text-brand-dark hover:text-brand-primary transition-colors">Trang chủ</a>
+                <a href="#catalog" class="text-brand-dark hover:text-brand-primary transition-colors">Sản phẩm</a>
+                <a href="#brands" class="text-brand-dark hover:text-brand-primary transition-colors">Thương hiệu</a>
+            </nav>
+            
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <a href="https://zalo.me/0924093461" target="_blank" class="hidden lg:flex items-center gap-1.5 text-xs font-medium text-brand-dark hover:text-brand-primary transition-colors">
+                    <i data-feather="phone-call" class="w-3.5 h-3.5"></i>
+                    0924.093.461
+                </a>
+                
+                <!-- Auth Section (Injected by auth.js) -->
+                <div id="header-auth-section"></div>
+
+                <button onclick="openPrivacyModal()" class="hidden md:flex btn-hover-effect items-center gap-2 bg-brand-primary text-white px-4 py-2 rounded-full font-semibold text-xs shadow-md shadow-brand-primary/20">
+                    <i data-feather="camera" class="w-3.5 h-3.5"></i>
+                    Soi da AI
+                </button>
+                
+                <button onclick="cartManager.toggleCartUI()" class="relative p-2 text-brand-dark hover:text-brand-primary transition-colors">
+                    <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                    <span id="cart-badge" class="absolute top-0 right-0 bg-brand-accent text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-brand-blush overflow-hidden">
+        <div class="container mx-auto px-4 lg:px-8 py-16 lg:py-24 flex flex-col-reverse lg:flex-row items-center gap-12">
+            
+            <!-- Text Content -->
+            <div class="flex-1 text-center lg:text-left z-10">
+                <div class="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm text-sm font-semibold text-brand-primary mb-6">
+                    <i data-feather="cpu" class="w-4 h-4"></i>
+                    Phân tích da AI 3 góc chuyên sâu
+                </div>
+                
+                <h1 class="text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+                    Khám phá làn da hoàn hảo với <span class="text-brand-primary">AI Chuyên Gia</span>
+                </h1>
+                
+                <p class="text-lg text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0">
+                    Trải nghiệm phân tích da 3 góc độ chuyên sâu bằng công nghệ AI, nhận phác đồ chăm sóc cá nhân hóa với các thương hiệu dược mỹ phẩm hàng đầu.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                    <button onclick="openPrivacyModal()" class="btn-hover-effect w-full sm:w-auto bg-brand-primary text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/30">
+                        <i data-feather="camera" class="w-5 h-5"></i>
+                        Bắt đầu soi da AI
+                    </button>
+                    <a href="#catalog" class="btn-hover-effect w-full sm:w-auto bg-white text-brand-dark border-2 border-brand-petal hover:border-brand-primary px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center transition-colors">
+                        Xem sản phẩm
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Hero Image -->
+            <div class="flex-1 relative z-10 w-full max-w-lg mx-auto">
+                <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl relative">
+                    <img src="public/images/banners/hero-banner-v4.jpg" alt="SkinID Hero Banner" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1616683693504-3ea7e9ad6fec?q=80&w=1000&auto=format&fit=crop';">
+                </div>
+                <!-- Decorative Elements -->
+                <div class="absolute -top-6 -right-6 w-24 h-24 bg-brand-accent rounded-full opacity-20 blur-xl"></div>
+                <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-brand-primary rounded-full opacity-20 blur-xl"></div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- BRANDS / LOGOS (Optional small strip) -->
+    <section id="brands" class="py-10 border-y border-brand-petal bg-white">
+        <div class="container mx-auto px-4 flex flex-wrap justify-center items-center gap-8 lg:gap-16 opacity-70">
+            <h3 class="text-sm font-semibold tracking-wider text-gray-500 uppercase w-full text-center mb-4">Thương hiệu đồng hành</h3>
+            <div class="flex items-center gap-12 flex-wrap justify-center">
+                <span class="text-2xl font-bold text-gray-800">RILASTIL</span>
+                <img src="public/images/brands/logo-twon.png" alt="TWON" class="h-8 object-contain" onerror="this.outerHTML='<span class=\'text-2xl font-bold text-gray-800\'>TWON</span>'">
+                <img src="public/images/brands/logo-dvah.png" alt="DVAH" class="h-8 object-contain" onerror="this.outerHTML='<span class=\'text-2xl font-bold text-gray-800\'>DVAH</span>'">
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT CATALOG -->
+    <section id="catalog" class="py-20 flex-grow">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Dược Mỹ Phẩm Chính Hãng</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Lựa chọn các sản phẩm chăm sóc da chính hãng, an toàn và hiệu quả.</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex flex-col gap-4 mb-10">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <!-- Brand Tabs -->
+                    <div class="flex flex-wrap bg-white rounded-full p-1 border border-gray-200 shadow-sm" id="brand-filters">
+                        <button onclick="filterByBrand('all', this)" class="filter-btn active px-6 py-2 rounded-full text-sm font-semibold bg-brand-primary text-white" data-brand="all">Tất cả thương hiệu</button>
+                        <button onclick="filterByBrand('Rilastil', this)" class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="Rilastil">Rilastil</button>
+                        <button onclick="filterByBrand('TWON', this)" class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="TWON">TWON</button>
+                        <button onclick="filterByBrand('DVAH', this)" class="filter-btn px-6 py-2 rounded-full text-sm font-medium text-gray-600 hover:bg-brand-blush" data-brand="DVAH">DVAH</button>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="relative w-full md:w-72">
+                        <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                        <input type="text" id="product-search" placeholder="Tìm kiếm tên, hoạt chất..." class="w-full bg-white border border-gray-200 rounded-full py-2.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-brand-primary/50 focus:border-brand-primary transition-all text-sm">
+                    </div>
+                </div>
+
+                <!-- Skincare Step Category Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="step-filters">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap mr-2">Bước Skincare:</span>
+                    <button onclick="filterByStep('all', this)" class="step-filter-btn active px-4 py-1.5 rounded-full text-xs font-semibold bg-gray-900 text-white transition-colors whitespace-nowrap" data-step="all">Tất cả</button>
+                    <button onclick="filterByStep('cleanser', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="cleanser">Sữa rửa mặt / Tẩy trang</button>
+                    <button onclick="filterByStep('toner', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="toner">Toner / Lotion</button>
+                    <button onclick="filterByStep('treatment', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="treatment">Serum / Đặc trị</button>
+                    <button onclick="filterByStep('moisturizer', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="moisturizer">Kem dưỡng ẩm</button>
+                    <button onclick="filterByStep('sunscreen', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="sunscreen">Kem chống nắng</button>
+                    <button onclick="filterByStep('special', this)" class="step-filter-btn px-4 py-1.5 rounded-full text-xs font-medium bg-white text-gray-600 border border-gray-200 hover:border-brand-primary transition-colors whitespace-nowrap" data-step="special">Nước hoa & Khác</button>
+                </div>
+            </div>
+            
+            <!-- Result Count Badge -->
+            <div class="flex items-center justify-between mb-4 px-1">
+                <div id="filter-result-count" class="text-xs sm:text-sm font-semibold text-gray-500 flex items-center gap-1.5">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+                <!-- Products will be injected here via JS -->
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- FOOTER (Chuẩn Bộ Công Thương & Nghị Định 13/2023/NĐ-CP) -->
+    <footer class="bg-gray-900 text-white pt-16 pb-24 md:pb-12 border-t border-gray-800">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                
+                <!-- Col 1: Doanh Nghiệp -->
+                <div class="space-y-4">
+                    <img src="public/images/logo.png" alt="SkinID" class="h-12 w-auto object-contain brightness-0 invert" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'40\'><text x=\'0\' y=\'30\' font-family=\'Arial\' font-size=\'24\' font-weight=\'bold\' fill=\'%23E87A90\'>SkinID.vn</text></svg>'">
+                    <p class="text-xs text-gray-400 leading-relaxed">Nền tảng ứng dụng AI trong phân tích làn da và cung cấp giải pháp Dược mỹ phẩm cá nhân hóa hàng đầu Việt Nam.</p>
+                    
+                    <div class="text-xs text-gray-300 space-y-2 pt-2 border-t border-gray-800">
+                        <p class="font-bold text-white">CÔNG TY TNHH FIELDMAN</p>
+                        <p><span class="text-gray-400">Mã số doanh nghiệp:</span> <strong class="text-brand-petal">0319200638</strong> (Sở KH&ĐT TP.HCM cấp)</p>
+                        <p class="flex items-start gap-1.5">
+                            <i data-feather="map-pin" class="w-3.5 h-3.5 text-brand-primary flex-shrink-0 mt-0.5"></i>
+                            <span><strong>Trụ sở ĐKKD:</strong> 35 đường số 3, Phường Tân Mỹ, TP. Hồ Chí Minh</span>
+                        </p>
+                        <p class="flex items-start gap-1.5">
+                            <i data-feather="building" class="w-3.5 h-3.5 text-brand-primary flex-shrink-0 mt-0.5"></i>
+                            <span><strong>Văn phòng:</strong> Tầng 9, 343 Phạm Ngũ Lão, Q.1, TP. Hồ Chí Minh</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Col 2: Thương Hiệu Dược Mỹ Phẩm -->
+                <div>
+                    <h4 class="font-bold text-sm text-white mb-4 uppercase tracking-wider border-b border-gray-800 pb-2">Thương Hiệu Phân Phối</h4>
+                    <ul class="space-y-2.5 text-xs text-gray-300">
+                        <li class="flex items-center gap-2"><i data-feather="check" class="w-3.5 h-3.5 text-brand-primary"></i> <strong class="text-white">Rilastil</strong> – Dược mỹ phẩm cao cấp từ Ý</li>
+                        <li class="flex items-center gap-2"><i data-feather="check" class="w-3.5 h-3.5 text-brand-primary"></i> <strong class="text-white">TWON</strong> – Nước hoa & Chăm sóc cơ thể</li>
+                        <li class="flex items-center gap-2"><i data-feather="check" class="w-3.5 h-3.5 text-brand-primary"></i> <strong class="text-white">D'VAH</strong> – Mỹ phẩm sinh học thiên nhiên</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-gray-800/60 rounded-xl border border-gray-700/50">
+                        <p class="text-[11px] text-gray-300">100% Sản phẩm chính ngạch, có phiếu tiếp nhận công bố của Bộ Y Tế & Hóa đơn GTGT.</p>
+                    </div>
+                </div>
+                
+                <!-- Col 3: Quy Định & Chính Sách TMĐT -->
+                <div>
+                    <h4 class="font-bold text-sm text-white mb-4 uppercase tracking-wider border-b border-gray-800 pb-2">Chính Sách & Quy Định</h4>
+                    <ul class="space-y-2.5 text-xs text-gray-300">
+                        <li>
+                            <button onclick="openLegalModal('privacy')" class="hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                                <i data-feather="shield" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                Bảo mật & Sinh trắc học (NĐ 13/2023)
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openLegalModal('terms')" class="hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                                <i data-feather="file-text" class="w-3.5 h-3.5 text-blue-400"></i>
+                                Điều khoản & Điều kiện sử dụng
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openLegalModal('shipping')" class="hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                                <i data-feather="truck" class="w-3.5 h-3.5 text-amber-400"></i>
+                                Chính sách Vận chuyển & Giao nhận
+                            </button>
+                        </li>
+                        <li>
+                            <button onclick="openLegalModal('return')" class="hover:text-brand-primary transition-colors flex items-center gap-1.5">
+                                <i data-feather="rotate-ccw" class="w-3.5 h-3.5 text-rose-400"></i>
+                                Chính sách Đổi trả & Hoàn tiền (7 ngày)
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Col 4: Bộ Công Thương & Khuyên Cáo Y Tế -->
+                <div>
+                    <h4 class="font-bold text-sm text-white mb-4 uppercase tracking-wider border-b border-gray-800 pb-2">Chứng Nhận & Liên Hệ</h4>
+                    <p class="text-xs text-gray-400 mb-3">Tổng đài hỗ trợ tư vấn Dược sĩ 24/7:</p>
+                    <a href="https://zalo.me/0924093461" target="_blank" class="inline-flex items-center gap-2.5 bg-[#0068FF] text-white px-4 py-2.5 rounded-xl text-xs font-bold hover:bg-blue-600 transition-colors mb-4 w-full justify-center shadow-md">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="24" fill="#0068FF"/>
+                            <path d="M13.5 15.5h21v3.5l-12.5 11h12.5v3.5h-21v-3.5l12.5-11h-12.5v-3.5z" fill="#FFFFFF"/>
+                        </svg>
+                        Hotline / Zalo: 0924.093.461
+                    </a>
+                    
+                    <!-- Badge Bộ Công Thương (Inline SVG Chính Thức 100% Sắc Nét) -->
+                    <div class="pt-1">
+                        <a href="http://online.gov.vn" target="_blank" class="inline-flex items-center gap-3 bg-gray-800/80 hover:bg-gray-800 p-2.5 rounded-2xl border border-gray-700/80 transition-all w-full shadow-lg group">
+                            <!-- Official MoIT Red & Gold Crest SVG -->
+                            <svg class="w-9 h-9 flex-shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="46" fill="#CC0000" stroke="#FFD700" stroke-width="3"/>
+                                <circle cx="50" cy="50" r="38" fill="none" stroke="#FFD700" stroke-width="1.5" stroke-dasharray="3 2"/>
+                                <polygon points="50,20 57,34 73,35 61,46 65,62 50,53 35,62 39,46 27,35 43,34" fill="#FFD700"/>
+                                <path d="M18 68 C 35 82, 65 82, 82 68 L 78 78 C 60 88, 40 88, 22 78 Z" fill="#0044AA" stroke="#FFD700" stroke-width="1"/>
+                                <text x="50" y="76" font-family="Arial, sans-serif" font-weight="900" font-size="7" fill="#FFFFFF" text-anchor="middle">BỘ CÔNG THƯƠNG</text>
+                            </svg>
+                            <div class="text-left">
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[11px] font-black text-emerald-400 uppercase tracking-wider">ĐÃ THÔNG BÁO</span>
+                                    <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                </div>
+                                <span class="block text-[10px] font-bold text-gray-200">Bộ Công Thương Việt Nam</span>
+                                <span class="block text-[9px] text-gray-400 group-hover:text-emerald-300 transition-colors">Xác thực online.gov.vn</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-400">
+                <p>© 2026 SkinID.vn - Phát triển & Vận hành bởi CÔNG TY TNHH FIELDMAN (MST: 0319200638).</p>
+                <p class="text-[11px] text-gray-500">* Công nghệ Soi da AI mang tính chất tư vấn diện ngoài, không thay thế chẩn đoán y khoa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full glass-modal border-t border-brand-petal z-40 pb-safe">
+        <div class="flex justify-around items-center h-16 px-2">
+            <a href="#" class="flex flex-col items-center justify-center w-full h-full text-brand-primary">
+                <i data-feather="home" class="w-5 h-5 mb-1"></i>
+                <span class="text-[10px] font-medium">Trang chủ</span>
+            </a>
+            <button onclick="openPrivacyModal()" class="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-brand-primary transition-colors relative">
+                <div class="absolute -top-5 bg-brand-primary text-white p-3 rounded-full shadow-lg border-4 border-white">
+                    <i data-feather="camera" class="w-5 h-5"></i>
+                </div>
+                <span class="text-[10px] font-medium mt-6">Soi da</span>
+            </button>
+            <a href="#catalog" class="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-brand-primary transition-colors">
+                <i data-feather="grid" class="w-5 h-5 mb-1"></i>
+                <span class="text-[10px] font-medium">Sản phẩm</span>
+            </a>
+            <button onclick="cartManager.toggleCartUI()" class="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-brand-primary transition-colors relative">
+                <i data-feather="shopping-cart" class="w-5 h-5 mb-1"></i>
+                <span class="text-[10px] font-medium">Giỏ hàng</span>
+                <span id="mobile-cart-badge" class="absolute top-1 right-[25%] bg-brand-accent text-white text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center opacity-0">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- PRIVACY CONSENT MODAL -->
+    <div id="privacy-modal" class="fixed inset-0 z-[60] bg-black/60 hidden flex-col items-center justify-center transition-opacity duration-300 opacity-0 px-4">
+        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl transform scale-95 transition-transform duration-300" id="privacy-modal-content">
+            <div class="border-b border-gray-100 px-6 py-5 flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-gray-800">Thỏa thuận Bảo mật & Quyền riêng tư</h3>
+                <button onclick="closePrivacyModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
+                    <i data-feather="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="bg-brand-petal/30 p-4 rounded-xl mb-6 border border-brand-petal/50">
+                    <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                        Để AI có thể phân tích chính xác tình trạng da, SkinID cần truy cập Camera trên thiết bị của bạn. Chúng tôi cam kết:
+                    </p>
+                    <ul class="text-sm text-gray-700 space-y-3 mb-0">
+                        <li class="flex items-start gap-3">
+                            <div class="bg-brand-primary/10 p-1.5 rounded-full mt-0.5">
+                                <i data-feather="shield" class="w-4 h-4 text-brand-primary flex-shrink-0"></i>
+                            </div>
+                            <span class="pt-1">Hình ảnh của bạn được phân tích theo thời gian thực và <strong>không lưu trữ</strong> trên bất kỳ máy chủ nào.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="bg-brand-primary/10 p-1.5 rounded-full mt-0.5">
+                                <i data-feather="lock" class="w-4 h-4 text-brand-primary flex-shrink-0"></i>
+                            </div>
+                            <span class="pt-1">Dữ liệu khuôn mặt chỉ được sử dụng duy nhất cho mục đích cá nhân hóa phác đồ chăm sóc da.</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <label class="flex items-start gap-3 cursor-pointer group">
+                    <div class="relative flex items-center justify-center w-5 h-5 mt-0.5">
+                        <input type="checkbox" id="privacy-consent-checkbox" class="peer appearance-none w-5 h-5 border-2 border-gray-300 rounded focus:ring-2 focus:ring-brand-primary/20 checked:border-brand-primary checked:bg-brand-primary transition-all cursor-pointer" onchange="togglePrivacyButton()">
+                        <i data-feather="check" class="absolute w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></i>
+                    </div>
+                    <span class="text-sm text-gray-600 group-hover:text-gray-800 transition-colors select-none font-medium">
+                        Tôi đã đọc, hiểu và đồng ý với Chính sách bảo mật của SkinID.
+                    </span>
+                </label>
+            </div>
+            <div class="border-t border-gray-100 px-6 py-5 flex justify-end gap-3 bg-gray-50/50 rounded-b-2xl">
+                <button onclick="closePrivacyModal()" class="px-5 py-2.5 rounded-xl font-medium text-gray-600 hover:bg-gray-200 bg-gray-100 transition-colors">
+                    Hủy bỏ
+                </button>
+                <button id="btn-privacy-continue" disabled onclick="requestCameraPermissionAndProceed()" class="px-6 py-2.5 rounded-xl font-semibold text-white bg-gray-300 cursor-not-allowed transition-all flex items-center gap-2">
+                    <i data-feather="camera" class="w-4 h-4"></i>
+                    Cấp quyền Camera
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI SKIN SCAN MODAL (FULLSCREEN) -->
+    <div id="ai-modal" class="fixed inset-0 z-50 bg-white hidden flex-col transition-opacity duration-300 opacity-0 overflow-y-auto">
+        <!-- Modal Header -->
+        <div class="sticky top-0 bg-white z-20 border-b border-gray-100 px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-feather="cpu" class="text-brand-primary w-5 h-5"></i>
+                <h3 class="font-bold text-lg">Chuyên Gia AI Phân Tích Da</h3>
+            </div>
+            <button onclick="closeScanModal()" class="p-2 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="flex-grow flex flex-col max-w-4xl mx-auto w-full p-4 lg:p-8" id="modal-content-area">
+            
+            <!-- FLOW: CAPTURE IMAGES -->
+            <div id="capture-flow" class="flex-grow flex flex-col">
+                
+                <!-- Progress Steps -->
+                <div class="flex items-center justify-between mb-8 max-w-md mx-auto w-full relative">
+                    <div class="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -z-10 -translate-y-1/2"></div>
+                    
+                    <div class="flex flex-col items-center gap-2" id="step-1-indicator">
+                        <div class="w-8 h-8 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-sm shadow-md transition-colors border-4 border-white">1</div>
+                        <span class="text-xs font-semibold text-brand-primary">Chính diện</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-2" id="step-2-indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm transition-colors border-4 border-white">2</div>
+                        <span class="text-xs font-medium text-gray-500">Trái 45°</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-2" id="step-3-indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm transition-colors border-4 border-white">3</div>
+                        <span class="text-xs font-medium text-gray-500">Phải 45°</span>
+                    </div>
+                </div>
+
+                <!-- Setup Form (Skin Type & Budget) -->
+                <div id="setup-form" class="bg-brand-soft-bg p-6 rounded-2xl mb-8 border border-brand-petal">
+                    <h4 class="font-semibold text-lg mb-4">Thông tin cơ bản</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Bạn cảm thấy da mình thuộc loại nào?</label>
+                            <select id="user-skin-type" class="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent">
+                                <option value="Chưa rõ">Chưa rõ / Để AI đánh giá</option>
+                                <option value="Da dầu">Da dầu (Thường xuyên đổ bóng nhờn)</option>
+                                <option value="Da khô">Da khô (Cảm giác căng, thô ráp)</option>
+                                <option value="Da hỗn hợp">Da hỗn hợp (Dầu vùng chữ T, khô vùng má)</option>
+                                <option value="Da nhạy cảm">Da nhạy cảm (Dễ mẩn đỏ, kích ứng)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mức chi phí mong muốn cho quy trình</label>
+                            <div class="flex gap-2">
+                                <button type="button" class="budget-btn flex-1 py-2 px-2 border rounded-lg text-sm font-medium border-brand-primary bg-brand-blush text-brand-primary transition-colors" data-budget="Essential">Cơ bản</button>
+                                <button type="button" class="budget-btn flex-1 py-2 px-2 border rounded-lg text-sm font-medium border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors" data-budget="Select">Tiêu chuẩn</button>
+                                <button type="button" class="budget-btn flex-1 py-2 px-2 border rounded-lg text-sm font-medium border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors" data-budget="Signature">Nâng cao</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Camera Area -->
+                <div class="relative w-full max-w-md mx-auto bg-black rounded-3xl overflow-hidden aspect-[3/4] shadow-2xl mb-6 flex-grow flex items-center justify-center">
+                    
+                    <video id="webcam" class="w-full h-full object-cover transform scale-x-[-1]" autoplay playsinline muted></video>
+                    
+                    <!-- Guide Overlay -->
+                    <!-- AI Status Indicator (Real-time) -->
+                    <div class="absolute top-20 left-0 w-full flex flex-col items-center gap-2 z-30 px-4" id="ai-realtime-status">
+                        <div id="ai-msg-angle" class="bg-red-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity duration-300 opacity-0">Góc mặt chưa thẳng</div>
+                        <div id="ai-msg-light" class="bg-orange-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity duration-300 opacity-0">Ánh sáng không đều</div>
+                        <div id="ai-msg-expr" class="bg-purple-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity duration-300 opacity-0">Khuôn mặt chưa thả lỏng</div>
+                        <div id="ai-msg-blur" class="bg-blue-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg transition-opacity duration-300 opacity-0">Camera bị mờ/rung</div>
+                        <div id="ai-msg-perfect" class="bg-green-500/90 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg transition-opacity duration-300 opacity-0 flex items-center gap-2"><i data-feather="check-circle" class="w-4 h-4"></i> Giữ yên để chụp...</div>
+                    </div>
+                    
+                    <canvas id="ai-overlay" class="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none transform scale-x-[-1]"></canvas>
+                    <!-- Instruction Text Overlay -->
+                    <div class="absolute top-8 left-0 w-full text-center z-20 px-4">
+                        <div class="bg-black/50 backdrop-blur-sm text-white px-4 py-2 rounded-full inline-block text-sm font-medium" id="instruction-text">
+                            Chụp ảnh chính diện khuôn mặt
+                        </div>
+                    </div>
+                    
+                    <!-- Loading State -->
+                    <div id="camera-loading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 text-white z-30">
+                        <i data-feather="loader" class="w-8 h-8 animate-spin mb-4 text-brand-primary"></i>
+                        <p>Đang kết nối Camera...</p>
+                    </div>
+
+                </div>
+
+                <!-- Controls -->
+                <div class="flex flex-col items-center justify-center gap-6">
+                    <button id="capture-btn" onclick="captureFrame()" class="w-16 h-16 rounded-full bg-white border-4 border-brand-primary shadow-[0_0_0_4px_rgba(255,255,255,1)] flex items-center justify-center active:scale-95 transition-transform">
+                        <div class="w-12 h-12 rounded-full bg-brand-primary"></div>
+                    </button>
+                    
+                    <!-- Thumbnails -->
+                    <div class="flex gap-4 h-20" id="thumbnails-container">
+                        <div class="w-16 h-16 rounded-lg bg-gray-100 border-2 border-dashed border-gray-300 overflow-hidden" id="thumb-1"></div>
+                        <div class="w-16 h-16 rounded-lg bg-gray-100 border-2 border-dashed border-gray-300 overflow-hidden" id="thumb-2"></div>
+                        <div class="w-16 h-16 rounded-lg bg-gray-100 border-2 border-dashed border-gray-300 overflow-hidden" id="thumb-3"></div>
+                    </div>
+
+                    <!-- Final Action -->
+                    <div id="analyze-action" class="hidden w-full max-w-md mt-2">
+                        <button id="start-analysis-btn" onclick="startAnalysis()" class="w-full bg-brand-dark text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 hover:bg-black transition-colors shadow-lg">
+                            <i data-feather="cpu" class="w-5 h-5"></i>
+                            Bắt đầu phân tích AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FLOW: ANALYZING LOADING STATE -->
+            <div id="analyzing-flow" class="hidden flex-grow flex flex-col items-center justify-center py-10 px-4">
+                <!-- Scan Pulse Ring -->
+                <div class="relative w-36 h-36 mb-6">
+                    <div class="absolute inset-0 rounded-full border-4 border-brand-petal/40"></div>
+                    <div class="absolute inset-0 rounded-full border-4 border-brand-primary border-t-transparent animate-spin" style="animation-duration: 1.2s;"></div>
+                    <div class="absolute inset-2 rounded-full border-2 border-purple-300/30 border-b-transparent animate-spin" style="animation-duration: 2s; animation-direction: reverse;"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div id="scan-icon-container" class="text-brand-primary transition-all duration-500">
+                            <i data-feather="search" class="w-12 h-12 animate-pulse"></i>
+                        </div>
+                    </div>
+                    <!-- Glow pulse -->
+                    <div class="absolute inset-0 rounded-full bg-brand-primary/10 animate-ping" style="animation-duration: 2s;"></div>
+                </div>
+
+                <!-- Step Title -->
+                <h3 id="scan-step-title" class="text-xl font-bold mb-1 text-brand-dark text-center transition-all duration-300">🔍 Đang nhận diện khuôn mặt...</h3>
+                <p id="scan-step-desc" class="text-gray-400 text-sm text-center max-w-xs mb-6 transition-all duration-300">Xác định vùng da từ 3 góc chụp</p>
+
+                <!-- Gradient Progress Bar -->
+                <div class="w-full max-w-sm mb-6">
+                    <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden shadow-inner">
+                        <div id="analysis-progress" class="h-full w-0 rounded-full transition-all duration-700 ease-out" style="background: linear-gradient(90deg, #e87a90, #a855f7, #10b981);"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+                        <span>Nhận diện</span>
+                        <span>Phân tích</span>
+                        <span>Báo cáo</span>
+                    </div>
+                </div>
+
+                <!-- 5 Step Indicators -->
+                <div class="w-full max-w-sm space-y-2.5 mb-6" id="scan-steps-list">
+                    <div class="scan-step flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 bg-white/80 transition-all duration-500" data-step="1">
+                        <div class="scan-step-icon w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 transition-all duration-500 flex-shrink-0">
+                            <i data-feather="eye" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <span class="scan-step-text text-sm font-medium text-gray-400 transition-all duration-500">Nhận diện khuôn mặt từ 3 góc độ</span>
+                    </div>
+                    <div class="scan-step flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 bg-white/80 transition-all duration-500" data-step="2">
+                        <div class="scan-step-icon w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 transition-all duration-500 flex-shrink-0">
+                            <i data-feather="layers" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <span class="scan-step-text text-sm font-medium text-gray-400 transition-all duration-500">Phân tích cấu trúc biểu bì & hạ bì</span>
+                    </div>
+                    <div class="scan-step flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 bg-white/80 transition-all duration-500" data-step="3">
+                        <div class="scan-step-icon w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 transition-all duration-500 flex-shrink-0">
+                            <i data-feather="droplet" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <span class="scan-step-text text-sm font-medium text-gray-400 transition-all duration-500">Đo lường độ ẩm, dầu & sắc tố melanin</span>
+                    </div>
+                    <div class="scan-step flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 bg-white/80 transition-all duration-500" data-step="4">
+                        <div class="scan-step-icon w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 transition-all duration-500 flex-shrink-0">
+                            <i data-feather="bar-chart-2" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <span class="scan-step-text text-sm font-medium text-gray-400 transition-all duration-500">Tổng hợp 12 chỉ số cấu trúc da</span>
+                    </div>
+                    <div class="scan-step flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 bg-white/80 transition-all duration-500" data-step="5">
+                        <div class="scan-step-icon w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 transition-all duration-500 flex-shrink-0">
+                            <i data-feather="file-text" class="w-3.5 h-3.5"></i>
+                        </div>
+                        <span class="scan-step-text text-sm font-medium text-gray-400 transition-all duration-500">Tạo báo cáo cá nhân hóa</span>
+                    </div>
+                </div>
+
+                <!-- Thumbnail Scan Preview -->
+                <div class="flex gap-3 items-center" id="scan-thumbnails">
+                    <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-brand-petal/50 relative bg-gray-100" id="scan-thumb-1">
+                        <div class="scan-line absolute inset-0 pointer-events-none"></div>
+                    </div>
+                    <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-brand-petal/50 relative bg-gray-100" id="scan-thumb-2">
+                        <div class="scan-line absolute inset-0 pointer-events-none"></div>
+                    </div>
+                    <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-brand-petal/50 relative bg-gray-100" id="scan-thumb-3">
+                        <div class="scan-line absolute inset-0 pointer-events-none"></div>
+                    </div>
+                </div>
+
+                <!-- Hidden status for backward compat -->
+                <p class="hidden" id="analysis-status"></p>
+            </div>
+
+            <!-- FLOW: RESULTS REPORT -->
+            <div id="results-flow" class="hidden flex-col gap-8 pb-10 w-full max-w-4xl mx-auto">
+                <!-- Khối 1: Skin ID Card -->
+                <!-- Confetti Canvas -->
+                <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-[9999]" style="display:none;"></canvas>
+
+                <div class="bg-gradient-to-br from-brand-blush to-white border border-brand-petal shadow-lg rounded-3xl overflow-hidden mt-4 relative">
+                    <div class="p-6 md:p-8 flex flex-col md:flex-row items-center gap-8">
+                        <div class="relative w-36 h-36 flex-shrink-0">
+                            <!-- Glow ring background -->
+                            <div id="score-glow" class="absolute inset-0 rounded-full transition-all duration-1000" style="box-shadow: 0 0 0px transparent;"></div>
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-gray-100" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path id="health-score-ring" class="transition-all duration-1000 ease-out" stroke-dasharray="0, 100" stroke-width="3" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span id="health-score-text" class="text-4xl font-black text-brand-dark">0</span>
+                                <span class="text-[10px] text-gray-500 font-medium uppercase tracking-wider mt-0.5">Sức Khỏe</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 text-center md:text-left w-full">
+                            <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2 justify-center md:justify-start">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <h2 class="text-2xl font-bold text-brand-dark" id="result-skin-type">Đang phân tích...</h2>
+                                    <div class="bg-brand-primary/10 text-brand-primary px-3 py-1 rounded-full text-sm font-bold border border-brand-primary/20">Tuổi da: <span id="skin-age-text">--</span></div>
+                                </div>
+                            </div>
+                            <!-- Overall Grade Label -->
+                            <div id="overall-grade-badge" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold mb-3 border transition-all duration-500" style="display:none;">
+                                <span id="overall-grade-letter" class="text-lg font-black"></span>
+                                <span id="overall-grade-text"></span>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm text-gray-500 mb-4 font-medium">
+                                <span id="report-id" class="bg-white px-3 py-1 rounded-full border border-gray-100 shadow-sm">ID: SKN-XYZ</span>
+                                <span id="report-date" class="bg-white px-3 py-1 rounded-full border border-gray-100 shadow-sm">Ngày: --/--/----</span>
+                            </div>
+                            <div id="result-tags" class="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
+                                <!-- Injected by JS -->
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                                <button onclick="window.emailService.promptSendEmail()" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                    <i data-feather="mail" class="w-4 h-4"></i> Gửi báo cáo về Email
+                                </button>
+                                <button onclick="if(window.authManager) window.authManager.window.location.href='profile.html?tab=history';" class="px-5 py-2.5 bg-brand-primary text-white rounded-xl font-semibold text-xs sm:text-sm shadow-md shadow-brand-primary/20 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                                    <i data-feather="clock" class="w-4 h-4"></i> Xem lịch sử cá nhân
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Khối 3: Đọc Hiểu Nhanh -->
+                <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-6">
+                    <h3 class="font-bold text-lg mb-3 flex items-center gap-2 text-brand-dark">
+                        <i data-feather="message-circle" class="w-5 h-5 text-brand-primary"></i>
+                        Làn da bạn đang nói gì?
+                    </h3>
+                    <p id="result-assessment" class="text-gray-700 leading-relaxed text-[15px]">
+                        <!-- Injected by JS -->
+                    </p>
+                </div>
+
+                <!-- Khối 2: Bảng 5 Chỉ Số -->
+                
+                <!-- Phân tích môi trường -->
+                <div class="bg-blue-50 border border-blue-100 shadow-sm rounded-2xl p-5 mb-6 flex items-start gap-4">
+                    <div class="bg-blue-100 p-3 rounded-full text-blue-500 mt-1">
+                        <i data-feather="cloud-rain" class="w-6 h-6"></i>
+                    </div>
+                    <div class="w-full">
+                        <h3 class="font-bold text-lg text-blue-800 mb-2 flex items-center justify-between">
+                            <span>Phân tích môi trường hiện tại</span>
+                            <span class="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-lg">Real-time</span>
+                        </h3>
+                        <div class="grid grid-cols-3 gap-2 mb-3" id="environment-metrics">
+                            <!-- JS Injected -->
+                        </div>
+                        <p class="text-blue-700/80 text-sm font-medium" id="environment-impact">Đang phân tích tác động môi trường...</p>
+                    </div>
+                </div>
+
+                <!-- Khối 2: Cảnh báo ưu tiên (Primary Concerns) -->
+                <div id="primary-concern-card" class="bg-rose-50 border border-rose-100 shadow-sm rounded-2xl p-5 md:p-6 flex items-start gap-4 mb-6">
+                    <div class="bg-rose-100 p-3 rounded-full text-rose-500 mt-1">
+                        <i data-feather="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-rose-700 mb-1" id="concern-title">⚠️ Đang tải cảnh báo...</h3>
+                        <p class="text-rose-600/80 text-sm font-medium" id="concern-desc">AI đang phân tích các vùng da có nguy cơ cao.</p>
+                    </div>
+                </div>
+
+                <!-- Khối 2.1: Tình trạng da phát hiện (Skin Conditions) -->
+                <div id="skin-conditions-card" class="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 md:p-6 mb-6" style="display:none;">
+                    <h3 class="font-bold text-lg text-brand-dark mb-4 flex items-center gap-2">
+                        <i data-feather="crosshair" class="w-5 h-5 text-brand-primary"></i>
+                        Tình trạng da phát hiện
+                    </h3>
+                    <div id="skin-conditions-list" class="space-y-3">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Khối 2.5: Biểu đồ mạng nhện 12 chỉ số -->
+                <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-6 mb-6">
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-full md:w-1/2 relative">
+                            <canvas id="radarChart" class="w-full max-w-[400px] mx-auto"></canvas>
+                        </div>
+                        <div class="w-full md:w-1/2">
+                            <h3 class="font-bold text-xl mb-3 flex items-center gap-2 text-brand-dark">
+                                Phân tích cấu trúc 12 tầng
+                            </h3>
+                            <p class="text-gray-500 text-sm mb-4 leading-relaxed">
+                                Biểu đồ mạng nhện thể hiện độ cân bằng của làn da. Những vùng kéo căng ra ngoài viền cho thấy sức khỏe tốt, ngược lại những vùng co thắt vào tâm (như Bã nhờn, Sắc tố UV) cho thấy da đang bị tổn thương ngầm.
+                            </p>
+                            <div class="space-y-3" id="radar-insights">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                            <div class="mt-8 border-t border-gray-100 pt-6 w-full">
+                                <h4 class="font-bold text-lg text-brand-dark mb-4">Chi tiết 12 chỉ số cấu trúc</h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4" id="detailed-metrics-grid">
+                                    <!-- Injected by JS -->
+                                </div>
+                            </div>
+
+
+                
+                </div>\n                <!-- Khối 3.5: Phân tích nguyên nhân & Dự báo lão hóa -->
+                <div class="bg-white border border-gray-100 shadow-sm rounded-3xl p-6 mb-8 mt-6">
+                    <h3 class="font-bold text-xl text-brand-dark mb-4 flex items-center gap-2">
+                        <i data-feather="search" class="text-brand-primary w-6 h-6"></i>
+                        Giải mã nguyên nhân & Dự báo
+                    </h3>
+                    
+                    <div class="space-y-4 mb-6" id="root-cause-analysis">
+                        <!-- JS Injected: Reason for Worst 1 and Worst 2 -->
+                    </div>
+
+                    <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-6 relative overflow-hidden shadow-lg mt-6">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-primary rounded-full blur-3xl opacity-20"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-3 mb-3">
+                                <i data-feather="clock" class="text-brand-petal w-5 h-5"></i>
+                                <h4 class="text-lg font-bold text-white">Dự báo làn da (6 tháng tới)</h4>
+                            </div>
+                            <p class="text-gray-300 text-sm leading-relaxed mb-4" id="skin-forecast-text">
+                                Đang xử lý dự báo rủi ro cấu trúc...
+                            </p>
+                            <div class="bg-black/30 rounded-xl p-4 border border-white/10 backdrop-blur-sm">
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-xs font-semibold text-emerald-400">Khả năng phục hồi nếu dùng phác đồ chuẩn</span>
+                                    <span class="text-xl font-black text-white">92%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-1.5">
+                                    <div class="bg-emerald-500 h-1.5 rounded-full w-[92%] shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-2 text-right">Lộ trình 28 - 45 ngày (Dược mỹ phẩm Rilastil)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Khối 4: Phác đồ Cá Nhân Hóa -->
+                <div>
+                    <h3 class="font-bold text-xl mb-4 flex items-center gap-2 text-brand-dark px-2">
+                        <i data-feather="sun" class="w-6 h-6 text-brand-primary"></i>
+                        Phác đồ 6 bước thiết kế riêng
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Buổi sáng -->
+                        <div class="bg-[#FFFDF5] border border-[#FFE8A1] rounded-2xl p-5">
+                            <h4 class="font-semibold text-[#B38C00] mb-4 flex items-center gap-2 border-b border-[#FFE8A1] pb-3">Buổi sáng</h4>
+                            <div class="space-y-3" id="routine-morning">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                        <!-- Buổi tối -->
+                        <div class="bg-[#F8FAFF] border border-[#D5E1FC] rounded-2xl p-5">
+                            <h4 class="font-semibold text-[#3056D3] mb-4 flex items-center gap-2 border-b border-[#D5E1FC] pb-3">Buổi tối</h4>
+                            <div class="space-y-3" id="routine-evening">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Khối 5: Sản Phẩm Gợi Ý -->
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between px-2 mb-4 gap-4">
+            <h3 class="font-bold text-xl flex items-center gap-2 text-brand-dark">
+                <i data-feather="shopping-bag" class="text-brand-primary w-5 h-5"></i>
+                Routine Khuyên Dùng
+            </h3>
+            <button class="bg-brand-dark text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:-translate-y-0.5 transition-transform flex items-center justify-center gap-2">
+                Xem chi tiết liệu trình <i data-feather="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="product-recommendations">
+                        <!-- Injected by JS -->
+                    </div>
+                    <div class="mt-6 text-center">
+                        <button class="btn-hover-effect w-full md:w-auto bg-brand-primary text-white px-8 py-4 rounded-xl font-bold text-lg inline-flex items-center justify-center gap-2 shadow-lg shadow-brand-primary/30" onclick="addAllToCart()">
+                            <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                            Thêm toàn bộ phác đồ vào giỏ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Khối 6: Theo Dõi Tiến Trình -->
+                <div class="bg-gradient-to-r from-gray-900 to-brand-dark rounded-2xl p-6 text-white text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <h3 class="font-bold text-lg mb-2">Đừng quên theo dõi sự thay đổi!</h3>
+                        <p class="text-gray-300 text-sm">Quét lại da sau 4 tuần để thấy rõ sự cải thiện từ phác đồ này.</p>
+                    </div>
+                    <div class="w-full md:w-auto flex flex-col sm:flex-row gap-2">
+                        <input type="email" placeholder="Nhập email của bạn..." class="px-4 py-2.5 rounded-xl text-gray-900 w-full sm:w-64 outline-none focus:ring-2 focus:ring-brand-primary">
+                        <button class="px-5 py-2.5 bg-brand-primary text-white rounded-xl font-semibold hover:bg-brand-accent transition-colors flex-shrink-0">
+                            Nhắc tôi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Khối 7: Disclaimer & Zalo -->
+                <div class="flex flex-col items-center text-center space-y-4 pt-4 border-t border-gray-100">
+                    <p class="text-sm text-gray-500 max-w-2xl px-4">
+                        * Kết quả phân tích được tạo bởi AI (Trí tuệ nhân tạo) dựa trên công nghệ thị giác máy tính và chỉ mang tính chất tham khảo. 
+                        Để có phác đồ điều trị y khoa chính xác nhất cho các bệnh lý về da, vui lòng liên hệ chuyên gia.
+                    </p>
+                    <a href="https://zalo.me/0924093461" target="_blank" class="px-6 py-2.5 bg-[#0068FF] text-white rounded-xl font-bold text-sm shadow-md hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="24" fill="#0068FF"/>
+                            <path d="M13.5 15.5h21v3.5l-12.5 11h12.5v3.5h-21v-3.5l12.5-11h-12.5v-3.5z" fill="#FFFFFF"/>
+                        </svg>
+                        Gặp Dược sĩ tư vấn 1:1 qua Zalo
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    
+    <!-- ========================================== -->
+    <!-- PRODUCT DETAIL MODAL (RILASTIL FORMULA & INGREDIENT SPEC) -->
+    <!-- ========================================== -->
+    <div id="product-detail-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] hidden items-center justify-center p-3 sm:p-4 overflow-y-auto opacity-0 transition-opacity duration-300" onclick="if(event.target === this) closeProductDetailModal();">
+        <div id="product-detail-modal-content" class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl relative transform scale-95 opacity-0 transition-all duration-300 max-h-[90vh] flex flex-col overflow-hidden my-auto border border-gray-100">
+            
+            <!-- Close Button -->
+            <button onclick="closeProductDetailModal()" class="absolute top-4 right-4 w-9 h-9 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full flex items-center justify-center transition-colors z-20 shadow-sm">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Scrollable Body -->
+            <div class="overflow-y-auto pr-1 flex-grow space-y-4">
+                
+                <!-- Category Line Badge -->
+                <div>
+                    <span id="pmodal-line" class="inline-block text-xs font-black uppercase tracking-widest text-sky-700 bg-sky-50 px-3 py-1 rounded-md border border-sky-200 shadow-sm">
+                        ACNES
+                    </span>
+                </div>
+
+                <!-- Product Title -->
+                <h3 id="pmodal-title" class="text-base sm:text-xl font-black text-gray-900 leading-tight">
+                    BỌT RỬA MẶT DÀNH CHO DA MỤN – RILASTIL ACNESTIL CLEANSING MOUSSE 165ML
+                </h3>
+
+                <!-- Price Area -->
+                <div class="flex items-baseline gap-3">
+                    <span class="text-sm font-bold text-gray-600">Giá bán:</span>
+                    <span id="pmodal-price" class="text-xl sm:text-2xl font-black text-rose-600">550.000 ₫</span>
+                    <span id="pmodal-original-price" class="text-xs sm:text-sm text-gray-400 line-through">650.000 ₫</span>
+                </div>
+
+                <!-- Short Uses -->
+                <p id="pmodal-uses" class="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
+                    Bọt rửa mặt làm sạch sâu, loại bỏ dầu thừa nhưng vẫn giữ được độ ẩm cho da. Sản phẩm còn giúp giảm mụn, giảm sưng viêm, làm dịu làn da mụn.
+                </p>
+
+                <!-- Product Image Preview -->
+                <div class="w-full h-44 sm:h-52 bg-gray-50 rounded-2xl flex items-center justify-center p-4 border border-gray-100">
+                    <img id="pmodal-img" src="" alt="Product" class="h-full max-h-44 object-contain mix-blend-multiply transition-transform duration-300 hover:scale-105" />
+                </div>
+
+                <!-- Blue Framed Spec Box (Exact match to official manufacturer spec sheet) -->
+                <div class="border-2 border-sky-400 rounded-2xl p-4 sm:p-5 bg-sky-50/20 text-xs sm:text-sm shadow-sm">
+                    <h4 class="text-center font-black text-sky-800 text-sm sm:text-base tracking-wider uppercase mb-4 relative pb-2 after:content-[''] after:w-16 after:h-0.5 after:bg-sky-500 after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2">
+                        CHI TIẾT SẢN PHẨM
+                    </h4>
+
+                    <!-- Dung tích & Hướng dẫn sử dụng -->
+                    <div class="mb-3.5 space-y-1.5 text-gray-800">
+                        <div>
+                            <span class="font-bold text-gray-900">Dung tích:</span>
+                            <span id="pmodal-volume" class="font-semibold text-sky-900"> 165 ml</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-gray-900">Sử dụng:</span>
+                            <span id="pmodal-usage" class="font-medium text-gray-700"> Sử dụng hàng ngày vào sáng và tối.</span>
+                        </div>
+                    </div>
+
+                    <!-- Thành phần chính -->
+                    <div class="mb-4">
+                        <h5 class="font-bold text-gray-900 mb-2 text-xs sm:text-sm border-b border-sky-100 pb-1">Thành phần chính</h5>
+                        <div id="pmodal-key-actives" class="space-y-2 pl-0.5">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Bảng thành phần đầy đủ -->
+                    <div class="mb-3">
+                        <h5 class="font-bold text-gray-900 mb-1 text-xs sm:text-sm border-b border-sky-100 pb-1">Bảng thành phần</h5>
+                        <p id="pmodal-full-ingredients" class="text-[11px] sm:text-xs text-gray-500 italic leading-relaxed text-justify">
+                            Aqua (Water) • Propylene Glycol • Disodium Cocoamphodiacetate • C12-13 Pareth-9...
+                        </p>
+                    </div>
+
+                    <!-- Chứng nhận Bộ Y Tế & Pháp lý -->
+                    <div id="pmodal-certification-box" class="pt-3 border-t border-sky-100 flex items-start gap-2 text-[11px] sm:text-xs text-emerald-800 bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-200">
+                        <i data-feather="shield-check" class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5"></i>
+                        <div>
+                            <span class="font-bold text-emerald-950">Chứng Nhận Pháp Lý: </span>
+                            <span id="pmodal-certification-text">Đã cấp Phiếu tiếp nhận công bố sản phẩm mỹ phẩm • Đơn vị chịu trách nhiệm: Công ty TNHH FieldMan (MST: 0319200638).</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Action Buttons -->
+            <div class="pt-3.5 border-t border-gray-100 flex items-center justify-between gap-3 mt-3">
+                <button onclick="closeProductDetailModal()" class="w-1/3 py-3 rounded-xl border border-gray-200 text-gray-700 font-bold text-xs sm:text-sm hover:bg-gray-100 transition-colors flex items-center justify-center">
+                    Đóng
+                </button>
+                <button id="pmodal-add-cart-btn" class="w-2/3 py-3 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs sm:text-sm transition-all shadow-md shadow-brand-primary/30 flex items-center justify-center gap-2">
+                    <i data-feather="shopping-bag" class="w-4 h-4"></i> Thêm vào giỏ hàng
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AUTH MODAL ULTRA PRO (Real Google Sign-In, Password Strength, Confirm Password, Remember Me) -->
+    <div id="auth-modal" class="fixed inset-0 z-[999] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden opacity-0 transition-all duration-300">
+        <div id="auth-modal-content" class="bg-white/95 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-all duration-300 relative border border-white/40 backdrop-blur-2xl max-h-[90vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button onclick="window.authManager.closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100/80 transition-colors z-10">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+            
+            <!-- Header Brand -->
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-gradient-to-tr from-brand-primary to-brand-accent rounded-2xl flex items-center justify-center mx-auto mb-3 text-white shadow-lg shadow-brand-primary/30 transform hover:scale-105 transition-transform">
+                    <i data-feather="user-check" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-2xl font-black text-brand-dark tracking-tight" id="auth-tab-title">Chào Mừng Đến SkinID</h3>
+                <p class="text-xs text-gray-500 font-medium mt-1">Đăng nhập để lưu lịch sử soi da & nhận phác đồ cá nhân hóa</p>
+                <div id="auth-modal-notice" class="text-xs font-bold text-rose-600 bg-rose-50 border border-rose-100 p-3 rounded-xl mt-3 hidden text-left flex items-center gap-2">
+                    <i data-feather="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+                    <span id="auth-notice-text"></span>
+                </div>
+            </div>
+
+            <!-- GOOGLE SIGN-IN BUTTON & CONTAINER (REAL GOOGLE AUTHENTICATION) -->
+            
+            
+            <button onclick="window.authManager.triggerGoogleSignIn()" class="w-full bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 py-3 px-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-3 shadow-sm hover:shadow transition-all mb-4 group">
+                <!-- Google Multicolored SVG Logo -->
+                <svg class="w-5 h-5 flex-shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.28-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span>Tiếp tục với Google Xác Thực</span>
+            </button>
+
+            <!-- Divider -->
+            <div class="relative flex py-2 items-center mb-4">
+                <div class="flex-grow border-t border-gray-200"></div>
+                <span class="flex-shrink mx-3 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Hoặc tài khoản Email</span>
+                <div class="flex-grow border-t border-gray-200"></div>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="flex bg-gray-100 p-1.5 rounded-2xl mb-5 border border-gray-200/60">
+                <button id="auth-tab-login" onclick="toggleAuthForm('login')" class="w-1/2 py-2 text-xs font-extrabold rounded-xl bg-white text-gray-900 shadow-sm transition-all">Đăng nhập</button>
+                <button id="auth-tab-register" onclick="toggleAuthForm('register')" class="w-1/2 py-2 text-xs font-extrabold rounded-xl text-gray-500 hover:text-gray-900 transition-all">Đăng ký mới</button>
+            </div>
+
+            <!-- 1. LOGIN FORM -->
+            <form id="form-login" onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email đăng nhập</label>
+                    <div class="relative">
+                        <input type="email" id="login-email" required placeholder="nhapemail@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="mail" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-bold text-gray-700">Mật khẩu</label>
+                        <button type="button" onclick="toggleAuthForm('forgot')" class="text-xs font-bold text-brand-primary hover:underline">Quên mật khẩu?</button>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5"></i>
+                        <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-3.5 top-3.5 text-gray-400 hover:text-gray-600 transition-colors">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="login-remember" checked class="w-4 h-4 rounded text-brand-primary focus:ring-brand-primary border-gray-300">
+                        <span class="text-xs text-gray-600 font-semibold">Ghi nhớ đăng nhập</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-dark hover:opacity-95 text-white py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-brand-primary/30 transition-all flex items-center justify-center gap-2">
+                    <i data-feather="log-in" class="w-4 h-4"></i> Đăng nhập ngay
+                </button>
+            </form>
+
+            <!-- 2. REGISTER FORM -->
+            <form id="form-register" onsubmit="handleRegisterSubmit(event)" class="space-y-3.5 hidden">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Họ và tên *</label>
+                    <div class="relative">
+                        <input type="text" id="reg-name" required placeholder="Nguyễn Văn A" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="user" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email chính xác (Nhận báo cáo) *</label>
+                    <div class="relative">
+                        <input type="email" id="reg-email" required placeholder="email@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="mail" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Số điện thoại (Nhận tư vấn)</label>
+                    <div class="relative">
+                        <input type="tel" id="reg-phone" placeholder="0901234567" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="phone" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tạo mật khẩu (Tối thiểu 6 ký tự) *</label>
+                    <div class="relative">
+                        <input type="password" id="reg-password" required oninput="handlePasswordStrengthInput(this.value)" placeholder="Tối thiểu 6 ký tự" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="lock" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
+                        <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-3.5 top-3 text-gray-400 hover:text-gray-600 transition-colors">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <!-- Live Password Strength Meter -->
+                    <div class="mt-1.5 flex items-center gap-2">
+                        <div class="h-1.5 flex-grow bg-gray-200 rounded-full overflow-hidden">
+                            <div id="reg-strength-bar" class="h-full w-0 bg-gray-300 transition-all duration-300"></div>
+                        </div>
+                        <span id="reg-strength-label" class="text-[10px] font-bold text-gray-400 min-w-[60px] text-right">Chưa nhập</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Xác nhận mật khẩu *</label>
+                    <div class="relative">
+                        <input type="password" id="reg-confirm-password" required oninput="handleConfirmPasswordInput()" placeholder="Nhập lại mật khẩu" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="check-circle" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3"></i>
+                        <button type="button" onclick="togglePasswordVisibility('reg-confirm-password', this)" class="absolute right-3.5 top-3 text-gray-400 hover:text-gray-600 transition-colors">
+                            <i data-feather="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <p id="reg-confirm-msg" class="text-[10px] font-bold mt-1 hidden"></p>
+                </div>
+
+                <div class="pt-1">
+                    <label class="flex items-start gap-2 cursor-pointer select-none">
+                        <input type="checkbox" id="reg-terms" required checked class="w-4 h-4 mt-0.5 rounded text-brand-primary focus:ring-brand-primary border-gray-300">
+                        <span class="text-[11px] text-gray-500 leading-tight">Tôi đồng ý với <a href="#" class="text-brand-primary font-bold hover:underline">Điều khoản sử dụng</a> và <a href="#" class="text-brand-primary font-bold hover:underline">Chính sách bảo mật</a> SkinID.</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-dark hover:opacity-95 text-white py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-brand-primary/30 transition-all mt-2 flex items-center justify-center gap-2">
+                    <i data-feather="user-plus" class="w-4 h-4"></i> Tạo tài khoản & Bắt đầu
+                </button>
+            </form>
+
+            <!-- 3. FORGOT PASSWORD FORM -->
+            <form id="form-forgot" onsubmit="handleForgotSubmit(event)" class="space-y-4 hidden">
+                <div class="bg-blue-50 border border-blue-100 p-3 rounded-2xl text-xs text-blue-800">
+                    <p class="font-bold mb-1">Cần khôi phục mật khẩu?</p>
+                    <p>Nhập địa chỉ Email đăng ký của bạn. Hệ thống sẽ cấp lại mật khẩu tạm thời hoặc mã xác nhận khôi phục ngay lập tức.</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Email tài khoản</label>
+                    <div class="relative">
+                        <input type="email" id="forgot-email" required placeholder="nhapemail@gmail.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all">
+                        <i data-feather="mail" class="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-primary hover:bg-brand-dark text-white py-3.5 rounded-2xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                    <i data-feather="send" class="w-4 h-4"></i> Gửi Yêu Cầu Khôi Phục
+                </button>
+                
+                <div class="text-center pt-2">
+                    <button type="button" onclick="toggleAuthForm('login')" class="text-xs font-bold text-gray-500 hover:text-gray-800 underline">
+                         Quay lại Đăng nhập
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- HISTORY MODAL (View Past Scans) -->
+    <div id="history-modal" class="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="history-modal-content" class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative border border-gray-100 max-h-[85vh] flex flex-col">
+            <button onclick="window.authManager.closeHistoryModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
+                <div class="w-10 h-10 bg-brand-blush rounded-xl flex items-center justify-center text-brand-primary shadow-sm">
+                    <i data-feather="activity" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-brand-dark">Lịch Sử Phân Tích Da Cá Nhân</h3>
+                    <p class="text-xs text-gray-500 font-medium">Theo dõi tiến trình và sự cải thiện của làn da qua từng lần quét</p>
+                </div>
+            </div>
+
+            <!-- List Container -->
+            <div id="history-list-container" class="overflow-y-auto space-y-3 pr-1 flex-grow scrollbar-thin">
+                <!-- Injected by auth.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL POLICIES MODAL (Bộ Công Thương & Nghị Định 13/2023/NĐ-CP) -->
+    <div id="legal-modal" class="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div id="legal-modal-content" class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl transform scale-95 transition-transform duration-300 relative border border-gray-100 max-h-[85vh] flex flex-col">
+            <button onclick="closeLegalModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+                <div class="w-10 h-10 bg-brand-blush rounded-xl flex items-center justify-center text-brand-primary shadow-sm" id="legal-modal-icon">
+                    <i data-feather="file-text" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-brand-dark" id="legal-modal-title">Chính Sách Pháp Lý</h3>
+                    <p class="text-xs text-gray-500 font-medium">Quy định áp dụng tại SkinID.vn (Công ty TNHH FieldMan)</p>
+                </div>
+            </div>
+
+            <!-- Scrollable Body -->
+            <div id="legal-modal-body" class="overflow-y-auto space-y-4 text-xs sm:text-sm text-gray-700 leading-relaxed pr-2 flex-grow scrollbar-thin">
+                <!-- Injected via JS -->
+            </div>
+            
+            <div class="pt-4 border-t border-gray-100 flex justify-end">
+                <button onclick="closeLegalModal()" class="px-6 py-2 bg-brand-dark text-white rounded-xl text-xs font-bold shadow">
+                    Đã hiểu & Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/email-service.js"></script>
+    <script src="js/skin-ai.js?v=12"></script>
+    <script src="js/camera-ai.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        function openLegalModal(type) {
+            const modal = document.getElementById('legal-modal');
+            const titleEl = document.getElementById('legal-modal-title');
+            const bodyEl = document.getElementById('legal-modal-body');
+            if (!modal || !titleEl || !bodyEl) return;
+
+            const policies = {
+                'privacy': {
+                    title: 'Chính Sách Bảo Mật & Dữ Liệu Sinh Trắc Học (NĐ 13/2023/NĐ-CP)',
+                    content: `
+                        <div class="space-y-3">
+                            <p class="font-bold text-gray-900">1. Mục đích thu thập dữ liệu:</p>
+                            <p>SkinID.vn (thuộc Công ty TNHH FieldMan) chỉ thu thập hình ảnh khuôn mặt 3 góc độ để máy tính và mô hình AI xử lý phân tích tình trạng da thời gian thực.</p>
+                            
+                            <p class="font-bold text-gray-900">2. Cam kết bảo mật dữ liệu sinh trắc học:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Hình ảnh khuôn mặt được mã hóa và xử lý trực tiếp trên trình duyệt hoặc qua cổng bảo mật SSL/TLS.</li>
+                                <li>SkinID <strong>tuyệt đối không chia sẻ, bán hoặc kinh doanh</strong> dữ liệu sinh trắc học khuôn mặt cho bất kỳ bên thứ ba nào.</li>
+                            </ul>
+
+                            <p class="font-bold text-gray-900">3. Quyền của chủ thể dữ liệu (Theo Nghị định 13/2023/NĐ-CP):</p>
+                            <p>Người dùng có toàn quyền truy cập, chỉnh sửa hoặc <strong>yêu cầu xóa bỏ hoàn toàn</strong> dữ liệu cá nhân và lịch sử soi da bất kỳ lúc nào bằng cách bấm nút "Xóa dữ liệu cá nhân" trong mục Hồ sơ hoặc liên hệ email <strong>contact@skinid.vn</strong>.</p>
+                        </div>
+                    `
+                },
+                'terms': {
+                    title: 'Điều Khoản & Điều Kiện Sử Dụng Dịch Vụ SkinID.vn',
+                    content: `
+                        <div class="space-y-3">
+                            <p class="font-bold text-gray-900">1. Quyền sở hữu trí tuệ:</p>
+                            <p>Toàn bộ nội dung, thuật toán AI, nhãn hiệu SkinID, TWON, D'VAH thuộc quyền sở hữu hợp pháp của CÔNG TY TNHH FIELDMAN (MST: 0319200638).</p>
+
+                            <p class="font-bold text-gray-900">2. Trách nhiệm người dùng:</p>
+                            <p>Người dùng cam kết cung cấp thông tin chính xác khi tạo tài khoản và không sử dụng ứng dụng cho các mục đích vi phạm pháp luật.</p>
+
+                            <p class="font-bold text-gray-900">3. Khuyên cáo y tế quan trọng:</p>
+                            <p class="bg-rose-50 text-rose-800 p-3 rounded-xl border border-rose-100 font-medium">⚠️ Kết quả phân tích da AI của SkinID chỉ mang tính chất tư vấn thẩm mỹ diện ngoài, không có giá trị thay thế đơn thuốc hoặc phác đồ điều trị y khoa từ Bác sĩ Da liễu.</p>
+                        </div>
+                    `
+                },
+                'shipping': {
+                    title: 'Chính Sách Vận Chuyển, Giao Nhận & Thanh Toán',
+                    content: `
+                        <div class="space-y-3">
+                            <p class="font-bold text-gray-900">1. Phương thức vận chuyển:</p>
+                            <p>SkinID giao hàng toàn quốc hợp tác với các đơn vị vận chuyển uy tín (GHTK, GHN, Viettel Post). Thời gian giao hàng từ 1-3 ngày làm việc (Nội thành TP.HCM) và 2-4 ngày (các tỉnh thành khác).</p>
+
+                            <p class="font-bold text-gray-900">2. Cước phí giao hàng:</p>
+                            <p>Miễn phí vận chuyển cho đơn hàng phác đồ từ 800.000đ. Đơn hàng dưới 800.000đ áp dụng phí cố định 30.000đ toàn quốc.</p>
+
+                            <p class="font-bold text-gray-900">3. Hình thức thanh toán:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Thanh toán khi nhận hàng (COD).</li>
+                                <li>Chuyển khoản qua ngân hàng chính thức của Cty TNHH FieldMan.</li>
+                            </ul>
+                        </div>
+                    `
+                },
+                'return': {
+                    title: 'Chính Sách Đổi Trả & Hoàn Tiền (Trong vòng 7 ngày)',
+                    content: `
+                        <div class="space-y-3">
+                            <p class="font-bold text-gray-900">1. Điều kiện đổi trả:</p>
+                            <p>Sản phẩm được đổi trả trong vòng <strong>7 ngày</strong> kể từ ngày nhận hàng nếu thuộc một trong các trường hợp:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Sản phẩm bị vỡ, hỏng hóc hoặc lỗi do nhà sản xuất/vận chuyển.</li>
+                                <li>Giao sai sản phẩm hoặc không đúng dung tích đã đặt.</li>
+                                <li>Khách hàng gặp hiện tượng kích ứng da có xác nhận chuyên môn từ Dược sĩ/Bác sĩ.</li>
+                            </ul>
+
+                            <p class="font-bold text-gray-900">2. Quy trình hoàn tiền:</p>
+                            <p>Hoàn tiền 100% qua chuyển khoản ngân hàng trong vòng 24h làm việc sau khi nhận lại sản phẩm đổi trả.</p>
+                        </div>
+                    `
+                }
+            };
+
+            const target = policies[type] || policies['privacy'];
+            titleEl.innerText = target.title;
+            bodyEl.innerHTML = target.content;
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                document.getElementById('legal-modal-content').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeLegalModal() {
+            const modal = document.getElementById('legal-modal');
+            if (!modal) return;
+            document.getElementById('legal-modal-content').classList.add('scale-95');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const icon = btn.querySelector('i') || btn.querySelector('svg');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (icon) icon.setAttribute('data-feather', 'eye-off');
+            } else {
+                input.type = 'password';
+                if (icon) icon.setAttribute('data-feather', 'eye');
+            }
+            if (window.feather) feather.replace();
+        }
+
+        function handlePasswordStrengthInput(val) {
+            if (!window.authManager) return;
+            const res = window.authManager.checkPasswordStrength(val);
+            const bar = document.getElementById('reg-strength-bar');
+            const label = document.getElementById('reg-strength-label');
+            if (bar && label) {
+                bar.className = `h-full ${res.color} transition-all duration-300`;
+                bar.style.width = res.width;
+                label.className = `text-[10px] font-bold ${res.textClass} min-w-[60px] text-right`;
+                label.innerText = res.label;
+            }
+            handleConfirmPasswordInput();
+        }
+
+        function handleConfirmPasswordInput() {
+            const pass = document.getElementById('reg-password')?.value || '';
+            const confirmPass = document.getElementById('reg-confirm-password')?.value || '';
+            const msgEl = document.getElementById('reg-confirm-msg');
+            if (!msgEl) return;
+
+            if (!confirmPass) {
+                msgEl.classList.add('hidden');
+                return;
+            }
+
+            msgEl.classList.remove('hidden');
+            if (pass === confirmPass) {
+                msgEl.className = 'text-[10px] font-bold text-emerald-600 mt-1 flex items-center gap-1';
+                msgEl.innerHTML = '✓ Mật khẩu khớp hoàn hảo';
+            } else {
+                msgEl.className = 'text-[10px] font-bold text-rose-500 mt-1 flex items-center gap-1';
+                msgEl.innerHTML = '✗ Mật khẩu không trùng khớp';
+            }
+        }
+
+        function toggleAuthForm(mode) {
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+            const formForgot = document.getElementById('form-forgot');
+            const tabLogin = document.getElementById('auth-tab-login');
+            const tabRegister = document.getElementById('auth-tab-register');
+            const titleEl = document.getElementById('auth-tab-title');
+
+            if (formLogin) formLogin.classList.add('hidden');
+            if (formRegister) formRegister.classList.add('hidden');
+            if (formForgot) formForgot.classList.add('hidden');
+
+            if (mode === 'login') {
+                if (formLogin) formLogin.classList.remove('hidden');
+                if (titleEl) titleEl.innerText = 'Chào Mừng Đến SkinID';
+                if (tabLogin) {
+                    tabLogin.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+                    tabLogin.classList.remove('text-gray-500');
+                }
+                if (tabRegister) {
+                    tabRegister.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+                    tabRegister.classList.add('text-gray-500');
+                }
+            } else if (mode === 'register') {
+                if (formRegister) formRegister.classList.remove('hidden');
+                if (titleEl) titleEl.innerText = 'Tạo Tài Khoản SkinID';
+                if (tabRegister) {
+                    tabRegister.classList.add('bg-white', 'text-gray-900', 'shadow-sm');
+                    tabRegister.classList.remove('text-gray-500');
+                }
+                if (tabLogin) {
+                    tabLogin.classList.remove('bg-white', 'text-gray-900', 'shadow-sm');
+                    tabLogin.classList.add('text-gray-500');
+                }
+            } else if (mode === 'forgot') {
+                if (formForgot) formForgot.classList.remove('hidden');
+                if (titleEl) titleEl.innerText = 'Khôi Phục Mật Khẩu';
+            }
+            if (window.feather) feather.replace();
+        }
+
+        function handleGoogleSignIn() {
+            if (window.authManager) {
+                window.authManager.triggerGoogleSignIn();
+            }
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const remember = document.getElementById('login-remember')?.checked ?? true;
+            
+            const res = window.authManager.login(email, pass, remember);
+            if (res.success) {
+                window.authManager.closeAuthModal();
+                if (typeof showToast === 'function') {
+                    showToast(`Xin chào mừng ${res.user.name} quay trở lại!`);
+                }
+            } else {
+                alert(res.message);
+            }
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const phone = document.getElementById('reg-phone').value;
+            const pass = document.getElementById('reg-password').value;
+            const confirmPass = document.getElementById('reg-confirm-password').value;
+            
+            const res = window.authManager.register(name, email, phone, pass, confirmPass, true);
+            if (res.success) {
+                window.authManager.closeAuthModal();
+                if (typeof showToast === 'function') {
+                    showToast(`Chúc mừng ${res.user.name} đã đăng ký tài khoản thành công!`);
+                }
+            } else {
+                alert(res.message);
+            }
+        }
+
+        function handleForgotSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+            const res = window.authManager ? window.authManager.resetPassword(email) : { success: false, message: 'Lỗi dịch vụ' };
+            if (res.success) {
+                alert(`✅ Mật khẩu tạm thời đã được tạo và gửi tới email ${email}.\n\nMật khẩu đăng nhập mới của bạn là: ${res.tempPassword}`);
+                toggleAuthForm('login');
+                document.getElementById('login-email').value = email;
+                document.getElementById('login-password').value = res.tempPassword;
+            } else {
+                alert(res.message);
+            }
+        }
+
+        // Initialize Feather icons
+        feather.replace();
+    </script>
+</body>
+</html>

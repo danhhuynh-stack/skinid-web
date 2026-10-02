@@ -14,3 +14,5 @@ postcss.config.js
 tailwind.config.js
 next.config.mjs
 scrape_rilastil.js
+scratch*
+khang_worker_download/
