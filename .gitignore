@@ -16,3 +16,9 @@ next.config.mjs
 scrape_rilastil.js
 scratch*
 khang_worker_download/
+temp_edge_profile/
+*.log
+local_preview_server.js
+preview_tester.js
+generate_acie_video.js
+capture_acie_preview.js

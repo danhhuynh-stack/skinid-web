@@ -1,0 +1,34 @@
+/* SkinID typography system
+   Outfit brings soft geometric character to display text; Manrope keeps
+   Vietnamese copy and interface controls calm, compact, and readable. */
+:root {
+  --skinid-font-heading: "Outfit", "Segoe UI", Arial, sans-serif;
+  --skinid-font-body: "Manrope", "Segoe UI", Arial, sans-serif;
+  --font-heading: var(--skinid-font-heading);
+  --font-body: var(--skinid-font-body);
+}
+
+html,
+body {
+  font-family: var(--skinid-font-body);
+}
+
+html {
+  /* Manrope has a compact x-height; this small fluid lift keeps copy generous
+     without enlarging narrow mobile layouts or creating another breakpoint. */
+  font-size: clamp(16px, calc(15px + .12vw), 17px);
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--skinid-font-heading);
+  font-synthesis: none;
+}
+
+:where(button, input, select, textarea) {
+  font-family: inherit;
+}
+
+/* Labels and CTAs stay crisp without making long-form copy feel rigid. */
+:where(.btn, .section-kicker, .hero-label, .modal-kicker) {
+  font-family: var(--skinid-font-heading);
+}

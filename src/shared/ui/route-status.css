@@ -1,0 +1,35 @@
+.route-status {
+  min-height: 100dvh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+  color: #252525;
+  background: #faf8f4;
+}
+
+.route-status h1,
+.route-status p {
+  margin: 0;
+}
+
+.route-status__eyebrow {
+  color: #7a695d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.route-status__action {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  color: #fff;
+  background: #252525;
+  text-decoration: none;
+}

@@ -1,0 +1,1054 @@
+/* ===================================================================
+   SkinID Scan Journey & Post-Scan Result Style System
+   Adheres to docs/home-style-system.md — Borderless, Floating, Editorial
+   =================================================================== */
+
+:root {
+  --skinid-primary: #E06D81;
+  --skinid-accent: #FF6B8B;
+  --skinid-blush: #FFF2F4;
+  --skinid-petal: #FFD6DE;
+  --skinid-soft-bg: #FFFAFB;
+  --skinid-dark: #282326;
+  --skinid-light: #FFF8F9;
+  --skinid-muted: #6F686B;
+  --skinid-border: #F0ECEE;
+  --skinid-rose-dark: #BD3F5B;
+  --skinid-cta-start: #FF7893;
+  --skinid-cta-mid: #F25576;
+  --skinid-cta-end: #DC3E63;
+  --skinid-cta-shadow: rgba(224, 62, 98, .30);
+
+  --scan-rose: #E06D81;
+  --scan-rose-deep: #BD3F5B;
+  --scan-ink: #282326;
+  --scan-muted: #6F686B;
+}
+
+.scan-page-body {
+  color: var(--skinid-dark);
+  font-family: var(--skinid-font-body);
+  background:
+    radial-gradient(circle at 6% 12%, rgba(255, 220, 229, 0.65), transparent 26%),
+    radial-gradient(circle at 94% 38%, rgba(218, 241, 255, 0.68), transparent 28%),
+    linear-gradient(180deg, #FFFAFB 0%, #FFFFFF 42%, #FFF9F6 100%);
+}
+
+/* ===================================================================
+   Welcome / Pre-Scan Hero
+   =================================================================== */
+.scan-page-body .scan-page-welcome {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 88px 0 94px;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(221, 242, 255, 0.84), transparent 28%),
+    radial-gradient(circle at 5% 88%, rgba(255, 226, 233, 0.78), transparent 26%),
+    linear-gradient(180deg, #FFFAFB, #FFFFFF 90%);
+}
+
+.scan-page-body .scan-page-welcome::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 470px;
+  height: 470px;
+  right: -260px;
+  bottom: -230px;
+  border: 1px solid rgba(233, 102, 130, 0.11);
+  border-radius: 50%;
+  box-shadow: 0 0 0 65px rgba(255, 255, 255, 0.34), 0 0 0 130px rgba(233, 102, 130, 0.025);
+}
+
+.scan-page-body .scan-page-welcome__grid {
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 92px;
+}
+
+.scan-page-body .scan-page-welcome__copy h1 {
+  max-width: 650px;
+  font-size: clamp(2.8rem, 5vw, 5.1rem);
+  font-weight: 800;
+  line-height: 1.01;
+  letter-spacing: -0.055em;
+  color: var(--skinid-dark);
+}
+
+.scan-page-body .scan-page-welcome__copy .scan-welcome-title {
+  width: fit-content;
+  max-width: 100%;
+  font-size: clamp(2rem, 4.6vw, 4.8rem);
+  line-height: 1.1;
+}
+
+.scan-welcome-title__line {
+  display: block;
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.scan-welcome-title__accent {
+  position: relative;
+  isolation: isolate;
+  color: var(--skinid-primary);
+}
+
+.scan-welcome-title__accent::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: auto -.02em .04em;
+  height: .16em;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(224, 109, 129, .24), rgba(224, 109, 129, .07));
+  transform: rotate(-1.5deg);
+}
+
+.scan-page-body .scan-page-welcome__copy > p {
+  max-width: 620px;
+  color: var(--skinid-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.scan-page-body .scan-page-back {
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 8px 22px rgba(61, 40, 48, 0.06);
+  padding: 8px 18px;
+  font-weight: 700;
+}
+
+.scan-page-body .scan-page-actions .btn {
+  border-radius: 999px;
+  font-weight: 800;
+  min-height: 48px;
+  padding-inline: 26px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.scan-page-body .scan-page-actions .btn--primary {
+  background: linear-gradient(135deg, var(--skinid-cta-start), var(--skinid-cta-end));
+  box-shadow: 0 13px 28px var(--skinid-cta-shadow);
+  border: 0;
+}
+
+.scan-page-body .scan-page-actions .btn--primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 17px 34px rgba(224, 62, 98, 0.38);
+}
+
+.scan-page-body .scan-page-actions .btn--primary:disabled {
+  opacity: 0.58;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
+}
+
+.scan-start-message {
+  margin: 14px 0 0;
+  color: var(--skinid-rose-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.scan-page-body .scan-page-guide {
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.scan-page-body .scan-page-guide span {
+  min-height: 112px;
+  padding: 22px 26px;
+  border: 0;
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(255, 239, 244, 0.86));
+  box-shadow: 0 18px 42px rgba(61, 40, 48, 0.065);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.scan-page-body .scan-page-guide span:nth-child(2) {
+  margin-left: 34px;
+  background: linear-gradient(145deg, #E9F6FF, #F7FBFF);
+}
+
+.scan-page-body .scan-page-guide span:nth-child(3) {
+  background: linear-gradient(145deg, #ECF8F2, #F8FCFA);
+}
+
+.scan-page-body .scan-page-guide span:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px rgba(61, 40, 48, 0.095);
+}
+
+.scan-page-body .scan-page-guide b {
+  background: linear-gradient(135deg, var(--skinid-cta-start), var(--skinid-cta-end));
+  box-shadow: 0 8px 18px rgba(224, 62, 98, 0.28);
+}
+
+/* ===================================================================
+   Capture & Analysis Modal Flow
+   =================================================================== */
+.scan-page-body #ai-modal {
+  padding: 56px 20px 100px;
+  background: linear-gradient(180deg, #FFFFFF, #FFFAF7) !important;
+}
+
+.scan-page-body #ai-modal > .sticky {
+  width: min(100%, 1020px);
+  margin-bottom: 16px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 16px 40px rgba(61, 40, 48, 0.075);
+  backdrop-filter: blur(20px);
+}
+
+.scan-page-body #modal-content-area {
+  width: min(100%, 1020px);
+  max-width: 1020px;
+  padding: 40px 48px 56px;
+  border: 0;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 28px 72px rgba(61, 40, 48, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.scan-page-body #setup-form {
+  border: 0 !important;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #FFF0F4, #F0F8FF) !important;
+  box-shadow: 0 12px 30px rgba(61, 40, 48, 0.04);
+}
+
+.scan-page-body #setup-form select {
+  border: 0;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 14px rgba(61, 40, 48, 0.04);
+}
+
+.scan-page-body .budget-btn {
+  border: 0;
+  border-radius: 999px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scan-page-body #capture-flow > .relative.max-w-md {
+  border-radius: 38px;
+  box-shadow: 0 28px 64px rgba(38, 26, 31, 0.2);
+}
+
+.scan-page-body .scan-upload-button {
+  border: 0;
+  border-radius: 999px;
+  background: #FFFFFF;
+  box-shadow: 0 10px 26px rgba(61, 40, 48, 0.07);
+  padding: 10px 22px;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+}
+
+.scan-page-body .scan-upload-button:hover {
+  transform: translateY(-2px);
+}
+
+.scan-page-body #thumbnails-container > div {
+  border: 0;
+  border-radius: 20px;
+  background: #F8F5F6;
+  box-shadow: 0 4px 12px rgba(61, 40, 48, 0.04);
+}
+
+.scan-page-body #analysis-progress {
+  background: linear-gradient(90deg, #FF7893, #76B8DE, #10B981) !important;
+}
+
+/* ===================================================================
+   TRANG SAU KHI SOI DA (RESULTS REPORT FLOW)
+   Borderless, Floating, Editorial, Luxury Skincare Atmosphere
+   =================================================================== */
+.scan-page-body #results-flow {
+  gap: 36px;
+}
+
+.scan-page-body #results-flow > div,
+.scan-page-body #results-flow > details,
+.scan-page-body #results-flow #routine-section > div:last-child {
+  border: 0 !important;
+  box-shadow: 0 22px 56px rgba(61, 40, 48, 0.07) !important;
+}
+
+/* 1. Skin ID Summary Card */
+.scan-page-body .scan-result-summary {
+  border: 0 !important;
+  border-radius: 34px !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(219, 241, 255, 0.9), transparent 32%),
+    linear-gradient(135deg, #FFF0F4 0%, #FFFFFF 60%, #FFF8FA 100%) !important;
+  box-shadow: 0 24px 62px rgba(61, 40, 48, 0.075) !important;
+}
+
+/* 2. Priority Concerns & Assessment */
+.scan-page-body .scan-result-priorities > div {
+  border: 0 !important;
+  border-radius: 28px !important;
+  box-shadow: 0 18px 44px rgba(61, 40, 48, 0.055) !important;
+}
+
+.scan-page-body .scan-result-priorities > div:nth-child(1) {
+  background: linear-gradient(145deg, #FFF0F3, #FFF9FA) !important;
+}
+
+.scan-page-body .scan-result-priorities > div:nth-child(2),
+.scan-page-body .scan-result-priorities > div:nth-child(3) {
+  background: rgba(255, 255, 255, 0.94) !important;
+}
+
+/* 3. Routine 6-step Day & Night */
+.scan-page-body .scan-result-routine > .grid > div {
+  border: 0 !important;
+  border-radius: 30px !important;
+  box-shadow: 0 20px 48px rgba(61, 40, 48, 0.06) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-routine .product-card--horizontal {
+  gap: 14px;
+  min-height: 126px;
+  padding: 14px;
+  border: 0 !important;
+  border-radius: 22px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 10px 28px rgba(61, 40, 48, 0.045);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-routine .product-card--horizontal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(61, 40, 48, 0.08);
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-routine .product-card--horizontal .product-card__media {
+  flex-basis: 76px;
+  width: 76px;
+  height: 96px;
+  border-radius: 16px;
+  background: #FFF8FA;
+}
+
+/* 4. Products Section */
+.scan-page-body .scan-result-products {
+  border: 0 !important;
+  border-radius: 34px !important;
+  background: linear-gradient(155deg, #FFFFFF, #FFF9FA) !important;
+  box-shadow: 0 24px 62px rgba(61, 40, 48, 0.075) !important;
+}
+
+/* 5. Deep Dive Accordion */
+.scan-page-body .scan-result-deep-dive {
+  border: 0 !important;
+  border-radius: 32px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.scan-page-body .scan-result-deep-dive > summary {
+  min-height: 94px;
+  border-radius: 32px;
+  transition: background 0.25s ease;
+}
+
+.scan-page-body .scan-result-deep-dive > summary:hover {
+  background: #FFF9FA;
+}
+
+/* 6. Follow-up 28 Days Banner */
+.scan-page-body .scan-result-followup {
+  border: 0 !important;
+  border-radius: 34px !important;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(224, 109, 129, 0.32), transparent 32%),
+    linear-gradient(135deg, #2D1B23, #1F1016) !important;
+  box-shadow: 0 24px 64px rgba(45, 27, 35, 0.32) !important;
+}
+
+/* Full-bleed Completed Scan Landing Page State */
+.scan-page-body:has(#results-flow.flex) .scan-page-welcome {
+  display: none;
+}
+
+.scan-page-body:has(#results-flow.flex) #ai-modal {
+  min-height: calc(100vh - 76px);
+  padding: 44px 28px 120px;
+  background:
+    radial-gradient(circle at 92% 4%, rgba(220, 242, 255, 0.78), transparent 24%),
+    radial-gradient(circle at 5% 18%, rgba(255, 226, 234, 0.76), transparent 25%),
+    linear-gradient(180deg, #FFFAFB 0%, #FFFFFF 38%, #FFF8FA 100%) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #ai-modal > .sticky {
+  display: none;
+}
+
+.scan-page-body:has(#results-flow.flex) #modal-content-area {
+  width: min(100%, 1240px);
+  max-width: 1240px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.scan-page-body:has(#results-flow.flex) #results-flow {
+  width: 100%;
+  max-width: 1240px;
+  gap: 36px;
+  padding-bottom: 0;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-summary {
+  margin-top: 0 !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-summary > div {
+  padding: 48px 56px !important;
+  gap: 48px !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-summary .relative.w-36 {
+  width: 176px;
+  height: 176px;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-priorities {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 20px;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-priorities > div {
+  height: 100%;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-priorities > div:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-routine > .grid {
+  gap: 20px;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-routine > .grid > div {
+  padding: 28px !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-products {
+  padding: 38px 42px !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations .product-card {
+  border: 0 !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.9) !important;
+  box-shadow: 0 13px 32px rgba(63,40,48,.065) !important;
+  transition: transform .32s cubic-bezier(.16,1,.3,1), box-shadow .32s ease;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations .product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 19px 40px rgba(63,40,48,.095) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations .product-card__media {
+  background: linear-gradient(155deg, #F9F5F6, #FFF) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations .product-card__cart-button {
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  background: linear-gradient(135deg, #E8879B, #C95C76) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 9px 20px rgba(150,64,84,.17) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations .product-card__cart-button:hover {
+  background: linear-gradient(135deg, #DC758D, #B94E69) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 13px 26px rgba(150,64,84,.22) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #product-recommendations .product-badge--sale {
+  border: 0 !important;
+  background: #C85A73 !important;
+  box-shadow: none !important;
+}
+
+/* Result-page editorial treatment — aligned with the homepage visual system. */
+.scan-page-body:has(#results-flow.flex) .scan-result-summary {
+  min-height: 440px;
+  isolation: isolate;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-summary::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 420px;
+  aspect-ratio: 1;
+  right: -48px;
+  top: 50%;
+  border: 1px solid rgba(224, 109, 129, .12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 44px rgba(255,255,255,.28), 0 0 0 92px rgba(255,255,255,.15);
+  transform: translateY(-50%);
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-summary::after {
+  content: "SKIN HEALTH · PERSONAL ROUTINE · 28 DAYS";
+  position: absolute;
+  right: 48px;
+  bottom: 34px;
+  color: rgba(111, 104, 107, .58);
+  font-size: .58rem;
+  font-weight: 750;
+  letter-spacing: .14em;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-summary__inner {
+  min-height: 440px;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.22fr) minmax(280px, .78fr);
+  align-items: center;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-copy {
+  grid-column: 1;
+  grid-row: 1;
+  max-width: 760px;
+  text-align: left;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-score {
+  grid-column: 2;
+  grid-row: 1;
+  width: 210px !important;
+  height: 210px !important;
+  justify-self: center;
+  filter: drop-shadow(0 24px 32px rgba(103, 60, 73, .12));
+  animation: scan-score-float 4s ease-in-out infinite;
+}
+
+.scan-result-kicker {
+  display: block;
+  margin-bottom: 14px;
+  color: #C85A73;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+}
+
+.scan-page-body:has(#results-flow.flex) #result-skin-type {
+  max-width: 720px;
+  font-size: clamp(2rem, 3.15vw, 3.45rem);
+  line-height: 1.08;
+  letter-spacing: -.045em;
+}
+
+.scan-page-body:has(#results-flow.flex) #overall-grade-badge {
+  max-width: 680px;
+  border: 0 !important;
+  border-radius: 18px !important;
+  padding: 10px 14px !important;
+  background: rgba(255, 250, 238, .82) !important;
+  box-shadow: inset 0 0 0 1px rgba(193, 137, 48, .12);
+}
+
+.scan-page-body:has(#results-flow.flex) #report-id,
+.scan-page-body:has(#results-flow.flex) #report-date {
+  border: 0 !important;
+  background: rgba(255,255,255,.62) !important;
+  box-shadow: inset 0 0 0 1px rgba(112,76,90,.075) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) #result-tags > span {
+  border: 0 !important;
+  color: #A94C64 !important;
+  background: rgba(255, 237, 242, .78) !important;
+  box-shadow: inset 0 0 0 1px rgba(206,96,121,.08);
+}
+
+.scan-report-action {
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 21px;
+  border: 0;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 760;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, background .25s ease, color .25s ease;
+}
+
+.scan-report-action:hover { transform: translateY(-2px); }
+.scan-report-action--primary {
+  color: #fff !important;
+  background: linear-gradient(135deg, #E8879B, #CA5C76) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.32), 0 12px 26px rgba(147,64,84,.2) !important;
+}
+.scan-report-action--primary:hover {
+  background: linear-gradient(135deg, #DD748B, #BA4E69) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.26), 0 16px 32px rgba(147,64,84,.25) !important;
+}
+.scan-report-action--quiet {
+  color: #684E58;
+  background: rgba(255,255,255,.76);
+  box-shadow: inset 0 0 0 1px rgba(112,76,90,.09), 0 8px 20px rgba(64,39,48,.05);
+}
+.scan-report-action--quiet:hover { color: #A74760; background: #fff; }
+.scan-report-action--large { min-height: 52px; padding: 15px 28px; font-size: .84rem; }
+.scan-report-action--consult {
+  color: #754456 !important;
+  background: linear-gradient(135deg, #F8E9EE, #FFF8FA) !important;
+  box-shadow: inset 0 0 0 1px rgba(174,93,119,.11), 0 9px 22px rgba(91,49,64,.06);
+}
+
+.scan-report-save-note { color: #817278; }
+.scan-report-save-note a { color: #A74760 !important; }
+
+.scan-page-body:has(#results-flow.flex) .scan-result-priorities {
+  align-items: stretch;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-priority-card,
+.scan-page-body:has(#results-flow.flex) .scan-overview-card {
+  min-height: 190px;
+  padding: 30px 32px !important;
+  align-items: flex-start;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-priority-card {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(255,255,255,.72), transparent 28%),
+    linear-gradient(145deg, #FFE8EE, #FFF7F9) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-overview-card {
+  background: rgba(255,255,255,.82) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-section-intro {
+  display: grid;
+  grid-template-columns: .38fr 1fr;
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-section-intro > span { margin-bottom: 5px; }
+.scan-page-body:has(#results-flow.flex) .scan-section-intro > h3 {
+  font-size: clamp(1.65rem, 2.35vw, 2.5rem);
+  letter-spacing: -.035em;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-routine-column {
+  position: relative;
+  overflow: hidden;
+  padding: 30px !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-routine-column::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  right: -76px;
+  bottom: -92px;
+  border: 1px solid rgba(224,109,129,.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-routine-cta {
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at 88% 20%, rgba(220,242,255,.72), transparent 28%),
+    linear-gradient(135deg, #FFF0F4, #FFFFFF 68%) !important;
+}
+
+/* Lower report: one concise checkout bar instead of repeating the catalogue. */
+.scan-page-body:has(#results-flow.flex) .scan-bundle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  padding: 34px 38px !important;
+  background:
+    radial-gradient(circle at 94% 15%, rgba(218,241,255,.76), transparent 34%),
+    linear-gradient(135deg, #FFF0F4, #FFFFFF 68%) !important;
+}
+
+.scan-bundle-copy { max-width: 610px; }
+.scan-bundle-action { flex: 0 0 auto; text-align: center; }
+
+/* Deep-dive reads as a calm skin journal, not a clinical dashboard. */
+.scan-page-body:has(#results-flow.flex) .scan-result-deep-dive {
+  box-shadow: 0 22px 54px rgba(61,40,48,.065) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-deep-dive-summary {
+  min-height: 112px;
+  padding: 28px 32px !important;
+  background: linear-gradient(135deg, rgba(255,255,255,.96), rgba(255,246,249,.84));
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-deep-dive-body {
+  padding: 30px 32px 36px !important;
+  border: 0 !important;
+  background:
+    radial-gradient(circle at 96% 5%, rgba(221,243,255,.54), transparent 23%),
+    linear-gradient(180deg, #FFF9FB, #FFFFFF) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-environment-card,
+.scan-page-body:has(#results-flow.flex) .scan-structure-card,
+.scan-page-body:has(#results-flow.flex) .scan-causes-card {
+  border: 0 !important;
+  border-radius: 28px !important;
+  box-shadow: 0 15px 38px rgba(61,40,48,.055) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-environment-card {
+  padding: 26px 28px !important;
+  background: linear-gradient(135deg, #EFF8FD, rgba(255,255,255,.94)) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-structure-card,
+.scan-page-body:has(#results-flow.flex) .scan-causes-card {
+  padding: 30px !important;
+  background: rgba(255,255,255,.88) !important;
+}
+
+.scan-env-stat {
+  padding: 11px 12px;
+  border-radius: 16px;
+  text-align: center;
+  background: rgba(255,255,255,.76);
+  box-shadow: inset 0 0 0 1px rgba(87,147,181,.09);
+}
+.scan-env-stat--uv { background: rgba(255,246,235,.82); }
+
+.scan-page-body:has(#results-flow.flex) #detailed-metrics-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 24px;
+}
+
+.scan-metric-item {
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(112,76,90,.075);
+}
+.scan-metric-value { color: #A94C64; }
+.scan-metric-track {
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #F3ECEF;
+}
+.scan-metric-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #EFA2B1, #C95C76);
+  transition: width 1s cubic-bezier(.16,1,.3,1);
+}
+
+.scan-insight-item {
+  border: 0;
+  border-radius: 16px;
+  color: #654D56;
+  background: #FBF3F5;
+}
+.scan-insight-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #D66D85;
+  box-shadow: 0 0 0 5px rgba(214,109,133,.1);
+}
+
+.scan-cause-item {
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #FFF6F8 !important;
+  box-shadow: inset 0 0 0 1px rgba(199,91,116,.08);
+}
+.scan-cause-item--secondary { background: #FFF8F1 !important; }
+.scan-cause-item h5 { color: #8F4055 !important; }
+.scan-cause-item p { color: #735C64 !important; }
+
+.scan-page-body:has(#results-flow.flex) .scan-forecast-card {
+  border: 0 !important;
+  border-radius: 26px !important;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(232,135,155,.25), transparent 30%),
+    linear-gradient(135deg, #39212B, #24151C) !important;
+  box-shadow: 0 18px 42px rgba(45,27,35,.2) !important;
+}
+.scan-page-body:has(#results-flow.flex) .scan-routine-fit {
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.075) !important;
+}
+
+.scan-page-body:has(#results-flow.flex) .scan-result-followup {
+  position: relative;
+  overflow: hidden;
+  color: #382A30 !important;
+  background:
+    radial-gradient(circle at 92% 18%, rgba(220,242,255,.88), transparent 31%),
+    linear-gradient(135deg, #FFF0F4, #FFFFFF 70%) !important;
+  box-shadow: 0 22px 54px rgba(61,40,48,.07) !important;
+}
+.scan-result-followup h3 { color: #2D2327 !important; }
+.scan-result-followup p { color: #74656B !important; }
+.scan-result-followup > div:first-child > div:first-child {
+  color: #B85069 !important;
+  background: rgba(255,255,255,.72) !important;
+  box-shadow: inset 0 0 0 1px rgba(184,80,105,.1);
+}
+.scan-result-followup span { color: #B85069 !important; }
+.scan-followup-mark {
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-content: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: #A74760;
+  text-align: center;
+  background: rgba(255,255,255,.7);
+  box-shadow: inset 0 0 0 1px rgba(167,71,96,.09), 0 15px 34px rgba(83,46,58,.08);
+}
+.scan-followup-mark strong { display: block; font-size: 2.1rem; line-height: .9; letter-spacing: -.05em; }
+.scan-followup-mark span { display: block; margin-top: 7px; font-size: .62rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+
+.scan-page-body:has(#results-flow.flex) .scan-result-consult {
+  padding: 24px 20px 4px !important;
+  border: 0 !important;
+}
+
+.scan-result-deep-dive[open] .scan-deep-dive-body > * {
+  animation: scan-report-rise .62s cubic-bezier(.16,1,.3,1) both;
+}
+.scan-result-deep-dive[open] .scan-deep-dive-body > :nth-child(2) { animation-delay: 70ms; }
+.scan-result-deep-dive[open] .scan-deep-dive-body > :nth-child(3) { animation-delay: 140ms; }
+
+@keyframes scan-score-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ===================================================================
+   Animations & Entrance Rhythms for Report
+   =================================================================== */
+@keyframes scan-report-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scan-page-body:has(#results-flow.flex) #results-flow > :not(#confetti-canvas) {
+  animation: scan-report-rise 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.scan-page-body:has(#results-flow.flex) #results-flow > :nth-child(3) { animation-delay: 70ms; }
+.scan-page-body:has(#results-flow.flex) #results-flow > :nth-child(4) { animation-delay: 140ms; }
+.scan-page-body:has(#results-flow.flex) #results-flow > :nth-child(5) { animation-delay: 210ms; }
+.scan-page-body:has(#results-flow.flex) #results-flow > :nth-child(6) { animation-delay: 280ms; }
+.scan-page-body:has(#results-flow.flex) #results-flow > :nth-child(7) { animation-delay: 350ms; }
+
+/* Focus Visible */
+.scan-page-body #results-flow :focus-visible {
+  outline: 3px solid rgba(224, 109, 129, 0.35);
+  outline-offset: 3px;
+}
+
+/* ===================================================================
+   Responsive Breakpoints
+   =================================================================== */
+@media (max-width: 1080px) {
+  .scan-page-body:has(#results-flow.flex) #product-recommendations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .scan-page-body:has(#results-flow.flex) #detailed-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .scan-page-body .scan-page-welcome {
+    padding: 52px 0 76px;
+  }
+  .scan-page-body .scan-page-welcome__grid {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+  .scan-page-body .scan-page-welcome__copy h1 {
+    font-size: clamp(2.55rem, 12vw, 3.7rem);
+  }
+  .scan-page-body .scan-page-welcome__copy .scan-welcome-title {
+    font-size: clamp(2rem, 9.5vw, 3.7rem);
+  }
+  .scan-page-body .scan-page-guide span:nth-child(2) {
+    margin-left: 0;
+  }
+  .scan-page-body #ai-modal {
+    padding: 36px 12px 88px;
+  }
+  .scan-page-body #ai-modal > .sticky {
+    border-radius: 22px;
+    padding: 14px 18px;
+  }
+  .scan-page-body #modal-content-area {
+    padding: 24px 16px 36px;
+    border-radius: 26px;
+  }
+  .scan-page-body #results-flow {
+    gap: 28px;
+  }
+  .scan-page-body .scan-result-summary,
+  .scan-page-body .scan-result-products,
+  .scan-page-body .scan-result-deep-dive,
+  .scan-page-body .scan-result-followup {
+    border-radius: 26px !important;
+  }
+  .scan-page-body .scan-result-priorities > div,
+  .scan-page-body .scan-result-routine > .grid > div {
+    border-radius: 24px !important;
+  }
+  .scan-page-body .scan-result-deep-dive > summary {
+    padding: 20px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) #ai-modal {
+    padding: 24px 12px 88px;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-summary > div {
+    padding: 28px 20px !important;
+    gap: 24px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-summary {
+    min-height: 0;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-summary::before {
+    width: 300px;
+    right: -112px;
+    top: 118px;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-summary::after {
+    display: none;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-summary__inner {
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-score {
+    grid-column: 1;
+    grid-row: 1;
+    width: 144px !important;
+    height: 144px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-copy {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: center;
+  }
+  .scan-page-body:has(#results-flow.flex) #result-skin-type {
+    font-size: clamp(1.75rem, 8vw, 2.3rem);
+  }
+  .scan-result-actions .scan-report-action { width: 100%; }
+  .scan-page-body:has(#results-flow.flex) .scan-priority-card,
+  .scan-page-body:has(#results-flow.flex) .scan-overview-card {
+    min-height: 0;
+    padding: 24px 20px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-section-intro {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-summary .relative.w-36 {
+    width: 144px;
+    height: 144px;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-priorities {
+    grid-template-columns: 1fr;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-priorities > div:nth-child(3) {
+    grid-column: auto;
+  }
+  .scan-page-body:has(#results-flow.flex) #product-recommendations {
+    grid-template-columns: 1fr;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-products {
+    padding: 24px 18px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-bundle-bar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 22px;
+    padding: 26px 22px !important;
+  }
+  .scan-bundle-action { text-align: left; }
+  .scan-page-body:has(#results-flow.flex) .scan-deep-dive-summary {
+    min-height: 0;
+    padding: 22px 20px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-deep-dive-body {
+    padding: 22px 16px 26px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-environment-card,
+  .scan-page-body:has(#results-flow.flex) .scan-structure-card,
+  .scan-page-body:has(#results-flow.flex) .scan-causes-card {
+    padding: 22px 18px !important;
+  }
+  .scan-page-body:has(#results-flow.flex) #detailed-metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .scan-page-body:has(#results-flow.flex) .scan-result-followup {
+    align-items: flex-start;
+  }
+  .scan-followup-mark {
+    width: 88px;
+    height: 88px;
+    align-self: flex-end;
+  }
+}
+
+/* Reduced Motion Fallback */
+@media (prefers-reduced-motion: reduce) {
+  .scan-page-body * {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

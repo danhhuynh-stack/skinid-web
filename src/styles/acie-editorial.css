@@ -1,0 +1,229 @@
+/* Dedicated ACIE editorial page — uses the same borderless, floating language
+   as the homepage while keeping each scene readable on its own. */
+
+.acie-page .acie-hero {
+  min-height: calc(100svh - 89px);
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+  gap: clamp(44px, 7vw, 108px);
+  padding-block: clamp(56px, 8vh, 94px);
+}
+
+.acie-page .acie-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.acie-page .acie-copy::before {
+  position: absolute;
+  z-index: -1;
+  top: -70px;
+  left: -80px;
+  width: 240px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 220, 229, .42), transparent 69%);
+  content: "";
+  filter: blur(5px);
+}
+
+.acie-page h1 {
+  max-width: 780px;
+  margin: 20px 0;
+  font-size: clamp(3rem, 5.2vw, 5.25rem);
+  line-height: .99;
+  letter-spacing: -.055em;
+}
+
+.acie-page .acie-copy > p {
+  max-width: 640px;
+  color: #706269;
+  font-size: clamp(1rem, .28vw + .86rem, 1.14rem);
+}
+
+.acie-page .acie-page-feature-grid {
+  max-width: 690px;
+  margin-top: clamp(28px, 4vh, 42px);
+}
+
+.acie-page .acie-copy > small { margin-top: 13px; }
+
+.acie-page .acie-device {
+  min-height: clamp(470px, 66vh, 660px);
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  padding: 26px;
+  border: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, .88) 0 25%, rgba(255, 226, 234, .34) 48%, transparent 70%);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.acie-page .acie-device::before,
+.acie-page .acie-device::after {
+  position: absolute;
+  inset: 9%;
+  border: 1px solid rgba(224, 109, 129, .14);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.acie-page .acie-device::after {
+  inset: 22%;
+  border-color: rgba(118, 177, 210, .14);
+}
+
+.acie-page .acie-device img {
+  z-index: 2;
+  width: min(78%, 480px);
+  height: clamp(340px, 54vh, 520px);
+  filter: drop-shadow(0 30px 35px rgba(73, 54, 62, .16));
+  mix-blend-mode: normal;
+}
+
+.acie-page .acie-device figcaption {
+  position: absolute;
+  z-index: 3;
+  bottom: 7%;
+  padding: 8px 13px;
+  border: 1px solid rgba(224, 109, 129, .11);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .66);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.acie-page .acie-orbit {
+  z-index: 1;
+  inset: 14% 4%;
+  border-color: rgba(224, 109, 129, .16);
+}
+
+.acie-page .acie-story {
+  padding-block: clamp(78px, 10vh, 122px);
+  scroll-margin-top: 89px;
+}
+
+.acie-page .acie-story-grid {
+  grid-template-columns: minmax(0, 1.03fr) minmax(0, .97fr);
+  gap: clamp(54px, 7vw, 112px);
+}
+
+.acie-page .acie-lifestyle {
+  position: relative;
+}
+
+.acie-page .acie-lifestyle::after {
+  position: absolute;
+  inset: auto -22px -22px 9%;
+  height: 58%;
+  border: 1px solid rgba(224, 109, 129, .12);
+  border-radius: 32px;
+  content: "";
+  pointer-events: none;
+}
+
+.acie-page .acie-lifestyle img {
+  position: relative;
+  z-index: 1;
+  height: clamp(430px, 62vh, 620px);
+  border-radius: clamp(26px, 3vw, 42px);
+  box-shadow: 0 28px 72px rgba(76, 55, 64, .1);
+}
+
+.acie-page h2 {
+  max-width: 690px;
+  margin: 18px 0;
+  font-size: clamp(2.45rem, 4vw, 4.15rem);
+  line-height: 1.02;
+  letter-spacing: -.05em;
+}
+
+.acie-page .acie-story-copy > p {
+  color: #706269;
+  font-size: clamp(.98rem, .24vw + .85rem, 1.1rem);
+}
+
+.acie-page .acie-promises {
+  display: grid;
+  gap: 10px;
+  margin-top: clamp(26px, 4vh, 42px);
+}
+
+.acie-page .acie-promises > div {
+  grid-template-columns: 38px minmax(0, 1fr);
+  padding: 16px 18px;
+  border: 1px solid rgba(224, 109, 129, .1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .46);
+  box-shadow: 0 10px 32px rgba(72, 53, 61, .04);
+  transition: transform .35s cubic-bezier(.16, 1, .3, 1), background .35s ease;
+}
+
+.acie-page .acie-promises > div:hover {
+  background: rgba(255, 255, 255, .72);
+  transform: translateX(5px);
+}
+
+.acie-page .acie-promises span {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  background: #fff1f4;
+}
+
+.acie-page .acie-invitation {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(94px, 13vh, 150px);
+}
+
+.acie-page .acie-invitation::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(850px, 78vw);
+  aspect-ratio: 2.6;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 220, 230, .45), rgba(225, 243, 255, .24) 44%, transparent 72%);
+  content: "";
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.acie-page .acie-invitation .container { position: relative; }
+.acie-page .acie-invitation .skinid-editorial-kicker,
+.acie-page .acie-invitation .skinid-editorial-title { margin-inline: auto; }
+.acie-page .acie-invitation h2 { max-width: 900px; }
+
+@media (max-width: 980px) {
+  .acie-page .acie-hero {
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+  .acie-page .acie-copy { max-width: 760px; }
+  .acie-page .acie-device { min-height: 510px; }
+  .acie-page .acie-story-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .acie-page .acie-hero { gap: 32px; padding-block: 48px 64px; }
+  .acie-page h1 { font-size: clamp(2.65rem, 13vw, 4rem); }
+  .acie-page .acie-page-feature-grid { margin-top: 26px; }
+  .acie-page .acie-device { min-height: 390px; }
+  .acie-page .acie-device img { height: 330px; }
+  .acie-page .acie-story { padding-block: 72px; }
+  .acie-page .acie-lifestyle img { height: min(112vw, 470px); }
+  .acie-page .acie-lifestyle::after { right: -10px; bottom: -12px; }
+  .acie-page h2 { font-size: clamp(2.25rem, 11vw, 3.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acie-page .acie-promises > div { transition: none; }
+}

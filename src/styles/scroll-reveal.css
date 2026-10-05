@@ -1,0 +1,98 @@
+/* Shared scroll storytelling for the homepage and ACIE landing page. */
+.scroll-reveal-root [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity .78s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms),
+    transform .78s cubic-bezier(.16, 1, .3, 1) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal-root [data-reveal="fade"] { transform: none; }
+.scroll-reveal-root [data-reveal="soft-scale"] { transform: translate3d(0, 12px, 0) scale(.975); }
+
+.scroll-reveal-root [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  will-change: auto;
+}
+
+/* ACIE landing: entrance first, then a quiet organic float on the product only. */
+.acie-motion-page {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 7%, rgba(224,109,129,.11), transparent 22%),
+    linear-gradient(180deg, #fffafb 0%, #fff 32%, #fff8fa 100%);
+}
+
+.acie-motion-page .acie-device {
+  isolation: isolate;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.acie-motion-page .acie-device::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 72%;
+  aspect-ratio: 1;
+  left: 14%;
+  top: 10%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,109,129,.22), rgba(224,109,129,.06) 50%, transparent 72%);
+  filter: blur(24px);
+  opacity: 0;
+  transform: scale(.84);
+  transition:
+    opacity .9s cubic-bezier(.16,1,.3,1) calc(var(--reveal-delay, 0ms) + 200ms),
+    transform .9s cubic-bezier(.16,1,.3,1) calc(var(--reveal-delay, 0ms) + 200ms);
+}
+
+.acie-motion-page .acie-device.is-revealed::before { opacity: 1; transform: scale(1); }
+
+.acie-motion-page .acie-device.is-revealed img {
+  animation: aciePageBreathing 3.8s cubic-bezier(.45,0,.55,1) .82s infinite;
+}
+
+.acie-motion-page .acie-story {
+  background:
+    radial-gradient(circle at 9% 82%, rgba(220,242,255,.64), transparent 23%),
+    linear-gradient(135deg, #fff7f9, #f7fbff);
+}
+
+.acie-motion-page .acie-promises > div {
+  transition: color .25s ease, border-color .25s ease, background .25s ease;
+}
+
+.acie-motion-page .acie-promises > div:hover {
+  border-color: rgba(224,109,129,.28);
+  background: rgba(255,255,255,.48);
+}
+
+.acie-motion-page .acie-invitation {
+  background:
+    radial-gradient(circle at 50% 115%, rgba(224,109,129,.14), transparent 34%),
+    #fff;
+}
+
+@keyframes aciePageBreathing {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal-root [data-reveal] {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    will-change: auto !important;
+  }
+
+  .acie-motion-page .acie-device img { animation: none !important; }
+  .acie-motion-page .acie-device::before { opacity: 1; transform: none; transition: none; }
+}

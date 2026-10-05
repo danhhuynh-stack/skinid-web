@@ -1,0 +1,2836 @@
+/* SkinID Storefront: High-End Medical Dermo-Cosmetics & AI SkinTech Visual System.
+   Clean clinical whites, deep obsidian authority, disciplined typography, and precision medical rose accents. */
+:root {
+  --skinid-primary: #E06D81;
+  --skinid-accent: #FF6B8B;
+  --skinid-blush: #FFF2F4;
+  --skinid-petal: #FFD6DE;
+  --skinid-soft-bg: #FFFAFB;
+  --skinid-dark: #282326;
+  --skinid-light: #fff8f9;
+  --brand-pink: #E06D81;
+  --rose: #E06D81;
+  --rose-dark: #bd3f5b;
+  --rose-soft: #fff4f6;
+  --rose-light: #ffd6de;
+  --ink: #282326;
+  --muted: #6f686b;
+  --clinical-border: #f0ecee;
+  --cta-rose-start: #ff7893;
+  --cta-rose-mid: #f25576;
+  --cta-rose-end: #dc3e63;
+  --cta-rose-shadow: rgba(224, 62, 98, 0.3);
+  --skinid-font-heading: "Outfit", "Segoe UI", Arial, sans-serif;
+  --skinid-font-body: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--skinid-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 1. Top Offer Bar: Deep Obsidian Luxury */
+.offer-bar {
+  background: #181517;
+  color: #d1cbd0;
+  font-weight: 500;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  padding: 8px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.offer-bar span {
+  color: #E06D81;
+  margin: 0 10px;
+}
+
+/* Homepage keeps its first viewport clean. The offer bar behaves like a hidden
+   ribbon and appears only after a deliberate extra upward gesture at page top. */
+.offer-bar--scroll {
+  position: fixed;
+  z-index: 96;
+  inset: 0 0 auto;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-100%);
+  transition: opacity .3s ease, transform .42s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .42s;
+}
+
+.offer-bar--scroll.is-visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.offer-bar--scroll + .skinid-header {
+  transition: top .42s cubic-bezier(.16, 1, .3, 1);
+}
+
+.offer-bar--scroll.is-visible + .skinid-header { top: 34px; }
+
+/* 2. Site Header: Clinical Pure White with Hairline Border */
+.skinid-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #ebe6e8;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
+}
+.skinid-header .header-main {
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+}
+.skinid-header .brand b {
+  color: #282326;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.skinid-header .brand em {
+  color: #E06D81;
+  font-style: normal;
+  font-weight: 700;
+}
+.skinid-header .desktop-nav {
+  gap: 28px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+.skinid-header .desktop-nav > a,
+.products-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #282326;
+  transition: color 0.18s ease;
+  letter-spacing: 0.01em;
+  padding-block: 6px;
+}
+.skinid-header .desktop-nav > a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: #E06D81;
+  opacity: 0;
+  pointer-events: none;
+  transition: left 0.2s ease, right 0.2s ease, opacity 0.2s ease;
+}
+.skinid-header .desktop-nav > a:hover,
+.products-trigger:hover,
+.products-trigger.is-active,
+.skinid-header .desktop-nav > a.is-active {
+  color: #E06D81;
+}
+.skinid-header .desktop-nav > a:hover::after,
+.skinid-header .desktop-nav > a.is-active::after {
+  left: 0;
+  right: 0;
+  opacity: 1;
+}
+.products-trigger {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.nav-new {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: #fff4f6;
+  color: #E06D81;
+  border: 1px solid #ffd6de;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.skinid-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.skinid-header .icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #2b2326;
+  transition: all 0.18s ease;
+}
+.skinid-header .icon-btn:hover {
+  background: #f8f9fa;
+  color: #181517;
+}
+.cart-button span,
+#mobile-cart-badge {
+  background: #181517;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+/* 3. Full-Width Mega Menu (Cố định tràn màn hình 100vw kèm backdrop-blur) */
+.product-menu-shade {
+  position: fixed;
+  inset: 0;
+  top: 80px;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 85;
+}
+.product-menu.product-mega-menu {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-top: 1px solid #ebe6e8 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08) !important;
+  z-index: 95 !important;
+  padding: 0 !important;
+  animation: mega-enter 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes mega-enter {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mega-menu-container {
+  width: min(calc(100% - 48px), 1240px);
+  margin: 0 auto;
+  padding: 36px 0 40px;
+  display: grid;
+  grid-template-columns: 1.3fr 1.15fr 1.1fr 1fr;
+  gap: 36px;
+}
+.mega-menu-col {
+  display: flex;
+  flex-direction: column;
+}
+.mega-col-header {
+  margin-bottom: 18px;
+  border-bottom: 1px solid #f0edf0;
+  padding-bottom: 10px;
+}
+.mega-col-header .section-kicker {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: #E06D81;
+  text-transform: uppercase;
+}
+.mega-col-header h4 {
+  margin: 4px 0 0;
+  font-family: var(--skinid-font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #181517;
+}
+.mega-menu-col--nav .product-menu-all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #181517;
+  margin-bottom: 14px;
+  transition: all 0.18s ease;
+}
+.mega-menu-col--nav .product-menu-all:hover {
+  background: #181517;
+  color: #ffffff;
+  border-color: #181517;
+}
+.mega-categories-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+.mega-category-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.15s ease;
+}
+.mega-category-link:hover {
+  background: #fff4f6;
+  color: #E06D81;
+  padding-left: 14px;
+}
+.mega-category-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d1d5db;
+  transition: background 0.15s ease;
+}
+.mega-category-link:hover .mega-category-dot {
+  background: #E06D81;
+}
+
+/* Clinical Column */
+.mega-clinical-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mega-clinical-list li {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f9fafb;
+  border: 1px solid #f1f3f5;
+}
+.mega-clinical-list strong {
+  display: block;
+  font-size: 0.8rem;
+  color: #181517;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.mega-clinical-list p {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #6c757d;
+  line-height: 1.45;
+}
+
+/* Tech Column */
+.mega-tech-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.mega-feature-card {
+  display: block;
+  padding: 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s ease;
+}
+.mega-feature-card:hover {
+  border-color: #181517;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+.mega-feature-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #181517;
+  color: #ffffff;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.mega-feature-badge--legal {
+  background: #E06D81;
+}
+.mega-feature-card strong {
+  display: block;
+  font-size: 0.84rem;
+  color: #181517;
+  margin-bottom: 3px;
+}
+.mega-feature-card p {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #6c757d;
+  line-height: 1.45;
+}
+
+/* Featured Preview Column */
+.mega-featured-preview {
+  display: block;
+  padding: 18px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f8f9fa 0%, #f1f3f5 100%);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+.mega-featured-preview:hover {
+  border-color: #E06D81;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.mega-preview-tag {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #E06D81;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.mega-featured-preview p {
+  margin: 0 0 12px;
+  font-size: 0.76rem;
+  color: #495057;
+  line-height: 1.5;
+}
+.mega-preview-cta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #181517;
+}
+.mega-close-btn {
+  margin-top: auto;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6c757d;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mega-close-btn:hover {
+  background: #f8f9fa;
+  color: #181517;
+  border-color: #ced4da;
+}
+
+/* 4. Disciplined Clinical Typography */
+.section-heading h2,
+.gentle-advisor h2,
+.acie-home h2,
+.acie-page h1,
+.acie-page h2,
+.catalog-intro h1 {
+  font-family: var(--skinid-font-heading);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: #181517;
+}
+.section-heading h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+}
+.section-heading h2 em,
+.acie-home h2 em,
+.acie-page em {
+  color: #E06D81;
+  font-style: normal;
+  font-weight: 700;
+}
+.section-kicker {
+  color: #E06D81;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.hero-slide-copy h1,
+.hero-slide-copy h2 {
+  font-family: var(--skinid-font-heading);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #282326;
+}
+.hero-slide-copy p {
+  line-height: 1.75;
+  font-weight: 400;
+  color: #495057;
+}
+.hero-carousel .hero-slide--scan {
+  background: #f8f9fa;
+}
+.hero-carousel .hero-slide--scan .hero-slide-copy h2 {
+  color: #282326;
+}
+
+/* 5. Luxury Clinical Buttons (Warm Dermo-Rose Authority) */
+.hero-actions .btn {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 12px 28px;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+}
+.hero-actions .btn--primary,
+.hero-actions .btn--ai-primary {
+  background: #E06D81;
+  color: #ffffff !important;
+  border: 1px solid #E06D81;
+  box-shadow: 0 4px 14px rgba(224, 109, 129, 0.24);
+}
+.hero-actions .btn--primary:hover,
+.hero-actions .btn--ai-primary:hover {
+  background: #bd3f5b;
+  border-color: #bd3f5b;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(189, 63, 91, 0.32);
+}
+
+/* Luxury Soft Pill Button (Dành cho trang ACIE & landing pages) */
+.soft-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  background: linear-gradient(135deg, #fb7185 0%, #E06D81 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  padding: 13px 30px !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 10px 25px rgba(224, 109, 129, 0.32) !important;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.2s ease !important;
+  outline: none !important;
+  width: fit-content !important;
+  line-height: 1.4 !important;
+}
+
+.soft-button:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 16px 34px rgba(224, 109, 129, 0.44) !important;
+  color: #ffffff !important;
+}
+.hero-actions .btn--secondary {
+  background: #ffffff;
+  border: 1.5px solid #d1d5db;
+  color: #282326;
+}
+.hero-actions .btn--secondary:hover {
+  border-color: #282326;
+  background: #f8f9fa;
+  color: #282326;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  border-bottom: 1.5px solid #282326;
+  background: none;
+  color: #282326;
+  padding: 0 0 3px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: all 0.18s ease;
+}
+.text-link:hover {
+  border-color: #E06D81;
+  color: #E06D81;
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   6. Borderless & Floating Hero Showcase (Sản phẩm nổi bật)
+   - Art Direction: Borderless & Floating, White #FFFFFF, Clean Medical Aesthetic
+   - Asymmetrical 4:6 Layout, Staggered Entrance, Continuous Floating & Glow Hover
+   ========================================================================== */
+.borderless-hero-showcase {
+  position: relative;
+  background: #ffffff;
+  padding-block: 96px 88px;
+  overflow: hidden;
+}
+
+/* Container Grid 4:6 */
+.borderless-showcase-grid {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   CỘT TRÁI (40%): Cụm Typography
+   ========================================================================== */
+.borderless-typography-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* 1. Tagline nhỏ, font in hoa, tracking rộng */
+.hero-showcase-tagline {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #E06D81;
+  margin-bottom: 16px;
+}
+
+/* 2. Tiêu đề chính to, hiện đại */
+.hero-showcase-heading {
+  font-family: var(--skinid-font-heading);
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #1a1517;
+  letter-spacing: -0.028em;
+  margin: 0 0 20px 0;
+}
+
+.hero-showcase-heading em {
+  font-style: normal;
+  color: #E06D81;
+}
+
+/* 3. Đoạn mô tả ngắn màu xám nhạt (#666666) */
+.hero-showcase-desc {
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: #666666;
+  max-width: 480px;
+  margin: 0 0 22px 0;
+}
+
+/* Nhãn đặc tính sản phẩm */
+.hero-showcase-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.hero-meta-badge {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #E06D81;
+  background: rgba(224, 109, 129, 0.08);
+  padding: 5px 14px;
+  border-radius: 9999px;
+}
+
+.hero-meta-step {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #8c8286;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* 4. Call To Action (Button): Nút bấm hình viên thuốc, nền #E06D81 */
+.hero-showcase-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hero-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9999px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              border-color 0.25s ease;
+  outline: none;
+  border: none;
+}
+
+.hero-pill-btn--primary {
+  background: #E06D81;
+  color: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(224, 109, 129, 0.15);
+}
+
+/* Hover Effect: Nhích lên (translateY: -5px) và tỏa ra bóng Glow màu hồng #E06D81 (opacity 15-20%, blur 30px) */
+.hero-pill-btn--primary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(224, 109, 129, 0.2);
+}
+
+.hero-pill-btn--outline {
+  background: transparent;
+  border: 1.5px solid #ebd9de;
+  color: #443c40;
+  padding: 13px 24px;
+}
+
+.hero-pill-btn--outline:hover {
+  border-color: #E06D81;
+  color: #E06D81;
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(224, 109, 129, 0.15);
+}
+
+/* ==========================================================================
+   CỘT PHẢI (60%): Khu vực hiển thị sản phẩm tách nền (trong suốt)
+   - Hoàn toàn loại bỏ thẻ div bọc viền/nền màu cứng
+   - Đặt trực tiếp ảnh PNG lên nền trắng
+   ========================================================================== */
+.borderless-products-col {
+  width: 100%;
+}
+
+.borderless-stage-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 36px;
+  align-items: center;
+}
+
+/* 1. Sản phẩm lớn chính (Hero Centerpiece) */
+.floating-hero-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.floating-hero-trigger {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  display: block;
+}
+
+.floating-hero-image {
+  max-height: 400px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.04));
+}
+
+/* Hover Effect trên ảnh sản phẩm: translateY: -5px và Glow Shadow #E06D81 20%, blur 30px */
+.floating-hero-trigger:hover .floating-hero-image {
+  transform: translateY(-5px) scale(1.03);
+  filter: drop-shadow(0 15px 30px rgba(224, 109, 129, 0.2));
+}
+
+.floating-hero-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #8c8286;
+  margin-top: 18px;
+}
+
+.caption-glow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E06D81;
+  box-shadow: 0 0 8px rgba(224, 109, 129, 0.6);
+}
+
+/* 2. Cụm các sản phẩm bổ trợ lơ lửng (Satellites) */
+.floating-satellites-group {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.floating-satellite-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 6px 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.floating-satellite-item:hover {
+  transform: translateY(-5px);
+}
+
+.floating-satellite-visual {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.floating-satellite-image {
+  max-height: 85px;
+  max-width: 85px;
+  object-fit: contain;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.03));
+}
+
+.floating-satellite-item:hover .floating-satellite-image {
+  transform: scale(1.08);
+  filter: drop-shadow(0 15px 30px rgba(224, 109, 129, 0.2));
+}
+
+.floating-satellite-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.satellite-step-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #E06D81;
+}
+
+.satellite-name-link {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #241d21;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s ease;
+}
+
+.floating-satellite-item:hover .satellite-name-link {
+  color: #E06D81;
+}
+
+.satellite-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.satellite-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #666666;
+}
+
+.satellite-add-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #ebd9de;
+  color: #E06D81;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.satellite-add-btn:hover {
+  background: #E06D81;
+  border-color: #E06D81;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(224, 109, 129, 0.25);
+}
+
+/* ==========================================================================
+   HIỆU ỨNG CHUYỂN ĐỘNG (ANIMATIONS)
+   ========================================================================== */
+
+/* 1. Staggered Entrance (Fade-in & Slide-up 20px với cubic-bezier mượt mà) */
+.hero-anim-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Xuất hiện lần lượt: Tagline -> Tiêu đề -> Mô tả -> Button -> Hình ảnh sản phẩm */
+.is-visible .hero-anim-tagline {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.is-visible .hero-anim-heading {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.is-visible .hero-anim-desc {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.is-visible .hero-anim-actions {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.4s;
+}
+
+.is-visible .hero-anim-products {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s;
+}
+
+/* 2. Idle State: Continuous Floating vô trọng lực (biên độ 5-8px, lặp 3-4s) */
+@keyframes floatLevitateHero {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes floatLevitateSat1 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes floatLevitateSat2 {
+  0%, 100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+@keyframes floatLevitateSat3 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.floating-anim-hero {
+  animation: floatLevitateHero 3.6s ease-in-out infinite;
+}
+
+.floating-anim-sat-1 {
+  animation: floatLevitateSat1 3.4s ease-in-out infinite;
+  animation-delay: -1s;
+}
+
+.floating-anim-sat-2 {
+  animation: floatLevitateSat2 4s ease-in-out infinite;
+  animation-delay: -2.2s;
+}
+
+.floating-anim-sat-3 {
+  animation: floatLevitateSat3 3.8s ease-in-out infinite;
+  animation-delay: -0.6s;
+}
+
+.borderless-loading {
+  text-align: center;
+  color: #8c8286;
+  font-size: 0.9rem;
+  padding: 40px;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .borderless-showcase-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .borderless-stage-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .floating-hero-image {
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .borderless-hero-showcase {
+    padding-block: 60px 48px;
+  }
+  .borderless-stage-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .floating-hero-image {
+    max-height: 260px;
+  }
+  .hero-pill-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 7. Product Detail Modal - High-End Clinic Dermatology Look */
+#product-detail-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+}
+#product-detail-modal-content {
+  width: min(840px, 100%);
+  max-height: 90vh;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+.pmodal-scroll {
+  max-height: calc(90vh - 78px);
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  padding: 34px;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+.pmodal-head {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr) !important;
+  gap: 32px !important;
+  align-items: start !important;
+}
+.pmodal-head > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+.pmodal-image {
+  width: 100% !important;
+  min-width: 260px !important;
+  min-height: 360px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+  border-radius: 14px !important;
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  flex-shrink: 0 !important;
+}
+.pmodal-image img {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 350px !important;
+  object-fit: contain !important;
+  mix-blend-mode: multiply !important;
+}
+.pmodal-head h2 {
+  font-family: var(--skinid-font-heading);
+  margin: 6px 0 10px;
+  padding-right: 44px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #181517;
+  word-break: break-word !important;
+}
+.pmodal-price {
+  margin: 10px 0;
+  color: #181517;
+  font-size: 1.35rem;
+  font-weight: 800;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+#pmodal-original-price {
+  font-size: 0.92rem;
+  color: #868e96;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+.spec, .spec p, #pmodal-key-actives, #pmodal-full-ingredients, #pmodal-certification-text {
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+.pmodal-discount-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 2px 7px !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #e11d48 !important;
+  background: #ffe4e6 !important;
+  border-radius: 6px !important;
+}
+.pmodal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 28px;
+  border-top: 1px solid #e9ecef;
+  background: #f8f9fa;
+}
+.pmodal-actions .btn--primary,
+#pmodal-add-cart-btn {
+  border: 0 !important;
+  background: linear-gradient(135deg, #FF5277, #E85D75) !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  padding: 12px 28px !important;
+  font-size: 0.85rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 14px rgba(232, 93, 117, 0.28) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.pmodal-actions .btn--primary:hover,
+#pmodal-add-cart-btn:hover {
+  background: linear-gradient(135deg, #E85D75, #D44C64) !important;
+  box-shadow: 0 6px 20px rgba(232, 93, 117, 0.38) !important;
+  transform: translateY(-1.5px) !important;
+}
+.pmodal-actions .btn--primary *,
+#pmodal-add-cart-btn * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+.pmodal-actions .btn--outline {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1.5px solid #ded9da !important;
+  border-radius: 999px !important;
+  color: #282326 !important;
+  background: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  font-size: 0.85rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.pmodal-actions .btn--outline:hover {
+  border-color: #E06D81 !important;
+  color: #E06D81 !important;
+  background: #fff8f9 !important;
+}
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e9ecef;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.modal-close:hover {
+  background: #f8f9fa;
+  color: #181517;
+  border-color: #ced4da;
+}
+
+/* ==========================================================================
+   8. Borderless & Floating Feature Promo - Tư vấn da theo nhu cầu
+   - 40% Left (Typography + Single Pill CTA)
+   - 60% Right (Floating Cluster of 4 Staggered Cards with Height Transition)
+   - No container boxes with hard backgrounds or borders!
+   - Accent color: #E06D81
+   ========================================================================== */
+.borderless-advisor-section {
+  position: relative;
+  background: #ffffff;
+  padding-block: 96px 88px;
+  overflow: hidden;
+}
+
+.borderless-advisor-section .gentle-advisor-grid {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* ==========================================================================
+   CỘT TRÁI (40%): Nội dung tĩnh
+   ========================================================================== */
+.advisor-static-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.advisor-tagline {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #E06D81;
+  margin-bottom: 16px;
+}
+
+.advisor-heading {
+  font-family: var(--skinid-font-heading);
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.18;
+  color: #1a1517;
+  letter-spacing: -0.025em;
+  margin: 0 0 20px 0;
+}
+
+.advisor-heading .highlight-pink {
+  color: #E06D81;
+}
+
+.advisor-description {
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: #6b7280; /* gray-500 */
+  max-width: 460px;
+  margin: 0 0 32px 0;
+}
+
+/* 4. Call To Action (Button): Nút bấm hình viên thuốc, nền #E06D81 */
+.advisor-cta-wrap {
+  display: flex;
+}
+
+.advisor-pill-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #fb7185 0%, #E06D81 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 15px 34px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(224, 109, 129, 0.12);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.65s;
+  outline: none;
+}
+
+.is-visible .advisor-pill-cta {
+  box-shadow: 0 10px 25px rgba(224, 109, 129, 0.32);
+}
+
+.advisor-pill-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px rgba(224, 109, 129, 0.44);
+}
+
+.advisor-pill-cta svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* ==========================================================================
+   Staggered Entrance Animation cho Advisor (Slide-up 15px + Fade-in)
+   ========================================================================== */
+.adv-anim-item {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.is-visible .adv-anim-tagline {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.is-visible .adv-anim-heading {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.is-visible .adv-anim-desc {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.is-visible .adv-anim-cta {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.45s;
+}
+
+.is-visible .adv-anim-cluster {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.45s;
+}
+
+/* ==========================================================================
+   CỘT PHẢI (60%): Cụm Floating Cluster - 4 Thẻ Nhu Cầu Da So Le
+   - Bo góc cực sâu 32px
+   - Shadow xám siêu nhạt (blur 40px) tạo nổi khối 3D
+   - Mặc định: Thu gọn
+   - Hover: Height transition mở rộng êm ái
+   - Continuous Floating lướt trôi 6px
+   ========================================================================== */
+.advisor-floating-col {
+  width: 100%;
+}
+
+.floating-cluster-canvas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+/* Asymmetric Staggered Arrangement (Vị trí Y so le nhau) */
+.floating-cluster-lane {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.lane-left {
+  margin-top: 0;
+}
+
+.lane-right {
+  margin-top: 48px; /* So le xuống 48px */
+}
+
+/* Thẻ nhu cầu da (Floating Concern Card) */
+.floating-concern-card {
+  position: relative;
+  display: block;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 18px 22px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  text-decoration: none !important;
+  cursor: pointer;
+  width: 100%;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+/* Trạng thái Mặc định (Thu gọn): Chỉ Icon + Tiêu đề ngắn */
+.floating-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.floating-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-card-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.floating-card-title {
+  display: block;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #1a1517;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+
+.floating-card-arrow {
+  color: #c94a64;
+  font-size: 1.05rem;
+  font-weight: 600;
+  opacity: 0.35;
+  transition: transform 0.25s ease, opacity 0.25s ease, color 0.25s ease;
+}
+
+/* Trạng thái Hover (Mở rộng): Height Transition bung mượt mà xuống dưới */
+.floating-card-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.35s ease,
+              margin-top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  margin-top: 0;
+}
+
+.floating-card-expand-inner {
+  overflow: hidden;
+}
+
+.floating-card-desc {
+  font-size: 0.78rem;
+  color: #6b7280;
+  line-height: 1.45;
+  margin: 0 0 10px 0;
+  padding-top: 4px;
+}
+
+.floating-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 2px;
+}
+
+.floating-pill-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #E06D81;
+  background: #fff1f4;
+  border: 1px solid #fed7dd;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+/* Hover Effect trên Thẻ: Nổi lên, bung mở rộng & Glow Shadow màu hồng nhạt */
+.floating-concern-card:hover,
+.floating-concern-card:focus-within {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 20px 40px rgba(224, 109, 129, 0.18), 0 0 0 1px rgba(224, 109, 129, 0.15);
+  border-color: rgba(224, 109, 129, 0.3);
+  animation-play-state: paused;
+}
+
+.floating-concern-card:hover .floating-card-expand,
+.floating-concern-card:focus-within .floating-card-expand {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-top: 12px;
+}
+
+.floating-concern-card:hover .floating-card-icon {
+  transform: scale(1.1);
+}
+
+.floating-concern-card:hover .floating-card-title {
+  color: #E06D81;
+}
+
+.floating-concern-card:hover .floating-card-arrow {
+  opacity: 1;
+  color: #E06D81;
+  transform: translateX(4px);
+}
+
+.floating-concern-card:hover .floating-pill-tag {
+  background: #ffe4e9;
+  border-color: #fca5a5;
+}
+
+/* ==========================================================================
+   Continuous Floating Animation (Lướt trôi Y 6px, vòng lặp 4s, ease-in-out)
+   ========================================================================== */
+@keyframes floatConcernSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.float-y-1 {
+  animation: floatConcernSlow 4s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.float-y-2 {
+  animation: floatConcernSlow 4s ease-in-out infinite;
+  animation-delay: -1s;
+}
+
+.float-y-3 {
+  animation: floatConcernSlow 4s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.float-y-4 {
+  animation: floatConcernSlow 4s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .borderless-advisor-section .gentle-advisor-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .lane-right {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .borderless-advisor-section {
+    padding-block: 60px 48px;
+  }
+  .floating-cluster-canvas {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .floating-cluster-lane {
+    gap: 16px;
+  }
+  .advisor-pill-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Consultation Modal Result and CTA Enhancements */
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.result-category-link {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #c94a64;
+  text-decoration: none;
+  background: rgba(225, 29, 72, 0.08);
+  padding: 4px 10px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+.result-category-link:hover {
+  background: #e11d48;
+  color: #ffffff;
+}
+
+#consultation-cta.is-disabled,
+#consultation-cta[aria-disabled="true"] {
+  opacity: 0.55;
+  pointer-events: none;
+  background: #c8c0c3 !important;
+  border-color: #c8c0c3 !important;
+  color: #ffffff !important;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .needs-grid {
+    grid-template-columns: 1fr;
+  }
+  .consult-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+.brand-shop {
+  background: #ffffff;
+}
+.brand-card {
+  border: 1px solid #e9ecef !important;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+.brand-card:hover {
+  border-color: #ced4da !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+}
+
+.acie-home {
+  padding-block: 88px 84px;
+  background: #ffffff;
+  border-bottom: 1px solid #f0ecee;
+  position: relative;
+  overflow: hidden;
+}
+.acie-home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.acie-home-copy h2 {
+  font-family: var(--skinid-font-heading);
+  font-size: clamp(2.2rem, 3.4vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #282326;
+  margin: 12px 0 16px;
+  letter-spacing: -0.025em;
+}
+.acie-home-copy h2 em {
+  color: #E06D81;
+  font-style: normal;
+  font-weight: 800;
+}
+.acie-home-copy p {
+  color: #6f686b;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 30px;
+  max-width: 480px;
+}
+.acie-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+.acie-home-actions .btn {
+  padding: 13px 28px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Call To Action Buttons */
+.acie-cta-btn {
+  background: linear-gradient(135deg, #fb7185 0%, #E06D81 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(224, 109, 129, 0.12);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.65s,
+              filter 0.2s ease !important;
+  will-change: transform, box-shadow;
+}
+
+.is-visible .acie-cta-btn {
+  box-shadow: 0 10px 25px rgba(224, 109, 129, 0.35);
+}
+
+.acie-cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(224, 109, 129, 0.48);
+}
+
+.acie-secondary-btn {
+  border: 1.5px solid #ded9da !important;
+  background: #ffffff !important;
+  color: #282326 !important;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              color 0.25s ease,
+              background-color 0.25s ease !important;
+}
+
+.acie-secondary-btn:hover {
+  transform: translateY(-3px);
+  border-color: #E06D81 !important;
+  color: #E06D81 !important;
+  background: #fff8f9 !important;
+}
+
+/* Media (Thiết bị lơ lửng & Aura) */
+.acie-home-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+/* Hiệu ứng Glow Fade-in (Ánh sáng hồng bừng sáng sau khi đáp đất 0.2s) */
+.acie-glow-aura {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224, 109, 129, 0.24) 0%, rgba(224, 109, 129, 0.08) 50%, transparent 72%);
+  filter: blur(35px);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s,
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.is-visible .acie-glow-aura {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.acie-home-media-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 246, 0.9) 0%, rgba(255, 255, 255, 0.4) 70%, transparent 100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.acie-home-media-wrap:hover {
+  transform: translateY(-5px) scale(1.04);
+}
+
+.acie-home-media-wrap img {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 30px rgba(45, 31, 35, 0.12));
+}
+
+/* ==========================================================================
+   Staggered Entrance Animation cho ACIE (Slide-up 15px + Fade-in)
+   ========================================================================== */
+.acie-anim-item {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.is-visible .acie-anim-tagline {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.is-visible .acie-anim-heading {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.is-visible .acie-anim-desc {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.is-visible .acie-anim-actions {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.45s;
+}
+
+.is-visible .acie-anim-media {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.45s;
+}
+
+/* ==========================================================================
+   Lơ lửng sinh học (Continuous Floating / Breathing) - Chu kỳ 3.8s, biên độ 6px
+   ========================================================================== */
+@keyframes floatAcieDevice {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.is-visible .acie-float-device {
+  animation: floatAcieDevice 3.8s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+.acie-page {
+  background: #ffffff;
+}
+.acie-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 70px;
+  padding-block: 76px 90px;
+}
+.acie-page h1 {
+  font-size: clamp(2.5rem, 4.2vw, 4rem);
+  margin: 18px 0;
+}
+.acie-copy > p {
+  font-size: 0.98rem;
+  color: #495057;
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 26px;
+}
+.acie-copy small,
+.acie-invitation small {
+  display: block;
+  margin-top: 20px;
+  font-size: 0.68rem;
+  color: #868e96;
+}
+.acie-device {
+  position: relative;
+  margin: 0;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+.acie-device img {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.acie-device figcaption {
+  position: relative;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 10px 0;
+  letter-spacing: 0.06em;
+}
+.acie-orbit {
+  position: absolute;
+  inset: 10% 8%;
+  border: 1px solid #dee2e6;
+  border-radius: 50%;
+  transform: rotate(-22deg);
+}
+.acie-story {
+  background: #f8f9fa;
+  scroll-margin-top: 90px;
+  border-block: 1px solid #e9ecef;
+}
+.acie-story-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.acie-lifestyle img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+.acie-page h2 {
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  margin: 16px 0;
+}
+.acie-story p,
+.acie-invitation p {
+  color: #495057;
+  line-height: 1.75;
+  max-width: 510px;
+}
+.acie-promises {
+  margin-top: 24px;
+}
+.acie-promises > div {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 2px 14px;
+  border-top: 1px solid #e9ecef;
+  padding: 16px 0;
+}
+.acie-promises span {
+  grid-row: span 2;
+  color: #E06D81;
+  font-size: 0.75rem;
+  padding-top: 4px;
+  font-weight: 700;
+}
+.acie-promises h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #282326;
+}
+.acie-promises p {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #6c757d;
+}
+.acie-invitation {
+  text-align: center;
+  padding-block: 84px;
+  background: #ffffff;
+}
+.acie-invitation p {
+  margin: 18px auto 26px;
+}
+
+/* 9. Products Catalog Page */
+.products-page {
+  background: linear-gradient(180deg, #fffafb 0, #ffffff 430px);
+}
+.catalog-intro {
+  padding-top: 28px;
+  color: #81787c;
+  font-size: 0.72rem;
+}
+.catalog-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.01em;
+}
+.catalog-breadcrumb a {
+  transition: color 0.2s ease;
+}
+.catalog-breadcrumb a:hover {
+  color: var(--brand-pink);
+}
+.catalog-intro__content {
+  max-width: 850px;
+  margin: 44px auto 0;
+  text-align: center;
+}
+.catalog-intro h1 {
+  position: relative;
+  z-index: 0;
+  margin: 0;
+  color: #201a1d;
+  font-size: clamp(2.5rem, 3.7vw, 3.65rem);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.052em;
+}
+.catalog-intro h1 span {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  background: linear-gradient(105deg, #8e3349 0%, #c54f6a 48%, #e78698 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.catalog-intro h1 span::after {
+  position: absolute;
+  z-index: -1;
+  right: -0.05em;
+  bottom: 0.06em;
+  left: 0.02em;
+  height: 0.19em;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(224, 109, 129, 0), rgba(224, 109, 129, 0.16) 18%, rgba(224, 109, 129, 0.3) 72%, rgba(224, 109, 129, 0));
+  content: "";
+  transform: rotate(-1deg);
+}
+.catalog-intro p {
+  max-width: 760px;
+  margin: 18px auto 0;
+  color: #8a8185;
+  font-size: 0.94rem;
+  font-weight: 400;
+  line-height: 1.75;
+}
+.products-page .catalog-section {
+  padding-top: 30px;
+  padding-bottom: 90px;
+  background: transparent;
+}
+.catalog-search {
+  display: flex;
+  align-items: center;
+  width: min(52%, 640px);
+  min-width: 480px;
+  min-height: 54px;
+  gap: 12px;
+  margin: 0 auto 42px;
+  padding: 0 20px;
+  border: 1px solid #eadfe2;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 10px 30px rgba(69, 42, 50, 0.06);
+  scroll-margin-top: 100px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.catalog-search__icon {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  color: var(--brand-pink);
+  stroke-width: 1.8;
+}
+.catalog-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: none;
+  outline: none;
+  font-size: 0.84rem;
+  color: #181517;
+}
+.catalog-search input::placeholder {
+  color: #aaa1a5;
+  opacity: 1;
+}
+.catalog-search:focus-within {
+  border-color: rgba(224, 109, 129, 0.75);
+  background: #ffffff;
+  box-shadow: 0 12px 34px rgba(99, 48, 61, 0.09), 0 0 0 3px rgba(224, 109, 129, 0.1);
+}
+.products-page .shop-toolbar {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto auto;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+  padding: 0;
+  background: transparent;
+  border: 0 !important;
+  border-top: 1px solid #eee7e9 !important;
+  border-bottom: 1px solid #eee7e9 !important;
+  border-radius: 0;
+  box-shadow: none;
+}
+.products-page .catalog-filter-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.products-page .catalog-filter-select {
+  min-width: 0;
+  display: block;
+  color: #4f464a;
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+.products-page .catalog-filter-cluster .catalog-filter-select + .catalog-filter-select {
+  border-left: 1px solid #eee7e9;
+}
+.products-page .catalog-dropdown__trigger {
+  width: auto;
+  height: 52px;
+  gap: 9px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #4f464a;
+  font-size: 0.76rem;
+  font-weight: 650;
+  box-shadow: none;
+}
+.products-page .catalog-filter-select:first-child .catalog-dropdown__trigger {
+  padding-left: 0;
+}
+.products-page .catalog-dropdown__trigger:hover,
+.products-page .catalog-dropdown__trigger[aria-expanded="true"] {
+  border-color: transparent;
+  background: transparent;
+  color: var(--brand-pink);
+  box-shadow: none;
+}
+.products-page .catalog-dropdown__trigger svg {
+  width: 14px;
+  height: 14px;
+  color: var(--brand-pink);
+  stroke-width: 1.8;
+}
+.products-page .catalog-dropdown__panel {
+  top: calc(100% + 1px);
+  border-radius: 4px;
+  box-shadow: 0 18px 45px rgba(52, 35, 41, 0.12);
+}
+.products-page .catalog-result-count {
+  align-self: center;
+  justify-self: end;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  color: #958b8f;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+.products-page .catalog-result-count strong {
+  color: var(--brand-pink);
+  font-weight: 800;
+}
+.products-page .catalog-filter-select--sort .catalog-dropdown__trigger {
+  height: 52px;
+  padding: 0 4px 0 16px;
+}
+.catalog-reset {
+  min-height: 52px;
+  padding: 0 0 0 4px;
+  border: 0;
+  background: none;
+  color: var(--brand-pink);
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.catalog-reset:hover {
+  color: var(--rose-dark);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.products-page .product-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+}
+.products-page .product-card:hover {
+  border-color: #ced4da;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+}
+.products-page .product-card__media {
+  border-radius: 16px 16px 0 0;
+  background: #f8f9fa;
+}
+.product-card__cart-button,
+.products-page .product-card__cart-button {
+  width: 100% !important;
+  min-height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 10px 16px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, #FF5277, #E85D75) !important;
+  color: #ffffff !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(232, 93, 117, 0.28) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+}
+.product-card__cart-button:hover,
+.products-page .product-card__cart-button:hover {
+  background: linear-gradient(135deg, #E85D75, #D44C64) !important;
+  box-shadow: 0 6px 18px rgba(232, 93, 117, 0.38) !important;
+  transform: translateY(-1.5px) !important;
+}
+.product-card__cart-button *,
+.products-page .product-card__cart-button * {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.btn--pill {
+  border-radius: 999px !important;
+}
+
+select, .catalog-benefit select {
+  background-color: #ffffff !important;
+  color: #282326 !important;
+}
+select option, .catalog-benefit select option {
+  background-color: #ffffff !important;
+  color: #282326 !important;
+  padding: 8px 12px !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+select:focus-visible {
+  outline: 2px solid #181517;
+  outline-offset: 3px;
+}
+
+/* 10. Responsiveness */
+@media (max-width: 1100px) {
+  .skinid-header .desktop-nav { gap: 18px; }
+  .skinid-header .desktop-nav > a, .products-trigger { font-size: 0.78rem; }
+  .nav-new { display: none; }
+  .mega-menu-container { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .gentle-advisor-grid, .acie-hero, .acie-story-grid { gap: 35px; }
+}
+
+@media (max-width: 900px) {
+  .skinid-header .desktop-nav { display: none; }
+  .skinid-header .mobile-menu-btn { display: grid; }
+  .skinid-header .mobile-menu:not(.hidden) { display: block; padding: 14px 24px 22px; }
+  .skinid-header .header-main { min-height: 74px; }
+  .skinid-header .mobile-menu a, .skinid-header .mobile-menu > button { display: block; padding: 12px 0; font-size: 0.88rem; }
+  .product-menu, .product-menu-shade { display: none; }
+  .curated-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 14px; }
+  .hero-slide-copy h1, .hero-slide-copy h2 { font-size: 2.5rem; }
+  .acie-device img { height: 330px; }
+  .acie-lifestyle img { height: 410px; }
+  .catalog-search { width: min(72%, 640px); }
+  .products-page .shop-toolbar { grid-template-columns: 1fr auto auto; }
+  .products-page .catalog-filter-cluster { grid-column: 1 / -1; border-bottom: 1px solid #eee7e9; }
+  .products-page .catalog-result-count { padding-bottom: 14px; }
+  .products-page .catalog-filter-select--sort .catalog-dropdown__trigger,
+  .catalog-reset { min-height: 44px; height: 44px; }
+}
+
+@media (max-width: 600px) {
+  .section { padding-block: 50px; }
+  .skinid-header .header-main { gap: 10px; min-height: 68px; }
+  .skinid-header .header-actions { gap: 2px; }
+  .skinid-header .brand > span { font-size: 1.15rem; }
+  .skinid-header .brand img { width: 32px; }
+  .skinid-header .icon-btn { width: 36px; }
+  .hero-slide-copy h1, .hero-slide-copy h2 { font-size: 2.15rem; }
+  .curated-section .section-heading { display: block; }
+  .curated-section .text-link { margin-top: 16px; }
+  .curated-grid { gap: 18px 10px; }
+  .curated-card { padding: 12px; border-radius: 14px; }
+  .curated-media { padding: 24px 6px 10px; border-radius: 10px; }
+  .curated-tag { font-size: 0.52rem; top: 6px; }
+  .curated-body { padding-top: 12px; }
+  .curated-body h3 { font-size: 0.78rem; }
+  .curated-body > p { font-size: 0.65rem; }
+  .curated-price { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .curated-price button { width: 100%; justify-content: center; }
+  .curated-price strong { font-size: 0.95rem; }
+  .gentle-advisor-grid, .acie-home-grid, .acie-hero, .acie-story-grid { grid-template-columns: 1fr; gap: 30px; }
+  .gentle-advisor h2, .acie-home h2 { font-size: 2.1rem; }
+  .gentle-advisor img { max-height: 290px; }
+  .acie-home img { height: 260px; }
+  .acie-hero { padding-block: 40px 50px; }
+  .acie-page h1 { font-size: 2.6rem; }
+  .acie-device img { height: 280px; }
+  .acie-lifestyle img { height: 320px; }
+  .acie-invitation { padding-block: 56px; }
+  .catalog-intro { padding-top: 20px; }
+  .catalog-intro__content { margin-top: 34px; }
+  .catalog-intro h1 { font-size: 2.15rem; }
+  .catalog-intro p { margin-top: 14px; font-size: 0.82rem; line-height: 1.65; }
+  .products-page .catalog-section { padding-top: 24px; padding-bottom: 64px; }
+  .catalog-search { width: 100%; min-width: 0; min-height: 50px; margin-bottom: 30px; padding-inline: 17px; }
+  .catalog-search input { font-size: 0.8rem; }
+  .products-page .shop-toolbar { grid-template-columns: minmax(0, 1fr) auto auto; gap: 0 14px; margin-bottom: 24px; padding: 0; }
+  .products-page .catalog-filter-cluster { width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .products-page .catalog-filter-cluster::-webkit-scrollbar { display: none; }
+  .products-page .catalog-filter-select { flex: 0 0 auto; }
+  .products-page .catalog-filter-select:first-child .catalog-dropdown__trigger { padding-left: 0; }
+  .products-page .catalog-dropdown__trigger { padding-inline: 16px; white-space: nowrap; }
+  .products-page .catalog-result-count { grid-column: 1; grid-row: 2; justify-self: start; padding: 12px 0; }
+  .products-page .catalog-filter-select--sort { grid-column: 2; grid-row: 2; }
+  .products-page .catalog-filter-select--sort .catalog-dropdown__trigger { padding-left: 0; }
+  .catalog-reset { grid-column: 3; grid-row: 2; }
+  .pmodal-scroll { padding: 20px 16px; }
+  .pmodal-head { grid-template-columns: 1fr; gap: 16px; }
+  .pmodal-image { min-height: 260px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-menu.product-mega-menu { animation: none; }
+  .curated-media img { transition: none; }
+}
+
+#featured-products,
+#brands {
+  scroll-margin-top: 100px;
+}
+
+/* Premium rose CTA system: bright cosmetics color with restrained light play. */
+:is(
+  .btn--primary,
+  .btn--ai-primary,
+  .scan-primary-button,
+  .profile-btn--primary,
+  .acie-teaser-btn,
+  .btn-xem-chi-tiet,
+  .btn-xem-phac-do,
+  .help-btn--primary,
+  #pmodal-add-cart-btn
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: rgba(205, 47, 82, 0.22) !important;
+  background: linear-gradient(120deg, var(--cta-rose-start) 0%, var(--cta-rose-mid) 48%, var(--cta-rose-end) 100%) !important;
+  color: #fff !important;
+  box-shadow:
+    0 9px 22px var(--cta-rose-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    inset 0 -1px 0 rgba(124, 22, 49, 0.13) !important;
+  transition: transform 220ms cubic-bezier(.2,.75,.25,1), box-shadow 220ms ease, filter 220ms ease !important;
+}
+:is(
+  .btn--primary,
+  .btn--ai-primary,
+  .scan-primary-button,
+  .profile-btn--primary,
+  .acie-teaser-btn,
+  .btn-xem-chi-tiet,
+  .btn-xem-phac-do,
+  .help-btn--primary,
+  #pmodal-add-cart-btn
+)::after {
+  position: absolute;
+  z-index: 1;
+  top: -55%;
+  bottom: -55%;
+  left: -45%;
+  width: 34%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.42), transparent);
+  content: "";
+  opacity: 0;
+  transform: translateX(-120%) skewX(-18deg);
+  transition: transform 520ms cubic-bezier(.2,.7,.25,1), opacity 180ms ease;
+}
+:is(
+  .btn--primary,
+  .btn--ai-primary,
+  .scan-primary-button,
+  .profile-btn--primary,
+  .acie-teaser-btn,
+  .btn-xem-chi-tiet,
+  .btn-xem-phac-do,
+  .help-btn--primary,
+  #pmodal-add-cart-btn
+):hover:not(:disabled) {
+  filter: saturate(1.08) brightness(1.035);
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow:
+    0 14px 30px rgba(224, 62, 98, 0.36),
+    0 4px 10px rgba(116, 30, 52, 0.1),
+    inset 0 1px 0 rgba(255,255,255,.58) !important;
+}
+:is(
+  .btn--primary,
+  .btn--ai-primary,
+  .scan-primary-button,
+  .profile-btn--primary,
+  .acie-teaser-btn,
+  .btn-xem-chi-tiet,
+  .btn-xem-phac-do,
+  .help-btn--primary,
+  #pmodal-add-cart-btn
+):hover:not(:disabled)::after {
+  opacity: 1;
+  transform: translateX(470%) skewX(-18deg);
+}
+:is(
+  .btn--primary,
+  .btn--ai-primary,
+  .scan-primary-button,
+  .profile-btn--primary,
+  .acie-teaser-btn,
+  .btn-xem-chi-tiet,
+  .btn-xem-phac-do,
+  .help-btn--primary,
+  #pmodal-add-cart-btn
+):active:not(:disabled) {
+  filter: saturate(1.02);
+  transform: translateY(0) scale(.985) !important;
+  box-shadow: 0 5px 14px rgba(224,62,98,.25), inset 0 2px 4px rgba(114,20,45,.12) !important;
+}
+:is(
+  .btn--primary,
+  .btn--ai-primary,
+  .scan-primary-button,
+  .profile-btn--primary,
+  .acie-teaser-btn,
+  .btn-xem-chi-tiet,
+  .btn-xem-phac-do,
+  .help-btn--primary,
+  #pmodal-add-cart-btn
+):focus-visible {
+  outline: 0 !important;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(242,85,118,.34), 0 12px 28px rgba(224,62,98,.28) !important;
+}
+:is(.btn--primary,.scan-primary-button):disabled {
+  border-color: #e5e7eb !important;
+  background: #e5e7eb !important;
+  color: #7b818b !important;
+  box-shadow: none !important;
+  filter: none;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.btn--primary,.btn--ai-primary,.scan-primary-button,.profile-btn--primary,.acie-teaser-btn,.btn-xem-chi-tiet,.btn-xem-phac-do,.help-btn--primary,#pmodal-add-cart-btn),
+  :is(.btn--primary,.btn--ai-primary,.scan-primary-button,.profile-btn--primary,.acie-teaser-btn,.btn-xem-chi-tiet,.btn-xem-phac-do,.help-btn--primary,#pmodal-add-cart-btn)::after { transition:none !important; }
+}
+
+/* 11. BrandBar Tabs (Synchronized with Hero Carousel) */
+.brand-tabs {
+  background: #ffffff;
+  border-bottom: 1px solid #f0ecee;
+  box-shadow: 0 4px 20px rgba(40, 35, 38, 0.03);
+}
+.brand-tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.brand-tab {
+  position: relative;
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 0;
+  background: transparent;
+  color: #6f686b;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.22s ease, background 0.22s ease;
+}
+.brand-tab::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 2.5px;
+  border-radius: 0 0 3px 3px;
+  background: #E06D81;
+  transition: left 0.25s ease, width 0.25s ease;
+}
+.brand-tab.is-active {
+  color: #E06D81;
+  background: linear-gradient(180deg, #fff4f6, transparent 60%);
+}
+.brand-tab:hover {
+  background: linear-gradient(180deg, #fffafb, transparent 60%);
+}
+.brand-tab:focus-visible {
+  outline: 2px solid #E06D81;
+  outline-offset: -4px;
+}
+.brand-tab.is-active::before {
+  left: 15%;
+  width: 70%;
+}
+.brand-tab img {
+  width: auto;
+  height: 28px;
+  max-width: 110px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.72;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+.brand-tab.is-active img {
+  filter: none;
+  opacity: 1;
+}
+.brand-tab-wordmark {
+  color: #282326;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  transition: color 0.2s ease;
+}
+.brand-tab-wordmark--ai {
+  color: #E06D81 !important;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+}
+.brand-tab.is-active .brand-tab-wordmark {
+  color: #E06D81;
+}
+.brand-tab-wordmark--dvah {
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+}
+.brand-tab span {
+  display: flex;
+  flex-direction: column;
+}
+.brand-tab b {
+  color: #282326;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+.brand-tab small {
+  color: #6f686b;
+  font-size: 0.68rem;
+}
+.brand-tab.is-active b {
+  color: #bd3f5b;
+}
+
+@media (max-width: 768px) {
+  .brand-tab {
+    min-height: 72px;
+    gap: 6px;
+    padding: 10px 4px;
+    flex-direction: column;
+    text-align: center;
+  }
+  .brand-tab-wordmark { font-size: 0.82rem; }
+  .brand-tab img { height: 18px; max-width: 58px; }
+  .brand-tab b { font-size: 0.62rem; }
+  .brand-tab small { font-size: 0.58rem; }
+}
+
+/* Keep merchandising signals in the image's quiet corners without adding a rail. */
+.product-card {
+  position: relative;
+}
+
+.product-card__badge-layer {
+  position: absolute;
+  z-index: 8;
+  top: 11px;
+  right: 11px;
+  left: 11px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.product-card__tier-label,
+.product-card__featured-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  min-width: 0;
+  padding: 5px 9px;
+  border: 1px solid rgba(93, 75, 82, .09);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .88);
+  box-shadow: 0 5px 16px rgba(79, 48, 57, .06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: .58rem;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.product-card__tier-label {
+  color: #746a6e;
+}
+
+.product-card__featured-label {
+  gap: 7px;
+  border-color: rgba(201, 69, 98, .13);
+  background: rgba(255, 247, 249, .92);
+  color: #a93651;
+  font-weight: 850;
+}
+
+.product-card__featured-label::before {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #dd526f;
+  box-shadow: 0 0 0 3px rgba(221,82,111,.12);
+  content: "";
+}
+
+.product-card__discount {
+  flex: none;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  padding: 4px 8px;
+  border: 1px solid rgba(201,69,98,.13);
+  border-radius: 999px;
+  background: rgba(255, 247, 249, .92);
+  box-shadow: 0 5px 16px rgba(79, 48, 57, .06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #b53d58;
+  font-size: .58rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .01em;
+}
+
+.product-card__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+  gap: 0;
+  margin: 0 -15px -14px;
+  border-top: 1px solid #eee7e9;
+  background: #fff;
+}
+
+.product-card__buy-button,
+.product-card__cart-button {
+  min-width: 0;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px !important;
+  padding-inline: 12px !important;
+  border-radius: 0 !important;
+  font: inherit;
+  letter-spacing: .01em;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform .28s cubic-bezier(.16,1,.3,1), box-shadow .28s ease, background .25s ease, border-color .25s ease !important;
+}
+
+.product-card__buy-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 0 !important;
+  background: linear-gradient(110deg, #ea6680 0%, #df506f 55%, #cf3f61 100%) !important;
+  color: #fff !important;
+  font-size: .76rem !important;
+  font-weight: 800 !important;
+  box-shadow: 0 10px 22px rgba(196,55,88,.22) !important;
+}
+
+.product-card__cart-button,
+.products-page .product-card__cart-button,
+.product-card:hover .product-card__cart-button {
+  min-height: 48px !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(190,88,111,.2) !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #9f3f57 !important;
+  font-size: .7rem !important;
+  font-weight: 750 !important;
+  gap: 8px !important;
+  box-shadow: none !important;
+}
+
+.product-card__cart-button svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+.product-card__cart-button *,
+.products-page .product-card__cart-button *,
+.product-card:hover .product-card__cart-button * {
+  color: #bd3f5b !important;
+  stroke: #bd3f5b !important;
+}
+
+.product-card__cart-button::after { display: none !important; }
+
+.product-card__cart-button:hover,
+.products-page .product-card__cart-button:hover {
+  border-color: rgba(190,88,111,.5) !important;
+  background: #fff7f9 !important;
+  color: #91354d !important;
+  transform: translateY(-1px) !important;
+}
+
+.pmodal-actions {
+  width: auto;
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(142px, 178px) minmax(132px, 164px);
+  gap: 8px;
+  justify-content: end;
+  padding: 11px 24px 12px;
+  background: #fff !important;
+}
+
+.pmodal-actions :is(.pmodal-buy-now, .pmodal-add-cart) {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 10px !important;
+  font-size: .74rem;
+  letter-spacing: .01em;
+  justify-content: center;
+}
+
+.pmodal-actions .pmodal-buy-now {
+  background: linear-gradient(110deg, #ea6680 0%, #df506f 55%, #cf3f61 100%) !important;
+  box-shadow: 0 12px 26px rgba(196,55,88,.24) !important;
+}
+
+.pmodal-actions .pmodal-add-cart {
+  border-color: rgba(190,88,111,.3) !important;
+  background: #fff !important;
+  color: #9f3f57 !important;
+  box-shadow: none !important;
+}
+
+/* Product-card and product-detail purchase CTAs share one interaction language. */
+.product-card__buy-button::after {
+  position: absolute;
+  z-index: 1;
+  top: -55%;
+  bottom: -55%;
+  left: -45%;
+  width: 34%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.42), transparent);
+  content: "";
+  opacity: 0;
+  transform: translateX(-120%) skewX(-18deg);
+  transition: transform 520ms cubic-bezier(.2,.7,.25,1), opacity 180ms ease;
+}
+
+.product-card__buy-button > span { position: relative; z-index: 2; }
+
+.product-card__buy-button:hover:not(:disabled),
+.pmodal-actions .pmodal-buy-now:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e85d75, #d44c64) !important;
+  filter: saturate(1.08) brightness(1.035);
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow: 0 14px 30px rgba(224,62,98,.36), 0 4px 10px rgba(116,30,52,.1), inset 0 1px 0 rgba(255,255,255,.58) !important;
+}
+
+.product-card__buy-button:hover:not(:disabled)::after {
+  opacity: 1;
+  transform: translateX(470%) skewX(-18deg);
+}
+
+.catalog-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.catalog-reset svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+
+.catalog-reset:hover svg { transform: rotate(-45deg); }
+
+@media (max-width: 760px) {
+  .product-card__actions { grid-template-columns: minmax(0, 7fr) minmax(0, 3fr); }
+  .product-card__buy-button,
+  .product-card__cart-button { min-height: 44px !important; padding-inline: 8px !important; }
+}
+
+@media (max-width: 600px) {
+  .product-card__actions { margin: 0 -11px -12px; }
+}
+
+@media (max-width: 430px) {
+  .product-card__actions { margin: 0 -12px -12px; }
+  .product-card__badge-layer { top: 9px; right: 9px; left: 9px; }
+  .product-card__featured-label,
+  .product-card__tier-label,
+  .product-card__discount { font-size: .53rem; }
+  .pmodal-actions { grid-template-columns: 1fr 1fr; padding-inline: 16px; }
+  .pmodal-actions :is(.pmodal-buy-now, .pmodal-add-cart) { width: 100%; }
+}

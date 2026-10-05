@@ -1,0 +1,323 @@
+/*
+ * SkinID responsive layout foundation
+ * -----------------------------------
+ * Browser zoom changes the CSS viewport width. A conventional fixed
+ * max-width container therefore becomes a small island when users zoom out.
+ * These shared primitives keep page canvases fluid on wide CSS viewports,
+ * while preserving a safe reading gutter and normal mobile reflow.
+ *
+ * New pages should use `.container`, `.layout-container`, or the
+ * `[data-layout-container]` attribute instead of declaring a page-specific
+ * max-width.
+ */
+
+:root {
+  --layout-content-floor: 1240px;
+  --layout-safe-edge: 40px;
+  --layout-fluid-gutter: clamp(72px, 7vw, 220px);
+  --layout-container-width: min(
+    calc(100% - var(--layout-safe-edge)),
+    max(
+      var(--layout-content-floor),
+      calc(100% - var(--layout-fluid-gutter))
+    )
+  );
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Prevent intrinsic content from forcing grid/flex columns off canvas. */
+:where(main, section, article, header, footer, nav) {
+  min-width: 0;
+}
+
+/* Tailwind's Preflight (imported by site.css) supplies the shared reset.
+   Let intrinsic text and form controls shrink without hiding their content. */
+:where(main, section, article, header, footer, nav, form) > *,
+:where(input, select, textarea) {
+  min-width: 0;
+}
+
+:where(h1, h2, h3, h4, p, label, a, button) {
+  overflow-wrap: anywhere;
+}
+
+.container,
+.layout-container,
+[data-layout-container] {
+  width: var(--layout-container-width);
+  max-width: none;
+  margin-inline: auto;
+}
+
+/* Existing full-page shells now consume the same system as new pages. */
+.profile-main,
+.mega-menu-container,
+.hero-slide-inner,
+.hero-carousel-controls,
+.scan-page-body:has(#results-flow.flex) #modal-content-area,
+.scan-page-body:has(#results-flow.flex) #results-flow {
+  width: var(--layout-container-width);
+  max-width: none;
+  margin-inline: auto;
+}
+
+/* Media and long content must shrink inside fluid grid/flex tracks. */
+:where(img, video, canvas, svg, table) {
+  max-width: 100%;
+}
+
+/* Keep viewport-sized scenes as a minimum, so short windows, zoom and
+   wrapped text can grow the page instead of being clipped. */
+.home-refresh :is(.home-anchor-scene, .borderless-hero-showcase,
+  .borderless-advisor-section.home-anchor-scene, .brand-shop) {
+  height: auto;
+  overflow: visible;
+}
+
+.home-refresh .hero-carousel {
+  display: grid;
+  height: auto;
+  min-height: clamp(520px, calc(100svh - var(--home-sticky-header)), 700px);
+}
+
+.home-refresh .hero-slide {
+  position: relative;
+  inset: auto;
+  grid-area: 1 / 1;
+}
+
+.home-refresh .hero-slide-inner {
+  height: auto;
+  min-height: 100%;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+}
+
+.home-refresh .concern-bento {
+  grid-template-rows: repeat(2, minmax(275px, auto));
+}
+
+.home-refresh .brand-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: minmax(350px, auto);
+  grid-auto-rows: minmax(350px, auto);
+}
+
+.home-refresh .brand-card-copy :is(small, b) {
+  white-space: normal;
+}
+
+.home-refresh .brand-cards .brand-card .brand-card-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 26px 20px;
+}
+
+.home-refresh .brand-cards .brand-card .brand-card-copy > small {
+  min-height: 2.8em;
+  margin: 0;
+  line-height: 1.4;
+  font-size: .68rem;
+}
+
+.home-refresh .brand-cards .brand-card .brand-card-copy > p {
+  display: -webkit-box;
+  min-height: 4.5em;
+  margin: 0;
+  overflow: hidden;
+  font-size: .9rem;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.home-refresh .brand-cards .brand-card .brand-card-copy > b {
+  align-self: flex-start;
+  margin-top: 16px;
+  min-height: 40px;
+  padding: 8px 14px;
+  line-height: 1.4;
+  font-size: .72rem;
+}
+
+.home-refresh .brand-cards .brand-card .brand-card-wordmark {
+  color: #17225b;
+}
+
+.home-refresh .brand-card-mark .brand-card-logo--dvah {
+  filter: brightness(0);
+  opacity: .88;
+}
+
+/* Match the visible letter height, accounting for transparent logo padding. */
+.home-refresh .brand-card-mark {
+  --brand-letter-height: clamp(1.5rem, 1.8vw, 1.75rem);
+  display: flex;
+  align-items: center;
+  height: 2.75rem;
+  margin-bottom: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.home-refresh .brand-card-mark .brand-card-wordmark {
+  margin: 0;
+  min-height: 0;
+  font-size: calc(var(--brand-letter-height) * 1.4);
+  line-height: 1;
+}
+.home-refresh .brand-card-mark .brand-card-logo {
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+.home-refresh .brand-card-mark .brand-card-logo--twon {
+  height: calc(var(--brand-letter-height) * 1.66) !important;
+  margin-left: calc(var(--brand-letter-height) * -.27);
+}
+.home-refresh .brand-card-mark .brand-card-logo--dvah {
+  height: calc(var(--brand-letter-height) * 2.28) !important;
+  margin-left: calc(var(--brand-letter-height) * -.47);
+}
+
+.drawer-columns {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.navigation-drawer:not(.has-submenu) .drawer-secondary { display: none; }
+.drawer-heading { gap: 16px; }
+.drawer-heading > div { min-width: 0; }
+.drawer-heading h2 { white-space: normal; }
+
+@media (min-width: 721px) {
+  .navigation-drawer.has-submenu .drawer-columns {
+    grid-template-columns: minmax(0, 47%) minmax(0, 53%);
+  }
+}
+
+.react-cart-items { min-height: 0; }
+.react-cart-item { grid-template-columns: 84px minmax(0, 1fr) auto; }
+.react-cart-footer { padding-bottom: max(22px, env(safe-area-inset-bottom)); }
+
+.modal-panel { max-height: min(90vh, 90dvh); }
+#product-detail-modal-content { max-height: min(92vh, 92dvh); }
+.pmodal-scroll { max-height: calc(min(92vh, 92dvh) - 76px); }
+
+@media (min-width: 761px) and (max-width: 1199px) {
+  #product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-refresh .brand-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-refresh .brand-card--rilastil { grid-column: auto; }
+  .home-refresh .borderless-advisor-section .gentle-advisor-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --layout-safe-edge: 28px;
+    --layout-fluid-gutter: 28px;
+    --layout-content-floor: 0px;
+  }
+
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+  .mobile-nav {
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .home-refresh .hero-carousel { min-height: 0; }
+  .home-refresh .hero-slide-inner {
+    width: 100%;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto clamp(230px, 60vw, 360px);
+  }
+  .home-refresh .hero-slide-copy { padding: 36px 20px 30px; }
+  .home-refresh .hero-slide-copy :is(h1, h2) {
+    font-size: clamp(2rem, 9vw, 3.45rem);
+  }
+  .home-refresh .hero-slide-copy .btn { max-width: 100%; }
+
+  .home-refresh .concern-bento,
+  .home-refresh .brand-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .home-refresh .concern-bento__card { min-height: 240px; }
+  .home-refresh .brand-cards .brand-card {
+    height: auto;
+    min-height: 0;
+    grid-template-rows: 240px auto;
+  }
+  .home-refresh .brand-card-copy { position: static; padding: 24px; }
+  .home-refresh .acie-home-media-wrap { width: min(100%, 310px); }
+  #product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Dropdowns must remain outside scrolling/clipping ancestors. */
+  .products-page .shop-toolbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0 12px;
+  }
+  .products-page .catalog-filter-cluster {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+  .products-page .catalog-filter-cluster .catalog-filter-select + .catalog-filter-select {
+    border-left: 0;
+    border-top: 1px solid #eee7e9;
+  }
+  .products-page .catalog-dropdown__trigger {
+    width: 100%;
+    height: auto;
+    min-height: 48px;
+    padding: 12px 0;
+    justify-content: space-between;
+    text-align: left;
+    white-space: normal;
+  }
+  .products-page .catalog-dropdown__trigger svg { flex-shrink: 0; }
+  .products-page .catalog-dropdown__panel {
+    width: 100%;
+    max-height: min(340px, 50dvh);
+    overflow-y: auto;
+  }
+  .products-page .catalog-dropdown__option { min-width: 0; white-space: normal; }
+  .products-page .catalog-result-count { grid-column: 1; grid-row: 2; }
+  .products-page .catalog-filter-select--sort { grid-column: 2; grid-row: 2; }
+  .products-page .catalog-reset { grid-column: 1 / -1; grid-row: 3; justify-self: start; }
+}
+
+@media (max-width: 380px) {
+  #product-grid { grid-template-columns: minmax(0, 1fr); }
+  .section-heading { flex-wrap: wrap; gap: 16px; }
+  .react-cart-item {
+    grid-template-columns: 64px minmax(0, 1fr);
+    padding-inline: 14px;
+  }
+  .react-cart-item img { width: 64px; height: 80px; }
+  .react-cart-remove { grid-column: 2; justify-self: start; }
+  .react-cart-heading { padding: 18px 14px; }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --layout-safe-edge: 20px;
+    --layout-fluid-gutter: 20px;
+  }
+}

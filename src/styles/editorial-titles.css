@@ -1,0 +1,264 @@
+/* SkinID editorial heading language
+   Shared structure keeps the page coherent; restrained per-section marks
+   add identity without placing decoration over the words. */
+
+.skinid-editorial-kicker {
+  --editorial-accent: #e96682;
+  display: inline-flex !important;
+  width: fit-content;
+  align-items: center;
+  gap: 9px;
+}
+
+.skinid-editorial-kicker::before {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--editorial-accent);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--editorial-accent) 11%, transparent);
+  content: "";
+}
+
+.skinid-editorial-kicker::after {
+  width: clamp(28px, 3vw, 52px);
+  height: 1px;
+  flex: 0 0 auto;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--editorial-accent) 58%, transparent), transparent);
+  content: "";
+}
+
+.skinid-editorial-title {
+  --editorial-accent: #e96682;
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  text-wrap: balance;
+}
+
+.skinid-editorial-title :is(em, .highlight-pink) {
+  position: relative;
+  z-index: 0;
+  display: inline;
+  padding-inline: .02em;
+  color: var(--editorial-accent);
+  font-style: normal;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background: linear-gradient(180deg, transparent 77%, color-mix(in srgb, var(--editorial-accent) 13%, transparent) 77%);
+}
+
+/* Each mark sits after the title, never on top of legibility-critical text. */
+.skinid-editorial-title::after {
+  display: inline-block;
+  margin-left: clamp(10px, 1.2vw, 18px);
+  vertical-align: .16em;
+  content: "";
+  opacity: .72;
+}
+
+.skinid-editorial-title--routine::after {
+  width: 42px;
+  height: 13px;
+  border: 1px solid color-mix(in srgb, var(--editorial-accent) 38%, transparent);
+  border-radius: 50%;
+  transform: rotate(-10deg);
+}
+
+.skinid-editorial-title--advisor::after {
+  width: 44px;
+  height: 8px;
+  background: radial-gradient(circle, var(--editorial-accent) 0 2px, transparent 2.5px) 0 50% / 14px 8px repeat-x;
+}
+
+.skinid-editorial-title--brands::after {
+  width: 48px;
+  height: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--editorial-accent) 45%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, #77a8c8 25%, transparent);
+  transform: skewX(-24deg);
+}
+
+.skinid-editorial-title--acie::after,
+.skinid-editorial-title--story::after,
+.skinid-editorial-title--invitation::after {
+  width: 17px;
+  height: 17px;
+  border: 1px solid color-mix(in srgb, var(--editorial-accent) 42%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 7px rgba(255, 255, 255, .34);
+}
+
+/* Shared ACIE value cards fill space with meaning instead of ornamental noise. */
+.acie-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  width: min(100%, 680px);
+  margin-top: clamp(22px, 3.4vh, 34px);
+}
+
+.acie-feature-card {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: clamp(66px, 8.5vh, 78px);
+  padding: 14px 16px;
+  border: 1px solid rgba(224, 109, 129, .12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .52);
+  box-shadow: 0 12px 34px rgba(102, 68, 80, .055);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: transform .35s cubic-bezier(.16, 1, .3, 1), border-color .35s ease, background .35s ease;
+}
+
+/* Advisor question: a conversational two-line rhythm. Words arrive one by
+   one, then the final dots keep a subtle “SkinID is listening” pulse. */
+.advisor-question {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(2px, .7vh, 8px);
+  width: min(100%, 980px);
+  max-width: 980px !important;
+}
+
+.advisor-question::after { display: none; }
+
+.advisor-question__line {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 .19em;
+  width: fit-content;
+}
+
+.advisor-question__line--1 {
+  padding-left: 0;
+}
+
+.advisor-question__line--2 {
+  padding-left: clamp(28px, 4.2vw, 56px);
+}
+
+.advisor-question__line--3 {
+  padding-left: clamp(68px, 9vw, 130px);
+}
+
+.advisor-question__word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px) rotate(.8deg);
+}
+
+.advisor-question__word.is-accent {
+  color: var(--editorial-accent, #e96682);
+  background: linear-gradient(180deg, transparent 77%, rgba(233, 102, 130, .13) 77%);
+}
+
+.borderless-advisor-section.is-visible .advisor-question__word {
+  animation: advisorWordArrive .68s cubic-bezier(.16, 1, .3, 1) both;
+  animation-delay: calc(.3s + var(--question-word-index) * .11s);
+}
+
+.advisor-typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: .18em;
+  opacity: 0;
+  transform: translateY(-.08em);
+}
+
+.advisor-typing-dots i {
+  width: .105em;
+  min-width: 5px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ed8298;
+}
+
+.borderless-advisor-section.is-visible .advisor-typing-dots {
+  animation: advisorDotsAppear .3s ease-out 1.35s both;
+}
+
+.borderless-advisor-section.is-visible .advisor-typing-dots i {
+  animation: advisorTypingDot 1.25s ease-in-out 1.55s infinite;
+}
+
+.borderless-advisor-section.is-visible .advisor-typing-dots i:nth-child(2) { animation-delay: 1.7s; }
+.borderless-advisor-section.is-visible .advisor-typing-dots i:nth-child(3) { animation-delay: 1.85s; }
+
+@keyframes advisorWordArrive {
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+
+@keyframes advisorDotsAppear {
+  to { opacity: 1; }
+}
+
+@keyframes advisorTypingDot {
+  0%, 58%, 100% { opacity: .35; transform: translateY(0); }
+  28% { opacity: 1; transform: translateY(-.15em); }
+}
+
+.acie-feature-card:hover {
+  border-color: rgba(224, 109, 129, .25);
+  background: rgba(255, 255, 255, .72);
+  transform: translateY(-3px);
+}
+
+.acie-feature-card > i {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .9), rgba(255, 231, 238, .72));
+  color: #df617b;
+  font-size: .58rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.acie-feature-card > span { min-width: 0; }
+.acie-feature-card b,
+.acie-feature-card small { display: block; }
+.acie-feature-card b {
+  overflow: hidden;
+  color: #342b30;
+  font-size: clamp(.7rem, .15vw + .64rem, .8rem);
+  font-weight: 750;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.acie-feature-card small {
+  margin-top: 3px;
+  color: #82757b;
+  font-size: clamp(.57rem, .12vw + .52rem, .65rem);
+  line-height: 1.25;
+}
+
+@media (max-width: 760px) {
+  .skinid-editorial-title::after { display: none; }
+  .skinid-editorial-kicker::after { width: 24px; }
+  .acie-feature-grid { grid-template-columns: 1fr; }
+  .acie-feature-card { padding-block: 11px; }
+  .advisor-question__line--2 { padding-left: clamp(14px, 4vw, 24px); }
+  .advisor-question__line--3 { padding-left: clamp(28px, 8vw, 48px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acie-feature-card { transition: none; }
+  .advisor-question__word,
+  .advisor-typing-dots,
+  .advisor-typing-dots i {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+}

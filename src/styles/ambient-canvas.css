@@ -1,0 +1,152 @@
+/*
+ * Continuous Ambient Canvas
+ * -------------------------
+ * One page-level color field replaces stacked section backgrounds. Keep
+ * section surfaces transparent; put stronger colors on cards and artwork.
+ * New editorial pages can opt in with `.ambient-page-canvas` and override
+ * the --ambient-* custom properties only when their mood needs to differ.
+ */
+
+.ambient-page-canvas {
+  --ambient-base: #fffafb;
+  --ambient-rose: rgba(255, 218, 227, .5);
+  --ambient-sky: rgba(220, 242, 255, .58);
+  --ambient-peach: rgba(255, 235, 214, .48);
+  --ambient-mint: rgba(225, 248, 238, .4);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background:
+    radial-gradient(ellipse 68% 17% at 5% 5%, var(--ambient-rose), transparent 72%),
+    radial-gradient(ellipse 62% 19% at 96% 28%, var(--ambient-sky), transparent 72%),
+    radial-gradient(ellipse 62% 17% at 3% 57%, var(--ambient-peach), transparent 72%),
+    radial-gradient(ellipse 66% 18% at 97% 81%, var(--ambient-mint), transparent 72%),
+    linear-gradient(180deg, var(--ambient-base) 0%, #fff 48%, var(--ambient-base) 100%);
+}
+
+.ambient-page-canvas > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ambient-page-canvas::before,
+.ambient-page-canvas::after {
+  position: absolute;
+  z-index: 0;
+  width: min(56vw, 880px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  content: "";
+  filter: blur(32px);
+  opacity: .3;
+  will-change: transform, opacity;
+}
+
+.ambient-page-canvas::before {
+  top: 23%;
+  right: -32%;
+  background: radial-gradient(circle, var(--ambient-sky), transparent 68%);
+  animation: ambientCanvasDriftA 16s ease-in-out infinite alternate;
+}
+
+.ambient-page-canvas::after {
+  bottom: 7%;
+  left: -31%;
+  background: radial-gradient(circle, var(--ambient-rose), transparent 68%);
+  animation: ambientCanvasDriftB 18s ease-in-out infinite alternate;
+}
+
+/* Homepage: section rhythm comes from spacing and content, not color bands. */
+.home-refresh.ambient-page-canvas {
+  --ambient-base: #fffbfc;
+  --ambient-rose: rgba(255, 211, 222, .56);
+  --ambient-sky: rgba(215, 240, 255, .62);
+  --ambient-peach: rgba(255, 234, 211, .48);
+  --ambient-mint: rgba(224, 248, 239, .38);
+}
+
+.home-refresh :is(
+  .hero-carousel-section,
+  .borderless-hero-showcase,
+  .borderless-advisor-section,
+  .brand-shop,
+  .acie-home
+) {
+  background: transparent;
+}
+
+.home-refresh :is(
+  .hero-slide--scan,
+  .hero-slide--products,
+  .hero-slide--body,
+  .hero-slide--fragrance
+) {
+  background: transparent;
+}
+
+.home-refresh .hero-slide--scan .hero-slide-copy {
+  background: linear-gradient(90deg, rgba(255, 248, 250, .8) 0%, rgba(255, 248, 250, .28) 72%, transparent 100%);
+}
+
+.home-refresh :is(.slide-product-stage, .body-product-stage) {
+  background: rgba(255, 255, 255, .14);
+}
+
+.home-refresh .trust-strip {
+  border-color: rgba(224, 109, 129, .1);
+  background: rgba(255, 255, 255, .58);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+/* ACIE page: the same canvas, with a quieter rose/blue balance. */
+.acie-page.ambient-page-canvas {
+  --ambient-base: #fffcfd;
+  --ambient-rose: rgba(255, 218, 227, .48);
+  --ambient-sky: rgba(219, 242, 255, .56);
+  --ambient-peach: rgba(255, 239, 222, .34);
+  --ambient-mint: rgba(231, 248, 242, .3);
+}
+
+.acie-page :is(.acie-story, .acie-invitation) {
+  border-color: transparent;
+  background: transparent;
+}
+
+.acie-page .acie-device {
+  border-color: rgba(224, 109, 129, .1);
+  background: rgba(255, 255, 255, .48);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.acie-page .acie-promises > div:hover {
+  background: rgba(255, 255, 255, .38);
+}
+
+@keyframes ambientCanvasDriftA {
+  from { transform: translate3d(0, -10px, 0) scale(.98); opacity: .24; }
+  to { transform: translate3d(-18px, 18px, 0) scale(1.04); opacity: .34; }
+}
+
+@keyframes ambientCanvasDriftB {
+  from { transform: translate3d(-8px, 10px, 0) scale(1); opacity: .22; }
+  to { transform: translate3d(20px, -14px, 0) scale(1.05); opacity: .32; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-page-canvas::before,
+  .ambient-page-canvas::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .ambient-page-canvas::before,
+  .ambient-page-canvas::after {
+    width: 110vw;
+    opacity: .22;
+    filter: blur(24px);
+  }
+}
