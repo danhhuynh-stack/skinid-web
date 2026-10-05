@@ -8,6 +8,15 @@ export default function SkinAnalysisBridge() {
   const latestReportRef = useRef(null);
 
   useEffect(() => {
+    if (isAuthenticated && typeof window !== 'undefined' && window.pendingAnalysisAfterAuth) {
+      window.pendingAnalysisAfterAuth = false;
+      if (typeof window.startAnalysis === 'function') {
+        setTimeout(() => window.startAnalysis(), 300);
+      }
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     const checkAuth = (event) => {
       event.detail.isAuthenticated = isAuthenticated;
       event.detail.user = user ? { name: user.name, email: user.email } : null;

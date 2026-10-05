@@ -48,21 +48,20 @@ export default function SkinAnalysisPage() {
   const beginScan = () => {
     setPendingStart(true);
     setStartMessage('');
-    if (!isAuthenticated) {
-      openAuthModal('Đăng nhập để bắt đầu soi da và lưu hành trình riêng của bạn.');
-      return;
+    if (legacyReady && openPrivacyStep()) {
+      setPendingStart(false);
+    } else {
+      setStartMessage('Trình soi da đang khởi tạo, vui lòng thử lại sau giây lát.');
     }
-    if (legacyReady && openPrivacyStep()) setPendingStart(false);
-    else setStartMessage('Trình soi da đang khởi tạo, vui lòng thử lại sau giây lát.');
   };
 
   useEffect(() => {
-    if (!pendingStart || !isAuthenticated || !legacyReady) return;
+    if (!pendingStart || !legacyReady) return;
     if (openPrivacyStep()) {
       setPendingStart(false);
       setStartMessage('');
     }
-  }, [isAuthenticated, legacyReady, pendingStart]);
+  }, [legacyReady, pendingStart]);
 
   return (
     <>

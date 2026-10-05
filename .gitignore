@@ -1,9 +1,9 @@
 node_modules/
 .next/
-app/
-components/
-config/
-data/
+/app/
+/components/
+/config/
+/data/
 *.zip
 mingit/
 .env

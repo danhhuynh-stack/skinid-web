@@ -552,7 +552,6 @@ function matchProductForStep(stepType, targetConcerns, activeIngredients, budget
 
 // PRIVACY MODAL FLOW
 function openPrivacyModal() {
-    if (!readModernAuth('Đăng nhập để bắt đầu Soi Da AI và lưu phác đồ riêng của bạn nhé ✨').isAuthenticated) return;
     const modal = document.getElementById('privacy-modal');
     if (!modal) return;
     modal.classList.remove('hidden');
@@ -1122,7 +1121,16 @@ async function startAnalysis() {
     const skinType = document.getElementById('user-skin-type')?.value || 'Da hỗn hợp';
     
     try {
-        if (!readModernAuth().isAuthenticated) throw new Error('Bạn cần đăng nhập trước khi phân tích da.');
+        const authStatus = readModernAuth('Đăng nhập để AI tiến hành phân tích 3 góc khuôn mặt và lưu phác đồ riêng của bạn ✨');
+        if (!authStatus.isAuthenticated) {
+            stepTimers.forEach(clearTimeout);
+            window.pendingAnalysisAfterAuth = true;
+            document.getElementById('analyzing-flow').classList.add('hidden');
+            document.getElementById('analyzing-flow').classList.remove('flex');
+            document.getElementById('capture-flow').classList.remove('hidden');
+            document.getElementById('capture-flow').classList.add('flex');
+            return;
+        }
         const [resultJson, weatherData] = await Promise.all([
             requestModernAnalysis({ images: window.capturedImages, skinType }),
             fetchWeatherData()
