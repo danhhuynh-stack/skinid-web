@@ -3,6 +3,7 @@ import { assetUrl } from '../../assets/index.js';
 import { useCart } from '../../features/cart/index.js';
 import { useCatalog } from '../../features/catalog/index.js';
 import { FEATURED_PRODUCT_IDS } from '../../features/catalog/featuredProducts.js';
+import { routineImageBounds } from '../../features/catalog/routineImageBounds.js';
 import useMotionAwareVisibility from '../../hooks/useMotionAwareVisibility.js';
 
 const ROUTINE_DATA = {
@@ -50,7 +51,6 @@ const ROUTINE_STEPS = [
 function formatProductHeadline(raw) {
   if (!raw || typeof raw !== 'string') return { title: raw || '', subtitle: null };
 
-  // 1. If separated by dash: "Công dụng – Thương hiệu & Dòng sản phẩm"
   const dashMatch = raw.split(/\s+[–—―-]\s+/);
   if (dashMatch.length === 2) {
     const [p1, p2] = dashMatch;
@@ -64,7 +64,6 @@ function formatProductHeadline(raw) {
     return { title: p2.trim(), subtitle: p1.trim() };
   }
 
-  // 2. If contains brand name without dash: "Tinh Chất Cấp Ẩm Chuyên Sâu Rilastil Aqua..."
   const brandIndex = raw.search(/\b(Rilastil|TWON|D’VAH|D'VAH)\b/i);
   if (brandIndex > 0) {
     const funcPart = raw.slice(0, brandIndex).trim();
@@ -83,7 +82,6 @@ export default function FeaturedProducts() {
   const { products: catalog } = useCatalog();
   const [heroId, setHeroId] = useState('rilastil-1774');
   const [activeStepId, setActiveStepId] = useState('cleanser');
-  const [isOrbitPaused, setIsOrbitPaused] = useState(false);
   const sectionRef = useRef(null);
   const isVisible = useMotionAwareVisibility(sectionRef);
 
@@ -107,27 +105,155 @@ export default function FeaturedProducts() {
   const activeStepProducts = productsByStep[activeStep.id] || [];
 
   useEffect(() => {
-    activeStepProducts.forEach((product) => {
+    featuredProducts.forEach((product) => {
       const image = new Image();
       image.src = assetUrl(product.image, product.brandSlug);
       image.decode?.().catch(() => {});
     });
-  }, [activeStepProducts]);
+  }, [featuredProducts]);
 
   const { addToCart } = useCart();
 
-  // Ref to the arc container for triggering the rotation animation
-  const arcRef = useRef(null);
-  const prevHeroIdRef = useRef(heroId);
+  // Ellipse orbital refs
+  const stageRef = useRef(null);
+  const svgEllipseRef = useRef(null);
+  const itemsRef = useRef([]);
+  const positionsRef = useRef([]);
+  const rafIdRef = useRef(null);
+  const requestRef = useRef(0);
+  const activeIdxRef = useRef(0);
+  const touchRef = useRef(null);
+
+  const targetsFor = (selected) => {
+    const count = activeStepProducts.length;
+    const slots = count === 4 ? [0.52, 0.89, 0.09, 0.28]
+      : count === 3 ? [0.5, 0.86, 0.14]
+      : count === 2 ? [0.5, 0.85] : [0.5];
+    return activeStepProducts.map((_, index) => ({
+      x: slots[(index - selected + count) % count],
+      scale: index === selected ? 1 : 0.5
+    }));
+  };
+
+  const renderPositions = () => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const width = stage.clientWidth;
+    const height = stage.clientHeight;
+    const mobile = window.matchMedia('(max-width: 760px)').matches;
+    const imageHeight = Math.min(mobile ? 250 : 350, width * 0.57);
+    const bottom = height - (mobile ? 50 : 64);
+    const rise = mobile ? 62 : 90;
+    const curveY = (x) => bottom - rise * Math.pow((x - 0.52) / 0.45, 2);
+
+    if (svgEllipseRef.current) {
+      const svg = svgEllipseRef.current.ownerSVGElement;
+      if (svg) svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      let path = '';
+      for (let j = 0; j <= 60; j++) {
+        const x = 0.04 + j / 60 * 0.92;
+        path += `${j ? ' L' : 'M'} ${(x * width).toFixed(2)} ${curveY(x).toFixed(2)}`;
+      }
+      svgEllipseRef.current.setAttribute('d', path);
+    }
+
+    positionsRef.current.forEach((position, index) => {
+      const item = itemsRef.current[index];
+      if (!item) return;
+      const image = item.querySelector('img');
+      const name = decodeURIComponent((image?.getAttribute('src') || '').split('/').pop().split('?')[0]);
+      const bounds = routineImageBounds[name] || { x: 0, y: 0, w: 1, h: 1, ratio: 0.625 };
+      const fullHeight = imageHeight / bounds.h;
+      const fullWidth = fullHeight * bounds.ratio;
+      const imageWidth = fullWidth * bounds.w;
+      item.style.width = `${imageWidth}px`;
+      item.style.height = `${imageHeight}px`;
+      item.style.transform = `translate3d(${position.x * width - imageWidth / 2}px, ${curveY(position.x) - imageHeight}px, 0) scale(${position.scale})`;
+      item.style.zIndex = String(Math.round(position.scale * 100));
+      if (image) {
+        image.style.width = `${fullWidth}px`;
+        image.style.height = `${fullHeight}px`;
+        image.style.left = `${-bounds.x * fullWidth}px`;
+        image.style.top = `${-bounds.y * fullHeight}px`;
+        image.style.clipPath = `inset(${bounds.y * 100}% ${(1 - bounds.x - bounds.w) * 100}% ${(1 - bounds.y - bounds.h) * 100}% ${bounds.x * 100}%)`;
+      }
+    });
+  };
+
   useEffect(() => {
-    if (prevHeroIdRef.current === heroId) return;
-    prevHeroIdRef.current = heroId;
-    const arc = arcRef.current;
-    if (!arc) return;
-    arc.classList.add('is-rotating');
-    const timer = window.setTimeout(() => arc.classList.remove('is-rotating'), 600);
-    return () => window.clearTimeout(timer);
-  }, [heroId]);
+    requestRef.current++;
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    const index = Math.max(0, activeStepProducts.findIndex(product => product.id === heroId));
+    activeIdxRef.current = index;
+    positionsRef.current = targetsFor(index);
+    renderPositions();
+    const observer = new ResizeObserver(renderPositions);
+    if (stageRef.current) observer.observe(stageRef.current);
+    return () => {
+      observer.disconnect();
+      requestRef.current++;
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    };
+  }, [activeStep.id, activeStepProducts]);
+
+  const handleProductSelect = async (clickedId, clickedIdx) => {
+    const request = ++requestRef.current;
+    if (clickedIdx === activeIdxRef.current) return;
+    const image = itemsRef.current[clickedIdx]?.querySelector('img');
+    if (image?.decode) {
+      try { await image.decode(); } catch { /* Image decode fallback */ }
+    }
+    if (request !== requestRef.current) return;
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    activeIdxRef.current = clickedIdx;
+    setHeroId(clickedId);
+    const start = positionsRef.current.map(position => ({ ...position }));
+    const target = targetsFor(clickedIdx);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      positionsRef.current = target;
+      renderPositions();
+      return;
+    }
+    const startTime = performance.now();
+    const tick = (now) => {
+      const progress = Math.min(1, (now - startTime) / 650);
+      const eased = progress * progress * (3 - 2 * progress);
+      positionsRef.current = target.map((position, index) => ({
+        x: start[index].x + (position.x - start[index].x) * eased,
+        scale: start[index].scale + (position.scale - start[index].scale) * eased
+      }));
+      renderPositions();
+      rafIdRef.current = progress < 1 ? requestAnimationFrame(tick) : null;
+    };
+    rafIdRef.current = requestAnimationFrame(tick);
+  };
+
+  const handleStepChange = (stepId) => {
+    if (stepId === activeStepId) return;
+    requestRef.current++;
+    if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    rafIdRef.current = null;
+    setActiveStepId(stepId);
+    const first = productsByStep[stepId]?.[0];
+    if (first) setHeroId(first.id);
+  };
+
+  const handleTouchStart = (event) => {
+    touchRef.current = event.touches.length === 1
+      ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+  };
+
+  const handleTouchEnd = (event) => {
+    const start = touchRef.current;
+    touchRef.current = null;
+    if (!start || !event.changedTouches.length || activeStepProducts.length < 2) return;
+    const dx = event.changedTouches[0].clientX - start.x;
+    const dy = event.changedTouches[0].clientY - start.y;
+    if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+      const index = (activeIdxRef.current + (dx < 0 ? 1 : -1) + activeStepProducts.length) % activeStepProducts.length;
+      handleProductSelect(activeStepProducts[index].id, index);
+    }
+  };
 
   const handleAddToCart = (e, productId) => {
     e.stopPropagation();
@@ -140,32 +266,6 @@ export default function FeaturedProducts() {
     }));
   };
 
-  const activateProduct = (productId) => {
-    const product = featuredProducts.find(item => item.id === productId);
-    if (product?.stepType) setActiveStepId(product.stepType);
-    if (productId !== heroId) setHeroId(productId);
-  };
-
-  const activateStep = (stepId) => {
-    setActiveStepId(stepId);
-    const firstProduct = productsByStep[stepId]?.[0];
-    if (firstProduct && firstProduct.id !== heroId) setHeroId(firstProduct.id);
-  };
-
-  useEffect(() => {
-    if (!isVisible || isOrbitPaused || activeStepProducts.length < 2) return undefined;
-
-    const timer = window.setInterval(() => {
-      setHeroId((currentId) => {
-        const currentIndex = activeStepProducts.findIndex(product => product.id === currentId);
-        return activeStepProducts[(currentIndex + 1 + activeStepProducts.length) % activeStepProducts.length].id;
-      });
-    }, 3600);
-
-    return () => window.clearInterval(timer);
-  }, [activeStepProducts, isOrbitPaused, isVisible]);
-
-  // Xác định sản phẩm Ngôi sao (Hero) và các sản phẩm vệ tinh (Satellites)
   const heroProduct = featuredProducts.find(p => p.id === heroId) || featuredProducts[0];
   const heroStep = ROUTINE_STEPS.find(step => step.id === heroProduct?.stepType) || activeStep;
   const heroStory = heroProduct ? (ROUTINE_DATA[heroProduct.id] || {
@@ -206,9 +306,9 @@ export default function FeaturedProducts() {
                   aria-selected={step.id === activeStep.id}
                   className={`routine-step-nav__item ${step.id === activeStep.id ? 'is-active' : ''}`}
                   key={step.id}
-                  onMouseEnter={() => activateStep(step.id)}
-                  onFocus={() => activateStep(step.id)}
-                  onClick={() => activateStep(step.id)}
+                  onMouseEnter={() => handleStepChange(step.id)}
+                  onFocus={() => handleStepChange(step.id)}
+                  onClick={() => handleStepChange(step.id)}
                 >
                   <small>{step.number}</small>
                   <span><b>{step.shortLabel}</b><em>{step.title}</em></span>
@@ -217,133 +317,123 @@ export default function FeaturedProducts() {
             </div>
 
             <div className="routine-stage routine-stage--focused">
-            <div className="routine-stage__copy" aria-live="polite">
-              <span className="routine-stage__step" data-reveal data-reveal-delay="0">
-                <span key={`step-${heroProduct.id}`} className="routine-swap-text">{heroStory?.stepLabel}</span>
-              </span>
-              <h3 data-reveal data-reveal-delay="80">
-                <span key={`headline-${heroProduct.id}`} className="routine-swap-text">
-                  {formattedHeadline.subtitle ? (
-                    <span className="routine-headline-wrap">
-                      <span className="routine-headline__title">{formattedHeadline.title}</span>
-                      <span className="routine-headline__subtitle">{formattedHeadline.subtitle}</span>
-                    </span>
-                  ) : (
-                    formattedHeadline.title
-                  )}
+              <div className="routine-stage__copy" aria-live="polite">
+                <span className="routine-stage__step" data-reveal data-reveal-delay="0">
+                  <span key={`step-${heroProduct?.id}`} className="routine-swap-text">{heroStory?.stepLabel}</span>
                 </span>
-              </h3>
-              <p data-reveal data-reveal-delay="160">
-                <span key={`desc-${heroProduct.id}`} className="routine-swap-text">{heroStory?.desc}</span>
-              </p>
-              <div className="hero-showcase-meta" data-reveal data-reveal-delay="240">
-                <span key={`meta-${heroProduct.id}`} className="routine-swap-meta">
-                  <span className="hero-meta-badge">{heroStory?.roleTag}</span>
-                  <span className="routine-stage__volume">{heroProduct?.volume}</span>
-                </span>
-              </div>
-              <div className="hero-showcase-actions" data-reveal data-reveal-delay="320">
-                <button
-                  type="button"
-                  className="hero-pill-btn hero-pill-btn--primary"
-                  onClick={(e) => handleAddToCart(e, heroProduct.id)}
-                  aria-label={`Thêm ${heroProduct.name} vào giỏ hàng`}
-                >
-                  Thêm vào giỏ · {heroProduct.price?.toLocaleString('vi-VN')}₫
-                </button>
-                <button
-                  type="button"
-                  className="routine-text-link"
-                  onClick={() => handleOpenDetail(heroProduct.id)}
-                >
-                  Xem chi tiết <span aria-hidden="true">↗</span>
-                </button>
-              </div>
-            </div>
-
-            <div className="routine-stage__product" data-reveal="soft-scale" data-reveal-delay="220">
-              <div className="routine-product-stack">
-                {featuredProducts.map((product) => {
-                  const isActive = product.id === heroProduct.id;
-                  return (
+                <h3 data-reveal data-reveal-delay="80">
+                  <span key={`headline-${heroProduct?.id}`} className="routine-swap-text">
+                    {formattedHeadline.subtitle ? (
+                      <span className="routine-headline-wrap">
+                        <span className="routine-headline__title">{formattedHeadline.title}</span>
+                        <span className="routine-headline__subtitle">{formattedHeadline.subtitle}</span>
+                      </span>
+                    ) : (
+                      formattedHeadline.title
+                    )}
+                  </span>
+                </h3>
+                <p data-reveal data-reveal-delay="160">
+                  <span key={`desc-${heroProduct?.id}`} className="routine-swap-text">{heroStory?.desc}</span>
+                </p>
+                <div className="hero-showcase-meta" data-reveal data-reveal-delay="240">
+                  <span key={`meta-${heroProduct?.id}`} className="routine-swap-meta">
+                    <span className="hero-meta-badge">{heroStory?.roleTag}</span>
+                    <span className="routine-stage__volume">{heroProduct?.volume}</span>
+                  </span>
+                </div>
+                <div className="hero-showcase-actions" data-reveal data-reveal-delay="320">
+                  {heroProduct && (
                     <button
                       type="button"
-                      className={`floating-hero-trigger routine-product-layer ${isActive ? 'is-active' : ''}`}
+                      className="hero-pill-btn hero-pill-btn--primary"
+                      onClick={(e) => handleAddToCart(e, heroProduct.id)}
+                      aria-label={`Thêm ${heroProduct.name} vào giỏ hàng`}
+                    >
+                      Thêm vào giỏ · {heroProduct.price?.toLocaleString('vi-VN')}₫
+                    </button>
+                  )}
+                  {heroProduct && (
+                    <button
+                      type="button"
+                      className="routine-text-link"
+                      onClick={() => handleOpenDetail(heroProduct.id)}
+                    >
+                      Xem chi tiết <span aria-hidden="true">↗</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div
+                ref={stageRef}
+                className="routine-stage__product routine-ellipse-stage"
+                data-reveal="soft-scale"
+                data-reveal-delay="220"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onTouchCancel={() => { touchRef.current = null; }}
+                onKeyDown={(event) => {
+                  if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key) || !activeStepProducts.length) return;
+                  event.preventDefault();
+                  const index = event.key === 'Home' ? 0 : event.key === 'End' ? activeStepProducts.length - 1
+                    : (activeIdxRef.current + (event.key === 'ArrowRight' ? 1 : -1) + activeStepProducts.length) % activeStepProducts.length;
+                  handleProductSelect(activeStepProducts[index].id, index);
+                  itemsRef.current[index]?.focus({ preventScroll: true });
+                }}
+              >
+                <svg
+                  className="routine-ellipse-svg"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <linearGradient id="routine-ellipse-line" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#e06d81" stopOpacity="0.04" />
+                      <stop offset="20%" stopColor="#e06d81" stopOpacity="0.45" />
+                      <stop offset="50%" stopColor="#e06d81" stopOpacity="0.85" />
+                      <stop offset="80%" stopColor="#e06d81" stopOpacity="0.45" />
+                      <stop offset="100%" stopColor="#e06d81" stopOpacity="0.04" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    ref={svgEllipseRef}
+                    fill="none"
+                    stroke="url(#routine-ellipse-line)"
+                    strokeWidth="1.4"
+                    strokeDasharray="4 3"
+                    opacity="0.75"
+                  />
+                </svg>
+
+                {activeStepProducts.map((product, index) => {
+                  const isActive = product.id === heroId;
+                  return (
+                    <button
                       key={product.id}
-                      onClick={() => handleOpenDetail(product.id)}
-                      aria-label={`Xem chi tiết ${product.name}`}
-                      aria-hidden={!isActive}
-                      tabIndex={isActive ? 0 : -1}
+                      ref={(el) => { itemsRef.current[index] = el; }}
+                      type="button"
+                      className={`routine-ellipse-item${isActive ? ' is-active' : ''}`}
+                      onClick={() => handleProductSelect(product.id, index)}
+                      aria-label={`${product.name} (Bước ${activeStep.number})`}
+                      aria-current={isActive ? 'true' : undefined}
                     >
                       <img
-                        className="floating-hero-image"
+                        className="routine-ellipse-img"
                         src={assetUrl(product.image, product.brandSlug)}
-                        alt={isActive ? product.name : ''}
+                        alt={product.name}
                         loading="eager"
                         decoding="async"
                       />
                     </button>
                   );
                 })}
-              </div>
-              <span className="routine-stage__focus-label"><i></i>Sản phẩm tâm điểm</span>
-              <div
-                ref={arcRef}
-                className="routine-product-arc"
-                aria-label={`Các sản phẩm tiếp theo trong bước ${activeStep.title}`}
-                onMouseEnter={() => setIsOrbitPaused(true)}
-                onMouseLeave={() => setIsOrbitPaused(false)}
-                onFocusCapture={() => setIsOrbitPaused(true)}
-                onBlurCapture={(event) => {
-                  if (!event.currentTarget.contains(event.relatedTarget)) {
-                    setIsOrbitPaused(false);
-                  }
-                }}
-              >
-                <svg
-                  className="routine-product-arc__stroke"
-                  viewBox="0 0 240 360"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <defs>
-                    <linearGradient id={`routine-arc-${activeStep.id}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0" stopColor="#e06d81" stopOpacity="0" />
-                      <stop offset="0.22" stopColor="#e06d81" stopOpacity="0.28" />
-                      <stop offset="0.5" stopColor="#76b9dc" stopOpacity="0.34" />
-                      <stop offset="0.78" stopColor="#e06d81" stopOpacity="0.28" />
-                      <stop offset="1" stopColor="#e06d81" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M 88 6 C 250 70 250 290 88 354"
-                    fill="none"
-                    stroke={`url(#routine-arc-${activeStep.id})`}
-                    strokeWidth="1.25"
-                    strokeLinecap="round"
-                    vectorEffect="non-scaling-stroke"
-                  />
-                </svg>
-                {activeStepProducts.filter(product => product.id !== heroProduct?.id).map((product, index) => (
-                  <button
-                    type="button"
-                    className="routine-product-arc__item"
-                    key={product.id}
-                    onMouseEnter={() => activateProduct(product.id)}
-                    onFocus={() => activateProduct(product.id)}
-                    onClick={() => activateProduct(product.id)}
-                    aria-pressed="false"
-                    aria-label={`Hiển thị ${product.name}`}
-                    title={window.productDisplayName?.(product) || product.name}
-                    style={{ '--arc-index': index }}
-                  >
-                    <img src={assetUrl(product.image, product.brandSlug)} alt="" loading="lazy" />
-                  </button>
-                ))}
+
+                <div className="routine-arc-caption">
+                  Chạm hoặc chọn sản phẩm để xoay về tâm điểm
+                </div>
               </div>
             </div>
-          </div>
           </>
         )}
       </div>

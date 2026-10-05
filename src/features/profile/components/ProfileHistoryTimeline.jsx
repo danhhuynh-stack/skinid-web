@@ -58,6 +58,7 @@ export default function ProfileHistoryTimeline({ history = [] }) {
             className="profile-history-card p-6 sm:p-7 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 cursor-pointer group"
             onClick={open}
             onKeyDown={(event) => {
+              if (event.target !== event.currentTarget) return;
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
                 open();

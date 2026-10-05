@@ -64,6 +64,8 @@ function OrderCard({ order, onCancel, onReorder, cancellingId }) {
   const customer = order.customer || {};
   const shortId = String(order.id || '').slice(0, 8).toUpperCase();
   const isCancelling = cancellingId === order.id;
+  const items = order.items || [];
+  const totalQuantity = items.reduce((total, item) => total + (Number(item.quantity) || 1), 0);
 
   return (
     <article className="profile-order-card p-5 sm:p-6 space-y-4">
@@ -89,21 +91,27 @@ function OrderCard({ order, onCancel, onReorder, cancellingId }) {
         </p>
       </div>
 
-      <div className="space-y-1">
-        {(order.items || []).map((item, index) => <OrderItem key={`${item.productId || 'item'}-${index}`} item={item} />)}
-      </div>
+      <details className="profile-order-items">
+        <summary>
+          <span><strong>Mặt hàng trong đơn</strong><small>{items.length} mặt hàng · {totalQuantity} sản phẩm</small></span>
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
+        </summary>
+        <div className="profile-order-items__list">
+          {items.length ? items.map((item, index) => <OrderItem key={`${item.productId || 'item'}-${index}`} item={item} />) : <p className="text-xs text-gray-500 py-3">Chưa có thông tin mặt hàng.</p>}
+        </div>
+      </details>
 
       <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
         <span className="text-xs text-gray-400">Phí vận chuyển: {Number(order.shippingFee) === 0 ? <strong className="text-teal-600">Miễn phí</strong> : formatPrice(order.shippingFee)}</span>
         <div className="flex flex-wrap items-center justify-end gap-2">
-          <button type="button" onClick={() => onReorder(order)} className="px-4 py-2 rounded-full bg-white text-[#282326] hover:bg-[#FFF5F7] hover:text-[#BD3F5B] text-xs font-bold transition-all shadow-xs cursor-pointer">Mua lại</button>
+          <button type="button" onClick={() => onReorder(order)} className="profile-action profile-action--primary">Mua lại</button>
           {canCancel && !confirming && (
-            <button type="button" onClick={() => setConfirming(true)} className="px-4 py-2 rounded-full bg-[#FFF0F0] text-[#B42318] hover:bg-[#FEE4E2] text-xs font-bold transition-all cursor-pointer">Hủy đơn</button>
+            <button type="button" onClick={() => setConfirming(true)} className="profile-action profile-action--danger">Hủy đơn</button>
           )}
           {canCancel && confirming && (
             <>
-              <button type="button" onClick={() => setConfirming(false)} disabled={isCancelling} className="px-4 py-2 rounded-full bg-white text-[#6F686B] text-xs font-bold shadow-xs disabled:opacity-50">Không</button>
-              <button type="button" onClick={() => onCancel(order.id)} disabled={isCancelling} className="px-4 py-2 rounded-full bg-[#B42318] text-white text-xs font-bold disabled:opacity-50">{isCancelling ? 'Đang hủy…' : 'Xác nhận hủy'}</button>
+              <button type="button" onClick={() => setConfirming(false)} disabled={isCancelling} className="profile-action profile-action--quiet">Giữ đơn</button>
+              <button type="button" onClick={() => onCancel(order.id)} disabled={isCancelling} className="profile-action profile-action--danger">{isCancelling ? 'Đang hủy…' : 'Xác nhận hủy'}</button>
             </>
           )}
         </div>
@@ -161,7 +169,7 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
           <div className="w-16 h-16 mx-auto mb-4 rounded-3xl bg-brand-blush/60 text-brand-primary flex items-center justify-center shadow-sm text-3xl" aria-hidden="true">▣</div>
           <h4 className="font-black text-gray-800 text-base mb-1">Chưa Có Đơn Hàng Nào</h4>
           <p className="text-xs text-gray-400 max-w-sm mx-auto mb-6">Bạn chưa thực hiện đơn đặt hàng nào tại SkinID. Khám phá các sản phẩm dược mỹ phẩm chính hãng ngay!</p>
-          <a href="/products" className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#D96B82] to-[#C8526B] hover:from-[#C8526B] hover:to-[#B24058] text-white text-xs font-bold rounded-xl shadow-md shadow-rose-200/40 transition-all">Khám phá sản phẩm ngay →</a>
+          <a href="/products" className="profile-btn profile-btn--primary">Khám phá sản phẩm ngay →</a>
         </div>
       ) : orders.map((order) => (
         <OrderCard key={order.id} order={order} onCancel={handleCancel} onReorder={handleReorder} cancellingId={cancellingId} />
