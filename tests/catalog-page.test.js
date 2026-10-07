@@ -47,7 +47,7 @@ test('reset restores the complete catalog and clears controls and URL filters', 
   const { context, controls, location } = catalog('?brand=twon&benefit=sang-da-mo-tham&search=lotion');
   assert.equal(controls.get('product-grid').children.length, 1);
   context.window.resetAllFilters();
-  assert.equal(controls.get('product-grid').children.length, 53);
+  assert.equal(controls.get('product-grid').children.length, 54);
   assert.equal(controls.get('product-search').value, '');
   assert.equal(controls.get('brand-filter-select').value, 'all');
   assert.equal(controls.get('benefit-filter-select').value, 'all');
@@ -56,7 +56,7 @@ test('reset restores the complete catalog and clears controls and URL filters', 
 
 test('unknown URL filter values are normalized and never injected into result markup', () => {
   const { controls, location } = catalog('?brand=unknown&step=unknown&benefit=%3Cimg%20onerror%3Dalert(1)%3E&sort=unknown');
-  assert.equal(controls.get('product-grid').children.length, 53);
+  assert.equal(controls.get('product-grid').children.length, 54);
   assert.equal(controls.get('catalog-sort').value, 'featured');
   assert(!controls.get('filter-result-count').innerHTML.includes('<img'));
   assert.equal(location.search, '');

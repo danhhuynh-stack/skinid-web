@@ -6,7 +6,7 @@ const source = fs.readFileSync(path.join(__dirname, '../src/data/products.js'), 
 const products = JSON.parse(source.match(/window\.LOCAL_PRODUCTS = (\[[\s\S]*?\]);/)[1]);
 const ids = results => results.map(p => p.id);
 assert.equal(new Set(ids(products)).size, products.length);
-assert.equal(filterProducts(products).length, 53);
+assert.equal(filterProducts(products).length, 54);
 for (const brand of ['all', 'rilastil', 'twon', 'dvah', "D'VAH", ' D’VAH ']) {
     for (const step of ['all', 'cleanser', 'toner', 'treatment', 'moisturizer', 'sunscreen', 'special']) {
         for (const query of ['', 'gel', 'niacinamide', 'khong-co-san-pham']) {

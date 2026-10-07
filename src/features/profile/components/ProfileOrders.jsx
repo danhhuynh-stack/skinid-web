@@ -3,6 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { assetUrl } from '../../../assets/index.js';
 import { useCart } from '../../cart/index.js';
 import { getProductById } from '../../catalog/index.js';
+import { matchesProfileSearch, profileSearchDate } from '../profileListSearch.mjs';
+import ProfileListControls, { ProfileListMore } from './ProfileListControls.jsx';
 
 const statusStyles = {
   pending: { label: 'Chờ xác nhận', className: 'bg-[#FEF3C7] text-[#92400E] border-0' },
@@ -126,6 +128,16 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
   const [placedOrder] = useState(() => searchParams.get('placed'));
   const [cancellingId, setCancellingId] = useState(null);
   const [error, setError] = useState('');
+  const batchSize = 3;
+  const [query, setQuery] = useState('');
+  const [limit, setLimit] = useState(batchSize);
+  const matches = orders.filter(order => matchesProfileSearch([
+    `#${order.id}`, order.dateFormatted, profileSearchDate(order.createdAt),
+    (statusStyles[order.status] || statusStyles.pending).label,
+    ...((order.items || []).map(item => `${item.name || getProductById(item.productId)?.name || ''} ${item.productId || ''}`))
+  ], query));
+  const visible = matches.slice(0, limit);
+  const changeQuery = value => { setQuery(value); setLimit(batchSize); };
 
   useEffect(() => {
     if (!placedOrder || !searchParams.has('placed')) return;
@@ -164,6 +176,8 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
         <div className="order-success-banner" role="status"><div><strong>Đặt hàng thành công</strong><p>Mã đơn #{placedOrder} đã được tiếp nhận. SkinID sẽ sớm xác nhận với bạn.</p></div></div>
       )}
       {error && <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-xs font-semibold text-rose-700">{error}</div>}
+      {!!orders.length && <ProfileListControls id="profile-order-list" label="Tìm đơn hàng" placeholder="Mã đơn, tên sản phẩm, ngày hoặc trạng thái…" query={query} onQueryChange={changeQuery} shown={visible.length} total={matches.length} />}
+      <div id="profile-order-list" className="space-y-4">
       {!orders.length ? (
         <div className="profile-empty-panel text-center py-12 px-4">
           <div className="w-16 h-16 mx-auto mb-4 rounded-3xl bg-brand-blush/60 text-brand-primary flex items-center justify-center shadow-sm text-3xl" aria-hidden="true">▣</div>
@@ -171,9 +185,11 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
           <p className="text-xs text-gray-400 max-w-sm mx-auto mb-6">Bạn chưa thực hiện đơn đặt hàng nào tại SkinID. Khám phá các sản phẩm dược mỹ phẩm chính hãng ngay!</p>
           <a href="/products" className="profile-btn profile-btn--primary">Khám phá sản phẩm ngay →</a>
         </div>
-      ) : orders.map((order) => (
+      ) : !matches.length ? <div className="profile-list-no-results"><strong>Không tìm thấy đơn hàng phù hợp</strong><p>Thử mã đơn, sản phẩm hoặc trạng thái khác.</p><button type="button" className="profile-action profile-action--quiet" onClick={() => changeQuery('')}>Xóa tìm kiếm</button></div> : visible.map((order) => (
         <OrderCard key={order.id} order={order} onCancel={handleCancel} onReorder={handleReorder} cancellingId={cancellingId} />
       ))}
+      </div>
+      <ProfileListMore id="profile-order-list" shown={visible.length} total={matches.length} batchSize={batchSize} onMore={() => setLimit(value => value + batchSize)} onCollapse={() => setLimit(batchSize)} />
     </div>
   );
 }

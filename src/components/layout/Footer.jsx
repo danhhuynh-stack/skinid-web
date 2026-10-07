@@ -9,8 +9,7 @@ export default function Footer() {
     <div className="footer-grid">
       <div>
         <a className="brand footer-brand" href="/#top">
-          <img src={assetUrl('/images/logo.png')} alt="SkinID" />
-          <span><b>SkinID</b><em>.vn</em></span>
+          <img src={assetUrl('/images/logo-footer-transparent.png')} alt="SkinID" />
         </a>
         <p>Dược mỹ phẩm và sản phẩm chăm sóc cá nhân chính hãng, thông tin rõ ràng, dễ lựa chọn.</p>
       </div>

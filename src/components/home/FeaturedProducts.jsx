@@ -105,12 +105,13 @@ export default function FeaturedProducts() {
   const activeStepProducts = productsByStep[activeStep.id] || [];
 
   useEffect(() => {
-    featuredProducts.forEach((product) => {
+    if (!isVisible) return;
+    activeStepProducts.forEach((product) => {
       const image = new Image();
       image.src = assetUrl(product.image, product.brandSlug);
       image.decode?.().catch(() => {});
     });
-  }, [featuredProducts]);
+  }, [activeStepProducts, isVisible]);
 
   const { addToCart } = useCart();
 

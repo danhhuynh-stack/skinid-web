@@ -82,15 +82,15 @@ assert(!scripts.includes('src/js/app/runtime-config.js'));
 assert(!scripts.includes('src/js/app/firebase-init.js'));
 assert.match(read('src/main.jsx'), /installLegacyRuntimeConfig/);
 assert.match(read('src/main.jsx'), /from '\.\/infrastructure\/firebase\/index\.js'/);
-assert(scripts.indexOf('src/data/products.js') < scripts.indexOf('src/js/catalog/catalog-loader.js'));
-assert(scripts.indexOf('src/data/products.js') < scripts.indexOf('src/js/analysis/skin-analysis.js'));
+assert(!scripts.includes('src/data/products.js'));
+assert(scripts.indexOf('src/js/catalog/catalog-loader.js') < scripts.indexOf('src/js/analysis/skin-analysis.js'));
 assert(scripts.indexOf('src/js/catalog/product-filters.js') < scripts.indexOf('src/js/analysis/skin-analysis.js'));
 for (const file of scripts) {
     assert(fs.existsSync(path.join(root, file)), file);
     new vm.Script(read(file), { filename: file });
 }
 const products = JSON.parse(read('src/data/products.js').match(/window\.LOCAL_PRODUCTS = (\[[\s\S]*?\]);/)[1]);
-assert.equal(products.length, 53);
+assert.equal(products.length, 54);
 assert(!read('src/js/analysis/skin-analysis.js').includes('const PRODUCTS ='));
 const app = read('src/js/analysis/skin-analysis.js');
 assert(!/AIza[\w-]{30,}/.test(app));

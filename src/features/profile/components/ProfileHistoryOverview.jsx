@@ -137,57 +137,39 @@ function ProgressChart({ history }) {
   );
 }
 
+function StatIcon({ type }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {type === 'sessions' && <><rect x="7" y="3" width="13" height="16" rx="2" /><path d="M4 7v13a2 2 0 0 0 2 2h10M11 8h5M11 12h5" /></>}
+      {type === 'score' && <><path d="M4 18a9 9 0 1 1 16 0M12 13l4-5M5 13h1M18 13h1M12 4v2" /><circle cx="12" cy="13" r="2" /></>}
+      {type === 'age' && <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>}
+      {type === 'skin' && <><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3M8 9h.01M16 9h.01M12 10v3M9 16q3 2 6 0" /></>}
+    </svg>
+  );
+}
+
 export default function ProfileHistoryOverview({ history = [] }) {
   const latest = history[0];
   const maxScore = history.reduce((maximum, scan) => Math.max(maximum, numeric(scan.healthScore)), 0);
 
   return (
     <>
-      {/* 4 Luminous Stat Cards */}
       <div className="profile-stats mb-8">
-        <div className="profile-stat">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-extrabold text-[#BD3F5B] uppercase tracking-wider">Tổng Phiên Soi</span>
-            <span className="w-8 h-8 rounded-full bg-[#FFF0F4] text-[#E06D81] flex items-center justify-center">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            </span>
+        {[
+          { icon: 'sessions', label: 'Tổng phiên soi', value: history.length, note: 'Phiên phân tích đã lưu' },
+          { icon: 'score', label: 'Điểm cao nhất', value: <>{maxScore}<small>/100</small></>, note: 'Điểm sức khỏe làn da' },
+          { icon: 'age', label: 'Tuổi da gần nhất', value: latest?.skinAge != null ? <>{latest.skinAge}<small> tuổi</small></> : '—', note: 'Ước tính từ phiên soi mới nhất' },
+          { icon: 'skin', label: 'Tình trạng da', value: latest?.skinType || 'Chưa soi da', note: 'Ghi nhận từ phiên soi mới nhất', text: true }
+        ].map((stat) => (
+          <div className="profile-stat" key={stat.icon}>
+            <div className="profile-stat-heading">
+              <span className="profile-stat-icon"><StatIcon type={stat.icon} /></span>
+              <span className="profile-stat-label">{stat.label}</span>
+            </div>
+            <h3 className={`profile-stat-value${stat.text ? ' profile-stat-value--text' : ''}`}>{stat.value}</h3>
+            <p className="profile-stat-note">{stat.note}</p>
           </div>
-          <h3 className="text-3xl font-black text-[#282326] tracking-tight">{history.length}</h3>
-          <span className="text-[11px] text-[#6F686B] mt-1">Dữ liệu phân tích lưu trữ</span>
-        </div>
-
-        <div className="profile-stat">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-extrabold text-[#1B6CA8] uppercase tracking-wider">Điểm Cao Nhất</span>
-            <span className="w-8 h-8 rounded-full bg-[#EEF7FF] text-[#1B6CA8] flex items-center justify-center">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            </span>
-          </div>
-          <h3 className="text-3xl font-black text-[#E06D81] tracking-tight">{maxScore}<span className="text-sm font-bold text-[#6F686B]">/100</span></h3>
-          <span className="text-[11px] text-[#6F686B] mt-1">Đỉnh cao phục hồi</span>
-        </div>
-
-        <div className="profile-stat">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-extrabold text-[#0D7A53] uppercase tracking-wider">Tuổi Da Gần Nhất</span>
-            <span className="w-8 h-8 rounded-full bg-[#F0FAF5] text-[#0D7A53] flex items-center justify-center">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            </span>
-          </div>
-          <h3 className="text-3xl font-black text-[#0D7A53] tracking-tight">{latest?.skinAge ? `${latest.skinAge} tuổi` : '--'}</h3>
-          <span className="text-[11px] text-[#6F686B] mt-1">Đo đạc từ thị giác máy tính</span>
-        </div>
-
-        <div className="profile-stat">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-extrabold text-[#B3630A] uppercase tracking-wider">Thể Trạng Da</span>
-            <span className="w-8 h-8 rounded-full bg-[#FFF7ED] text-[#B3630A] flex items-center justify-center">
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-            </span>
-          </div>
-          <h3 className="text-lg font-black text-[#282326] truncate tracking-tight">{latest?.skinType || 'Chưa soi da'}</h3>
-          <span className="text-[11px] text-[#6F686B] mt-1">Tình trạng ghi nhận phiên mới</span>
-        </div>
+        ))}
       </div>
 
       {/* Floating Chart Surface */}

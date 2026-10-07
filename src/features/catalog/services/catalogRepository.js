@@ -2,14 +2,12 @@ import { firebaseServices } from '../../../infrastructure/firebase/index.js';
 import { setAvailableProducts } from './catalogService.js';
 
 let catalogRequest;
+let refreshRequest;
 
 function applyStorefrontPrice(product) {
-  const originalPrice = Number(product.originalPrice);
   return {
     ...product,
-    price: Number.isFinite(originalPrice) && originalPrice > 0
-      ? Math.round(originalPrice * 0.95)
-      : Number(product.price) || 0
+    price: Number(product.price) || 0
   };
 }
 
@@ -17,7 +15,20 @@ export function loadProductCatalog() {
   if (catalogRequest) return catalogRequest;
   catalogRequest = (async () => {
     const { CATALOG_FIXTURE } = await import('../data/catalogFixture.generated.js');
-    const fallback = CATALOG_FIXTURE.map(applyStorefrontPrice);
+    return setAvailableProducts(CATALOG_FIXTURE.map(applyStorefrontPrice));
+  })().catch((error) => {
+    catalogRequest = undefined;
+    throw error;
+  });
+  return catalogRequest;
+}
+
+// Remote-only fields enrich the catalog without delaying its first render.
+// Published local prices remain authoritative, matching Worker checkout.
+export function refreshProductCatalog() {
+  if (refreshRequest) return refreshRequest;
+  refreshRequest = (async () => {
+    const fallback = await loadProductCatalog();
     try {
       const { collection, getDocs } = firebaseServices.sdk.firestore;
       const snapshot = await getDocs(collection(firebaseServices.db, 'products'));
@@ -32,11 +43,13 @@ export function loadProductCatalog() {
           id: local.id
         });
       });
-      return setAvailableProducts(products);
+      const catalog = setAvailableProducts(products);
+      catalogRequest = Promise.resolve(catalog);
+      return catalog;
     } catch (error) {
       console.warn('[SkinID Catalog] Dùng catalog đóng gói:', error.message);
       return setAvailableProducts(fallback);
     }
   })();
-  return catalogRequest;
+  return refreshRequest;
 }

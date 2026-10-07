@@ -115,9 +115,9 @@ test('the React profile route owns account mutations without the legacy auth man
   const legacyLoader = fs.readFileSync(path.join(root, 'src/hooks/useLegacyApplication.js'), 'utf8');
   assert.match(page, /useProfile\(\)/);
   assert.match(page, /<ProfileHistoryOverview history=\{history\} \/>/);
-  assert.match(page, /<ProfileHistoryTimeline history=\{history\} \/>/);
+  assert.match(page, /<ProfileHistoryTimeline history=\{history\} user=\{user\} \/>/);
   assert.match(page, /<ProfileOrders orders=\{orders\}/);
-  assert.match(page, /<ProfileScanDetailModal history=\{history\} \/>/);
+  assert.match(page, /<ProfileScanDetailModal history=\{history\} user=\{user\} \/>/);
   assert.match(page, /onSubmit=\{handlePasswordChange\}/);
   assert.match(page, /activeTab === 'profile'/);
   assert.match(page, /<ProfileIdentityForm user=\{user\}/);

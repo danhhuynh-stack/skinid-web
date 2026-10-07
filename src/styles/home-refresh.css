@@ -215,7 +215,7 @@
 
 @keyframes homeCtaGlow {
   from { box-shadow: 0 0 0 rgba(218,74,107,0); }
-  to { box-shadow: 0 13px 28px rgba(218,74,107,.24); }
+  to { box-shadow: 0 13px 28px var(--hero-cta-glow, rgba(218,74,107,.24)); }
 }
 
 .home-refresh .hero-slide.is-active .hero-slide-copy > * {

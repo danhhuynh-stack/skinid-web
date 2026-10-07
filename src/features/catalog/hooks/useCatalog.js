@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { loadProductCatalog } from '../services/catalogRepository.js';
+import { loadProductCatalog, refreshProductCatalog } from '../services/catalogRepository.js';
 
 export function useCatalog() {
   const [state, setState] = useState({ products: [], isReady: false, error: null });
@@ -7,6 +7,10 @@ export function useCatalog() {
   useEffect(() => {
     let active = true;
     loadProductCatalog()
+      .then((products) => {
+        if (active) setState({ products, isReady: true, error: null });
+        return refreshProductCatalog();
+      })
       .then((products) => {
         if (active) setState({ products, isReady: true, error: null });
       })

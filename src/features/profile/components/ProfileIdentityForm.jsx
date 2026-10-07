@@ -21,7 +21,7 @@ function formFromUser(user) {
   };
 }
 
-export default function ProfileIdentityForm({ user, isSaving, onSave }) {
+export default function ProfileIdentityForm({ user, isSaving, onSave, onDirtyChange }) {
   const [form, setForm] = useState(() => formFromUser(user));
   const [baseline, setBaseline] = useState(() => JSON.stringify(formFromUser(user)));
   const [wards, setWards] = useState([]);
@@ -53,6 +53,7 @@ export default function ProfileIdentityForm({ user, isSaving, onSave }) {
   }, [form.provinceCode, user?.shippingAddress]);
 
   const isDirty = useMemo(() => JSON.stringify(form) !== baseline, [form, baseline]);
+  useEffect(() => { onDirtyChange?.(isDirty); }, [isDirty, onDirtyChange]);
   const update = (field) => (event) => {
     setMessage(null);
     setForm((current) => ({ ...current, [field]: event.target.value }));

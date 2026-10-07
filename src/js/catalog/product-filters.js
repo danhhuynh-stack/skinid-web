@@ -6,6 +6,7 @@ const SHOP_CATEGORY_OVERRIDES = {
     'rilastil-2085': ['moisturizer'],
     'rilastil-1125': ['moisturizer'],
     'rilastil-1939': ['special'],
+    'rilastil-stretch-marks-75ml': ['special'],
     'rilastil-1872': ['cleanser', 'special'],
     'rilastil-1871': ['cleanser', 'special'],
     'rilastil-1867': ['cleanser', 'special']

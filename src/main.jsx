@@ -14,6 +14,7 @@ import './styles/ambient-canvas.css';
 import './styles/acie-editorial.css';
 import './shared/ui/route-status.css';
 import './styles/responsive-layout.css';
+import './styles/hero-copy.css';
 import { initializeAnalytics, installLegacyFirebaseBridge } from './infrastructure/firebase/index.js';
 import { installLegacyRuntimeConfig } from './shared/config/runtime.js';
 

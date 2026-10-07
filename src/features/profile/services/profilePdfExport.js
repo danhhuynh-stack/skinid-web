@@ -1,685 +1,110 @@
 import { detailedMetricNames } from './metricNames.js';
 
-function formatVnd(value) {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(Number(value) || 0);
+const reportLogoUrl = new URL('../../../assets/images/logo.png', import.meta.url).href;
+const escapeHtml = (value = '') => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+const present = (value) => value !== null && value !== undefined && String(value).trim() !== '';
+const score = (value) => present(value) && Number.isFinite(Number(value)) ? Math.round(Math.min(100, Math.max(0, Number(value)))) : null;
+const text = (value, fallback = 'Không có dữ liệu') => escapeHtml(present(value) ? value : fallback);
+function dateValue(value) {
+  if (!value) return null;
+  if (typeof value.toDate === 'function') return value.toDate();
+  if (value.seconds != null) return new Date(value.seconds * 1000);
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+function formatDate(value, time = true) {
+  const date = dateValue(value);
+  return date ? new Intl.DateTimeFormat('vi-VN', {
+    timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: 'numeric',
+    ...(time ? { hour: '2-digit', minute: '2-digit' } : {})
+  }).format(date) : (present(value) ? String(value) : 'Không có dữ liệu');
+}
+function scanDate(scan) { return scan.timestamp || scan.createdAt || scan.dateFormatted; }
+function addressFromUser(user) {
+  const address = user.shippingAddress || {};
+  return address.fullAddress || user.address || [address.line1 || address.street, address.wardName || address.ward, address.districtName || address.district, address.provinceName || address.province].filter(present).join(', ');
 }
 
-function formatDate(isoOrDateString) {
-  if (!isoOrDateString) return new Date().toLocaleDateString('vi-VN');
-  const d = new Date(isoOrDateString);
-  if (isNaN(d.getTime())) return String(isoOrDateString);
-  return d.toLocaleDateString('vi-VN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+export function generateReportHtml({ user = {}, history = [], logoUrl = reportLogoUrl, exportedAt = new Date() } = {}) {
+  user = user || {};
+  const scans = (Array.isArray(history) ? history : []).filter(Boolean).slice().sort((a, b) => (dateValue(scanDate(b))?.getTime() || 0) - (dateValue(scanDate(a))?.getTime() || 0));
+  const latest = scans[0] || {};
+  const health = score(latest.healthScore);
+  const metrics = latest.metrics || latest.fullAnalysis?.metrics || {};
+  const metricKeys = ['moisture', 'sebum', 'pores', 'pigmentation', 'melasma', 'elasticity', 'eyeWrinkles', 'nasolabialFolds', 'redness', 'acneBacteria', 'texture', 'darkCircles'];
+  const positiveMetrics = new Set(['moisture', 'elasticity', 'texture']);
+  const products = Array.isArray(latest.recommendedRoutineProducts) ? latest.recommendedRoutineProducts.filter(Boolean) : [];
+  const name = user.name || user.displayName || 'Thành viên SkinID';
+  const reportId = `SKN-${String(user.id || user.uid || 'USER').slice(-6).toUpperCase()}-${(dateValue(exportedAt)?.getTime() || Date.now()).toString(36).toUpperCase()}`;
+  const profileRows = [
+    ['Họ và tên', name], ['Email', user.email], ['Số điện thoại', user.phone || user.phoneNumber],
+    ['Ngày sinh', user.birthday ? formatDate(user.birthday, false) : ''],
+    ['Giới tính', user.gender], ['Địa chỉ', addressFromUser(user)]
+  ].filter(([, value]) => present(value));
+  const extraPage = products.length > 0 || scans.length > 1;
+  const totalPages = extraPage ? 3 : 2;
+  const pageFooter = (page) => `<footer class="page-footer"><span>SkinID.vn · Chăm sóc theo cách của bạn</span><span>${text(reportId)} · ${page} / ${totalPages}</span></footer>`;
+  const metricRows = metricKeys.map((key, index) => {
+    const raw = score(metrics[key]);
+    const balanced = raw === null ? null : positiveMetrics.has(key) ? raw : 100 - raw;
+    const tone = balanced === null ? 'muted' : balanced >= 75 ? 'good' : balanced >= 55 ? 'moderate' : 'attention';
+    const status = balanced === null ? 'Không có dữ liệu' : balanced >= 75 ? 'Tốt' : balanced >= 55 ? 'Cần duy trì' : 'Cần chú ý';
+    return `<tr><td>${text(detailedMetricNames[index])}</td><td class="number">${raw === null ? '-' : `${raw}/100`}</td><td><div class="bar"><i class="${tone}" style="width:${raw ?? 0}%"></i></div></td><td><span class="status ${tone}">${status}</span></td></tr>`;
+  }).join('');
+  const routine = (title, subtitle, steps) => `<div class="routine-card"><span class="eyebrow">${title}</span><h3>${subtitle}</h3><ol>${steps.map(step => `<li>${step}</li>`).join('')}</ol></div>`;
+  const productRows = products.map(product => `<tr><td><span class="product-brand">${text(product.brand, '')}</span><strong>${text(product.name, 'Sản phẩm gợi ý')}</strong></td><td>${text(product.volume, '-')}</td><td class="number">${present(product.price) ? text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(product.price) || 0)) : '-'}</td></tr>`).join('');
+  const historyRows = scans.slice(0, 5).map(scan => `<tr><td>${text(formatDate(scanDate(scan)))}</td><td class="number">${score(scan.healthScore) === null ? '-' : `${score(scan.healthScore)}/100`}</td><td>${text(scan.skinType)}</td></tr>`).join('');
+  const assessment = latest.analysis3Angles || latest.fullAnalysis?.analysis3Angles;
+  return `<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SkinID - Báo cáo làn da - ${text(name)}</title><style>
+  @page{size:A4 portrait;margin:12mm 14mm}*{box-sizing:border-box;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  body{margin:0;background:#f5f1f2;color:#30252a;font:12px/1.6 "Segoe UI",Arial,sans-serif}h1,h2,h3,p{margin:0}h1{font-size:34px;line-height:1.15;letter-spacing:-1px}h2{font-size:18px;line-height:1.3}h3{font-size:16px;line-height:1.4}strong{font-weight:650}
+  .toolbar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 24px;background:#30232a;color:white}.toolbar small{display:block;color:#e2cbd3}.toolbar button{padding:10px 20px;border:0;border-radius:99px;font:600 12px "Segoe UI",sans-serif;cursor:pointer;background:#e46183;color:#fff}.toolbar .close{background:#53444b;margin-left:8px}
+  .page{display:flow-root;width:182mm;min-height:270mm;margin:24px auto;padding:0 0 14mm;background:#fff;position:relative;box-shadow:0 8px 30px #30252a12}.page-content{padding:9mm 8mm 0}.report-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:18px;border-bottom:1px solid #f0dce4}.logo{width:118px;height:60px;object-fit:contain}.metadata{text-align:right;font-size:10px;color:#7d6c74}.metadata strong{color:#40313a}.eyebrow{display:block;color:#c04e72;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase}
+  .intro{position:relative;padding:25px 0 23px}.intro h1{margin:8px 0 12px}.intro h1 em{color:#d25277;font-style:normal}.intro p{color:#807079;max-width:440px}.customer{border:1px solid #efdfe5;border-radius:16px;padding:18px 20px;background:#fffbfc}.customer-title{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}.customer-title h2{font-size:16px}.customer-title span{font-size:10px;color:#927b86}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}.field small{display:block;color:#8b7781;font-size:10px}.field strong{display:block;overflow-wrap:anywhere}.field:last-child{grid-column:1/-1}
+  section{margin-top:24px}.section-heading{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}.section-heading b{color:#d56184;font-size:11px;letter-spacing:1px}.section-heading h2{flex:1}.section-heading small{font-size:10px;color:#8b7781}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.summary-card{padding:17px 14px;background:#fff2f6;border-radius:16px;border:1px solid #f5dce5}.summary-card small{font-size:10px;color:#866572}.summary-card strong{display:block;color:#c34870;font-size:26px;line-height:1.3;margin:8px 0}.summary-card span{color:#6d535f;font-size:10px}.skin-type{margin-top:12px;padding:14px 18px;border-radius:12px;background:#faf7f8}.skin-type small{color:#967783;font-size:10px;display:block;margin-bottom:3px}.assessment{padding:18px 20px;border-left:3px solid #e27694;background:#fff9fb;border-radius:0 14px 14px 0;white-space:pre-line;overflow-wrap:anywhere}.assessment p+p{margin-top:8px}.note{font-size:10px;color:#88727d;margin-top:14px;line-height:1.65}
+  .page-footer{position:absolute;bottom:7mm;left:8mm;right:8mm;border-top:1px solid #eadce2;padding-top:8px;display:flex;justify-content:space-between;gap:12px;color:#9a808c;font-size:9px}.continuation{margin:20px 0 18px}.continuation h2{font-size:24px;margin-top:6px}.table{width:100%;border-collapse:collapse;font-size:11px;table-layout:fixed}.table thead{display:table-header-group}.table th{padding:10px 12px;background:#f8eef2;color:#8b4c65;text-align:left;font-size:10px}.table td{padding:8px 12px;border-bottom:1px solid #f2e9ed;overflow-wrap:anywhere;vertical-align:middle}.table tbody tr:nth-child(even){background:#fffbfc}.table tr{break-inside:avoid}.number{white-space:nowrap;font-variant-numeric:tabular-nums}.bar{height:5px;border-radius:10px;background:#f2e6eb;overflow:hidden}.bar i{display:block;height:100%;background:#db6588}.bar i.good{background:#5a9a88}.bar i.moderate{background:#bb9367}.bar i.attention{background:#db6588}.status{font-size:10px;color:#a44464}.status.good{color:#397564}.status.moderate{color:#937047}.status.muted{color:#94848c}
+  .routine-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.routine-card{padding:18px;background:#fff6f9;border:1px solid #f2dce5;border-radius:16px;break-inside:avoid}.routine-card:last-child{background:#f8f5fa}.routine-card h3{margin:4px 0 12px}.routine-card ol{margin:0;padding-left:18px;font-size:11px;color:#68505d}.routine-card li{padding-left:4px;margin-bottom:8px}.product-brand{display:block;color:#ba5375;font-size:10px;text-transform:uppercase;letter-spacing:.5px}.table td strong{font-size:11px}.contact{padding:18px;background:#fff6f9;border-radius:14px}.contact h3{margin-bottom:8px}.contact p{font-size:11px;color:#745963}
+  @media screen{.page{border-top:4px solid #e4829e}}@media screen and (max-width:720px){.toolbar{flex-wrap:wrap}.page{width:100%;margin:16px 0}.page-content{padding:20px}.page-footer{position:static;margin:26px 20px 0}.summary{gap:6px}.summary-card{padding:12px 8px}.summary-card strong{font-size:22px}.section-heading{flex-wrap:wrap}.table th,.table td{padding:8px 5px}}
+  @media print{body{background:white;font-size:11px}.table td{padding:7px 12px}.contact{padding:10px 14px;margin-top:14px}.contact h3{font-size:14px;margin-bottom:4px}.note{margin-top:10px}.intro{padding:18px 0}.intro h1{font-size:30px}.customer{padding:14px 16px}.customer-title{margin-bottom:8px}.profile-grid{gap:7px 20px}.summary-card{padding:12px 14px}section{margin-top:18px}.toolbar{display:none}.page{width:auto;min-height:270mm;margin:0;box-shadow:none;break-after:page}.page:last-child{break-after:auto}.page-content{padding:0}.page-footer{left:0;right:0;bottom:0}section{break-inside:auto}.section-heading{break-after:avoid}.customer,.summary,.skin-type,.routine-grid,.contact{break-inside:avoid}.assessment{orphans:3;widows:3}}
+  </style></head><body>
+  <div class="toolbar"><div><strong>Báo cáo làn da cá nhân · SkinID</strong><small>Chọn “Lưu dưới dạng PDF” trong cửa sổ in để tải báo cáo A4.</small></div><div><button onclick="window.print()">In / Lưu PDF</button><button class="close" onclick="window.close()">Đóng</button></div></div>
+  <article class="page"><div class="page-content"><header class="report-header"><img class="logo" src="${text(logoUrl)}" alt="SkinID"><div class="metadata">Mã báo cáo <strong>${text(reportId)}</strong><br>Ngày xuất ${text(formatDate(exportedAt))}<br>Báo cáo cá nhân · Thông tin riêng tư</div></header>
+  <div class="intro"><span class="eyebrow">SKIN JOURNAL / NHẬT KÝ LÀN DA</span><h1>Hiểu làn da.<br><em>Chăm sóc chính mình.</em></h1><p>Kết quả soi da và gợi ý chăm sóc dành cho ${text(name)}.</p></div>
+  <div class="customer"><div class="customer-title"><h2>Hồ sơ của bạn</h2><span>Thông tin từ tài khoản SkinID</span></div><div class="profile-grid">${profileRows.map(([label,value]) => `<div class="field"><small>${label}</small><strong>${text(value)}</strong></div>`).join('')}</div></div>
+  <section><div class="section-heading"><b>01</b><h2>Tổng quan làn da</h2><small>${text(formatDate(scanDate(latest)))}</small></div><div class="summary"><div class="summary-card"><small>ĐIỂM SỨC KHỎE</small><strong>${health ?? '-'}</strong><span>${health === null ? 'Không có dữ liệu' : '/ 100 điểm'}</span></div><div class="summary-card"><small>TUỔI DA ƯỚC TÍNH</small><strong>${text(latest.skinAge, '-')}</strong><span>Ước tính từ AI</span></div><div class="summary-card"><small>PHIÊN TRONG BÁO CÁO</small><strong>${scans.length}</strong><span>Phiên soi da đã lưu</span></div></div><div class="skin-type"><small>PHÂN LOẠI DA</small><strong>${text(latest.skinType)}</strong></div></section>
+  <section><div class="section-heading"><b>02</b><h2>Lắng nghe làn da của bạn</h2></div><div class="assessment">${latest.overallGradeComment ? `<p><strong>${text(latest.overallGradeComment)}</strong></p>` : ''}<p>${text(assessment, 'Phiên này chưa lưu phần nhận xét chi tiết.')}</p></div><p class="note">Kết quả AI mang tính tham khảo, không thay thế chẩn đoán hoặc tư vấn của bác sĩ da liễu.</p></section>
+  </div>${pageFooter(1)}</article>
+  <article class="page"><div class="page-content"><div class="continuation"><span class="eyebrow">SKIN DETAILS / CHĂM SÓC MỖI NGÀY</span><h2>Những điều làn da đang cần</h2></div><section><div class="section-heading"><b>03</b><h2>12 chỉ số làn da</h2></div><table class="table"><thead><tr><th style="width:27%">Chỉ số</th><th style="width:16%">Mức ghi nhận</th><th style="width:30%">Thang đo 0 - 100</th><th>Nhận xét</th></tr></thead><tbody>${metricRows}</tbody></table><p class="note">Điểm hiển thị là mức ghi nhận trong phiên soi: độ ẩm, đàn hồi và kết cấu cao hơn là tích cực; các chỉ số còn lại cao hơn thể hiện vấn đề rõ hơn. Thanh đo không phải xác suất chẩn đoán.</p></section>
+  <section><div class="section-heading"><b>04</b><h2>Gợi ý nhịp chăm sóc</h2></div><div class="routine-grid">${routine('AM / BUỔI SÁNG', 'Dịu nhẹ & bảo vệ', ['Làm sạch dịu nhẹ.', 'Dưỡng ẩm phù hợp với làn da.', 'Chống nắng theo hướng dẫn sản phẩm.'])}${routine('PM / BUỔI TỐI', 'Làm sạch & dưỡng ẩm', ['Tẩy trang và làm sạch.', 'Dùng sản phẩm chăm sóc đã phù hợp với da.', 'Dưỡng ẩm để kết thúc chu trình.'])}</div><p class="note">Đây là chu trình tham khảo. Điều chỉnh theo mức dung nạp của da và hướng dẫn sử dụng từng sản phẩm.</p></section>
+  ${!extraPage ? '<section class="contact"><h3>Chăm sóc theo cách của bạn.</h3><p>SkinID.vn · Công ty TNHH FieldMan<br>Liên hệ hỗ trợ: 0924 093 461</p></section>' : ''}</div>${pageFooter(2)}</article>
+  ${extraPage ? `<article class="page"><div class="page-content"><div class="continuation"><span class="eyebrow">YOUR CARE / HÀNH TRÌNH CỦA BẠN</span><h2>Tiếp nối nhịp chăm sóc</h2></div>${products.length ? `<section><div class="section-heading"><b>05</b><h2>Sản phẩm được lưu trong phiên soi</h2></div><table class="table"><thead><tr><th style="width:64%">Thương hiệu / Sản phẩm</th><th style="width:14%">Dung tích</th><th style="width:22%">Giá tham khảo</th></tr></thead><tbody>${productRows}</tbody></table><p class="note">Giá là thông tin được lưu tại thời điểm soi da; giá mua thực tế hiển thị trên website.</p></section>` : ''}${scans.length > 1 ? `<section><div class="section-heading"><b>06</b><h2>Các phiên soi gần đây</h2></div><table class="table"><thead><tr><th style="width:30%">Thời gian</th><th style="width:16%">Điểm</th><th>Phân loại da</th></tr></thead><tbody>${historyRows}</tbody></table></section>` : ''}<section class="contact"><h3>Chăm sóc theo cách của bạn.</h3><p>SkinID.vn · Công ty TNHH FieldMan<br>Liên hệ hỗ trợ: 0924 093 461</p></section><p class="note">Kết quả AI mang tính tham khảo, không thay thế chẩn đoán hoặc tư vấn của bác sĩ da liễu.</p></div>${pageFooter(3)}</article>` : ''}
+  </body></html>`;
 }
 
-export function generateReportHtml({ user = {}, history = [], orders = [] }) {
-  const latestScan = history[0] || {};
-  const healthScore = Math.min(100, Math.max(0, Number(latestScan.healthScore) || 75));
-  const skinAge = latestScan.skinAge || 25;
-  const skinType = latestScan.skinType || 'Da hỗn hợp';
-  const grade = latestScan.overallGrade || (healthScore >= 75 ? 'A' : healthScore >= 60 ? 'B' : 'C');
-  const gradeComment = latestScan.overallGradeComment || (grade === 'A'
-    ? 'Làn da khỏe mạnh, cấu trúc ổn định'
-    : grade === 'B' ? 'Làn da ở mức ổn định, cần duy trì chu trình' : 'Cần phác đồ phục hồi hàng rào bảo vệ');
-  const assessment = latestScan.analysis3Angles || latestScan.fullAnalysis?.analysis3Angles || 'Chỉ số sức khỏe đạt mức ổn định. Khuyên dùng chu trình dưỡng ẩm và phục hồi chuyên sâu.';
-  
-  const rawMetrics = latestScan.metrics || {};
-  const metricValues = [
-    Number(rawMetrics.moisture) || 60,
-    100 - (Number(rawMetrics.sebum) || 60),
-    100 - (Number(rawMetrics.pores) || 60),
-    100 - (Number(rawMetrics.pigmentation) || 50),
-    100 - (Number(rawMetrics.melasma) || 45),
-    Number(rawMetrics.elasticity) || 65,
-    100 - (Number(rawMetrics.eyeWrinkles) || 40),
-    100 - (Number(rawMetrics.nasolabialFolds) || 45),
-    100 - (Number(rawMetrics.redness) || 40),
-    100 - (Number(rawMetrics.acneBacteria) || 45),
-    Number(rawMetrics.texture) || 65,
-    100 - (Number(rawMetrics.darkCircles) || 45)
-  ];
-
-  const products = Array.isArray(latestScan.recommendedRoutineProducts) && latestScan.recommendedRoutineProducts.length
-    ? latestScan.recommendedRoutineProducts
-    : [];
-
-  const userName = user.name || user.displayName || 'Khách hàng';
-  const userEmail = user.email || 'Chưa cập nhật';
-  const userPhone = user.phone || 'Chưa cập nhật';
-  const userBirthday = user.birthday || 'Chưa cập nhật';
-  const userGender = user.gender || 'Chưa cập nhật';
-  const shipping = user.shippingAddress;
-  const userAddress = shipping?.street
-    ? `${shipping.street}, ${shipping.ward || ''}, ${shipping.district || ''}, ${shipping.province || ''}`
-    : (user.address || 'Chưa cập nhật');
-
-  const reportId = `SKN-${(user.id || user.uid || 'USER').slice(-6).toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
-  const exportDateFormatted = formatDate(new Date());
-
-  return `<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bao-cao-ho-so-SkinID-${userName.replace(/[^a-zA-Z0-9]/g, '_')}</title>
-  <style>
-    @page {
-      size: A4 portrait;
-      margin: 14mm 16mm;
-    }
-    * {
-      box-sizing: border-box;
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      color: #261F23;
-      background: #FFFFFF;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .no-print {
-      position: sticky;
-      top: 0;
-      background: #2D1B23;
-      color: #FFFFFF;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 9999;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    }
-    .no-print button {
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 13px;
-      border: 0;
-      border-radius: 8px;
-      padding: 8px 18px;
-      transition: all 0.2s;
-    }
-    .btn-print {
-      background: #E06D81;
-      color: #FFFFFF;
-    }
-    .btn-print:hover {
-      background: #C8526B;
-    }
-    .btn-close {
-      background: rgba(255,255,255,0.15);
-      color: #FFFFFF;
-      margin-left: 8px;
-    }
-    @media print {
-      .no-print { display: none !important; }
-      body { padding: 0; }
-    }
-    .report-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 24px 28px;
-    }
-    /* Header */
-    .report-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 2px solid #E06D81;
-      padding-bottom: 18px;
-      margin-bottom: 22px;
-    }
-    .brand-title {
-      font-size: 24px;
-      font-weight: 900;
-      color: #261F23;
-      letter-spacing: -0.5px;
-      margin: 0 0 4px;
-    }
-    .brand-title span {
-      color: #E06D81;
-    }
-    .brand-subtitle {
-      font-size: 11px;
-      color: #7A6F75;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 700;
-    }
-    .meta-box {
-      text-align: right;
-      font-size: 11px;
-      color: #5D5257;
-      line-height: 1.6;
-    }
-    .meta-box strong {
-      color: #261F23;
-    }
-    .meta-badge {
-      display: inline-block;
-      background: #FFF0F3;
-      color: #C8526B;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 800;
-      border: 1px solid #FFD4DE;
-      margin-top: 4px;
-    }
-
-    /* Section styling */
-    .section {
-      margin-bottom: 22px;
-      page-break-inside: avoid;
-    }
-    .section-title {
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #C8526B;
-      border-left: 3px solid #E06D81;
-      padding-left: 8px;
-      margin: 0 0 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* Profile grid */
-    .profile-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #FFFDFD;
-      border: 1px solid #F0E4E7;
-      border-radius: 8px;
-      overflow: hidden;
-      font-size: 12px;
-    }
-    .profile-table td {
-      padding: 8px 12px;
-      border-bottom: 1px solid #F5ECEE;
-    }
-    .profile-table td.label {
-      width: 22%;
-      color: #7A6F75;
-      font-weight: 600;
-      background: #FFF8F9;
-    }
-    .profile-table td.value {
-      width: 28%;
-      color: #261F23;
-      font-weight: 700;
-    }
-
-    /* Diagnostic highlight cards */
-    .diagnostic-cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .diag-card {
-      background: #FFF9FA;
-      border: 1px solid #FFE4EB;
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-    .diag-card small {
-      display: block;
-      font-size: 10px;
-      text-transform: uppercase;
-      color: #8C7C83;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .diag-card strong {
-      display: block;
-      font-size: 20px;
-      font-weight: 900;
-      color: #C8526B;
-    }
-    .diag-card span {
-      font-size: 11px;
-      font-weight: 600;
-      color: #382E33;
-    }
-
-    .assessment-box {
-      background: #FFF5F7;
-      border: 1px solid #FFDDE5;
-      border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 12px;
-      color: #4A3E44;
-      line-height: 1.6;
-    }
-    .assessment-box strong {
-      color: #C8526B;
-    }
-
-    /* 12 Metrics grid */
-    .metrics-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11px;
-    }
-    .metrics-table th {
-      background: #FDF4F6;
-      color: #8C4758;
-      text-align: left;
-      padding: 6px 10px;
-      font-weight: 700;
-      border-bottom: 1px solid #F0DCE2;
-    }
-    .metrics-table td {
-      padding: 6px 10px;
-      border-bottom: 1px solid #F5EBEF;
-    }
-    .bar-bg {
-      background: #F2EBEE;
-      border-radius: 999px;
-      height: 6px;
-      width: 100%;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      background: #E06D81;
-      border-radius: 999px;
-    }
-
-    /* Routine Steps */
-    .routine-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .routine-box {
-      border: 1px solid #F0DCE2;
-      border-radius: 10px;
-      padding: 12px;
-      background: #FFFBFB;
-    }
-    .routine-box h4 {
-      margin: 0 0 10px;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: #C8526B;
-      border-bottom: 1px solid #FFE4EB;
-      padding-bottom: 6px;
-    }
-    .step-item {
-      margin-bottom: 8px;
-      font-size: 11px;
-      line-height: 1.4;
-    }
-    .step-item:last-child {
-      margin-bottom: 0;
-    }
-    .step-num {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      line-height: 18px;
-      text-align: center;
-      background: #E06D81;
-      color: #FFF;
-      font-weight: 800;
-      font-size: 9px;
-      border-radius: 50%;
-      margin-right: 6px;
-    }
-    .step-name {
-      font-weight: 700;
-      color: #2D1B23;
-    }
-    .step-desc {
-      color: #7D7077;
-      display: block;
-      margin-left: 24px;
-      font-size: 10.5px;
-    }
-
-    /* Products Table */
-    .products-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11px;
-      margin-top: 6px;
-    }
-    .products-table th {
-      background: #FDF4F6;
-      color: #8C4758;
-      text-align: left;
-      padding: 7px 10px;
-      font-weight: 700;
-      border-bottom: 1px solid #F0DCE2;
-    }
-    .products-table td {
-      padding: 7px 10px;
-      border-bottom: 1px solid #F5EBEF;
-      vertical-align: middle;
-    }
-    .products-table td.price {
-      font-weight: 800;
-      color: #C8526B;
-      text-align: right;
-    }
-
-    /* Footer */
-    .report-footer {
-      margin-top: 26px;
-      padding-top: 14px;
-      border-top: 1px dashed #E0CBD1;
-      font-size: 10.5px;
-      color: #8A7D84;
-      line-height: 1.6;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      page-break-inside: avoid;
-    }
-    .footer-stamp {
-      border: 2px solid #E06D81;
-      border-radius: 8px;
-      padding: 6px 12px;
-      text-align: center;
-      color: #C8526B;
-      font-weight: 800;
-      text-transform: uppercase;
-      font-size: 10px;
-      letter-spacing: 0.5px;
-      background: #FFF8F9;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="no-print">
-    <div>
-      <strong>Xem Trước Báo Cáo Phân Tích Da SkinID</strong>
-      <span style="font-size: 11px; opacity: 0.8; margin-left: 8px;">(Sử dụng chức năng In của trình duyệt để lưu tệp PDF chất lượng cao)</span>
-    </div>
-    <div>
-      <button class="btn-print" onclick="window.print()">In Báo Cáo / Lưu PDF</button>
-      <button class="btn-close" onclick="window.close()">Đóng</button>
-    </div>
-  </div>
-
-  <div class="report-container">
-    <!-- Header -->
-    <header class="report-header">
-      <div>
-        <h1 class="brand-title">SkinID<span>.vn</span></h1>
-        <div class="brand-subtitle">Hệ Thống Phân Tích Da Bằng Trí Tuệ Nhân Tạo & Dược Mỹ Phẩm Chính Hãng</div>
-      </div>
-      <div class="meta-box">
-        <div>Mã hồ sơ: <strong>${reportId}</strong></div>
-        <div>Ngày xuất: <strong>${exportDateFormatted}</strong></div>
-        <div class="meta-badge">Xác thực chuẩn Nghị định 13/2023/NĐ-CP</div>
-      </div>
-    </header>
-
-    <!-- 1. Thông Tin Khách Hàng -->
-    <section class="section">
-      <div class="section-title">1. Thông Tin Hồ Sơ Khách Hàng</div>
-      <table class="profile-table">
-        <tbody>
-          <tr>
-            <td class="label">Họ và tên</td>
-            <td class="value">${userName}</td>
-            <td class="label">Địa chỉ Email</td>
-            <td class="value">${userEmail}</td>
-          </tr>
-          <tr>
-            <td class="label">Số điện thoại</td>
-            <td class="value">${userPhone}</td>
-            <td class="label">Ngày sinh / Giới tính</td>
-            <td class="value">${userBirthday} · ${userGender}</td>
-          </tr>
-          <tr>
-            <td class="label">Địa chỉ giao hàng</td>
-            <td class="value" colspan="3">${userAddress}</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- 2. Kết Quả Chẩn Đoán Làn Da Gần Nhất -->
-    <section class="section">
-      <div class="section-title">
-        <span>2. Tổng Quan Chỉ Số Sức Khỏe Làn Da</span>
-        <span style="font-size: 11px; text-transform: none; color: #8A7D84;">Phiên soi gần nhất (${formatDate(latestScan.timestamp || latestScan.dateFormatted)})</span>
-      </div>
-
-      <div class="diagnostic-cards">
-        <div class="diag-card">
-          <small>Điểm Sức Khỏe</small>
-          <strong>${healthScore}/100</strong>
-          <span>Xếp hạng: ${grade}</span>
-        </div>
-        <div class="diag-card">
-          <small>Phân Loại Da</small>
-          <strong style="font-size: 15px; padding-top: 4px;">${skinType}</strong>
-          <span>Đánh giá AI</span>
-        </div>
-        <div class="diag-card">
-          <small>Tuổi Da Sinh Học</small>
-          <strong>${skinAge}</strong>
-          <span>tuổi</span>
-        </div>
-        <div class="diag-card">
-          <small>Tổng Phiên Đã Lưu</small>
-          <strong>${history.length}</strong>
-          <span>phiên theo dõi</span>
-        </div>
-      </div>
-
-      <div class="assessment-box">
-        <strong>Đánh giá khoa học từ AI 3 góc chụp: </strong>
-        <span>${gradeComment}. ${assessment}</span>
-      </div>
-    </section>
-
-    <!-- 3. Bảng 12 Chỉ Số Cấu Trúc Đa Tầng -->
-    <section class="section">
-      <div class="section-title">3. Đánh Giá 12 Chỉ Số Cấu Trúc Đa Tầng Của Làn Da</div>
-      <table class="metrics-table">
-        <thead>
-          <tr>
-            <th style="width: 25%;">Chỉ Số Cấu Trúc</th>
-            <th style="width: 15%;">Điểm Số</th>
-            <th style="width: 35%;">Thanh Đo Sinh Học</th>
-            <th style="width: 25%;">Đánh Giá Tham Khảo</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${detailedMetricNames.map((name, i) => {
-            const val = metricValues[i] || 60;
-            const status = val >= 75 ? 'Tốt · Khỏe mạnh' : val >= 55 ? 'Ổn định · Cần duy trì' : 'Cần phục hồi ưu tiên';
-            const color = val >= 75 ? '#10B981' : val >= 55 ? '#F59E0B' : '#E11D48';
-            return `<tr>
-              <td><strong>${name}</strong></td>
-              <td><span style="color: ${color}; font-weight: 800;">${val}/100</span></td>
-              <td>
-                <div class="bar-bg">
-                  <div class="bar-fill" style="width: ${val}%; background: ${color};"></div>
-                </div>
-              </td>
-              <td><span style="color: ${color}; font-weight: 600;">${status}</span></td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-    </section>
-
-    <!-- 4. Phác Đồ Chăm Sóc Sáng & Tối -->
-    <section class="section">
-      <div class="section-title">4. Chu Trình Chăm Sóc Da Gợi Ý (Tham Khảo Chu Kỳ 28 Ngày)</div>
-      <div class="routine-grid">
-        <div class="routine-box">
-          <h4>☀️ Buổi Sáng · Bảo Vệ & Cấp Ẩm</h4>
-          <div class="step-item">
-            <span class="step-num">1</span><span class="step-name">Làm sạch & Cân bằng pH</span>
-            <span class="step-desc">Loại bỏ dầu thừa đêm qua, giữ màng ẩm tự nhiên mềm mịn.</span>
-          </div>
-          <div class="step-item">
-            <span class="step-num">2</span><span class="step-name">Tinh chất chuyên sâu & Cấp ẩm</span>
-            <span class="step-desc">Thẩm thấu sâu khắc phục vấn đề da hàng đầu (HA, Niacinamide).</span>
-          </div>
-          <div class="step-item">
-            <span class="step-num">3</span><span class="step-name">Bảo vệ phổ rộng (SPF 50+)</span>
-            <span class="step-desc">Ngăn ngừa tác hại tia UVA/UVB, ánh sáng xanh và gốc tự do.</span>
-          </div>
-        </div>
-
-        <div class="routine-box">
-          <h4>🌙 Buổi Tối · Phục Hồi & Tái Tạo</h4>
-          <div class="step-item">
-            <span class="step-num">1</span><span class="step-name">Làm sạch sâu & Tẩy trang</span>
-            <span class="step-desc">Hút sạch bụi mịn PM2.5, bã nhờn và cặn kem chống nắng tích tụ.</span>
-          </div>
-          <div class="step-item">
-            <span class="step-num">2</span><span class="step-name">Tinh chất phục hồi & Tái tạo</span>
-            <span class="step-desc">Kích thích tái tạo tế bào biểu bì mới trong giấc ngủ.</span>
-          </div>
-          <div class="step-item">
-            <span class="step-num">3</span><span class="step-name">Khóa ẩm & Màng Lipid</span>
-            <span class="step-desc">Củng cố hàng rào ceramide, chống mất nước qua biểu bì.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. Sản Phẩm Khuyên Dùng -->
-    ${products.length ? `
-    <section class="section">
-      <div class="section-title">5. Danh Mục Dược Mỹ Phẩm Gợi Ý Cho Làn Da</div>
-      <table class="products-table">
-        <thead>
-          <tr>
-            <th style="width: 15%;">Hãng</th>
-            <th style="width: 55%;">Tên Sản Phẩm</th>
-            <th style="width: 15%;">Dung Tích</th>
-            <th style="width: 15%; text-align: right;">Đơn Giá</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${products.map(p => `<tr>
-            <td><strong>${p.brand || 'Rilastil'}</strong></td>
-            <td>${p.name || 'Sản phẩm gợi ý'}</td>
-            <td>${p.volume || '--'}</td>
-            <td class="price">${formatVnd(p.price)}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-    </section>` : ''}
-
-    <!-- 6. Lịch Sử Phiên Soi Da Gần Đây -->
-    ${history.length > 1 ? `
-    <section class="section">
-      <div class="section-title">6. Lịch Sử Tiến Trình Các Phiên Soi Da</div>
-      <table class="products-table">
-        <thead>
-          <tr>
-            <th>Phiên</th>
-            <th>Thời Gian</th>
-            <th>Điểm Số</th>
-            <th>Tuổi Da</th>
-            <th>Phân Loại</th>
-            <th>Đánh Giá</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${history.slice(0, 5).map((scan, idx) => `<tr>
-            <td><strong>#${history.length - idx}</strong></td>
-            <td>${formatDate(scan.timestamp || scan.dateFormatted)}</td>
-            <td><strong style="color: #C8526B;">${scan.healthScore || '--'}/100</strong></td>
-            <td>${scan.skinAge ? scan.skinAge + ' tuổi' : '--'}</td>
-            <td>${scan.skinType || 'Da hỗn hợp'}</td>
-            <td>${scan.overallGradeComment || scan.overallGrade || 'Ổn định'}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>
-    </section>` : ''}
-
-    <!-- Footer -->
-    <footer class="report-footer">
-      <div>
-        <div><strong>Hệ thống Phân tích Da & Dược Mỹ Phẩm SkinID.vn</strong></div>
-        <div>Phân phối chính hãng Rilastil & TWON (Công ty TNHH FieldMan)</div>
-        <div>Tư vấn Dược sĩ 1:1 qua Zalo: <strong>0924 093 461</strong> · Website: <strong>https://skinid.vn</strong></div>
-        <div style="margin-top: 4px; font-size: 10px; color: #9A8E95;">* Lưu ý quan trọng: Kết quả phân tích từ AI mang tính chất khoa học tham khảo, không phải chẩn đoán y khoa và không thay thế phác đồ điều trị của bác sĩ da liễu.</div>
-      </div>
-      <div class="footer-stamp">
-        <div>SkinID.vn</div>
-        <div style="font-size: 8.5px; opacity: 0.85;">PHÂN TÍCH AI</div>
-      </div>
-    </footer>
-  </div>
-
-</body>
-</html>`;
+async function printWhenReady(target) {
+  await target.document.fonts?.ready;
+  await Promise.all([...target.document.images].map(image => image.decode().catch(() => {})));
+  target.focus();
+  target.print();
 }
 
-export function exportUserPdfReport({ user = {}, history = [], orders = [], scan = null } = {}) {
-  const reportHistory = scan
-    ? [scan]
-    : (Array.isArray(history) ? history : []);
-  const reportOrders = Array.isArray(orders) ? orders : [];
-  const html = generateReportHtml({ user, history: reportHistory, orders: reportOrders });
+export function exportUserPdfReport({ user = {}, history = [], scan = null } = {}) {
+  const html = generateReportHtml({ user, history: scan ? [scan] : history });
   const printWindow = window.open('', '_blank');
-
   if (printWindow) {
     printWindow.document.open();
     printWindow.document.write(html);
     printWindow.document.close();
-    printWindow.focus();
-    setTimeout(() => {
-      try {
-        printWindow.print();
-      } catch (err) {
-        console.warn('[SkinID Print] print error:', err);
-      }
-    }, 500);
+    printWhenReady(printWindow).catch(error => console.warn('[SkinID Print]', error));
     return true;
   }
-
-  // Fallback if popup is blocked
   const iframe = document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.right = '0';
-  iframe.style.bottom = '0';
-  iframe.style.width = '0';
-  iframe.style.height = '0';
-  iframe.style.border = '0';
+  iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
   document.body.appendChild(iframe);
-  const doc = iframe.contentWindow.document;
-  doc.open();
-  doc.write(html);
-  doc.close();
-  iframe.contentWindow.focus();
-  setTimeout(() => {
-    try {
-      iframe.contentWindow.print();
-    } catch (err) {
-      console.warn('[SkinID Print] iframe print error:', err);
-    }
-    setTimeout(() => iframe.remove(), 2500);
-  }, 500);
+  iframe.contentWindow.addEventListener('afterprint', () => iframe.remove(), { once: true });
+  iframe.contentWindow.document.open();
+  iframe.contentWindow.document.write(html);
+  iframe.contentWindow.document.close();
+  printWhenReady(iframe.contentWindow).catch(error => { iframe.remove(); console.warn('[SkinID Print]', error); });
   return true;
 }

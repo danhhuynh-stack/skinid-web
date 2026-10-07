@@ -15,6 +15,7 @@ import MobileNav from '../components/layout/MobileNav.jsx';
 import OfferBar from '../components/layout/OfferBar.jsx';
 import StorefrontModals from '../components/dialogs/StorefrontModals.jsx';
 import usePageMetadata from '../hooks/usePageMetadata.js';
+import ProfileTabs from '../features/profile/components/ProfileTabs.jsx';
 import '../styles/profile.css';
 
 export default function ProfilePage() {
@@ -23,6 +24,7 @@ export default function ProfilePage() {
   const [pageMessage, setPageMessage] = useState(null);
   const [passwords, setPasswords] = useState({ current: '', next: '', confirmation: '' });
   const [passwordMessage, setPasswordMessage] = useState(null);
+  const [profileDirty, setProfileDirty] = useState(false);
   const {
     changeAvatar,
     cancelOrder,
@@ -52,6 +54,7 @@ export default function ProfilePage() {
   }, [isAuthenticated, isLoading, navigate]);
 
   const selectTab = (tab) => {
+    if (tab === activeTab) return;
     const next = new URLSearchParams(searchParams);
     if (tab === 'profile') next.delete('tab');
     else next.set('tab', tab);
@@ -112,30 +115,23 @@ export default function ProfilePage() {
         <header className="profile-page-heading">
             <span>KHÔNG GIAN CỦA BẠN</span>
             <div>
-                <h1>Chăm da có nhịp.<br /><em>Lưu giữ từng thay đổi.</em></h1>
-                <p>Hồ sơ, kết quả soi da và đơn hàng được sắp xếp trong một hành trình nhẹ nhàng, rõ ràng và riêng tư.</p>
+                <h1><span>Chăm da <mark>có nhịp.</mark></span>{' '}<span>Lưu giữ từng <em>thay đổi.</em></span></h1>
             </div>
         </header>
 
         <ProfileHero user={user} historyCount={history.length} isLoading={isLoading} onAvatarChange={handleAvatarChange} />
         {pageMessage && <div role={pageMessage.type === 'error' ? 'alert' : 'status'} className={`mb-6 rounded-2xl px-4 py-3 text-xs font-semibold ${pageMessage.type === 'error' ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'}`}>{pageMessage.text}</div>}
         {/* DASHBOARD NAVIGATION TABS */}
-        <div className="profile-tabs flex overflow-x-auto no-scrollbar mb-8" role="tablist" aria-label="Khu vực hồ sơ">
-            {[['profile', 'Hồ sơ cá nhân'], ['history', 'Lịch sử soi da'], ['orders', 'Đơn hàng'], ['settings', 'Cài đặt']].map(([tab, label]) => (
-                <button key={tab} id={`profile-tab-${tab}`} type="button" role="tab" aria-controls={`profile-panel-${tab}`} onClick={() => selectTab(tab)} aria-selected={activeTab === tab} className={`tab-btn ${activeTab === tab ? 'active' : ''} flex-1 min-w-[140px] py-4 px-4 text-xs sm:text-sm font-bold text-gray-600 flex items-center justify-center gap-2`}>{label}</button>
-            ))}
-        </div>
+        <ProfileTabs activeTab={activeTab} onSelect={selectTab} hoverPaused={isSaving || (activeTab === 'profile' && profileDirty) || (activeTab === 'settings' && Object.values(passwords).some(Boolean))} />
 
         {/* =================================================================== */}
         {/* TAB 1: HỒ SƠ CÁ NHÂN & THỂ TRẠNG DA */}
         {/* =================================================================== */}
-        {activeTab === 'profile' && (
-            <div id="profile-panel-profile" role="tabpanel" aria-labelledby="profile-tab-profile" className="profile-tab-panel space-y-8"><ProfileIdentityForm user={user} isSaving={isSaving} onSave={saveProfile} /></div>
-        )}
+        <div id="profile-panel-profile" role="tabpanel" aria-labelledby="profile-tab-profile" hidden={activeTab !== 'profile'} className="profile-tab-panel space-y-8"><ProfileIdentityForm user={user} isSaving={isSaving} onSave={saveProfile} onDirtyChange={setProfileDirty} /></div>
         {/* =================================================================== */}
         {/* TAB 2: LỊCH SỬ SOI DA & TIẾN TRÌNH BIỂU ĐỒ */}
         {/* =================================================================== */}
-        {activeTab === 'history' && <div id="profile-panel-history" role="tabpanel" aria-labelledby="profile-tab-history" className="profile-tab-panel space-y-8">
+        <div id="profile-panel-history" role="tabpanel" aria-labelledby="profile-tab-history" hidden={activeTab !== 'history'} className="profile-tab-panel space-y-8">
 
             <ProfileHistoryOverview history={history} />
 
@@ -151,24 +147,20 @@ export default function ProfilePage() {
                     </a>
                 </div>
 
-                <ProfileHistoryTimeline history={history} />
+                <ProfileHistoryTimeline history={history} user={user} />
             </div>
-        </div>}
+        </div>
 
-        {activeTab === 'orders' && <div id="profile-panel-orders" role="tabpanel" aria-labelledby="profile-tab-orders" className="profile-tab-panel space-y-5">
+        <div id="profile-panel-orders" role="tabpanel" aria-labelledby="profile-tab-orders" hidden={activeTab !== 'orders'} className="profile-tab-panel space-y-5">
             <div className="profile-surface p-6 sm:p-8">
-                <div className="pb-4 mb-5 border-b border-gray-100">
-                    <h2 className="text-lg font-black text-gray-900">Đơn Hàng Của Tôi</h2>
-                    <p className="text-xs text-gray-500">Theo dõi trạng thái xác nhận, giao hàng và thanh toán của mọi đơn mua.</p>
-                </div>
                 <ProfileOrders orders={orders} isLoading={isLoading} onCancel={cancelOrder} />
             </div>
-        </div>}
+        </div>
 
         {/* =================================================================== */}
         {/* TAB 4: CÀI ĐẶT & BẢO MẬT & QUYỀN RIÊNG TƯ */}
         {/* =================================================================== */}
-        {activeTab === 'settings' && <div id="profile-panel-settings" role="tabpanel" aria-labelledby="profile-tab-settings" className="profile-tab-panel space-y-8">
+        <div id="profile-panel-settings" role="tabpanel" aria-labelledby="profile-tab-settings" hidden={activeTab !== 'settings'} className="profile-tab-panel space-y-8">
 
             {/* 3.1 Đổi Mật Khẩu */}
             <div className="profile-surface p-6 sm:p-8">
@@ -270,11 +262,11 @@ export default function ProfilePage() {
                 </div>
             </div>
 
-        </div>}
+        </div>
 
     </main>
 
-    <ProfileScanDetailModal history={history} />
+    <ProfileScanDetailModal history={history} user={user} />
     </div>
     <Footer />
     <MobileNav />

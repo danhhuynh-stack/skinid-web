@@ -73,11 +73,13 @@ async function createOrder(request, env, user) {
 
   const productIds = [...quantities.keys()];
   const products = await Promise.all(productIds.map(async id => {
-    // Local Vite development intentionally runs without a Firebase service-account
-    // key. Use the bundled catalog there; production still re-reads Firestore prices.
+    // The storefront uses bundled catalog fields before remote fields. Checkout
+    // must use the same trusted server catalog so an older Firestore price cannot
+    // charge a different amount from the advertised price.
     if (!hasFirestore) return bundledProducts.get(id) || null;
     const remoteProduct = await getDocument(env, `products/${id}`);
-    return remoteProduct || bundledProducts.get(id) || null;
+    const localProduct = bundledProducts.get(id);
+    return localProduct ? { ...remoteProduct, ...localProduct } : remoteProduct || null;
   }));
   const items = products.map((product, index) => {
     const productId = productIds[index];

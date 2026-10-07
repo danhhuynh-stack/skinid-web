@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { loadProductCatalog, refreshProductCatalog } from '../features/catalog/index.js';
 
 const externalScripts = {
   home: [
@@ -43,6 +44,11 @@ export default function useLegacyApplication(page) {
     let active = true;
 
     (async () => {
+      window.SKINID_CATALOG_READY = loadProductCatalog();
+      const products = await window.SKINID_CATALOG_READY;
+      window.LOCAL_PRODUCTS = products;
+      window.PRODUCTS = products;
+      void refreshProductCatalog();
       await loadScript('https://unpkg.com/feather-icons', 'feather');
       for (const [index, src] of (externalScripts[page] ?? []).entries()) {
         await loadScript(src, `${page}-${index}`);
