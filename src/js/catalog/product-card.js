@@ -33,6 +33,7 @@ function productDisplayName(product) {
             [/\brilastil\b/giu, 'Rilastil'], [/\btwon\b/giu, 'TWON'],
             [/\bkamal\b/giu, 'Kamal'], [/\bmalini\b/giu, 'Malini'],
             [/\brakta\b/giu, 'Rakta'], [/\bsarika\b/giu, 'Sarika'], [/\btanmaya\b/giu, 'Tanmaya'],
+            [/\btamaya\b/giu, 'Tamaya'], [/\bmalani\b/giu, 'Malani'],
             [/\bspf\b/giu, 'SPF'], [/\bdna\b/giu, 'DNA'], [/\bpb\b/giu, 'PB']
         ];
         preferredCasing.forEach(([pattern, replacement]) => {
