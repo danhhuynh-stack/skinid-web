@@ -3,6 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import { assetUrl } from '../../../assets/index.js';
 import { useCart } from '../../cart/index.js';
 import { getProductById } from '../../catalog/index.js';
+import { matchesProfileSearch, profileSearchDate } from '../profileListSearch.mjs';
+import ProfileListControls, { ProfileListMore } from './ProfileListControls.jsx';
+import VietQrPaymentModal from '../../cart/components/VietQrPaymentModal.jsx';
 
 const statusStyles = {
   pending: { label: 'Chờ xác nhận', className: 'bg-[#FEF3C7] text-[#92400E] border-0' },
@@ -57,7 +60,7 @@ function OrderItem({ item }) {
   );
 }
 
-function OrderCard({ order, onCancel, onReorder, cancellingId }) {
+function OrderCard({ order, onCancel, onReorder, onShowVietQr, cancellingId }) {
   const [confirming, setConfirming] = useState(false);
   const status = statusStyles[order.status] || statusStyles.pending;
   const canCancel = ['pending', 'confirmed'].includes(order.status);
@@ -66,6 +69,7 @@ function OrderCard({ order, onCancel, onReorder, cancellingId }) {
   const isCancelling = cancellingId === order.id;
   const items = order.items || [];
   const totalQuantity = items.reduce((total, item) => total + (Number(item.quantity) || 1), 0);
+  const needsBankPayment = order.paymentMethod === 'bank_transfer' && order.paymentStatus !== 'paid' && order.status !== 'cancelled';
 
   return (
     <article className="profile-order-card p-5 sm:p-6 space-y-4">
@@ -86,7 +90,7 @@ function OrderCard({ order, onCancel, onReorder, cancellingId }) {
       <div className="bg-gray-50/60 rounded-2xl p-3.5 space-y-2">
         <p className="text-xs text-gray-600"><strong>{customer.name || 'Khách hàng'}</strong>{customer.phone ? ` (${customer.phone})` : ''} — {customer.address || 'Chưa có địa chỉ'}</p>
         <p className="text-[11px] text-gray-500">
-          {order.paymentMethod === 'cod' ? 'COD (Thanh toán khi nhận hàng)' : 'Chuyển khoản ngân hàng'} ·{' '}
+          {order.paymentMethod === 'cod' ? 'COD (Thanh toán khi nhận hàng)' : 'Chuyển khoản VietQR (MB Bank)'} ·{' '}
           <span className={order.paymentStatus === 'paid' ? 'text-teal-600 font-bold' : 'text-gray-500'}>{order.paymentStatus === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán'}</span>
         </p>
       </div>
@@ -104,7 +108,22 @@ function OrderCard({ order, onCancel, onReorder, cancellingId }) {
       <div className="pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
         <span className="text-xs text-gray-400">Phí vận chuyển: {Number(order.shippingFee) === 0 ? <strong className="text-teal-600">Miễn phí</strong> : formatPrice(order.shippingFee)}</span>
         <div className="flex flex-wrap items-center justify-end gap-2">
-          <button type="button" onClick={() => onReorder(order)} className="profile-action profile-action--primary">Mua lại</button>
+          {needsBankPayment && (
+            <button
+              type="button"
+              onClick={() => onShowVietQr?.(order)}
+              className="profile-action profile-action--primary flex items-center gap-1.5"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+              </svg>
+              Quét mã VietQR
+            </button>
+          )}
+          <button type="button" onClick={() => onReorder(order)} className="profile-action profile-action--quiet">Mua lại</button>
           {canCancel && !confirming && (
             <button type="button" onClick={() => setConfirming(true)} className="profile-action profile-action--danger">Hủy đơn</button>
           )}
@@ -124,8 +143,23 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
   const { addToCart, openCart } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
   const [placedOrder] = useState(() => searchParams.get('placed'));
+  const [activeQrOrder, setActiveQrOrder] = useState(null);
   const [cancellingId, setCancellingId] = useState(null);
   const [error, setError] = useState('');
+  const batchSize = 3;
+  const [query, setQuery] = useState('');
+  const [limit, setLimit] = useState(batchSize);
+  const matches = orders.filter(order => matchesProfileSearch([
+    `#${order.id}`, order.dateFormatted, profileSearchDate(order.createdAt),
+    (statusStyles[order.status] || statusStyles.pending).label,
+    ...((order.items || []).map(item => `${item.name || getProductById(item.productId)?.name || ''} ${item.productId || ''}`))
+  ], query));
+  const visible = matches.slice(0, limit);
+  const changeQuery = value => { setQuery(value); setLimit(batchSize); };
+
+  const placedOrderDetails = placedOrder
+    ? orders.find(order => String(order.id || '').toUpperCase().startsWith(placedOrder.toUpperCase()))
+    : null;
 
   useEffect(() => {
     if (!placedOrder || !searchParams.has('placed')) return;
@@ -161,9 +195,31 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
   return (
     <div className="space-y-4">
       {placedOrder && (
-        <div className="order-success-banner" role="status"><div><strong>Đặt hàng thành công</strong><p>Mã đơn #{placedOrder} đã được tiếp nhận. SkinID sẽ sớm xác nhận với bạn.</p></div></div>
+        <div className="order-success-banner" role="status">
+          <div>
+            <strong>Đặt hàng thành công</strong>
+            <p>Mã đơn #{placedOrder} đã được tiếp nhận. SkinID sẽ sớm liên hệ xác nhận.</p>
+            {placedOrderDetails?.paymentMethod === 'bank_transfer' && placedOrderDetails?.paymentStatus !== 'paid' && (
+              <button
+                type="button"
+                onClick={() => setActiveQrOrder(placedOrderDetails)}
+                className="mt-2.5 inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-primary text-white text-xs font-bold rounded-xl shadow-sm hover:opacity-90 transition-opacity"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+                Xem mã VietQR thanh toán ngay
+              </button>
+            )}
+          </div>
+        </div>
       )}
       {error && <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-xs font-semibold text-rose-700">{error}</div>}
+      {!!orders.length && <ProfileListControls id="profile-order-list" label="Tìm đơn hàng" placeholder="Mã đơn, tên sản phẩm, ngày hoặc trạng thái…" query={query} onQueryChange={changeQuery} shown={visible.length} total={matches.length} />}
+      <div id="profile-order-list" className="space-y-4">
       {!orders.length ? (
         <div className="profile-empty-panel text-center py-12 px-4">
           <div className="w-16 h-16 mx-auto mb-4 rounded-3xl bg-brand-blush/60 text-brand-primary flex items-center justify-center shadow-sm text-3xl" aria-hidden="true">▣</div>
@@ -171,9 +227,21 @@ export default function ProfileOrders({ orders = [], isLoading = false, onCancel
           <p className="text-xs text-gray-400 max-w-sm mx-auto mb-6">Bạn chưa thực hiện đơn đặt hàng nào tại SkinID. Khám phá các sản phẩm dược mỹ phẩm chính hãng ngay!</p>
           <a href="/products" className="profile-btn profile-btn--primary">Khám phá sản phẩm ngay →</a>
         </div>
-      ) : orders.map((order) => (
-        <OrderCard key={order.id} order={order} onCancel={handleCancel} onReorder={handleReorder} cancellingId={cancellingId} />
+      ) : !matches.length ? <div className="profile-list-no-results"><strong>Không tìm thấy đơn hàng phù hợp</strong><p>Thử mã đơn, sản phẩm hoặc trạng thái khác.</p><button type="button" className="profile-action profile-action--quiet" onClick={() => changeQuery('')}>Xóa tìm kiếm</button></div> : visible.map((order) => (
+        <OrderCard key={order.id} order={order} onCancel={handleCancel} onReorder={handleReorder} onShowVietQr={setActiveQrOrder} cancellingId={cancellingId} />
       ))}
+      </div>
+      <ProfileListMore id="profile-order-list" shown={visible.length} total={matches.length} batchSize={batchSize} onMore={() => setLimit(value => value + batchSize)} onCollapse={() => setLimit(batchSize)} />
+
+      {activeQrOrder && (
+        <VietQrPaymentModal
+          isOpen={Boolean(activeQrOrder)}
+          orderId={activeQrOrder.id}
+          amount={activeQrOrder.total || activeQrOrder.subtotal}
+          onClose={() => setActiveQrOrder(null)}
+          onFinish={() => setActiveQrOrder(null)}
+        />
+      )}
     </div>
   );
 }
