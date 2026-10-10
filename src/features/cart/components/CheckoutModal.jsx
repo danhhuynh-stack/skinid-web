@@ -7,9 +7,12 @@ import {
 } from '../../../shared/services/vietnamAddressService.js';
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
-import { calculateShippingFee, createOrder } from '../services/checkoutService.js';
+import { calculateShippingFee, createOrder, FREE_SHIPPING_THRESHOLD } from '../services/checkoutService.js';
 import { BANK_CONFIG } from '../../../config/bankConfig.js';
+import { getProductById } from '../../catalog/index.js';
+import { assetUrl } from '../../../assets/index.js';
 import VietQrPaymentModal from './VietQrPaymentModal.jsx';
+import OrderSuccessModal from './OrderSuccessModal.jsx';
 import './CheckoutModal.css';
 
 const formatPrice = (value) => new Intl.NumberFormat('vi-VN', {
@@ -40,6 +43,7 @@ export default function CheckoutModal() {
   const [error, setError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [createdOrder, setCreatedOrder] = useState(null);
+  const [showQrModal, setShowQrModal] = useState(false);
   const attemptIdRef = useRef('');
   const isSubmittingRef = useRef(false);
   const closeButtonRef = useRef(null);
@@ -55,6 +59,7 @@ export default function CheckoutModal() {
     setForm(formFromUser(user));
     setError('');
     setCreatedOrder(null);
+    setShowQrModal(false);
     setPaymentMethod('cod');
     attemptIdRef.current = globalThis.crypto.randomUUID();
     requestAnimationFrame(() => closeButtonRef.current?.focus());
@@ -120,15 +125,14 @@ export default function CheckoutModal() {
       const shortId = String(result.orderId || '').slice(0, 8).toUpperCase();
       const finalTotal = Number(result.total) || (subtotal + shippingFee);
 
-      if (paymentMethod === 'bank_transfer') {
-        setCreatedOrder({
-          orderId: result.orderId,
-          shortId,
-          total: finalTotal
-        });
-      } else {
-        globalThis.location.assign(`/profile?tab=orders&placed=${encodeURIComponent(shortId)}`);
-      }
+      setCreatedOrder({
+        orderId: result.orderId,
+        shortId,
+        customer: { name, phone, address: shippingAddress.fullAddress, shippingAddress },
+        total: finalTotal,
+        paymentMethod,
+        items
+      });
     } catch (requestError) {
       setError(requestError.message || 'Không thể tạo đơn hàng. Vui lòng thử lại; hệ thống sẽ không tạo đơn trùng.');
     } finally {
@@ -136,7 +140,7 @@ export default function CheckoutModal() {
     }
   };
 
-  const handleFinishBankTransfer = () => {
+  const handleFinish = () => {
     if (!createdOrder) return;
     const shortId = createdOrder.shortId;
     setCreatedOrder(null);
@@ -144,95 +148,248 @@ export default function CheckoutModal() {
     globalThis.location.assign(`/profile?tab=orders&placed=${encodeURIComponent(shortId)}`);
   };
 
+  const handleContinueShopping = () => {
+    setCreatedOrder(null);
+    closeCheckout();
+    globalThis.location.assign('/products');
+  };
+
   return (
     <>
       <div className={`react-checkout-layer ${isCheckoutOpen && !createdOrder ? 'is-open' : ''}`} aria-hidden={!isCheckoutOpen || Boolean(createdOrder)}>
-        <div className="react-checkout-backdrop" />
+        <div className="react-checkout-backdrop" onClick={closeCheckout} />
         <form className="react-checkout-panel" onSubmit={submit} aria-labelledby="react-checkout-title">
           <header className="react-checkout-heading">
             <div>
-              <span>THANH TOÁN AN TOÀN</span>
-              <h2 id="react-checkout-title">Thông tin nhận hàng</h2>
-              <p>Kiểm tra thông tin trước khi xác nhận đơn.</p>
+              <span>THANH TOÁN AN TOÀN · 100% CHÍNH HÃNG</span>
+              <h2 id="react-checkout-title">Xác Nhận Đơn Hàng</h2>
+              <p>Vui lòng kiểm tra địa chỉ và chọn phương thức thanh toán phù hợp.</p>
             </div>
             <button ref={closeButtonRef} type="button" onClick={closeCheckout} disabled={isSubmitting} aria-label="Đóng thanh toán">×</button>
           </header>
 
-          <div className="react-checkout-grid">
-            <label><span>Họ và tên *</span><input required value={form.name} onChange={update('name')} autoComplete="name" /></label>
-            <label><span>Số điện thoại *</span><input required type="tel" value={form.phone} onChange={update('phone')} autoComplete="tel" /></label>
-            <label><span>Tỉnh / Thành phố *</span><select required value={form.provinceCode} onChange={(event) => { setError(''); setForm((current) => ({ ...current, provinceCode: event.target.value, wardCode: '' })); }}><option value="">Chọn tỉnh/thành</option>{vietnamProvinces.map((province) => <option key={province.code} value={province.code}>{province.name}</option>)}</select></label>
-            <label><span>Phường / Xã *</span><select required value={form.wardCode} onChange={update('wardCode')} disabled={!form.provinceCode || isLoadingWards}><option value="">{isLoadingWards ? 'Đang tải phường/xã…' : form.provinceCode ? 'Chọn phường/xã' : 'Chọn tỉnh/thành trước'}</option>{wards.map((ward) => <option key={ward.code} value={ward.code}>{ward.name}</option>)}</select></label>
-            <label className="react-checkout-wide"><span>Địa chỉ chi tiết *</span><input required value={form.line1} onChange={update('line1')} autoComplete="street-address" placeholder="Số nhà, tên đường, tòa nhà…" /></label>
-            <p className="react-checkout-address-note">Địa chỉ được lưu an toàn trong tài khoản để tự động điền cho lần mua sau.</p>
-            <label className="react-checkout-wide"><span>Ghi chú</span><textarea rows="2" maxLength="1000" value={form.note} onChange={update('note')} /></label>
+          <div className="react-checkout-steps">
+            <span className="done">1. Giỏ hàng ✓</span>
+            <span>→</span>
+            <span className="current">2. Nhận hàng & Thanh toán</span>
+            <span>→</span>
+            <span>3. Hoàn tất</span>
           </div>
 
-          <fieldset className="react-checkout-payment">
-            <legend>Phương thức thanh toán</legend>
-            <div className="react-checkout-payment-options">
-              <label className={`react-checkout-payment-option ${paymentMethod === 'cod' ? 'is-selected' : ''}`}>
-                <input
-                  type="radio"
-                  name="payment-method"
-                  value="cod"
-                  checked={paymentMethod === 'cod'}
-                  onChange={() => setPaymentMethod('cod')}
-                />
-                <span>
-                  <b>Thanh toán khi nhận hàng (COD)</b>
-                  <small>Chỉ thanh toán sau khi nhận và kiểm tra kiện hàng.</small>
-                </span>
-              </label>
+          <div className="react-checkout-content-grid">
+            {/* Cột trái: Form thông tin & Phương thức thanh toán */}
+            <div className="react-checkout-form-col">
+              <section>
+                <h3 className="react-checkout-section-title">
+                  <span>1</span> Thông tin nhận hàng
+                </h3>
+                <div className="react-checkout-grid">
+                  <label>
+                    <span>Họ và tên *</span>
+                    <input required value={form.name} onChange={update('name')} autoComplete="name" placeholder="Nguyễn Văn A" />
+                  </label>
+                  <label>
+                    <span>Số điện thoại *</span>
+                    <input required type="tel" value={form.phone} onChange={update('phone')} autoComplete="tel" placeholder="0912 345 678" />
+                  </label>
+                  <label>
+                    <span>Tỉnh / Thành phố *</span>
+                    <select
+                      required
+                      value={form.provinceCode}
+                      onChange={(event) => {
+                        setError('');
+                        setForm((current) => ({ ...current, provinceCode: event.target.value, wardCode: '' }));
+                      }}
+                    >
+                      <option value="">Chọn tỉnh/thành</option>
+                      {vietnamProvinces.map((province) => (
+                        <option key={province.code} value={province.code}>{province.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    <span>Phường / Xã *</span>
+                    <select
+                      required
+                      value={form.wardCode}
+                      onChange={update('wardCode')}
+                      disabled={!form.provinceCode || isLoadingWards}
+                    >
+                      <option value="">
+                        {isLoadingWards ? 'Đang tải phường/xã…' : form.provinceCode ? 'Chọn phường/xã' : 'Chọn tỉnh/thành trước'}
+                      </option>
+                      {wards.map((ward) => (
+                        <option key={ward.code} value={ward.code}>{ward.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="react-checkout-wide">
+                    <span>Địa chỉ chi tiết *</span>
+                    <input
+                      required
+                      value={form.line1}
+                      onChange={update('line1')}
+                      autoComplete="street-address"
+                      placeholder="Số nhà, tên tòa nhà, tên đường…"
+                    />
+                  </label>
+                  <p className="react-checkout-address-note">Địa chỉ được lưu bảo mật trong tài khoản để tự động điền cho lần mua sau.</p>
+                  <label className="react-checkout-wide">
+                    <span>Ghi chú đơn hàng</span>
+                    <textarea rows="2" maxLength="1000" value={form.note} onChange={update('note')} placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao…" />
+                  </label>
+                </div>
+              </section>
 
-              <label className={`react-checkout-payment-option ${paymentMethod === 'bank_transfer' ? 'is-selected' : ''}`}>
-                <input
-                  type="radio"
-                  name="payment-method"
-                  value="bank_transfer"
-                  checked={paymentMethod === 'bank_transfer'}
-                  onChange={() => setPaymentMethod('bank_transfer')}
-                />
-                <span>
-                  <b>
-                    Chuyển khoản VietQR (MB Bank)
-                    <span className="react-checkout-payment-badge">Xử lý nhanh</span>
-                  </b>
-                  <small>Quét mã VietQR 24/7 bằng mọi ứng dụng ngân hàng hoặc ví điện tử.</small>
-                </span>
-              </label>
+              <fieldset className="react-checkout-payment">
+                <legend>
+                  <span>2</span> Phương thức thanh toán
+                </legend>
+                <div className="react-checkout-payment-options">
+                  <label className={`react-checkout-payment-option ${paymentMethod === 'cod' ? 'is-selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="payment-method"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={() => setPaymentMethod('cod')}
+                    />
+                    <span>
+                      <b>Thanh toán khi nhận hàng (COD)</b>
+                      <small>Thanh toán bằng tiền mặt sau khi nhận và kiểm tra kiện hàng.</small>
+                    </span>
+                  </label>
+
+                  <label className={`react-checkout-payment-option ${paymentMethod === 'bank_transfer' ? 'is-selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="payment-method"
+                      value="bank_transfer"
+                      checked={paymentMethod === 'bank_transfer'}
+                      onChange={() => setPaymentMethod('bank_transfer')}
+                    />
+                    <span>
+                      <b>
+                        Chuyển khoản VietQR (MB Bank)
+                        <span className="react-checkout-payment-badge">Khuyên dùng · 24/7</span>
+                      </b>
+                      <small>Quét mã VietQR bằng mọi ứng dụng ngân hàng hoặc ví điện tử (MoMo, ZaloPay).</small>
+                    </span>
+                  </label>
+                </div>
+
+                {paymentMethod === 'bank_transfer' && (
+                  <div className="react-checkout-bank-preview">
+                    <div className="flex items-center justify-between">
+                      <strong>MB Bank – {BANK_CONFIG.accountName}</strong>
+                      <span className="font-mono font-bold text-brand-primary">{BANK_CONFIG.accountNumber}</span>
+                    </div>
+                    <p>Mã VietQR tự động điền số tiền và nội dung đơn hàng sẽ xuất hiện ngay sau khi bạn bấm xác nhận.</p>
+                  </div>
+                )}
+              </fieldset>
             </div>
 
-            {paymentMethod === 'bank_transfer' && (
-              <div className="react-checkout-bank-preview">
-                <div className="flex items-center justify-between">
-                  <strong>MB Bank – {BANK_CONFIG.accountName}</strong>
-                  <span className="font-mono font-bold text-brand-primary">{BANK_CONFIG.accountNumber}</span>
+            {/* Cột phải: Tóm tắt đơn hàng & Nút Submit */}
+            <div className="react-checkout-summary-col">
+              <div className="react-checkout-summary-box">
+                <div className="react-checkout-summary-title">
+                  <span>Mặt hàng trong đơn ({items.reduce((s, i) => s + i.quantity, 0)})</span>
+                  <small className="text-gray-400 font-normal">{items.length} món</small>
                 </div>
-                <p>Mã VietQR tự động điền số tiền và nội dung sẽ xuất hiện ngay sau khi bạn bấm xác nhận đặt hàng.</p>
-              </div>
-            )}
-          </fieldset>
 
-          <div className="react-checkout-summary">
-            <div><span>Tạm tính</span><b>{formatPrice(subtotal)}</b></div>
-            <div><span>Phí giao hàng</span><b>{shippingFee ? formatPrice(shippingFee) : 'Miễn phí'}</b></div>
-            <div><span>Tổng thanh toán</span><strong>{formatPrice(subtotal + shippingFee)}</strong></div>
+                <div className="react-checkout-summary-items">
+                  {items.map((item) => {
+                    const product = getProductById(item.productId);
+                    const itemPrice = Number(product?.price) || 0;
+                    return (
+                      <div className="react-checkout-mini-item" key={item.productId}>
+                        <img
+                          src={assetUrl(product?.image || '/images/products/placeholder.jpg', product?.brandSlug)}
+                          alt={product?.name || 'Sản phẩm'}
+                          className="react-checkout-mini-thumb"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = assetUrl('/images/products/placeholder.jpg');
+                          }}
+                        />
+                        <div className="react-checkout-mini-info">
+                          <p title={product?.name}>{product?.name || item.productId}</p>
+                          <small>SL: {item.quantity} × {formatPrice(itemPrice)}</small>
+                        </div>
+                        <span className="react-checkout-mini-price">
+                          {formatPrice(itemPrice * item.quantity)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="react-checkout-fee-rows">
+                  <div className="react-checkout-fee-row">
+                    <span>Tạm tính</span>
+                    <b>{formatPrice(subtotal)}</b>
+                  </div>
+                  <div className="react-checkout-fee-row">
+                    <span>Phí vận chuyển</span>
+                    <b>
+                      {shippingFee === 0 ? (
+                        <span className="text-emerald-700 font-bold">Miễn phí (Freeship)</span>
+                      ) : (
+                        formatPrice(shippingFee)
+                      )}
+                    </b>
+                  </div>
+                  {subtotal < FREE_SHIPPING_THRESHOLD && (
+                    <small className="text-[11px] text-amber-700">
+                      Mua thêm {formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} để được Freeship.
+                    </small>
+                  )}
+                  <div className="react-checkout-fee-row total">
+                    <span>Tổng thanh toán</span>
+                    <strong>{formatPrice(subtotal + shippingFee)}</strong>
+                  </div>
+                </div>
+
+                {error && <div className="react-checkout-error" role="alert">{error}</div>}
+
+                <button
+                  className="react-checkout-submit"
+                  type="submit"
+                  disabled={isSubmitting || !items.length}
+                >
+                  {isSubmitting ? 'Đang tạo đơn…' : paymentMethod === 'bank_transfer' ? 'Tiếp tục thanh toán VietQR →' : 'Xác nhận đặt hàng →'}
+                </button>
+
+                <div className="react-checkout-guarantees">
+                  <span>✓ 100% Sản phẩm chính hãng & hóa đơn đầy đủ</span>
+                  <span>✓ Đổi trả miễn phí trong 7 ngày nếu lỗi</span>
+                  <span>✓ Kiểm tra hàng trước khi thanh toán</span>
+                </div>
+              </div>
+            </div>
           </div>
-          {error && <div className="react-checkout-error" role="alert">{error}</div>}
-          <button className="react-checkout-submit" type="submit" disabled={isSubmitting || !items.length}>
-            {isSubmitting ? 'Đang tạo đơn…' : paymentMethod === 'bank_transfer' ? 'Tiếp tục thanh toán VietQR' : 'Xác nhận đặt hàng'}
-          </button>
         </form>
       </div>
 
       {createdOrder && (
-        <VietQrPaymentModal
+        <OrderSuccessModal
           isOpen={Boolean(createdOrder)}
+          order={createdOrder}
+          onClose={handleFinish}
+          onContinueShopping={handleContinueShopping}
+          onViewOrders={handleFinish}
+        />
+      )}
+
+      {showQrModal && createdOrder && (
+        <VietQrPaymentModal
+          isOpen={showQrModal}
           orderId={createdOrder.orderId}
           amount={createdOrder.total}
-          onClose={handleFinishBankTransfer}
-          onFinish={handleFinishBankTransfer}
+          onClose={() => setShowQrModal(false)}
+          onFinish={handleFinish}
         />
       )}
     </>

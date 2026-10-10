@@ -35,7 +35,7 @@ export default function ProductCard({ product, onOpen }) {
 
   const handleBuyNow = async (event) => {
     event.stopPropagation();
-    await addToCart(product.id);
+    await addToCart(product.id, 1, { showToast: false });
     await openCheckout();
   };
 
@@ -52,7 +52,7 @@ export default function ProductCard({ product, onOpen }) {
       <div className="product-card__media">
         {imageFailed
           ? <div className="w-full h-full missing-image-placeholder text-center px-4 flex items-center justify-center text-xs text-gray-400 font-semibold">{product.brand}</div>
-          : <img src={image} alt={product.name} loading="lazy" onError={handleImageError} className="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 ease-in-out" />}
+          : <img src={image} alt={product.name} loading="lazy" decoding="async" onError={handleImageError} className="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 ease-in-out" />}
       </div>
       <div className="product-card__content">
         <div className="product-card__actives">{medicalLine}</div>

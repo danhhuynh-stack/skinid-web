@@ -1,0 +1,43 @@
+.free-shipping-container {
+  padding: 14px 20px;
+  background: #fdf7f8;
+  border-bottom: 1px solid #f2e4e7;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.free-shipping-message {
+  font-size: 0.74rem;
+  color: #4a3e43;
+  line-height: 1.4;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.free-shipping-message strong {
+  color: #c8526b;
+  font-weight: 850;
+}
+.free-shipping-message.is-achieved {
+  color: #1b5e20;
+  font-weight: 750;
+}
+.free-shipping-track {
+  width: 100%;
+  height: 6px;
+  background: #edd8dc;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+.free-shipping-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #e5738a, #c8526b);
+  border-radius: 9999px;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.free-shipping-fill.is-achieved {
+  background: linear-gradient(90deg, #4caf50, #2e7d32);
+}

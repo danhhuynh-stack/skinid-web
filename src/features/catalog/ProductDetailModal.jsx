@@ -100,13 +100,13 @@ export default function ProductDetailModal() {
   const volume = product.volume ? product.volume.trim() : 'Tiêu chuẩn';
 
   const handleAddToCart = async () => {
-    await addToCart(product.id);
     closeModal();
+    await addToCart(product.id, 1, { openDrawer: true });
   };
 
   const handleBuyNow = async () => {
-    await addToCart(product.id);
     closeModal();
+    await addToCart(product.id, 1, { showToast: false });
     await openCheckout();
   };
 
@@ -130,7 +130,8 @@ export default function ProductDetailModal() {
               <p>{uses}</p>
               <div className="spec">
                 <h4>Dung tích</h4>
-                <p>{volume}</p>
+                <p>{volume}{product.unit ? ` / ${product.unit.toLocaleLowerCase('vi-VN')}` : ''}</p>
+                {product.productCode && <><h4>Mã sản phẩm</h4><p>{product.productCode}</p></>}
                 <h4>Hướng dẫn sử dụng</h4>
                 <p>{product.usage || 'Sử dụng hàng ngày vào sáng và tối.'}</p>
               </div>
