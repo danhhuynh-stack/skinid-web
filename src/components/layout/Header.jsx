@@ -189,7 +189,7 @@ export default function Header() {
     <header className="site-header skinid-header minimal-header">
       <div className="container header-main">
         <button ref={trigger} className="minimal-menu-trigger" type="button" aria-expanded={isOpen} aria-controls="product-menu" aria-haspopup="dialog" onMouseEnter={open} onMouseLeave={scheduleClose} onClick={openPinned} onKeyDown={event => { if (event.key === 'ArrowDown') { event.preventDefault(); openPinned(); } }}><Icon name="menu" /><span>Menu</span></button>
-        <a className="brand" href="/" aria-label="SkinID.vn — Trang chủ"><img src={assetUrl('/images/logo.png')} alt="" /><span><b>SkinID</b><em>.vn</em></span></a>
+        <a className="brand" href="/" aria-label="SkinID.vn — Trang chủ"><img src={assetUrl('/images/logo.png')} alt="SkinID" /></a>
         <div className="header-actions">
           <a className="header-compliance" href="/tra-cuu-cong-bo"><Icon name="shield" /><span>Tra cứu công bố</span></a>
           <a className="icon-btn" href="/products#catalog-search" aria-label="Tìm sản phẩm"><Icon name="search" /></a>

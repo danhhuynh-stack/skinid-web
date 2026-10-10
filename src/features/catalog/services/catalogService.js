@@ -7,6 +7,7 @@ const SHOP_CATEGORY_OVERRIDES = {
   'rilastil-2085': ['moisturizer'],
   'rilastil-1125': ['moisturizer'],
   'rilastil-1939': ['special'],
+  'rilastil-stretch-marks-75ml': ['special'],
   'rilastil-1872': ['cleanser', 'special'],
   'rilastil-1871': ['cleanser', 'special'],
   'rilastil-1867': ['cleanser', 'special']
@@ -138,7 +139,14 @@ export function getAvailableProducts() {
 }
 
 export function setAvailableProducts(products) {
-  if (Array.isArray(products) && products.length) moduleCatalog = products;
+  if (Array.isArray(products) && products.length) {
+    moduleCatalog = products;
+    // Keep existing legacy consumers in sync with the shared repository.
+    if (typeof window !== 'undefined' && Array.isArray(window.PRODUCTS)) {
+      window.PRODUCTS = products;
+      window.LOCAL_PRODUCTS = products;
+    }
+  }
   return moduleCatalog;
 }
 
