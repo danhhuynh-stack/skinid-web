@@ -8,8 +8,18 @@ export const firebaseConfig = Object.freeze({
   measurementId: 'G-425CLMQ7YP'
 });
 
+const CLOUDFLARE_WORKER_API_URL = 'https://skinid-web.hominhkhang01072005.workers.dev/api';
+
+function resolveApiBaseUrl() {
+  if (typeof window === 'undefined') return '/api';
+  if (window.SKINID_CONFIG?.apiBaseUrl) return window.SKINID_CONFIG.apiBaseUrl;
+  if (window.location.hostname.endsWith('workers.dev')) return '/api';
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return '/api';
+  return CLOUDFLARE_WORKER_API_URL;
+}
+
 export const runtimeConfig = Object.freeze({
-  apiBaseUrl: '/api',
+  apiBaseUrl: resolveApiBaseUrl(),
   firebase: firebaseConfig
 });
 
