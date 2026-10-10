@@ -190,6 +190,219 @@
   color: #c8526b;
 }
 
+/* Luxury Bank Card in Order Success */
+.order-success-bank-card {
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  background: linear-gradient(135deg, #fffcfd 0%, #fef4f7 100%);
+  border: 1.5px solid rgba(200, 82, 107, 0.22);
+  border-radius: 20px;
+  box-shadow: 0 4px 18px rgba(200, 82, 107, 0.06);
+}
+
+.order-success-bank-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(200, 82, 107, 0.12);
+  margin-bottom: 14px;
+}
+
+.order-success-bank-badge {
+  font-size: 0.7rem;
+  font-weight: 850;
+  color: #c8526b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.order-success-bank-status {
+  font-size: 0.7rem;
+  font-weight: 750;
+  color: #8c7b80;
+  background: #f7eff1;
+  padding: 3px 8px;
+  border-radius: 9999px;
+}
+
+.order-success-bank-amount-box {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #ebdbe0;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+.order-success-bank-amount-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7b6f73;
+}
+
+.order-success-bank-amount-value {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #c8526b;
+  letter-spacing: -0.01em;
+}
+
+.order-success-bank-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.order-success-bank-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #eddfe2;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.order-success-bank-field:hover {
+  border-color: #c8526b;
+  background: #fffcfd;
+}
+
+.order-success-bank-field.highlight {
+  background: #fff8fa;
+  border-color: rgba(200, 82, 107, 0.32);
+}
+
+.order-success-bank-field small {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #87777c;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
+}
+
+.order-success-bank-field b {
+  display: block;
+  font-size: 0.88rem;
+  color: #231117;
+}
+
+.order-success-holder-name {
+  display: block;
+  font-size: 0.68rem;
+  color: #85767b;
+  font-weight: 600;
+}
+
+.order-success-copy-pill {
+  padding: 4px 10px;
+  background: #f7f0f2;
+  color: #5c4e53;
+  border: 0;
+  border-radius: 8px;
+  font-size: 0.68rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex: none;
+}
+
+.order-success-bank-field:hover .order-success-copy-pill {
+  background: #c8526b;
+  color: #ffffff;
+}
+
+.order-success-bank-ctas {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.order-success-1tap-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #241419 0%, #3e1b26 100%);
+  color: #ffffff;
+  border: 0;
+  border-radius: 13px;
+  font-size: 0.82rem;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(36, 20, 25, 0.2);
+  transition: all 0.15s ease;
+}
+
+.order-success-1tap-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(36, 20, 25, 0.28);
+}
+
+.order-success-qr-toggle-btn {
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid #ebdbe0;
+  border-radius: 13px;
+  color: #63555a;
+  font-size: 0.74rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.order-success-qr-toggle-btn:hover {
+  border-color: #c8526b;
+  color: #c8526b;
+  background: #fdf6f8;
+}
+
+.order-success-qr-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed #eddbe0;
+  animation: orderSuccessPop 0.2s ease;
+}
+
+.order-success-qr-img {
+  width: 170px;
+  height: 170px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #e8dadf;
+  border-radius: 14px;
+  object-fit: contain;
+}
+
+.order-success-qr-download {
+  font-size: 0.72rem;
+  font-weight: 750;
+  color: #c8526b;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.order-success-qr-download:hover {
+  text-decoration: underline;
+}
+
 /* Receipt Details */
 .order-success-receipt {
   display: grid;

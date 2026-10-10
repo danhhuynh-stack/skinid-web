@@ -4,7 +4,7 @@
   z-index: 10060;
   display: none;
   overflow-y: auto;
-  padding: 20px;
+  padding: 16px;
 }
 .vietqr-modal-layer.is-open {
   display: block;
@@ -12,347 +12,527 @@
 .vietqr-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(16, 20, 31, 0.7);
-  backdrop-filter: blur(6px);
+  background: rgba(18, 12, 14, 0.76);
+  backdrop-filter: blur(8px);
 }
+
 .vietqr-modal-panel {
   position: relative;
-  width: min(640px, 100%);
-  margin: 24px auto;
-  padding: 28px;
-  border: 1px solid rgba(200, 82, 107, 0.15);
-  border-radius: 26px;
+  width: min(520px, 100%);
+  margin: 20px auto;
+  padding: 24px;
+  border: 1px solid rgba(200, 82, 107, 0.18);
+  border-radius: 24px;
   background: #ffffff;
-  box-shadow: 0 28px 80px rgba(35, 17, 23, 0.28);
+  box-shadow: 0 24px 70px rgba(25, 12, 16, 0.28);
   animation: vietqrFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 @keyframes vietqrFadeIn {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+
 .vietqr-modal-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f0e6e8;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f2e9ec;
 }
+
 .vietqr-modal-tag {
   display: inline-block;
   color: #c8526b;
   font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
+  font-weight: 850;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+
 .vietqr-modal-title {
-  margin: 3px 0 4px;
-  font-size: 1.45rem;
+  margin: 3px 0 2px;
+  font-size: 1.35rem;
   font-weight: 850;
   color: #231117;
+  letter-spacing: -0.01em;
 }
+
 .vietqr-modal-subtitle {
   margin: 0;
   color: #7b7175;
   font-size: 0.76rem;
 }
+
 .vietqr-modal-close {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   flex: none;
   border: 0;
   border-radius: 50%;
-  background: #f4eff1;
-  color: #63575b;
-  font-size: 1.3rem;
+  background: #f7f2f4;
+  color: #5c4e53;
+  font-size: 1.25rem;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
+
 .vietqr-modal-close:hover {
-  background: #e8dfe2;
+  background: #ecdfe3;
   color: #231117;
 }
-.vietqr-modal-body {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 24px;
-  align-items: start;
+
+/* Hero Amount Card */
+.vietqr-hero-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff7f9 0%, #fef2f5 100%);
+  border: 1.5px solid rgba(200, 82, 107, 0.22);
+  border-radius: 18px;
 }
+
+.vietqr-hero-amount-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vietqr-hero-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #8c4c5c;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vietqr-hero-value {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #c8526b;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.vietqr-hero-copy-amount {
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid #ecccd3;
+  border-radius: 9999px;
+  color: #c8526b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vietqr-hero-copy-amount:hover {
+  background: #c8526b;
+  color: #ffffff;
+  border-color: #c8526b;
+}
+
+/* Modern Segmented Control */
+.vietqr-segmented-control {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 5px;
+  background: #f4eff1;
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.vietqr-segment-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #63575b;
+  font-size: 0.78rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vietqr-segment-btn:hover {
+  color: #231117;
+}
+
+.vietqr-segment-btn.is-active {
+  background: #ffffff;
+  color: #c8526b;
+  box-shadow: 0 2px 8px rgba(35, 17, 23, 0.08);
+}
+
+.vietqr-tab-icon {
+  font-size: 0.95rem;
+}
+
+/* Tab Content */
+.vietqr-tab-content {
+  margin-bottom: 16px;
+  animation: vietqrTabIn 0.2s ease;
+}
+
+@keyframes vietqrTabIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 1-Tap App Section */
+.vietqr-1tap-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.vietqr-1tap-main-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #241419 0%, #3e1b26 100%);
+  color: #ffffff;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(36, 20, 25, 0.22);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-align: left;
+}
+
+.vietqr-1tap-main-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(36, 20, 25, 0.3);
+  opacity: 0.96;
+}
+
+.vietqr-1tap-main-btn:active {
+  transform: translateY(1px);
+}
+
+.vietqr-1tap-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.vietqr-1tap-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 2px 8px;
+  background: rgba(200, 82, 107, 0.25);
+  color: #f7aab9;
+  border-radius: 9999px;
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.vietqr-1tap-main-btn strong {
+  font-size: 0.95rem;
+  font-weight: 850;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.vietqr-1tap-main-btn small {
+  font-size: 0.72rem;
+  color: #d1bfc4;
+  font-weight: 500;
+}
+
+.vietqr-1tap-arrow {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 1.1rem;
+  font-weight: 900;
+  flex: none;
+}
+
+/* App Selector Badges */
+.vietqr-app-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #faf6f8;
+  border: 1px solid #ebdce1;
+  border-radius: 14px;
+}
+
+.vietqr-app-selector-label {
+  font-size: 0.68rem;
+  font-weight: 750;
+  color: #7b6d72;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.vietqr-app-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.vietqr-app-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  background: #ffffff;
+  border: 1px solid #e2d5d9;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vietqr-app-badge-btn:hover {
+  border-color: #c8526b;
+  background: #fffbfc;
+  transform: translateY(-1px);
+}
+
+.vietqr-bank-code {
+  font-size: 0.68rem;
+  font-weight: 850;
+  color: #c8526b;
+  background: #fdf0f3;
+  padding: 2px 5px;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+}
+
+.vietqr-bank-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #382d31;
+}
+
+/* QR Code Box */
 .vietqr-code-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 14px;
-  background: #faf7f8;
-  border: 1px solid #eddfe2;
-  border-radius: 20px;
+  padding: 18px;
+  background: #faf6f7;
+  border: 1px solid #eedde1;
+  border-radius: 18px;
 }
+
 .vietqr-img-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  width: 200px;
+  height: 200px;
   background: #ffffff;
   border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 6px;
+  border: 1px solid #ebdbe0;
+  box-shadow: 0 4px 16px rgba(35, 17, 23, 0.06);
 }
+
 .vietqr-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  border-radius: 8px;
+  display: block;
 }
+
 .vietqr-btn-download {
-  width: 100%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
-  padding: 9px 12px;
+  padding: 7px 14px;
   background: #ffffff;
-  border: 1px solid #d9cbcf;
-  border-radius: 12px;
+  border: 1px solid #e2d4d8;
+  border-radius: 9999px;
+  color: #615257;
   font-size: 0.72rem;
   font-weight: 750;
-  color: #55484d;
   cursor: pointer;
   transition: all 0.15s ease;
 }
+
 .vietqr-btn-download:hover {
-  border-color: #c8526b;
+  background: #fdf5f7;
   color: #c8526b;
-  background: #fff8f9;
+  border-color: #ecc9d2;
 }
-.vietqr-info-box {
+
+/* Capsule Rows (Copyable Info) */
+.vietqr-capsules-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-.vietqr-field-group {
-  display: grid;
   gap: 8px;
+  margin-bottom: 14px;
 }
-.vietqr-field-row {
+
+.vietqr-capsule {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
-  background: #faf8f9;
-  border: 1px solid #ede4e6;
-  border-radius: 12px;
   gap: 10px;
-}
-.vietqr-field-row.highlight {
-  background: #fff7f8;
-  border-color: #f1b9c4;
-}
-.vietqr-field-label {
-  font-size: 0.7rem;
-  color: #7b7175;
-  font-weight: 600;
-  white-space: nowrap;
-}
-.vietqr-field-value {
-  font-size: 0.8rem;
-  color: #231117;
-  font-weight: 750;
-  text-align: right;
-  word-break: break-word;
-}
-.vietqr-field-value.amount {
-  color: #c8526b;
-  font-size: 0.95rem;
-  font-weight: 900;
-}
-.vietqr-copy-btn {
-  padding: 5px 10px;
+  padding: 12px 14px;
   background: #ffffff;
-  border: 1px solid #d6c6ca;
-  border-radius: 8px;
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: #c8526b;
+  border: 1px solid #ebdce0;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.15s ease;
-  white-space: nowrap;
 }
-.vietqr-copy-btn:hover {
+
+.vietqr-capsule:hover {
+  border-color: #c8526b;
+  background: #fffcfd;
+}
+
+.vietqr-capsule.highlight {
+  background: #fff8fa;
+  border-color: rgba(200, 82, 107, 0.35);
+}
+
+.vietqr-capsule-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vietqr-capsule-label {
+  font-size: 0.67rem;
+  font-weight: 700;
+  color: #7b6f73;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.vietqr-capsule-value {
+  font-size: 0.95rem;
+  font-weight: 850;
+  color: #231117;
+  letter-spacing: 0.02em;
+}
+
+.vietqr-capsule-holder {
+  font-size: 0.68rem;
+  color: #8b7d82;
+  font-weight: 600;
+}
+
+.vietqr-capsule-btn {
+  padding: 5px 11px;
+  border-radius: 8px;
+  background: #f4eff1;
+  color: #5c4e53;
+  font-size: 0.68rem;
+  font-weight: 750;
+  transition: all 0.15s ease;
+  flex: none;
+}
+
+.vietqr-capsule:hover .vietqr-capsule-btn {
   background: #c8526b;
   color: #ffffff;
-  border-color: #c8526b;
 }
-.vietqr-warning-note {
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #fff9e6;
-  border: 1px solid #ffe3a3;
-  color: #8c6300;
+
+.vietqr-capsule-btn.is-copied {
+  background: #231117 !important;
+  color: #ffffff !important;
+}
+
+/* Subtle Hint */
+.vietqr-subtle-hint {
+  margin: 0 0 16px;
   font-size: 0.7rem;
-  line-height: 1.45;
+  color: #7f7276;
+  line-height: 1.4;
+  text-align: center;
 }
+
+/* Modal Actions */
 .vietqr-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  padding-top: 16px;
-  border-top: 1px solid #f0e6e8;
 }
+
 .vietqr-btn-primary {
-  flex: 1;
-  padding: 12px 18px;
+  width: 100%;
+  padding: 14px 20px;
   background: #c8526b;
   color: #ffffff;
   border: 0;
-  border-radius: 13px;
-  font-size: 0.82rem;
-  font-weight: 800;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 850;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 16px rgba(200, 82, 107, 0.28);
 }
+
 .vietqr-btn-primary:hover {
-  opacity: 0.92;
+  background: #b6455c;
+  box-shadow: 0 6px 20px rgba(200, 82, 107, 0.38);
 }
+
 .vietqr-toast {
   position: fixed;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 9px 18px;
+  padding: 8px 18px;
   background: #231117;
   color: #ffffff;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
   border-radius: 9999px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  z-index: 10070;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 10080;
   animation: vietqrToastIn 0.2s ease;
+  white-space: nowrap;
 }
+
 @keyframes vietqrToastIn {
   from { opacity: 0; transform: translate(-50%, 8px); }
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* 1-Tap Mobile Payment Section */
-.vietqr-1tap-section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding: 16px;
-  background: linear-gradient(135deg, rgba(200, 82, 107, 0.08) 0%, rgba(16, 124, 65, 0.06) 100%);
-  border: 1.5px solid rgba(16, 124, 65, 0.25);
-  border-radius: 18px;
-}
-.vietqr-1tap-main-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  width: 100%;
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #107c41 0%, #0d6334 100%);
-  color: #ffffff;
-  border: 0;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(16, 124, 65, 0.25);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
-  text-align: left;
-}
-.vietqr-1tap-main-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(16, 124, 65, 0.35);
-  opacity: 0.95;
-}
-.vietqr-1tap-main-btn:active {
-  transform: translateY(1px);
-}
-.vietqr-1tap-icon {
-  font-size: 1.5rem;
-  line-height: 1;
-}
-.vietqr-1tap-main-btn strong {
-  display: block;
-  font-size: 0.88rem;
-  font-weight: 850;
-  letter-spacing: -0.01em;
-}
-.vietqr-1tap-main-btn small {
-  display: block;
-  font-size: 0.72rem;
-  opacity: 0.92;
-  font-weight: 500;
-  margin-top: 2px;
-}
-.vietqr-1tap-arrow {
-  font-size: 1.2rem;
-  font-weight: 900;
-  margin-left: auto;
-}
-.vietqr-app-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.vietqr-app-selector-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #7b7175;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.vietqr-app-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.vietqr-app-badge-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: #ffffff;
-  border: 1px solid #e5dbde;
-  border-radius: 9999px;
-  font-size: 0.72rem;
-  font-weight: 750;
-  color: #231117;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.vietqr-app-badge-btn:hover {
-  border-color: #107c41;
-  background: #f4fbf7;
-  color: #107c41;
-  transform: translateY(-1px);
-}
-
-@media (max-width: 620px) {
+@media (max-width: 600px) {
   .vietqr-modal-layer {
-    padding: 12px;
+    padding: 10px;
   }
   .vietqr-modal-panel {
-    margin: 12px auto;
-    padding: 20px;
+    margin: 10px auto;
+    padding: 20px 16px;
     border-radius: 20px;
   }
-  .vietqr-modal-body {
-    grid-template-columns: 1fr;
-    gap: 18px;
+  .vietqr-hero-card {
+    padding: 12px 16px;
   }
-  .vietqr-code-box {
-    max-width: 260px;
-    margin: 0 auto;
-    width: 100%;
+  .vietqr-hero-value {
+    font-size: 1.4rem;
   }
-  .vietqr-actions {
-    flex-direction: column;
+  .vietqr-1tap-main-btn {
+    padding: 14px 16px;
+  }
+  .vietqr-img-wrapper {
+    width: 180px;
+    height: 180px;
   }
 }

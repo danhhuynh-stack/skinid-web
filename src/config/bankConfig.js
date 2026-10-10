@@ -20,58 +20,58 @@ export const BANK_CONFIG = {
 export const POPULAR_BANK_APPS = [
   {
     id: 'vcb',
-    name: 'Vietcombank',
+    name: 'VCB Digibank',
+    code: 'VCB',
     appScheme: 'vietcombank://',
-    icon: '🏦',
-    note: 'VCB Digibank (Cùng ngân hàng)'
+    note: 'Vietcombank Digibank'
   },
   {
     id: 'mb',
     name: 'MB Bank',
+    code: 'MB',
     appScheme: 'mbmobile://',
-    icon: '🎖️',
-    note: 'MB Bank'
+    note: 'MB Bank Mobile'
   },
   {
     id: 'techcombank',
     name: 'Techcombank',
+    code: 'TCB',
     appScheme: 'techcombank://',
-    icon: '🔴',
     note: 'Techcombank Mobile'
   },
   {
     id: 'momo',
     name: 'Ví MoMo',
+    code: 'MoMo',
     appScheme: 'momo://',
-    icon: '👛',
-    note: 'MoMo Pay'
+    note: 'Ví điện tử MoMo'
   },
   {
     id: 'vpbank',
-    name: 'VPBank',
+    name: 'VPBank NEO',
+    code: 'VPB',
     appScheme: 'vpbankneo://',
-    icon: '🟢',
     note: 'VPBank NEO'
   },
   {
     id: 'bidv',
-    name: 'BIDV',
+    name: 'BIDV Smart',
+    code: 'BIDV',
     appScheme: 'bidvsmartbanking://',
-    icon: '🔷',
     note: 'BIDV SmartBanking'
   },
   {
     id: 'acb',
-    name: 'ACB',
+    name: 'ACB ONE',
+    code: 'ACB',
     appScheme: 'acbapp://',
-    icon: '🔵',
     note: 'ACB ONE'
   },
   {
     id: 'tpbank',
     name: 'TPBank',
+    code: 'TPB',
     appScheme: 'tpbank://',
-    icon: '🟣',
     note: 'TPBank Mobile'
   }
 ];

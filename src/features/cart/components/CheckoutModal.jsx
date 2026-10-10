@@ -298,9 +298,9 @@ export default function CheckoutModal() {
                     <span>
                       <b>
                         Chuyển khoản ngân hàng (VietQR)
-                        <span className="react-checkout-payment-badge">Mã QR</span>
+                        <span className="react-checkout-payment-badge">Vietcombank 1-Tap</span>
                       </b>
-                      <small>Quét mã QR tiện lợi qua ứng dụng ngân hàng hoặc ví điện tử.</small>
+                      <small>Mở App ngân hàng tự điền sẵn hoặc quét mã VietQR Napas 24/7.</small>
                     </span>
                   </label>
                 </div>
