@@ -76,18 +76,30 @@ export default function OrderSuccessModal({
           </div>
         </header>
 
-        <div className="order-success-timeline">
+        <div className="order-success-timeline" role="region" aria-label="Tiến trình giao hàng">
+          <div className="order-success-timeline-track" aria-hidden="true">
+            <div className="order-success-timeline-fill" />
+          </div>
           <div className="order-success-step active">
-            <span className="order-success-step-badge">1</span>
-            <div><strong>Đã tiếp nhận</strong><small>Hệ thống ghi nhận</small></div>
+            <span className="order-success-step-badge" aria-label="Bước 1: Đã tiếp nhận">✓</span>
+            <div className="order-success-step-text">
+              <strong>Đã tiếp nhận</strong>
+              <small>Hệ thống ghi nhận</small>
+            </div>
+          </div>
+          <div className="order-success-step next">
+            <span className="order-success-step-badge" aria-label="Bước 2: Chuẩn bị hàng">2</span>
+            <div className="order-success-step-text">
+              <strong>Chuẩn bị hàng</strong>
+              <small>Kiểm tra & đóng gói</small>
+            </div>
           </div>
           <div className="order-success-step">
-            <span className="order-success-step-badge">2</span>
-            <div><strong>Chuẩn bị hàng</strong><small>Kiểm tra & đóng gói</small></div>
-          </div>
-          <div className="order-success-step">
-            <span className="order-success-step-badge">3</span>
-            <div><strong>Giao hàng</strong><small>2 – 3 ngày làm việc</small></div>
+            <span className="order-success-step-badge" aria-label="Bước 3: Giao hàng">3</span>
+            <div className="order-success-step-text">
+              <strong>Giao hàng</strong>
+              <small>2 – 3 ngày làm việc</small>
+            </div>
           </div>
         </div>
 
