@@ -447,6 +447,108 @@
   color: #7b7175;
 }
 
+/* Coupon / Voucher Box */
+.react-checkout-coupon {
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1.5px solid #efe6e8;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+.react-checkout-coupon-title {
+  margin-bottom: 8px;
+  font-size: 0.74rem;
+  font-weight: 750;
+  color: #64565b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.react-checkout-coupon-input-group {
+  display: flex;
+  gap: 8px;
+}
+.react-checkout-coupon-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1.5px solid #ded5d8;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #231117;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.react-checkout-coupon-input:focus {
+  border-color: #c8526b;
+}
+.react-checkout-coupon-btn {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #231117;
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+}
+.react-checkout-coupon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.react-checkout-coupon-btn:not(:disabled):hover {
+  opacity: 0.88;
+}
+.react-checkout-coupon-applied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+}
+.react-checkout-coupon-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.react-checkout-coupon-tag {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #065f46;
+}
+.react-checkout-coupon-desc {
+  font-size: 0.7rem;
+  color: #047857;
+}
+.react-checkout-coupon-remove {
+  border: 0;
+  background: transparent;
+  color: #ef4444;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+.react-checkout-coupon-remove:hover {
+  background: #fee2e2;
+}
+.react-checkout-coupon-error {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #dc2626;
+}
+.react-checkout-fee-row.discount b {
+  color: #059669;
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 920px) {
   .react-checkout-layer {

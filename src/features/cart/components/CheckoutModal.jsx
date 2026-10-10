@@ -8,6 +8,7 @@ import {
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
 import { calculateShippingFee, createOrder, FREE_SHIPPING_THRESHOLD } from '../services/checkoutService.js';
+import { validateCoupon } from '../services/couponService.js';
 import { BANK_CONFIG } from '../../../config/bankConfig.js';
 import { getProductById } from '../../catalog/index.js';
 import { assetUrl } from '../../../assets/index.js';
@@ -41,6 +42,9 @@ export default function CheckoutModal() {
   const [isLoadingWards, setIsLoadingWards] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [createdOrder, setCreatedOrder] = useState(null);
   const [showQrModal, setShowQrModal] = useState(false);
@@ -95,6 +99,27 @@ export default function CheckoutModal() {
     setForm((current) => ({ ...current, [field]: event.target.value }));
   };
 
+  const handleApplyCoupon = () => {
+    setCouponError('');
+    const res = validateCoupon(couponCode, subtotal, shippingFee);
+    if (!res.valid) {
+      setCouponError(res.message);
+      return;
+    }
+    setAppliedCoupon(res);
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+    setCouponError('');
+  };
+
+  const isCouponFreeship = appliedCoupon?.code === 'FREESHIP';
+  const effectiveShippingFee = isCouponFreeship ? 0 : shippingFee;
+  const couponDiscount = appliedCoupon ? (isCouponFreeship ? shippingFee : appliedCoupon.discount) : 0;
+  const calculatedTotal = Math.max(0, subtotal - (isCouponFreeship ? 0 : couponDiscount)) + effectiveShippingFee;
+
   const submit = async (event) => {
     event.preventDefault();
     setError('');
@@ -118,12 +143,13 @@ export default function CheckoutModal() {
         customer: { name, phone, shippingAddress },
         note: form.note,
         paymentMethod,
+        couponCode: appliedCoupon?.code || '',
         items
       });
       completeCheckout();
       await refreshSession().catch(() => undefined);
       const shortId = String(result.orderId || '').slice(0, 8).toUpperCase();
-      const finalTotal = Number(result.total) || (subtotal + shippingFee);
+      const finalTotal = Number(result.total) || calculatedTotal;
 
       setCreatedOrder({
         orderId: result.orderId,
@@ -316,29 +342,91 @@ export default function CheckoutModal() {
                   })}
                 </div>
 
+                <div className="react-checkout-coupon">
+                  <div className="react-checkout-coupon-title">
+                    <span>Mã giảm giá / Voucher</span>
+                  </div>
+                  {!appliedCoupon ? (
+                    <div className="react-checkout-coupon-input-group">
+                      <input
+                        type="text"
+                        value={couponCode}
+                        onChange={(e) => {
+                          setCouponCode(e.target.value.toUpperCase());
+                          if (couponError) setCouponError('');
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleApplyCoupon();
+                          }
+                        }}
+                        placeholder="Nhập mã ưu đãi…"
+                        className="react-checkout-coupon-input"
+                        aria-label="Mã giảm giá"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        className="react-checkout-coupon-btn"
+                        disabled={!couponCode.trim()}
+                      >
+                        Áp dụng
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="react-checkout-coupon-applied">
+                      <div className="react-checkout-coupon-badge">
+                        <span className="react-checkout-coupon-tag">✓ {appliedCoupon.code}</span>
+                        <small className="react-checkout-coupon-desc">{appliedCoupon.description}</small>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveCoupon}
+                        className="react-checkout-coupon-remove"
+                        title="Bỏ mã giảm giá"
+                        aria-label="Bỏ mã giảm giá"
+                      >
+                        Bỏ mã ✕
+                      </button>
+                    </div>
+                  )}
+                  {couponError && <p className="react-checkout-coupon-error">{couponError}</p>}
+                </div>
+
                 <div className="react-checkout-fee-rows">
                   <div className="react-checkout-fee-row">
                     <span>Tạm tính</span>
                     <b>{formatPrice(subtotal)}</b>
                   </div>
+                  {appliedCoupon && (
+                    <div className="react-checkout-fee-row discount">
+                      <span>Mã giảm giá ({appliedCoupon.code})</span>
+                      <b className="text-emerald-700 font-bold">
+                        {isCouponFreeship ? 'Miễn phí ship' : `-${formatPrice(couponDiscount)}`}
+                      </b>
+                    </div>
+                  )}
                   <div className="react-checkout-fee-row">
                     <span>Phí vận chuyển</span>
                     <b>
-                      {shippingFee === 0 ? (
-                        <span className="text-emerald-700 font-bold">Miễn phí (Freeship)</span>
+                      {effectiveShippingFee === 0 ? (
+                        <span className="text-emerald-700 font-bold">
+                          {isCouponFreeship ? 'Miễn phí (Voucher)' : 'Miễn phí (Freeship)'}
+                        </span>
                       ) : (
-                        formatPrice(shippingFee)
+                        formatPrice(effectiveShippingFee)
                       )}
                     </b>
                   </div>
-                  {subtotal < FREE_SHIPPING_THRESHOLD && (
+                  {subtotal < FREE_SHIPPING_THRESHOLD && !isCouponFreeship && (
                     <small className="text-[11px] text-amber-700">
                       Mua thêm {formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} để được Freeship.
                     </small>
                   )}
                   <div className="react-checkout-fee-row total">
                     <span>Tổng thanh toán</span>
-                    <strong>{formatPrice(subtotal + shippingFee)}</strong>
+                    <strong>{formatPrice(calculatedTotal)}</strong>
                   </div>
                 </div>
 

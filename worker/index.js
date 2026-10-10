@@ -73,11 +73,13 @@ async function createOrder(request, env, user) {
 
   const productIds = [...quantities.keys()];
   const products = await Promise.all(productIds.map(async id => {
-    // Local Vite development intentionally runs without a Firebase service-account
-    // key. Use the bundled catalog there; production still re-reads Firestore prices.
+    // The storefront uses bundled catalog fields before remote fields. Checkout
+    // must use the same trusted server catalog so an older Firestore price cannot
+    // charge a different amount from the advertised price.
     if (!hasFirestore) return bundledProducts.get(id) || null;
     const remoteProduct = await getDocument(env, `products/${id}`);
-    return remoteProduct || bundledProducts.get(id) || null;
+    const localProduct = bundledProducts.get(id);
+    return localProduct ? { ...remoteProduct, ...localProduct } : remoteProduct || null;
   }));
   const items = products.map((product, index) => {
     const productId = productIds[index];
@@ -104,6 +106,17 @@ async function createOrder(request, env, user) {
   }
   const subtotal = items.reduce((sum, item) => sum + item.lineTotal, 0);
   const shippingFee = subtotal >= 500000 ? 0 : 30000;
+  const couponCode = String(payload.couponCode || '').trim().toUpperCase();
+  let discountAmount = 0;
+  if (couponCode === 'SKINID10' && subtotal >= 200000) {
+    discountAmount = Math.min(150000, Math.round(subtotal * 0.1));
+  } else if (couponCode === 'WELCOME50' && subtotal >= 300000) {
+    discountAmount = Math.min(50000, subtotal);
+  } else if (couponCode === 'FREESHIP') {
+    discountAmount = Math.min(30000, shippingFee);
+  }
+  const finalTotal = Math.max(0, subtotal - discountAmount) + shippingFee;
+
   const now = new Date();
   const idempotencyKey = String(request.headers.get('idempotency-key') || '').trim();
   let orderId = crypto.randomUUID().replaceAll('-', '');
@@ -118,6 +131,7 @@ async function createOrder(request, env, user) {
         duplicate: true,
         orderId,
         subtotal: existingOrder.subtotal,
+        discount: existingOrder.discountAmount || 0,
         shippingFee: existingOrder.shippingFee,
         total: existingOrder.total
       });
@@ -136,8 +150,10 @@ async function createOrder(request, env, user) {
     items,
     note: String(payload.note || '').trim().slice(0, 1000),
     subtotal,
+    discountAmount,
+    couponCode: couponCode || null,
     shippingFee,
-    total: subtotal + shippingFee,
+    total: finalTotal,
     paymentMethod,
     paymentStatus: 'unpaid',
     status: 'pending',
@@ -168,7 +184,7 @@ async function createOrder(request, env, user) {
     devOrdersStore.set(orderId, order);
   }
 
-  return json(request, env, { success: true, orderId, subtotal, shippingFee, total: order.total }, 201);
+  return json(request, env, { success: true, orderId, subtotal, discount: discountAmount, shippingFee, total: order.total }, 201);
 }
 
 async function cancelOrder(request, env, user, orderId) {
