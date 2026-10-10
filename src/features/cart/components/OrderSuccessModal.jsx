@@ -4,7 +4,8 @@ import {
   copyToClipboard,
   getOrderShortCode,
   getTransferDescription,
-  getVietQrUrl
+  getVietQrUrl,
+  launch1TapPayment
 } from '../../../config/bankConfig.js';
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import './OrderSuccessModal.css';
@@ -32,7 +33,20 @@ export default function OrderSuccessModal({
 
   const showToast = (msg) => {
     setToastMessage(msg);
-    setTimeout(() => setToastMessage((c) => (c === msg ? '' : c)), 2200);
+    setTimeout(() => setToastMessage((c) => (c === msg ? '' : c)), 2400);
+  };
+
+  const handle1TapPay = async (customScheme = '') => {
+    showToast('Đang sao chép thông tin & mở ứng dụng ngân hàng…');
+    try {
+      await launch1TapPayment({
+        amount: order.total,
+        orderId: order.orderId || order.id,
+        targetScheme: customScheme
+      });
+    } catch {
+      showToast('Không thể mở app trực tiếp.');
+    }
   };
 
   const handleCopy = async (text, label) => {
@@ -106,10 +120,27 @@ export default function OrderSuccessModal({
         {isBankTransfer && (
           <div className="mb-5 p-4 rounded-2xl bg-brand-blush/30 border border-brand-primary/20 space-y-3">
             <div className="flex items-center justify-between pb-2 border-b border-brand-primary/10">
-              <span className="text-xs font-black text-brand-primary uppercase tracking-wider">Thanh toán VietQR (MB Bank)</span>
+              <span className="text-xs font-black text-brand-primary uppercase tracking-wider">Thanh toán VietQR (Vietcombank)</span>
               <span className="text-[11px] font-bold text-gray-500">Chờ chuyển khoản</span>
             </div>
-            <div className="grid sm:grid-cols-2 gap-4 items-center">
+
+            {/* Nút 1-Tap Mobile App Pay */}
+            <button
+              type="button"
+              onClick={() => handle1TapPay()}
+              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-900 text-white font-bold text-xs flex items-center justify-between shadow-sm transition-all cursor-pointer"
+            >
+              <span className="flex items-center gap-2">
+                <span className="text-base">⚡</span>
+                <span className="text-left">
+                  <span className="block font-black">Mở App Ngân Hàng Thanh Toán (1 Chạm)</span>
+                  <span className="block text-[11px] font-normal opacity-90">Tự động nạp STK VCB, số tiền & nội dung đơn</span>
+                </span>
+              </span>
+              <span className="text-sm font-black">→</span>
+            </button>
+
+            <div className="grid sm:grid-cols-2 gap-4 items-center pt-1">
               <div className="flex flex-col items-center gap-2">
                 <img src={qrUrl} alt="Mã VietQR" className="w-44 h-44 rounded-xl bg-white p-1 border border-gray-200 shadow-sm object-contain" />
                 <button type="button" onClick={handleDownloadQr} className="text-xs font-bold text-brand-primary hover:underline flex items-center gap-1">
@@ -122,7 +153,7 @@ export default function OrderSuccessModal({
                   <button type="button" onClick={() => handleCopy(Math.round(order.total), 'số tiền')} className="text-[11px] font-bold text-brand-primary px-2 py-1 rounded bg-brand-blush/50">Chép</button>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white border border-gray-100 flex items-center justify-between">
-                  <div><span className="text-[11px] text-gray-400 block">MB Bank (STK)</span><b className="font-mono">{BANK_CONFIG.accountNumber}</b></div>
+                  <div><span className="text-[11px] text-gray-400 block">Vietcombank (STK)</span><b className="font-mono">{BANK_CONFIG.accountNumber}</b></div>
                   <button type="button" onClick={() => handleCopy(BANK_CONFIG.accountNumber, 'STK')} className="text-[11px] font-bold text-brand-primary px-2 py-1 rounded bg-brand-blush/50">Chép</button>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white border border-gray-100 flex items-center justify-between">
@@ -146,7 +177,7 @@ export default function OrderSuccessModal({
           </div>
           <div className="order-success-receipt-row">
             <span>Phương thức thanh toán</span>
-            <strong>{isBankTransfer ? 'Chuyển khoản VietQR (MB Bank)' : 'Thanh toán khi nhận hàng (COD)'}</strong>
+            <strong>{isBankTransfer ? 'Chuyển khoản VietQR (Vietcombank)' : 'Thanh toán khi nhận hàng (COD)'}</strong>
           </div>
           <div className="order-success-receipt-row total">
             <span>Tổng thanh toán</span>

@@ -239,6 +239,101 @@
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
+/* 1-Tap Mobile Payment Section */
+.vietqr-1tap-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(200, 82, 107, 0.08) 0%, rgba(16, 124, 65, 0.06) 100%);
+  border: 1.5px solid rgba(16, 124, 65, 0.25);
+  border-radius: 18px;
+}
+.vietqr-1tap-main-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #107c41 0%, #0d6334 100%);
+  color: #ffffff;
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 124, 65, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-align: left;
+}
+.vietqr-1tap-main-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(16, 124, 65, 0.35);
+  opacity: 0.95;
+}
+.vietqr-1tap-main-btn:active {
+  transform: translateY(1px);
+}
+.vietqr-1tap-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.vietqr-1tap-main-btn strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+}
+.vietqr-1tap-main-btn small {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.92;
+  font-weight: 500;
+  margin-top: 2px;
+}
+.vietqr-1tap-arrow {
+  font-size: 1.2rem;
+  font-weight: 900;
+  margin-left: auto;
+}
+.vietqr-app-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vietqr-app-selector-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #7b7175;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vietqr-app-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.vietqr-app-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid #e5dbde;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 750;
+  color: #231117;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.vietqr-app-badge-btn:hover {
+  border-color: #107c41;
+  background: #f4fbf7;
+  color: #107c41;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 620px) {
   .vietqr-modal-layer {
     padding: 12px;

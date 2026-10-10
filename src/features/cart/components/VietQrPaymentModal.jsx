@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
   BANK_CONFIG,
+  POPULAR_BANK_APPS,
   copyToClipboard,
   getOrderShortCode,
   getTransferDescription,
-  getVietQrUrl
+  getVietQrUrl,
+  launch1TapPayment
 } from '../../../config/bankConfig.js';
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import './VietQrPaymentModal.css';
@@ -40,7 +42,7 @@ export default function VietQrPaymentModal({
     setToastMessage(msg);
     setTimeout(() => {
       setToastMessage((current) => (current === msg ? '' : current));
-    }, 2200);
+    }, 2400);
   };
 
   const handleCopy = async (text, label) => {
@@ -52,6 +54,19 @@ export default function VietQrPaymentModal({
     }
   };
 
+  const handle1TapPay = async (customScheme = '') => {
+    showToast('Đang sao chép thông tin & chuyển tiếp sang ứng dụng ngân hàng…');
+    try {
+      await launch1TapPayment({
+        amount,
+        orderId,
+        targetScheme: customScheme
+      });
+    } catch {
+      showToast('Không thể mở app trực tiếp. Vui lòng quét mã QR hoặc sao chép STK.');
+    }
+  };
+
   const handleDownloadQr = async () => {
     try {
       showToast('Đang tải ảnh mã QR...');
@@ -60,7 +75,7 @@ export default function VietQrPaymentModal({
       const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = `vietqr-skinid-${shortId || 'order'}.png`;
+      link.download = `vietqr-vietcombank-skinid-${shortId || 'order'}.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -80,12 +95,46 @@ export default function VietQrPaymentModal({
       <div className="vietqr-modal-panel">
         <header className="vietqr-modal-header">
           <div>
-            <span className="vietqr-modal-tag">Thanh Toán An Toàn · MB Bank</span>
+            <span className="vietqr-modal-tag">Thanh Toán An Toàn · Vietcombank (VCB)</span>
             <h2 id="vietqr-title" className="vietqr-modal-title">Quét Mã VietQR</h2>
-            <p className="vietqr-modal-subtitle">Sử dụng App ngân hàng hoặc ví điện tử bất kỳ để quét mã.</p>
+            <p className="vietqr-modal-subtitle">Chạm mở App ngân hàng 1-chạm hoặc quét mã bằng ứng dụng bất kỳ.</p>
           </div>
           <button type="button" className="vietqr-modal-close" onClick={onClose} aria-label="Đóng bảng mã QR">×</button>
         </header>
+
+        {/* Cụm 1-Chạm mở App Ngân hàng */}
+        <div className="vietqr-1tap-section">
+          <button
+            type="button"
+            className="vietqr-1tap-main-btn"
+            onClick={() => handle1TapPay()}
+            title="Mở ứng dụng ngân hàng tự động điền sẵn STK, số tiền và nội dung"
+          >
+            <span className="vietqr-1tap-icon">⚡</span>
+            <div>
+              <strong>Mở App Ngân Hàng Thanh Toán (1 Chạm)</strong>
+              <small>Tự động nạp sẵn STK Vietcombank, đúng số tiền & nội dung đơn</small>
+            </div>
+            <span className="vietqr-1tap-arrow">→</span>
+          </button>
+
+          <div className="vietqr-app-selector">
+            <span className="vietqr-app-selector-label">Hoặc mở nhanh app đã cài:</span>
+            <div className="vietqr-app-badges">
+              {POPULAR_BANK_APPS.map((app) => (
+                <button
+                  key={app.id}
+                  type="button"
+                  className="vietqr-app-badge-btn"
+                  onClick={() => handle1TapPay(app.appScheme)}
+                  title={app.note}
+                >
+                  <span>{app.icon}</span> {app.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
 
         <div className="vietqr-modal-body">
           <div className="vietqr-code-box">
