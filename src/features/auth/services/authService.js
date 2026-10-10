@@ -62,9 +62,16 @@ export async function fetchHistory(userId) {
 export async function fetchOrders(userId) {
   const { collection, getDocs, query, where } = sdk.firestore;
   const result = await getDocs(query(collection(db, 'orders'), where('userId', '==', userId)));
+  const getOrderTime = (val) => {
+    if (!val) return 0;
+    if (typeof val.toDate === 'function') return val.toDate().getTime();
+    if (val.seconds) return val.seconds * 1000;
+    const time = new Date(val).getTime();
+    return Number.isNaN(time) ? 0 : time;
+  };
   return result.docs
     .map((snapshot) => ({ id: snapshot.id, ...snapshot.data() }))
-    .sort((left, right) => (right.createdAt?.seconds || 0) - (left.createdAt?.seconds || 0));
+    .sort((left, right) => getOrderTime(right.createdAt) - getOrderTime(left.createdAt));
 }
 
 export async function loadAuthSession(firebaseUser) {

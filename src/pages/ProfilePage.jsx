@@ -119,10 +119,17 @@ export default function ProfilePage() {
             </div>
         </header>
 
-        <ProfileHero user={user} historyCount={history.length} isLoading={isLoading} onAvatarChange={handleAvatarChange} />
+        <ProfileHero
+          user={user}
+          historyCount={history.length}
+          ordersCount={orders.length}
+          isLoading={isLoading}
+          onAvatarChange={handleAvatarChange}
+          onSelectTab={selectTab}
+        />
         {pageMessage && <div role={pageMessage.type === 'error' ? 'alert' : 'status'} className={`mb-6 rounded-2xl px-4 py-3 text-xs font-semibold ${pageMessage.type === 'error' ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'}`}>{pageMessage.text}</div>}
         {/* DASHBOARD NAVIGATION TABS */}
-        <ProfileTabs activeTab={activeTab} onSelect={selectTab} hoverPaused={isSaving || (activeTab === 'profile' && profileDirty) || (activeTab === 'settings' && Object.values(passwords).some(Boolean))} />
+        <ProfileTabs activeTab={activeTab} onSelect={selectTab} ordersCount={orders.length} hoverPaused={isSaving || (activeTab === 'profile' && profileDirty) || (activeTab === 'settings' && Object.values(passwords).some(Boolean))} />
 
         {/* =================================================================== */}
         {/* TAB 1: HỒ SƠ CÁ NHÂN & THỂ TRẠNG DA */}

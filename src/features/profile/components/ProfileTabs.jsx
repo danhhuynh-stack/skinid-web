@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
 
-const tabs = [['profile', 'Hồ sơ cá nhân'], ['history', 'Lịch sử soi da'], ['orders', 'Đơn hàng'], ['settings', 'Cài đặt']];
-
-export default function ProfileTabs({ activeTab, onSelect, hoverPaused = false }) {
+export default function ProfileTabs({ activeTab, onSelect, hoverPaused = false, ordersCount = 0 }) {
+  const tabs = [
+    ['profile', 'Hồ sơ cá nhân'],
+    ['history', 'Lịch sử soi da'],
+    ['orders', ordersCount > 0 ? `Đơn hàng (${ordersCount})` : 'Đơn hàng'],
+    ['settings', 'Cài đặt']
+  ];
   const timer = useRef(null);
   const buttons = useRef([]);
   const cancelHover = () => { clearTimeout(timer.current); timer.current = null; };
