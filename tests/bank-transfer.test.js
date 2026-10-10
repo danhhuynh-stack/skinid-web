@@ -25,7 +25,7 @@ assert.match(bankConfig, /copyToClipboard/);
 assert.match(checkoutModal, /name="payment-method"/);
 assert.match(checkoutModal, /value="cod"/);
 assert.match(checkoutModal, /value="bank_transfer"/);
-assert.match(checkoutModal, /Chuyển khoản VietQR \(MB Bank\)/);
+assert.match(checkoutModal, /Chuyển khoản ngân hàng \(VietQR\)/);
 assert.match(checkoutModal, /VietQrPaymentModal/);
 assert.match(checkoutModal, /setCreatedOrder/);
 assert.match(checkoutModalCss, /\.react-checkout-payment-option/);

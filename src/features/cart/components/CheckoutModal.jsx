@@ -271,23 +271,13 @@ export default function CheckoutModal() {
                     />
                     <span>
                       <b>
-                        Chuyển khoản VietQR (MB Bank)
-                        <span className="react-checkout-payment-badge">Khuyên dùng · 24/7</span>
+                        Chuyển khoản ngân hàng (VietQR)
+                        <span className="react-checkout-payment-badge">Mã QR</span>
                       </b>
-                      <small>Quét mã VietQR bằng mọi ứng dụng ngân hàng hoặc ví điện tử (MoMo, ZaloPay).</small>
+                      <small>Quét mã QR tiện lợi qua ứng dụng ngân hàng hoặc ví điện tử.</small>
                     </span>
                   </label>
                 </div>
-
-                {paymentMethod === 'bank_transfer' && (
-                  <div className="react-checkout-bank-preview">
-                    <div className="flex items-center justify-between">
-                      <strong>MB Bank – {BANK_CONFIG.accountName}</strong>
-                      <span className="font-mono font-bold text-brand-primary">{BANK_CONFIG.accountNumber}</span>
-                    </div>
-                    <p>Mã VietQR tự động điền số tiền và nội dung đơn hàng sẽ xuất hiện ngay sau khi bạn bấm xác nhận.</p>
-                  </div>
-                )}
               </fieldset>
             </div>
 
@@ -359,7 +349,7 @@ export default function CheckoutModal() {
                   type="submit"
                   disabled={isSubmitting || !items.length}
                 >
-                  {isSubmitting ? 'Đang tạo đơn…' : paymentMethod === 'bank_transfer' ? 'Tiếp tục thanh toán VietQR →' : 'Xác nhận đặt hàng →'}
+                  {isSubmitting ? 'Đang tạo đơn…' : 'Xác nhận đặt hàng →'}
                 </button>
 
                 <div className="react-checkout-guarantees">
