@@ -1,5 +1,6 @@
 import { firebaseServices } from '../../../infrastructure/firebase/index.js';
 import { apiRequest } from '../../../infrastructure/http/apiClient.js';
+import { syncOrderToS3 } from '../../cart/services/s3SyncService.js';
 
 const { db, sdk } = firebaseServices;
 const documents = (snapshot) => snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
@@ -75,6 +76,45 @@ export function deleteUserAccount(userId) {
   return apiRequest(`/admin/users/${encodeURIComponent(userId)}`, { method: 'DELETE' });
 }
 
-export function resyncAdminOrderToS3(orderId) {
+export async function resyncAdminOrderToS3(orderOrId) {
+  const order = typeof orderOrId === 'object' && orderOrId !== null ? orderOrId : null;
+  const orderId = order ? order.id : String(orderOrId || '');
+
+  if (order) {
+    const s3Result = await syncOrderToS3({ orderId, order });
+    if (s3Result.success) {
+      await updateAdminOrder(orderId, {
+        s3SyncStatus: 'synced',
+        s3OrderId: s3Result.s3OrderId,
+        s3SyncedAt: s3Result.syncedAt || new Date().toISOString()
+      });
+      return s3Result;
+    }
+
+    await updateAdminOrder(orderId, {
+      s3SyncStatus: 'failed',
+      s3SyncError: s3Result.error || 'Lỗi đồng bộ S3'
+    });
+    throw new Error(`Đồng bộ S3 thất bại: ${s3Result.error}`);
+  }
+
   return apiRequest(`/admin/orders/${encodeURIComponent(orderId)}/resync-s3`, { method: 'POST' });
+}
+
+export async function syncAllPendingOrdersToS3(orders = []) {
+  const pendingOrders = orders.filter((o) => o.s3SyncStatus !== 'synced');
+  let successCount = 0;
+  let failCount = 0;
+
+  for (const order of pendingOrders) {
+    try {
+      await resyncAdminOrderToS3(order);
+      successCount++;
+    } catch (err) {
+      console.warn(`[Batch S3 Sync] Order #${order.id} failed:`, err.message);
+      failCount++;
+    }
+  }
+
+  return { total: pendingOrders.length, successCount, failCount };
 }

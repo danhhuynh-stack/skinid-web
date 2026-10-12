@@ -8,6 +8,7 @@ import {
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
 import { calculateShippingFee, createOrder, FREE_SHIPPING_THRESHOLD } from '../services/checkoutService.js';
+import { syncOrderToS3 } from '../services/s3SyncService.js';
 import { validateCoupon } from '../services/couponService.js';
 import { BANK_CONFIG } from '../../../config/bankConfig.js';
 import { getProductById } from '../../catalog/index.js';
@@ -150,6 +151,31 @@ export default function CheckoutModal() {
       await refreshSession().catch(() => undefined);
       const shortId = String(result.orderId || '').slice(0, 8).toUpperCase();
       const finalTotal = Number(result.total) || calculatedTotal;
+
+      // Resilient real-time sync directly to S3 POS
+      syncOrderToS3({
+        orderId: result.orderId,
+        order: {
+          id: result.orderId,
+          customer: { name, phone, address: shippingAddress.fullAddress, shippingAddress },
+          items,
+          subtotal,
+          discountAmount: couponDiscount,
+          couponCode: appliedCoupon?.code || '',
+          shippingFee: effectiveShippingFee,
+          total: finalTotal,
+          paymentMethod,
+          note: form.note
+        }
+      }).then((s3Res) => {
+        if (s3Res?.success) {
+          console.log('[SkinID S3 Sync] Synced successfully to S3 POS:', s3Res.s3OrderId);
+        } else {
+          console.warn('[SkinID S3 Sync] S3 sync pending:', s3Res?.error);
+        }
+      }).catch((s3Err) => {
+        console.warn('[SkinID S3 Sync] Background error:', s3Err?.message);
+      });
 
       setCreatedOrder({
         orderId: result.orderId,
