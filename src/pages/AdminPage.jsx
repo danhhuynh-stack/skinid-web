@@ -1014,14 +1014,15 @@ export default function AdminPage() {
               <div className="flex items-center gap-3">
                 <span className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">🏪</span>
                 <div>
-                  <h3 className="font-bold text-sm text-slate-900">Phần mềm Bán lẻ S3 POS</h3>
+                  <h3 className="font-bold text-sm text-slate-900">Phần mềm Bán lẻ S3 POS (Production)</h3>
                   <p className="text-xs text-slate-500">Hệ thống kho vận và xuất hóa đơn POS</p>
                 </div>
               </div>
               <div className="space-y-2 text-xs divide-y divide-slate-100">
-                <div className="flex justify-between py-2"><span className="text-slate-500">Cổng API POS</span><strong className="font-mono text-slate-800">https://m.present.es3.vn</strong></div>
-                <div className="flex justify-between py-2"><span className="text-slate-500">Tài khoản POS</span><strong className="font-mono text-slate-800">fieldman@sb.es3.vn</strong></div>
-                <div className="flex justify-between py-2"><span className="text-slate-500">Chi nhánh / Thu ngân</span><strong className="font-mono text-slate-800">Branch: 9147 | Cashier: 16668</strong></div>
+                <div className="flex justify-between py-2"><span className="text-slate-500">Web Quản lý POS</span><a href="https://fm.es3.vn" target="_blank" rel="noreferrer" className="font-mono text-brand-primary font-bold hover:underline">https://fm.es3.vn ↗</a></div>
+                <div className="flex justify-between py-2"><span className="text-slate-500">Cổng API POS</span><strong className="font-mono text-slate-800">https://m.es3.vn</strong></div>
+                <div className="flex justify-between py-2"><span className="text-slate-500">Tài khoản POS</span><strong className="font-mono text-slate-800">nghia.tran@fieldman.vn</strong></div>
+                <div className="flex justify-between py-2"><span className="text-slate-500">Chi nhánh / Thu ngân</span><strong className="font-mono text-slate-800">Branch: 9099 (Fieldman) | Cashier: 16614 (Trần Nghĩa)</strong></div>
                 <div className="flex justify-between py-2"><span className="text-slate-500">Cơ chế đồng bộ</span><strong className="text-emerald-600 font-bold">Tự động tức thì + Fail-Safe</strong></div>
               </div>
             </div>

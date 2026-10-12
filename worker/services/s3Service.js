@@ -26,7 +26,7 @@ export async function getOrRefreshToken(config, fetchFn = fetch) {
     return cachedToken;
   }
 
-  const baseUrl = (config.baseUrl || 'https://m.present.es3.vn').replace(/\/+$/, '');
+  const baseUrl = (config.baseUrl || 'https://m.es3.vn').replace(/\/+$/, '');
   const loginUrl = `${baseUrl}/Vision/Accounts/Login/v3`;
 
   const response = await fetchFn(loginUrl, {

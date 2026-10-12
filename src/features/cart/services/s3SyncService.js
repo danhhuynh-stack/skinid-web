@@ -5,11 +5,11 @@
  */
 
 export const DEFAULT_S3_CONFIG = {
-  baseUrl: 'https://m.present.es3.vn',
-  username: 'fieldman@sb.es3.vn',
-  password: 'hoZXttsmQVNxQ10k',
-  branchId: 9147,
-  cashierId: 16668,
+  baseUrl: 'https://m.es3.vn',
+  username: 'nghia.tran@fieldman.vn',
+  password: 'nghia.tran@fieldman.vn',
+  branchId: 9099,
+  cashierId: 16614,
   enabled: true
 };
 

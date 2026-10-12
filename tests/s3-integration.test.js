@@ -12,10 +12,10 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
 
   // 1. Config Defaults and Overrides
   const defaultConfig = getS3Config({});
-  assert.equal(defaultConfig.baseUrl, 'https://m.present.es3.vn');
-  assert.equal(defaultConfig.username, 'fieldman@sb.es3.vn');
-  assert.equal(defaultConfig.branchId, 9147);
-  assert.equal(defaultConfig.cashierId, 16668);
+  assert.equal(defaultConfig.baseUrl, 'https://m.es3.vn');
+  assert.equal(defaultConfig.username, 'nghia.tran@fieldman.vn');
+  assert.equal(defaultConfig.branchId, 9099);
+  assert.equal(defaultConfig.cashierId, 16614);
   assert.equal(defaultConfig.enabled, true);
 
   const customConfig = getS3Config({
@@ -66,7 +66,7 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
   assert.equal(bankPayload.PreOrderItems.length, 1);
   assert.equal(bankPayload.PreOrderItems[0].QuantitySold, 2);
   assert.equal(bankPayload.PreOrderItems[0].PriceSold, 1150000);
-  assert.equal(bankPayload.SelectedBranch, 9147);
+  assert.equal(bankPayload.SelectedBranch, 9099);
 
   // 3. Order Mapping - COD
   const mockCodOrder = {
