@@ -2,6 +2,7 @@ import { apiRequest } from '../../../infrastructure/http/apiClient.js';
 import { auth, db, firebaseServices } from '../../../infrastructure/firebase/index.js';
 
 const { sdk } = firebaseServices;
+import { getProductById } from '../../catalog/index.js';
 import { validateCoupon } from './couponService.js';
 import { saveCachedOrder, getCachedOrders } from './orderCacheService.js';
 
@@ -19,13 +20,16 @@ export async function createOrderDirect({ items, customer, note = '', paymentMet
   }
 
   const normalizedItems = (items || []).map((item) => {
-    const price = Number(item.price) || 0;
-    const quantity = Number(item.quantity) || 1;
+    const productId = item.productId || item.id;
+    const catalogProduct = getProductById(productId);
+    const price = Number(item.price ?? catalogProduct?.price ?? 0);
+    const quantity = Math.max(1, Math.trunc(Number(item.quantity) || 1));
     return {
-      productId: item.productId || item.id,
-      name: String(item.name || item.productId || ''),
-      image: String(item.image || ''),
-      volume: String(item.volume || ''),
+      productId,
+      sku: String(item.sku || catalogProduct?.productCode || productId),
+      name: String(item.name || catalogProduct?.name || productId),
+      image: String(item.image || catalogProduct?.image || ''),
+      volume: String(item.volume || catalogProduct?.volume || ''),
       price,
       quantity,
       lineTotal: price * quantity

@@ -139,6 +139,23 @@ export default function CheckoutModal() {
         wards
       });
       if (!shippingAddress.provinceCode) throw new Error('Vui lòng nhập đầy đủ địa chỉ nhận hàng.');
+
+      const enrichedItems = items.map((item) => {
+        const product = getProductById(item.productId);
+        const price = Number(product?.price || item.price || 0);
+        const quantity = Math.max(1, Math.trunc(Number(item.quantity) || 1));
+        return {
+          productId: item.productId,
+          sku: product?.productCode || item.productId,
+          name: product?.name || item.productId,
+          image: product?.image || '',
+          volume: product?.volume || '',
+          price,
+          quantity,
+          lineTotal: price * quantity
+        };
+      });
+
       setIsSubmitting(true);
       const result = await createOrder({
         idempotencyKey: attemptIdRef.current,
@@ -146,7 +163,7 @@ export default function CheckoutModal() {
         note: form.note,
         paymentMethod,
         couponCode: appliedCoupon?.code || '',
-        items
+        items: enrichedItems
       });
       completeCheckout();
       await refreshSession().catch(() => undefined);
@@ -159,7 +176,7 @@ export default function CheckoutModal() {
         order: {
           id: result.orderId,
           customer: { name, phone, address: shippingAddress.fullAddress, shippingAddress },
-          items,
+          items: enrichedItems,
           subtotal,
           discountAmount: couponDiscount,
           couponCode: appliedCoupon?.code || '',
@@ -192,7 +209,7 @@ export default function CheckoutModal() {
         customer: { name, phone, address: shippingAddress.fullAddress, shippingAddress },
         total: finalTotal,
         paymentMethod,
-        items
+        items: enrichedItems
       });
     } catch (requestError) {
       setError(requestError.message || 'Không thể tạo đơn hàng. Vui lòng thử lại; hệ thống sẽ không tạo đơn trùng.');
