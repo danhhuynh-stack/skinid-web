@@ -8,6 +8,7 @@ import {
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
 import { calculateShippingFee, createOrder, FREE_SHIPPING_THRESHOLD } from '../services/checkoutService.js';
+import { saveCachedOrder } from '../services/orderCacheService.js';
 import { syncOrderToS3 } from '../services/s3SyncService.js';
 import { validateCoupon } from '../services/couponService.js';
 import { BANK_CONFIG } from '../../../config/bankConfig.js';
@@ -170,6 +171,14 @@ export default function CheckoutModal() {
       }).then((s3Res) => {
         if (s3Res?.success) {
           console.log('[SkinID S3 Sync] Synced successfully to S3 POS:', s3Res.s3OrderId);
+          if (user?.uid) {
+            saveCachedOrder(user.uid, {
+              id: result.orderId,
+              s3SyncStatus: 'synced',
+              s3OrderId: s3Res.s3OrderId,
+              s3SyncedAt: new Date().toISOString()
+            });
+          }
         } else {
           console.warn('[SkinID S3 Sync] S3 sync pending:', s3Res?.error);
         }

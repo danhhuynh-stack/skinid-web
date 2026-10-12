@@ -161,7 +161,7 @@ export const CATALOG_FIXTURE = [
     "expiry": "36 tháng kể từ NSX và 8-12 tháng sau khi mở nắp",
     "unit": "Chai",
     "sourceName": "SỮA RỬA MẶT TẨY TRANG",
-    "productCode": "I14V01730"
+    "productCode": "I14V01770"
   },
   {
     "id": "rilastil-2097",
@@ -211,7 +211,7 @@ export const CATALOG_FIXTURE = [
     "expiry": "36 tháng kể từ NSX và 8-12 tháng sau khi mở nắp",
     "unit": "Chai",
     "sourceName": "NƯỚC HOA HỒNG",
-    "productCode": "I14V01740"
+    "productCode": "I14V01780"
   },
   {
     "id": "rilastil-2096",
@@ -2448,7 +2448,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1Dwfry5VcSvbXewMwbVhRWmK6yJLJuInx.webp",
     "licenseUrl": "https://drive.google.com/file/d/1Dwfry5VcSvbXewMwbVhRWmK6yJLJuInx/view?usp=drivesdk",
     "unit": "Tuýp",
-    "sourceName": "Kem body Lotion"
+    "sourceName": "Kem body Lotion",
+    "productCode": "TWON-BODY-LOTION-200ML"
   },
   {
     "id": "twon-kem-u-trang",
@@ -2501,7 +2502,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1cicNb4LL_FhSX1NccsU4sq7CcU1b7y_5.webp",
     "licenseUrl": "https://drive.google.com/file/d/1cicNb4LL_FhSX1NccsU4sq7CcU1b7y_5/view?usp=drivesdk",
     "unit": "Tuýp",
-    "sourceName": "Kem ủ trắng"
+    "sourceName": "Kem ủ trắng",
+    "productCode": "TWON-U-TRANG-250ML"
   },
   {
     "id": "twon-sua-tam",
@@ -2553,7 +2555,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1x0F1I4igJtpi3bdm_cQ4hvoxWW_PLvlA.webp",
     "licenseUrl": "https://drive.google.com/file/d/1x0F1I4igJtpi3bdm_cQ4hvoxWW_PLvlA/view?usp=drivesdk",
     "unit": "Tuýp",
-    "sourceName": "Sữa tắm TWON"
+    "sourceName": "Sữa tắm TWON",
+    "productCode": "TWON-SUA-TAM-450ML"
   },
   {
     "id": "dvah-sarika",
@@ -2604,7 +2607,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1u8JJBCPHyVbAo-oDYcesWuEl0ychbKvS.webp",
     "licenseUrl": "https://drive.google.com/file/d/1u8JJBCPHyVbAo-oDYcesWuEl0ychbKvS/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Sarika"
+    "sourceName": "Nước hoa Sarika",
+    "productCode": "DVAH-SARIKA-10ML"
   },
   {
     "id": "dvah-kamal",
@@ -2655,7 +2659,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1GmX2S0moCZvVPHIo7V0guMH5HvfSGvlb.webp",
     "licenseUrl": "https://drive.google.com/file/d/1GmX2S0moCZvVPHIo7V0guMH5HvfSGvlb/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Kamal"
+    "sourceName": "Nước hoa Kamal",
+    "productCode": "DVAH-KAMAL-10ML"
   },
   {
     "id": "dvah-rakta",
@@ -2706,7 +2711,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1ki3o5W7Hu9k56TzdJZ06E0qfsllUtvTO.webp",
     "licenseUrl": "https://drive.google.com/file/d/1ki3o5W7Hu9k56TzdJZ06E0qfsllUtvTO/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Rakta"
+    "sourceName": "Nước hoa Rakta",
+    "productCode": "DVAH-RAKTA-10ML"
   },
   {
     "id": "dvah-tanmaya",
@@ -2757,7 +2763,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/17O4dFEZNuZV7YJvUi72JawqmGt-7-MpY.webp",
     "licenseUrl": "https://drive.google.com/file/d/17O4dFEZNuZV7YJvUi72JawqmGt-7-MpY/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Tamaya"
+    "sourceName": "Nước hoa Tamaya",
+    "productCode": "DVAH-TANMAYA-10ML"
   },
   {
     "id": "dvah-malini",
@@ -2808,7 +2815,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1RT-yO75h1yizNDlpSN444uMOjshpbSYr.webp",
     "licenseUrl": "https://drive.google.com/file/d/1RT-yO75h1yizNDlpSN444uMOjshpbSYr/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Malani"
+    "sourceName": "Nước hoa Malani",
+    "productCode": "DVAH-MALINI-10ML"
   },
   {
     "id": "rilastil-2110",

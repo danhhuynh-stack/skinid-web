@@ -161,14 +161,18 @@ export function mapOrderToS3Payload(order, config = DEFAULT_S3_CONFIG, customerI
     const unitPrice = Number(item.price || item.unitPrice || 0);
     const quantity = Number(item.quantity || 1);
     const productId = Number(item.s3ProductId || item.skuNumber || (index + 1));
-    const productName = String(item.name || item.productName || 'Sản phẩm SkinID').slice(0, 200);
+    const code = String(item.productCode || item.sku || '').trim();
+    const rawName = String(item.name || item.productName || 'Sản phẩm SkinID').trim();
+    const productName = code && !rawName.includes(code)
+      ? `[${code}] ${rawName}`.slice(0, 200)
+      : rawName.slice(0, 200);
 
     return {
       YS_ProductID: productId,
       QuantitySold: quantity,
       PriceSold: unitPrice,
       Discount: "0",
-      Attributes: "",
+      Attributes: code ? `SKU: ${code}` : "",
       AttributeKey: "",
       ReferenceCode: 0,
       UnitCost: unitPrice,

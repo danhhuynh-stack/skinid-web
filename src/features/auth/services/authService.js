@@ -1,4 +1,5 @@
 import { firebaseServices } from '../../../infrastructure/firebase/index.js';
+import { getCachedOrders } from '../../cart/services/orderCacheService.js';
 
 const { auth, db, sdk } = firebaseServices;
 
@@ -60,8 +61,7 @@ export async function fetchHistory(userId) {
 }
 
 export async function fetchOrders(userId) {
-  const { collection, getDocs, query, where } = sdk.firestore;
-  const result = await getDocs(query(collection(db, 'orders'), where('userId', '==', userId)));
+  const cachedOrders = getCachedOrders(userId);
   const getOrderTime = (val) => {
     if (!val) return 0;
     if (typeof val.toDate === 'function') return val.toDate().getTime();
@@ -69,9 +69,26 @@ export async function fetchOrders(userId) {
     const time = new Date(val).getTime();
     return Number.isNaN(time) ? 0 : time;
   };
-  return result.docs
-    .map((snapshot) => ({ id: snapshot.id, ...snapshot.data() }))
-    .sort((left, right) => getOrderTime(right.createdAt) - getOrderTime(left.createdAt));
+
+  try {
+    const { collection, getDocs, query, where } = sdk.firestore;
+    const result = await getDocs(query(collection(db, 'orders'), where('userId', '==', userId)));
+    const firestoreOrders = result.docs.map((snapshot) => ({ id: snapshot.id, ...snapshot.data() }));
+
+    const merged = new Map();
+    for (const order of cachedOrders) {
+      if (order.id) merged.set(order.id, order);
+    }
+    for (const order of firestoreOrders) {
+      if (order.id) merged.set(order.id, { ...(merged.get(order.id) || {}), ...order });
+    }
+
+    return Array.from(merged.values())
+      .sort((left, right) => getOrderTime(right.createdAt) - getOrderTime(left.createdAt));
+  } catch (err) {
+    console.warn('[SkinID Orders] Firestore fetch failed, serving cached orders:', err.message);
+    return cachedOrders.sort((left, right) => getOrderTime(right.createdAt) - getOrderTime(left.createdAt));
+  }
 }
 
 export async function loadAuthSession(firebaseUser) {
