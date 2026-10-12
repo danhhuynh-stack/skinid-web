@@ -60,14 +60,39 @@ export async function getOrRefreshToken(config, fetchFn = fetch) {
 
 /**
  * Create or sync customer on S3 POS
- * Endpoint: POST /Vision/Customers
+ * Endpoint: POST /Vision/Customers/Search & POST /Vision/Customers
  */
 export async function syncCustomerToS3({ customer, token, config, fetchFn = fetch }) {
-  if (!customer?.phone && !customer?.name) return 0;
-
+  const phone = String(customer?.phone || '').trim();
   const baseUrl = (config.baseUrl || 'https://m.present.es3.vn').replace(/\/+$/, '');
-  const custUrl = `${baseUrl}/Vision/Customers`;
 
+  // 1. Search existing customer by phone if available
+  if (phone) {
+    try {
+      const searchRes = await fetchFn(`${baseUrl}/Vision/Customers/Search`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ KeySearch: phone })
+      });
+      if (searchRes.ok) {
+        const matches = await searchRes.json().catch(() => []);
+        if (Array.isArray(matches) && matches.length > 0 && matches[0]?.Id) {
+          return Number(matches[0].Id);
+        }
+      }
+    } catch (err) {
+      console.warn('[S3 Customer Search Warning]', err.message);
+    }
+  }
+
+  if (!phone && !customer?.name) return 0;
+
+  // 2. Create new customer if not found
+  const custUrl = `${baseUrl}/Vision/Customers`;
   const fullName = String(customer.name || 'Khách hàng SkinID').trim();
   const nameParts = fullName.split(' ');
   const lastName = nameParts.length > 1 ? nameParts[0] : '';
@@ -90,10 +115,10 @@ export async function syncCustomerToS3({ customer, token, config, fetchFn = fetc
         Email: customer.email || '',
         Company: 'SkinID Web Customer',
         Address: customer.address || '',
-        Phone: customer.phone || '',
-        Mobile: customer.phone || '',
+        Phone: phone,
+        Mobile: phone,
         Fax: '',
-        Notes: `Đăng ký từ SkinID.vn | SĐT: ${customer.phone || ''}`,
+        Notes: `Đăng ký từ SkinID.vn | SĐT: ${phone}`,
         Gender: 'M',
         City: 'Hồ Chí Minh',
         Country: 'VN',
@@ -110,7 +135,7 @@ export async function syncCustomerToS3({ customer, token, config, fetchFn = fetc
       }
     }
   } catch (err) {
-    console.warn('[S3 Customer Sync Warning]', err.message);
+    console.warn('[S3 Customer Create Warning]', err.message);
   }
 
   return 0;
@@ -176,10 +201,7 @@ export function mapOrderToS3Payload(order, config, customerId = 0) {
       YS_PreOrderID: 0,
       Cashier: cashierId,
       CustomerID: Number(customerId || order.s3CustomerId || 0),
-      CustomerName: String(order.customer?.name || '').slice(0, 100),
-      CustomerPhone: String(order.customer?.phone || '').slice(0, 20),
-      CustomerAddress: String(order.customer?.address || '').slice(0, 300),
-      InvoiceDiscount: order.discountAmount ? String(order.discountAmount) : "0",
+      InvoiceDiscount: Number(order.discountAmount || 0),
       TotalAmount: Number(order.subtotal || order.total || 0),
       InvoiceAmount: Number(order.total || 0),
       CustomerReceived: isBankTransfer ? Number(order.total || 0) : 0,
@@ -194,7 +216,7 @@ export function mapOrderToS3Payload(order, config, customerId = 0) {
       VAT: 0,
       VATTaxAmount: 0
     },
-    PreOrderPayments: preOrderPayments,
+    PreOrderPayments: [],
     PreOrderItems: preOrderItems,
     StorefrontOrderID: 0,
     SelectedBranch: branchId,

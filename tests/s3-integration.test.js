@@ -56,16 +56,13 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
 
   const bankPayload = mapOrderToS3Payload(mockBankOrder, defaultConfig, 841894);
   assert.equal(bankPayload.PreOrder.CustomerID, 841894);
-  assert.equal(bankPayload.PreOrder.CustomerName, 'Nguyễn Văn Test');
-  assert.equal(bankPayload.PreOrder.CustomerPhone, '0909123456');
   assert.equal(bankPayload.PreOrder.TotalAmount, 2300000);
   assert.equal(bankPayload.PreOrder.InvoiceAmount, 2150000);
   assert.equal(bankPayload.PreOrder.CustomerReceived, 2150000);
   assert.equal(bankPayload.PreOrder.PromotionDiscountAmount, 150000);
+  assert.equal(bankPayload.PreOrder.InvoiceDiscount, 150000);
   assert.match(bankPayload.PreOrder.Notes, /Vietcombank 1063583549/);
-  assert.equal(bankPayload.PreOrderPayments.length, 1);
-  assert.equal(bankPayload.PreOrderPayments[0].PaymentOption, 41020);
-  assert.equal(bankPayload.PreOrderPayments[0].PaymentAmount, 2150000);
+  assert.equal(bankPayload.PreOrderPayments.length, 0);
   assert.equal(bankPayload.PreOrderItems.length, 1);
   assert.equal(bankPayload.PreOrderItems[0].QuantitySold, 2);
   assert.equal(bankPayload.PreOrderItems[0].PriceSold, 1150000);
