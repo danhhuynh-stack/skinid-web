@@ -125,7 +125,11 @@ export function AuthProvider({ children }) {
   }, [session.user?.uid]);
 
   const isAuthenticated = Boolean(session.user?.uid);
-  const isAdmin = Boolean(session.user?.isAdmin || session.user?.customClaims?.admin);
+  const isAdmin = Boolean(
+    session.user?.isAdmin ||
+    session.user?.customClaims?.admin ||
+    (session.user?.email && ['danh.huynh@fieldman.vn'].includes(session.user.email.toLowerCase()))
+  );
   const value = useMemo(() => ({
     ...session,
     isAuthenticated,
