@@ -5,7 +5,7 @@ service cloud.firestore {
     function isSuperAdmin() {
       return request.auth != null && (
         request.auth.token.admin == true ||
-        request.auth.token.email == 'danh.huynh@fieldman.vn'
+        request.auth.token.email in ['admin@skinid.vn', 'admin@fieldman.vn', 'danh.huynh@fieldman.vn']
       );
     }
 
