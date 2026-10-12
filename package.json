@@ -3,8 +3,10 @@
   "private": true,
   "scripts": {
     "generate:server-catalog": "node scripts/generate-server-catalog.mjs",
-    "prebuild": "npm run generate:server-catalog",
+    "predev": "node scripts/restore-source-html.mjs",
+    "prebuild": "node scripts/restore-source-html.mjs && npm run generate:server-catalog",
     "build": "vite build",
+    "postbuild": "node scripts/prepare-gh-pages.mjs",
     "preview": "vite preview",
     "dev": "vite",
     "dev:cloudflare": "npm run build && wrangler dev",

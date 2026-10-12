@@ -1,0 +1,1 @@
+var e=Object.freeze([`rilastil-1774`,`rilastil-525`,`rilastil-2067`,`rilastil-1857`]);function t(t){return e.includes(String(t||``))}export{t as n,e as t};

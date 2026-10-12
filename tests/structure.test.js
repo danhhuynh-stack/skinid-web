@@ -17,7 +17,7 @@ const indexHtml = read('index.html');
 assert.match(indexHtml, /<meta name="viewport" content="width=device-width, initial-scale=1\.0, viewport-fit=cover">/);
 assert.doesNotMatch(indexHtml, /user-scalable=no|maximum-scale=1/);
 assert.match(read('index.html'), /<div id="root"><\/div>/);
-assert.match(read('index.html'), /<script type="module" src="\/src\/main\.jsx"><\/script>/);
+assert.match(read('index.html'), /<script type="module" (?:src="\/src\/main\.jsx"|crossorigin src="\/assets\/app-[^"]+\.js")><\/script>/);
 assert.match(read('src/main.jsx'), /import '\.\/styles\/site\.css'/);
 const router = read('src/app/router.jsx');
 assert.match(router, /createBrowserRouter/);
