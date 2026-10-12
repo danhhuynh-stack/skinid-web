@@ -5,13 +5,13 @@ import { fetchAdminDashboard } from '../services/adminService.js';
 const emptyDashboard = { users: [], orders: [], products: [] };
 
 export function useAdmin() {
-  const { user, isAdmin, isLoading: authLoading } = useAuth();
+  const { user, role, isSuperAdmin, isAdmin, isStaff, isLoading: authLoading } = useAuth();
   const [dashboard, setDashboard] = useState(emptyDashboard);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   const refresh = useCallback(async () => {
-    if (!isAdmin) return emptyDashboard;
+    if (!isAdmin && !isStaff) return emptyDashboard;
     setLoading(true);
     setError('');
     try {
@@ -24,17 +24,17 @@ export function useAdmin() {
     } finally {
       setLoading(false);
     }
-  }, [isAdmin]);
+  }, [isAdmin, isStaff]);
 
   useEffect(() => {
     if (authLoading) return;
-    if (!isAdmin) {
+    if (!isAdmin && !isStaff) {
       setLoading(false);
       setDashboard(emptyDashboard);
       return;
     }
     refresh().catch(() => undefined);
-  }, [authLoading, isAdmin, refresh]);
+  }, [authLoading, isAdmin, isStaff, refresh]);
 
-  return { user, isAdmin, authLoading, ...dashboard, loading, error, refresh };
+  return { user, role, isSuperAdmin, isAdmin, isStaff, authLoading, ...dashboard, loading, error, refresh };
 }

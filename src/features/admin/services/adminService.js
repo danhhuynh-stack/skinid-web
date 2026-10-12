@@ -118,3 +118,47 @@ export async function syncAllPendingOrdersToS3(orders = []) {
 
   return { total: pendingOrders.length, successCount, failCount };
 }
+
+export async function updateUserRole(userId, newRole) {
+  if (!userId) throw new Error('Mã người dùng không hợp lệ.');
+  const validRoles = ['super_admin', 'admin', 'staff', 'customer'];
+  if (!validRoles.includes(newRole)) throw new Error('Vai trò không hợp lệ.');
+  const { doc, serverTimestamp, updateDoc } = sdk.firestore;
+  await updateDoc(doc(db, 'users', userId), {
+    role: newRole,
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function assignAdminByEmail(email, role = 'admin', name = '') {
+  const cleanEmail = String(email || '').trim().toLowerCase();
+  if (!cleanEmail || !cleanEmail.includes('@')) {
+    throw new Error('Vui lòng nhập địa chỉ email hợp lệ.');
+  }
+  const validRoles = ['super_admin', 'admin', 'staff', 'customer'];
+  if (!validRoles.includes(role)) throw new Error('Vai trò không hợp lệ.');
+
+  const { collection, getDocs, query, where, doc, updateDoc, setDoc, serverTimestamp } = sdk.firestore;
+  const snapshot = await getDocs(query(collection(db, 'users'), where('email', '==', cleanEmail)));
+
+  if (!snapshot.empty) {
+    const userDoc = snapshot.docs[0];
+    await updateDoc(doc(db, 'users', userDoc.id), {
+      role,
+      updatedAt: serverTimestamp()
+    });
+    return { isNew: false, id: userDoc.id, email: cleanEmail, role };
+  }
+
+  const slug = cleanEmail.replace(/[^a-z0-9]/g, '_');
+  const tempId = `member_${slug}`;
+  await setDoc(doc(db, 'users', tempId), {
+    email: cleanEmail,
+    name: name || cleanEmail.split('@')[0],
+    role,
+    isPreassigned: true,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+  return { isNew: true, id: tempId, email: cleanEmail, role };
+}
