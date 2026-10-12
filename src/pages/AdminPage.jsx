@@ -101,7 +101,33 @@ export default function AdminPage() {
 
   if (authLoading || loading) return <div className="admin-page min-h-screen bg-gray-50"><main className="container py-12"><div className="rounded-2xl bg-white border p-6 text-sm text-gray-500">Đang xác thực và tải dữ liệu quản trị…</div></main></div>;
   if (!user) return <div className="admin-page min-h-screen bg-gray-50"><main className="container py-12"><div className="rounded-2xl bg-white border p-6">Bạn chưa đăng nhập. <a className="text-brand-primary font-bold" href="/?auth=1">Đăng nhập tại cửa hàng</a>.</div></main></div>;
-  if (!isAdmin) return <div className="admin-page min-h-screen bg-gray-50"><main className="container py-12"><div className="rounded-2xl bg-white border p-6">Tài khoản này chưa có quyền quản trị.</div></main></div>;
+  if (!isAdmin) return (
+    <div className="admin-page min-h-screen bg-gray-50">
+      <main className="container py-12 max-w-xl mx-auto">
+        <div className="rounded-2xl bg-white border border-gray-200 p-6 shadow-sm space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg">⚠️</span>
+            <div>
+              <h2 className="font-bold text-base text-gray-900">Tài khoản chưa có quyền quản trị</h2>
+              <p className="text-xs text-gray-500">Đang đăng nhập bằng: <span className="font-semibold text-gray-800">{user.email || user.displayName || user.uid}</span></p>
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            Hệ thống Firebase Security Rules yêu cầu custom claim <code>admin: true</code> để truy cập toàn bộ cơ sở dữ liệu khách hàng và đơn hàng hệ thống.
+          </p>
+          <div className="p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-900 space-y-1">
+            <p>💡 <strong>Để kiểm tra đơn hàng bạn vừa đặt vào S3:</strong></p>
+            <p>1. Xem trên web SkinID: Mở tab <a href="/profile?tab=orders" className="text-brand-primary font-bold underline">Đơn hàng của tôi</a> trong Hồ sơ cá nhân.</p>
+            <p>2. Xem trên phần mềm S3 POS: Vào trực tiếp web POS <a href="https://present.es3.vn" target="_blank" rel="noreferrer" className="text-brand-primary font-bold underline">present.es3.vn</a> ➔ <strong>Bán hàng</strong> ➔ <strong>Đơn đặt hàng</strong>.</p>
+          </div>
+          <div className="pt-2 flex gap-3">
+            <a href="/" className="btn btn--outline flex-1 text-center text-xs">Về trang chủ</a>
+            <a href="/profile?tab=orders" className="btn btn--primary flex-1 text-center text-xs">Xem đơn của tôi</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 
   const statuses = ['pending', 'confirmed', 'shipping', 'completed', 'cancelled'];
   return (
