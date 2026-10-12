@@ -35,7 +35,7 @@ export default function ProductCard({ product, onOpen }) {
 
   const handleBuyNow = async (event) => {
     event.stopPropagation();
-    await addToCart(product.id);
+    await addToCart(product.id, 1, { showToast: false });
     await openCheckout();
   };
 

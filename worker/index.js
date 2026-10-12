@@ -12,6 +12,7 @@ import { ApiError } from './app/errors.js';
 import { json, corsHeaders } from './app/http.js';
 import { isValidFirebasePrivateKey, requiredFirebaseEnv } from './app/env.js';
 import { authenticate } from './infrastructure/firebase/auth.js';
+import { syncOrderToS3 } from './services/s3Service.js';
 
 const bundledProducts = new Map(SERVER_CATALOG.map(product => [product.id, product]));
 
@@ -106,6 +107,17 @@ async function createOrder(request, env, user) {
   }
   const subtotal = items.reduce((sum, item) => sum + item.lineTotal, 0);
   const shippingFee = subtotal >= 500000 ? 0 : 30000;
+  const couponCode = String(payload.couponCode || '').trim().toUpperCase();
+  let discountAmount = 0;
+  if (couponCode === 'SKINID10' && subtotal >= 200000) {
+    discountAmount = Math.min(150000, Math.round(subtotal * 0.1));
+  } else if (couponCode === 'WELCOME50' && subtotal >= 300000) {
+    discountAmount = Math.min(50000, subtotal);
+  } else if (couponCode === 'FREESHIP') {
+    discountAmount = Math.min(30000, shippingFee);
+  }
+  const finalTotal = Math.max(0, subtotal - discountAmount) + shippingFee;
+
   const now = new Date();
   const idempotencyKey = String(request.headers.get('idempotency-key') || '').trim();
   let orderId = crypto.randomUUID().replaceAll('-', '');
@@ -120,6 +132,7 @@ async function createOrder(request, env, user) {
         duplicate: true,
         orderId,
         subtotal: existingOrder.subtotal,
+        discount: existingOrder.discountAmount || 0,
         shippingFee: existingOrder.shippingFee,
         total: existingOrder.total
       });
@@ -138,8 +151,10 @@ async function createOrder(request, env, user) {
     items,
     note: String(payload.note || '').trim().slice(0, 1000),
     subtotal,
+    discountAmount,
+    couponCode: couponCode || null,
     shippingFee,
-    total: subtotal + shippingFee,
+    total: finalTotal,
     paymentMethod,
     paymentStatus: 'unpaid',
     status: 'pending',
@@ -170,7 +185,64 @@ async function createOrder(request, env, user) {
     devOrdersStore.set(orderId, order);
   }
 
-  return json(request, env, { success: true, orderId, subtotal, shippingFee, total: order.total }, 201);
+  // Resilient fail-safe synchronization to S3 POS
+  let s3SyncStatus = 'pending';
+  if (typeof syncOrderToS3 === 'function') {
+    try {
+      const s3Result = await syncOrderToS3({ orderId, order, env, timeoutMs: 4000 });
+      s3SyncStatus = s3Result.s3SyncStatus || 'pending';
+      if (s3Result.success) {
+        const s3Fields = {
+          s3SyncStatus: 'synced',
+          s3OrderId: s3Result.s3OrderId,
+          s3SyncedAt: s3Result.syncedAt,
+          ...(s3Result.s3CustomerId ? { s3CustomerId: s3Result.s3CustomerId } : {})
+        };
+        if (hasFirestore) {
+          await commitWrites(env, [
+            updateWrite(env, `orders/${orderId}`, s3Fields, Object.keys(s3Fields))
+          ]).catch(err => console.warn('[Worker S3 Update Warning]', err.message));
+        } else {
+          Object.assign(order, s3Fields);
+        }
+      }
+    } catch (err) {
+      console.warn('[Worker S3 Sync Exception]', err.message);
+    }
+  }
+
+  return json(request, env, { success: true, orderId, subtotal, discount: discountAmount, shippingFee, total: order.total, s3SyncStatus }, 201);
+}
+
+async function resyncOrderToS3(request, env, user, orderId) {
+  if (user.admin !== true) throw new ApiError(403, 'permission_denied', 'Chỉ quản trị viên mới có thể đồng bộ đơn hàng sang S3.');
+  const hasFirestore = isFirestoreConfigured(env);
+  let order = null;
+  if (hasFirestore) {
+    order = await getDocument(env, `orders/${orderId}`);
+  } else {
+    order = devOrdersStore.get(orderId);
+  }
+  if (!order) throw new ApiError(404, 'order_not_found', 'Không tìm thấy đơn hàng.');
+
+  const s3Result = await syncOrderToS3({ orderId, order, env, timeoutMs: 8000 });
+  const s3Fields = {
+    s3SyncStatus: s3Result.s3SyncStatus || (s3Result.success ? 'synced' : 'pending'),
+    ...(s3Result.s3OrderId ? { s3OrderId: s3Result.s3OrderId } : {}),
+    ...(s3Result.syncedAt ? { s3SyncedAt: s3Result.syncedAt } : {}),
+    ...(s3Result.s3CustomerId ? { s3CustomerId: s3Result.s3CustomerId } : {}),
+    ...(s3Result.error ? { s3Error: s3Result.error } : {})
+  };
+
+  if (hasFirestore) {
+    await commitWrites(env, [
+      updateWrite(env, `orders/${orderId}`, s3Fields, Object.keys(s3Fields))
+    ]);
+  } else {
+    Object.assign(order, s3Fields);
+  }
+
+  return json(request, env, { success: true, orderId, s3Result });
 }
 
 async function cancelOrder(request, env, user, orderId) {
@@ -499,6 +571,8 @@ async function handleApi(request, env) {
   const url = new URL(request.url);
   if (request.method === 'GET' && url.pathname === '/api/orders') return listOrders(request, env, user);
   if (request.method === 'POST' && url.pathname === '/api/orders') return createOrder(request, env, user);
+  const s3ResyncMatch = url.pathname.match(/^\/api\/admin\/orders\/([^/]+)\/resync-s3$/);
+  if (request.method === 'POST' && s3ResyncMatch) return resyncOrderToS3(request, env, user, decodeURIComponent(s3ResyncMatch[1]));
   const orderMatch = url.pathname.match(/^\/api\/orders\/([^/]+)$/);
   if (request.method === 'PATCH' && orderMatch) return cancelOrder(request, env, user, decodeURIComponent(orderMatch[1]));
   if (request.method === 'POST' && url.pathname === '/api/analyze-skin') return analyzeSkin(request, env, user);

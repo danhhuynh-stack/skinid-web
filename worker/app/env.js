@@ -38,3 +38,14 @@ export function requiredFirebaseEnv(env) {
     );
   }
 }
+
+export function getS3Config(env = {}) {
+  return {
+    baseUrl: env.S3_BASE_URL || 'https://m.present.es3.vn',
+    username: env.S3_USERNAME || 'fieldman@sb.es3.vn',
+    password: env.S3_PASSWORD || 'hoZXttsmQVNxQ10k',
+    branchId: Number(env.S3_BRANCH_ID || 9147),
+    cashierId: Number(env.S3_CASHIER_ID || 16668),
+    enabled: env.S3_SYNC_ENABLED !== 'false' && env.S3_SYNC_ENABLED !== false
+  };
+}

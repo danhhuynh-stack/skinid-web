@@ -46,10 +46,18 @@ function CatalogDropdown({ id, kind, label, value, onChange, sort = false }) {
   );
 }
 
+const PRICE_OPTIONS = [
+  { value: 'all', label: 'Tất cả mức giá' },
+  { value: 'under-500k', label: 'Dưới 500k' },
+  { value: '500k-1000k', label: '500k – 1 triệu' },
+  { value: 'over-1000k', label: 'Trên 1 triệu' }
+];
+
 export default function ProductList() {
   const { products, isReady } = useCatalog();
   const [searchParams, setSearchParams] = useSearchParams();
   const { brand, step, benefit, sort, query } = readCatalogQuery(searchParams);
+  const priceRange = searchParams.get('price') || 'all';
 
   useEffect(() => {
     const normalized = normalizeCatalogQuery(searchParams);
@@ -60,12 +68,27 @@ export default function ProductList() {
     setSearchParams(updateCatalogQuery(searchParams, key, value), { replace: true });
   };
 
+  const handlePriceChange = (val) => {
+    const next = new URLSearchParams(searchParams);
+    if (!val || val === 'all' || val === priceRange) next.delete('price');
+    else next.set('price', val);
+    setSearchParams(next, { replace: true });
+  };
+
   const visibleProducts = useMemo(() => {
-    const filtered = filterProducts(products, { brand, step, benefit, query });
+    let filtered = filterProducts(products, { brand, step, benefit, query });
+    if (priceRange === 'under-500k') {
+      filtered = filtered.filter(p => Number(p.price) < 500000);
+    } else if (priceRange === '500k-1000k') {
+      filtered = filtered.filter(p => Number(p.price) >= 500000 && Number(p.price) <= 1000000);
+    } else if (priceRange === 'over-1000k') {
+      filtered = filtered.filter(p => Number(p.price) > 1000000);
+    }
+
     if (sort === 'price-asc') return [...filtered].sort((a, b) => a.price - b.price);
     if (sort === 'price-desc') return [...filtered].sort((a, b) => b.price - a.price);
     return filtered;
-  }, [products, brand, step, benefit, query, sort]);
+  }, [products, brand, step, benefit, query, sort, priceRange]);
 
   const reset = () => setSearchParams({}, { replace: true });
   const openProduct = productId => document.dispatchEvent(new CustomEvent('skinid:open-product-detail', { detail: { productId } }));
@@ -78,6 +101,21 @@ export default function ProductList() {
           <span className="sr-only">Tìm sản phẩm</span>
           <input id="product-search" type="search" value={query} onChange={event => update('search', event.target.value)} placeholder="Tìm theo tên sản phẩm, thương hiệu, thành phần…" />
         </label>
+        <div className="catalog-price-quick-bar" aria-label="Lọc nhanh theo mức giá">
+          <span className="catalog-price-quick-title">Khoảng giá:</span>
+          <div className="catalog-price-quick-pills">
+            {PRICE_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                type="button"
+                className={`catalog-price-quick-pill${priceRange === opt.value ? ' is-active' : ''}`}
+                onClick={() => handlePriceChange(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="shop-toolbar" aria-label="Bộ lọc và sắp xếp sản phẩm">
           <div className="catalog-filter-cluster">
             <CatalogDropdown id="brand-filter-select" kind="brand" label="Thương hiệu" value={brand} onChange={value => update('brand', value)} />

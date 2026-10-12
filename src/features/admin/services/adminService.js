@@ -74,3 +74,7 @@ export function deleteAdminOrder(orderId) {
 export function deleteUserAccount(userId) {
   return apiRequest(`/admin/users/${encodeURIComponent(userId)}`, { method: 'DELETE' });
 }
+
+export function resyncAdminOrderToS3(orderId) {
+  return apiRequest(`/admin/orders/${encodeURIComponent(orderId)}/resync-s3`, { method: 'POST' });
+}

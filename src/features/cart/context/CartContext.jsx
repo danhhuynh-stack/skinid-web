@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { useAuth } from '../../auth/index.js';
 import { getProductById } from '../../catalog/index.js';
 import { loadUserCart, mergeCartItems, sanitizeCartItems, saveUserCart } from '../services/cartService.js';
+import CartToast from '../components/CartToast.jsx';
 
 const CartContext = createContext(null);
 
@@ -18,6 +19,7 @@ export function CartProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [cartToast, setCartToast] = useState(null);
   const itemsRef = useRef([]);
   const activeUserIdRef = useRef(null);
   const isHydratedRef = useRef(false);
@@ -34,74 +36,92 @@ export function CartProvider({ children }) {
 
   const enqueueSave = useCallback((nextItems) => {
     const userId = activeUserIdRef.current;
-    if (!userId || !isHydratedRef.current) return Promise.resolve(nextItems);
-    saveQueueRef.current = saveQueueRef.current
-      .catch(() => undefined)
-      .then(() => saveUserCart(userId, nextItems));
-    return saveQueueRef.current;
+    if (!userId) return Promise.resolve(nextItems);
+    const run = () => saveUserCart(userId, nextItems).then(() => nextItems);
+    const queued = saveQueueRef.current.then(run, run);
+    saveQueueRef.current = queued;
+    return queued;
   }, []);
 
   useEffect(() => {
     if (isAuthLoading) return undefined;
-    let active = true;
-    const userId = user?.uid || null;
-    const previousUserId = activeUserIdRef.current;
-    const shouldMergeGuest = !previousUserId;
+    const nextUserId = user?.uid || null;
+    const prevUserId = activeUserIdRef.current;
+    activeUserIdRef.current = nextUserId;
+    if (prevUserId === nextUserId && isHydratedRef.current) return undefined;
 
-    isHydratedRef.current = false;
+    let active = true;
     setIsHydrated(false);
-    hydrationRef.current = (async () => {
-      if (!userId) {
-        activeUserIdRef.current = null;
-        if (previousUserId) replaceItems([]);
+    isHydratedRef.current = false;
+
+    const hydrate = async () => {
+      const memoryItems = itemsRef.current;
+      if (!nextUserId) {
+        if (!active) return;
+        replaceItems(memoryItems);
+        setIsHydrated(true);
+        isHydratedRef.current = true;
         return;
       }
-      const remoteItems = await loadUserCart(userId);
-      if (!active) return;
-      const guestItems = shouldMergeGuest ? itemsRef.current : [];
-      const mergedItems = mergeCartItems(remoteItems, guestItems);
-      activeUserIdRef.current = userId;
-      replaceItems(mergedItems);
-      if (guestItems.length) {
-        isHydratedRef.current = true;
-        await enqueueSave(mergedItems);
+      try {
+        const remoteItems = await loadUserCart(nextUserId);
+        if (!active) return;
+        const merged = mergeCartItems(remoteItems, memoryItems);
+        replaceItems(merged);
+        enqueueSave(merged);
+      } catch {
+        if (!active) return;
+        replaceItems(memoryItems);
+      } finally {
+        if (active) {
+          setIsHydrated(true);
+          isHydratedRef.current = true;
+        }
       }
-    })().catch((error) => {
-      console.error('[SkinID Cart] Không thể tải giỏ hàng:', error);
-      if (active) activeUserIdRef.current = userId;
-    }).finally(() => {
-      if (!active) return;
-      isHydratedRef.current = true;
-      setIsHydrated(true);
-    });
+    };
 
-    return () => { active = false; };
+    const task = hydrate();
+    hydrationRef.current = task;
+    return () => {
+      active = false;
+    };
   }, [enqueueSave, isAuthLoading, replaceItems, user?.uid]);
 
   useEffect(() => {
-    const addOne = (event) => {
-      const productId = String(event.detail?.productId || '');
-      if (productId) addToCartRef.current(productId, event.detail?.quantity || 1);
+    const onExternalAdd = (event) => {
+      const detail = event?.detail || {};
+      const productId = detail.productId || detail.id;
+      if (productId) addToCartRef.current(productId, detail.quantity || 1);
     };
-    const addMany = (event) => {
-      for (const productId of event.detail?.productIds || []) {
-        if (productId) addToCartRef.current(String(productId), 1);
+    const onCheckoutRequest = () => {
+      openCheckoutRef.current();
+    };
+    const onLegacyItems = (event) => {
+      const list = Array.isArray(event?.detail) ? event.detail : [];
+      for (const entry of list) {
+        const productId = entry.productId || entry.id;
+        if (productId) addToCartRef.current(productId, entry.quantity || 1);
       }
-      setIsOpen(true);
     };
-    const buyNow = async (event) => {
-      const productId = String(event.detail?.productId || '');
-      if (!productId) return;
-      await addToCartRef.current(productId, event.detail?.quantity || 1);
-      await openCheckoutRef.current();
+    const onLegacySync = async (event) => {
+      const list = Array.isArray(event?.detail) ? event.detail : [];
+      for (const entry of list) {
+        const productId = entry.productId || entry.id;
+        if (productId) {
+          await addToCartRef.current(productId, entry.quantity || 1);
+        }
+      }
+      openCheckoutRef.current();
     };
-    document.addEventListener('skinid:cart-add', addOne);
-    document.addEventListener('skinid:cart-add-many', addMany);
-    document.addEventListener('skinid:buy-now', buyNow);
+    window.addEventListener('skinid:cart-add', onExternalAdd);
+    window.addEventListener('skinid:cart-checkout', onCheckoutRequest);
+    window.addEventListener('cart:item-added', onLegacyItems);
+    window.addEventListener('skinid:sync-and-checkout', onLegacySync);
     return () => {
-      document.removeEventListener('skinid:cart-add', addOne);
-      document.removeEventListener('skinid:cart-add-many', addMany);
-      document.removeEventListener('skinid:buy-now', buyNow);
+      window.removeEventListener('skinid:cart-add', onExternalAdd);
+      window.removeEventListener('skinid:cart-checkout', onCheckoutRequest);
+      window.removeEventListener('cart:item-added', onLegacyItems);
+      window.removeEventListener('skinid:sync-and-checkout', onLegacySync);
     };
   }, []);
 
@@ -110,13 +130,22 @@ export function CartProvider({ children }) {
     return enqueueSave(nextItems);
   }, [enqueueSave, replaceItems]);
 
-  const addToCart = useCallback((productId, quantity = 1) => commit((current) => {
+  const addToCart = useCallback((productId, quantity = 1, options = {}) => {
     const requested = Math.max(1, Math.trunc(Number(quantity) || 1));
-    const existing = current.find((item) => item.productId === productId);
-    return existing
-      ? current.map((item) => item.productId === productId ? { ...item, quantity: item.quantity + requested } : item)
-      : [...current, { productId, quantity: requested }];
-  }), [commit]);
+    const product = getProductById(productId);
+    if (product && options.showToast !== false) {
+      setCartToast({ product, quantity: requested });
+    }
+    if (options.openDrawer) {
+      setIsOpen(true);
+    }
+    return commit((current) => {
+      const existing = current.find((item) => item.productId === productId);
+      return existing
+        ? current.map((item) => item.productId === productId ? { ...item, quantity: item.quantity + requested } : item)
+        : [...current, { productId, quantity: requested }];
+    });
+  }, [commit]);
   const addToCartRef = useRef(addToCart);
   addToCartRef.current = addToCart;
 
@@ -168,7 +197,16 @@ export function CartProvider({ children }) {
     openCheckout, closeCheckout, completeCheckout
   }), [items, totalItems, subtotal, isOpen, isCheckoutOpen, isHydrated, addToCart, removeItem, updateQuantity, clearCart, openCart, closeCart, toggleCart, openCheckout, closeCheckout, completeCheckout]);
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={value}>
+      {children}
+      <CartToast
+        toast={cartToast}
+        onClose={() => setCartToast(null)}
+        onOpenCart={openCart}
+      />
+    </CartContext.Provider>
+  );
 }
 
 export function useCart() {

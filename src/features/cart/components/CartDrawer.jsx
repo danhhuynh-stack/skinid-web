@@ -3,6 +3,7 @@ import { assetUrl } from '../../../assets/index.js';
 import { getProductById } from '../../catalog/index.js';
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
+import FreeShippingBar from './FreeShippingBar.jsx';
 import './CartDrawer.css';
 
 const formatPrice = (value) => new Intl.NumberFormat('vi-VN', {
@@ -48,20 +49,39 @@ export default function CartDrawer() {
       <button className="react-cart-backdrop" type="button" aria-label="Đóng giỏ hàng" onClick={closeCart} />
       <aside className="react-cart-drawer" role="dialog" aria-modal="true" aria-labelledby="react-cart-title">
         <header className="react-cart-heading">
-          <div><span>ĐƠN HÀNG CỦA BẠN</span><h2 id="react-cart-title">Giỏ hàng</h2></div>
+          <div>
+            <span>ĐƠN HÀNG CỦA BẠN</span>
+            <h2 id="react-cart-title">Giỏ hàng ({items.reduce((s, i) => s + i.quantity, 0)})</h2>
+          </div>
           <button ref={closeButtonRef} type="button" className="react-cart-close" onClick={closeCart} aria-label="Đóng giỏ hàng">×</button>
         </header>
+
+        {isHydrated && !!items.length && (
+          <FreeShippingBar subtotal={subtotal} />
+        )}
 
         <div className="react-cart-items">
           {!isHydrated && <p className="react-cart-status">Đang đồng bộ giỏ hàng…</p>}
           {isHydrated && !items.length && (
-            <div className="react-cart-empty"><span aria-hidden="true">◯</span><strong>Giỏ hàng đang trống</strong><p>Khám phá sản phẩm phù hợp với làn da của bạn.</p><a href="/products" onClick={closeCart}>Tiếp tục mua sắm</a></div>
+            <div className="react-cart-empty">
+              <span aria-hidden="true">🛍️</span>
+              <strong>Giỏ hàng đang trống</strong>
+              <p>Khám phá dược mỹ phẩm chính hãng và phác đồ chăm sóc chuyên sâu.</p>
+              <a href="/products" onClick={closeCart}>Khám phá sản phẩm ngay →</a>
+            </div>
           )}
           {items.map((item) => {
             const product = getProductById(item.productId);
             return (
               <article className="react-cart-item" key={item.productId}>
-                <img src={assetUrl(product?.image || '/images/products/placeholder.jpg', product?.brandSlug)} alt="" />
+                <img
+                  src={assetUrl(product?.image || '/images/products/placeholder.jpg', product?.brandSlug)}
+                  alt={product?.name || 'Sản phẩm'}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = assetUrl('/images/products/placeholder.jpg');
+                  }}
+                />
                 <div className="react-cart-item-copy">
                   <span>{product?.brand || 'SkinID'}</span>
                   <h3>{product?.name || item.productId}</h3>
@@ -72,7 +92,9 @@ export default function CartDrawer() {
                     <button type="button" onClick={() => updateQuantity(item.productId, item.quantity + 1)} aria-label="Tăng số lượng">+</button>
                   </div>
                 </div>
-                <button type="button" className="react-cart-remove" onClick={() => removeItem(item.productId)} aria-label={`Xóa ${product?.name || 'sản phẩm'}`}>Xóa</button>
+                <button type="button" className="react-cart-remove" onClick={() => removeItem(item.productId)} aria-label={`Xóa ${product?.name || 'sản phẩm'}`}>
+                  Xóa
+                </button>
               </article>
             );
           })}
@@ -80,13 +102,16 @@ export default function CartDrawer() {
 
         {!!items.length && (
           <footer className="react-cart-footer">
-            <button type="button" className="react-cart-clear" onClick={clearCart}>Xóa giỏ hàng</button>
-            <div><span>Tạm tính</span><strong>{formatPrice(subtotal)}</strong></div>
+            <button type="button" className="react-cart-clear" onClick={clearCart}>Xóa tất cả</button>
+            <div>
+              <span>Tạm tính</span>
+              <strong>{formatPrice(subtotal)}</strong>
+            </div>
             {checkoutError && <p role="alert">{checkoutError}</p>}
             <button type="button" className="react-cart-checkout" disabled={isPreparing || !isHydrated} onClick={startCheckout}>
-              {isPreparing ? 'Đang chuẩn bị…' : 'Tiến hành thanh toán'}
+              {isPreparing ? 'Đang chuẩn bị…' : `Tiến hành thanh toán · ${formatPrice(subtotal)}`}
             </button>
-            <small>Giỏ hàng được đồng bộ an toàn với tài khoản của bạn.</small>
+            <small>Miễn phí giao hàng cho đơn từ 500.000đ. Đảm bảo 100% chính hãng.</small>
           </footer>
         )}
       </aside>

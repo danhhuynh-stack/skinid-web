@@ -100,13 +100,13 @@ export default function ProductDetailModal() {
   const volume = product.volume ? product.volume.trim() : 'Tiêu chuẩn';
 
   const handleAddToCart = async () => {
-    await addToCart(product.id);
     closeModal();
+    await addToCart(product.id, 1, { openDrawer: true });
   };
 
   const handleBuyNow = async () => {
-    await addToCart(product.id);
     closeModal();
+    await addToCart(product.id, 1, { showToast: false });
     await openCheckout();
   };
 

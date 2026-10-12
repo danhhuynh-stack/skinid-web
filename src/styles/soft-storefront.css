@@ -2073,6 +2073,50 @@ body {
   background: #ffffff;
   box-shadow: 0 12px 34px rgba(99, 48, 61, 0.09), 0 0 0 3px rgba(224, 109, 129, 0.1);
 }
+/* Quick Price Filter Bar */
+.catalog-price-quick-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -10px 0 24px;
+  padding: 0;
+}
+.catalog-price-quick-title {
+  font-size: 0.74rem;
+  font-weight: 750;
+  color: #7b6f74;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.catalog-price-quick-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.catalog-price-quick-pill {
+  padding: 6px 14px;
+  background: #ffffff;
+  border: 1px solid #ebd9de;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 650;
+  color: #55484d;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.catalog-price-quick-pill:hover {
+  border-color: #c8526b;
+  color: #c8526b;
+  background: #fff8f9;
+}
+.catalog-price-quick-pill.is-active {
+  background: #c8526b;
+  border-color: #c8526b;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(200, 82, 107, 0.25);
+}
 .products-page .shop-toolbar {
   display: grid;
   grid-template-columns: auto minmax(120px, 1fr) auto auto;
