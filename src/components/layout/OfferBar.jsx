@@ -74,7 +74,7 @@ export default function OfferBar({ revealOnUpScroll = false }) {
 
   return (
     <div className={`offer-bar ${revealOnUpScroll ? 'offer-bar--scroll' : ''} ${isVisible ? 'is-visible' : ''}`.trim()} aria-hidden={revealOnUpScroll && !isVisible}>
-      Miễn phí giao hàng cho đơn từ 500.000₫ <span>·</span> Đổi trả trong 7 ngày <span>·</span> Hotline 0924.093.461
+      <a href="/khuyen-mai" className="offer-bar__promo-link font-bold hover:underline inline-flex items-center gap-1">🔥 Ưu đãi &amp; Voucher hôm nay</a> <span>·</span> Miễn phí giao hàng cho đơn từ 500.000₫ <span>·</span> Hotline 0924.093.461
     </div>
   );
 }

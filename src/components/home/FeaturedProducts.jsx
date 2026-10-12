@@ -355,13 +355,18 @@ export default function FeaturedProducts() {
                     </button>
                   )}
                   {heroProduct && (
-                    <button
-                      type="button"
+                    <a
+                      href={`/products?detail=${heroProduct.id}`}
                       className="routine-text-link"
-                      onClick={() => handleOpenDetail(heroProduct.id)}
+                      onClick={(e) => {
+                        if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
+                          e.preventDefault();
+                          handleOpenDetail(heroProduct.id);
+                        }
+                      }}
                     >
                       Xem chi tiết <span aria-hidden="true">↗</span>
-                    </button>
+                    </a>
                   )}
                 </div>
               </div>

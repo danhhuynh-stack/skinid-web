@@ -63,19 +63,47 @@ export default function ProductDetailModal() {
     window.closeLicenseModal?.();
     setOpen(false);
     clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setProduct(null), 250);
+    closeTimer.current = setTimeout(() => {
+      setProduct(null);
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('detail') || url.searchParams.has('product')) {
+          url.searchParams.delete('detail');
+          url.searchParams.delete('product');
+          const nextUrl = url.pathname + (url.search ? url.search : '') + (url.hash ? url.hash : '');
+          window.history.replaceState(null, '', nextUrl);
+        }
+      } catch {}
+    }, 250);
   }, []);
 
-  const openModal = useCallback(productId => {
+  const openModal = useCallback((productId, { updateUrl = true } = {}) => {
     const selected = getProductById(productId);
     if (!selected) return;
     clearTimeout(closeTimer.current);
     setFallbackImage(false);
     setProduct(selected);
     requestAnimationFrame(() => setOpen(true));
+    if (updateUrl) {
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('detail') !== productId) {
+          url.searchParams.set('detail', productId);
+          window.history.replaceState(null, '', url.pathname + url.search + (url.hash ? url.hash : ''));
+        }
+      } catch {}
+    }
   }, []);
 
   useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const initialId = params.get('detail') || params.get('product');
+      if (initialId) {
+        openModal(initialId, { updateUrl: false });
+      }
+    } catch {}
+
     window.openProductDetailModal = openModal;
     window.closeProductDetailModal = closeModal;
     const handleOpen = event => openModal(event.detail?.productId);

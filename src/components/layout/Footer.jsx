@@ -16,6 +16,8 @@ export default function Footer() {
       <div>
         <h3>Mua sắm</h3>
         <a href="/products">Tất cả sản phẩm</a>
+        <a href="/khuyen-mai">Khuyến mãi &amp; Voucher</a>
+        <a href="/blog">Góc chăm da (Blog)</a>
         <a href="/tra-cuu-cong-bo">Tra cứu công bố</a>
         <a href="/#brands">Thương hiệu</a>
         <button type="button" onClick={openConsultationDialog}>Tư vấn sản phẩm</button>

@@ -18,6 +18,10 @@ export const router = createBrowserRouter([
     children: [
       { index: true, lazy: lazyPage(() => import('../pages/HomePage.jsx')) },
       { path: 'products', lazy: lazyPage(() => import('../pages/ProductsPage.jsx')) },
+      { path: 'khuyen-mai', lazy: lazyPage(() => import('../pages/PromotionsPage.jsx')) },
+      { path: 'blog', lazy: lazyPage(() => import('../pages/BlogPage.jsx')) },
+      { path: 'goc-cham-da', lazy: lazyPage(() => import('../pages/BlogPage.jsx')) },
+      { path: 'tin-tuc', element: <Navigate to="/blog" replace /> },
       { path: 'profile', lazy: lazyPage(() => import('../pages/ProfilePage.jsx')) },
       { path: 'skin-analysis', lazy: lazyPage(() => import('../pages/SkinAnalysisPage.jsx')) },
       { path: 'admin', lazy: lazyPage(() => import('../pages/AdminPage.jsx')) },
