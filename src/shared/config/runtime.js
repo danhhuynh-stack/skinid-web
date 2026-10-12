@@ -1,11 +1,11 @@
 export const firebaseConfig = Object.freeze({
-  apiKey: 'AIzaSyBMnJ7Z1NYjARTXSdUNL9UWs8wodU6ddiE',
-  authDomain: 'skinid-df273.firebaseapp.com',
-  projectId: 'skinid-df273',
-  storageBucket: 'skinid-df273.firebasestorage.app',
-  messagingSenderId: '489776624763',
-  appId: '1:489776624763:web:76f0e682e559c0448b1ede',
-  measurementId: 'G-425CLMQ7YP'
+  apiKey: 'AIzaSyBr1YHvfKvkWEv8Tcg-Mm7sS6_6-u9SBxg',
+  authDomain: 'skinid-official.firebaseapp.com',
+  projectId: 'skinid-official',
+  storageBucket: 'skinid-official.firebasestorage.app',
+  messagingSenderId: '313072494053',
+  appId: '1:313072494053:web:d8a85bc893d797faacbb0c',
+  measurementId: 'G-Q5KZ61ESN8'
 });
 
 const CLOUDFLARE_WORKER_API_URL = 'https://skinid-web.hominhkhang01072005.workers.dev/api';
