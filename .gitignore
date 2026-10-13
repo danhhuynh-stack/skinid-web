@@ -17,3 +17,6 @@ gha-creds-*.json
 .secret.local
 .dev.vars
 .wrangler/
+admin_*.png
+admin_shot.png
+scripts/capture_admin.mjs

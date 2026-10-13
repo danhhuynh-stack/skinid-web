@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @source "../components";
 @source "../pages";
+@source "../features";
+@source "../shared";
 @source "../js";
+@source "../App.jsx";
 
 @theme inline {
   --color-brandPink: var(--skinid-primary);
@@ -1542,3 +1545,202 @@ a.text-white,
   .help-shop .help-options{grid-template-columns:1fr}
 }
 @media(prefers-reduced-motion:reduce){.help-scan-line{animation:none}}
+
+/* =========================================================================
+   ADMIN PANEL LUXURY SMOOTHNESS (60FPS ACCELERATED)
+   ========================================================================= */
+@keyframes adminTabFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-tab-content {
+  animation: adminTabFadeSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes adminModalIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.admin-modal-enter {
+  animation: adminModalIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+select option {
+  background-color: #ffffff;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* Executive SaaS 2026 Design System Utilities */
+.btn-luxury-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.25rem;
+  font-family: var(--skinid-font-heading, 'Manrope', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #BD3F5B 0%, #E06D81 100%);
+  color: #ffffff;
+  border: 1px solid rgba(189, 63, 91, 0.4);
+  box-shadow: 0 4px 14px rgba(224, 109, 129, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-luxury-primary:hover {
+  background: linear-gradient(135deg, #A8344E 0%, #D45D72 100%);
+  box-shadow: 0 6px 20px rgba(224, 109, 129, 0.38);
+  transform: translateY(-0.5px);
+}
+.btn-luxury-primary:active {
+  transform: scale(0.985);
+  background: #9E2D45;
+}
+
+.btn-luxury-rose {
+  background: linear-gradient(135deg, #BD3F5B 0%, #E06D81 100%);
+  color: #ffffff;
+  border: 1px solid rgba(189, 63, 91, 0.4);
+  box-shadow: 0 4px 14px rgba(224, 109, 129, 0.28);
+  transition: all 0.2s ease;
+  border-radius: 9999px;
+}
+.btn-luxury-rose:hover {
+  background: linear-gradient(135deg, #A8344E 0%, #D45D72 100%);
+  box-shadow: 0 6px 20px rgba(224, 109, 129, 0.38);
+}
+.btn-luxury-rose:active {
+  transform: scale(0.985);
+}
+
+.btn-luxury-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1.15rem;
+  font-family: var(--skinid-font-heading, 'Manrope', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #4A3E42;
+  border: 1px solid #F1D4DB;
+  box-shadow: 0 1px 3px rgba(189, 63, 91, 0.05);
+  transition: all 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-luxury-secondary:hover {
+  background: #FFF5F7;
+  border-color: #E06D81;
+  color: #BD3F5B;
+  box-shadow: 0 2px 8px rgba(224, 109, 129, 0.15);
+}
+.btn-luxury-secondary:active {
+  transform: scale(0.985);
+  background: #FCE7EC;
+}
+
+.btn-luxury-dark {
+  background: #2D2226;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px -2px rgba(45, 34, 38, 0.3);
+  border-radius: 9999px;
+  transition: all 0.18s ease;
+}
+.btn-luxury-dark:hover {
+  background: #3D2D33;
+  box-shadow: 0 4px 14px -2px rgba(45, 34, 38, 0.45);
+  transform: translateY(-0.5px);
+}
+.btn-luxury-dark:active {
+  transform: scale(0.985);
+}
+
+.card-luxury {
+  background: #ffffff;
+  border: 1px solid rgba(241, 212, 219, 0.7);
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(224, 109, 129, 0.05);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.card-luxury:hover {
+  border-color: rgba(224, 109, 129, 0.5);
+  box-shadow: 0 8px 24px rgba(224, 109, 129, 0.09);
+}
+
+.card-luxury-kpi {
+  background: linear-gradient(180deg, #ffffff 0%, #FFFDFE 100%);
+  border: 1px solid rgba(241, 212, 219, 0.7);
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(224, 109, 129, 0.05);
+  transition: all 0.2s ease;
+}
+.card-luxury-kpi:hover {
+  border-color: rgba(224, 109, 129, 0.6);
+  box-shadow: 0 8px 24px rgba(224, 109, 129, 0.1);
+  transform: translateY(-1px);
+}
+
+.segmented-control {
+  background: #F1F5F9;
+  padding: 0.25rem;
+  border-radius: 0.875rem;
+  display: inline-flex;
+  gap: 0.25rem;
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+.segmented-item {
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748B;
+  transition: all 0.16s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.segmented-item:hover {
+  color: #0F172A;
+}
+.segmented-item.active {
+  background: #ffffff;
+  color: #0F172A;
+  border-color: rgba(226, 232, 240, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Custom Sleek Scrollbar for Admin Data Tables */
+.admin-custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.admin-custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-custom-scroll::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+.admin-custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+

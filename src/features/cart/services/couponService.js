@@ -27,6 +27,33 @@ export const AVAILABLE_COUPONS = {
   }
 };
 
+export function getDynamicCoupons() {
+  const merged = { ...AVAILABLE_COUPONS };
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem('skinid_admin_vouchers');
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          list.forEach((v) => {
+            if (!v?.code || v.active === false) return;
+            const normalizedCode = String(v.code).trim().toUpperCase();
+            merged[normalizedCode] = {
+              code: normalizedCode,
+              description: v.description || `Mã giảm giá ${normalizedCode}`,
+              type: v.type === 'percent' || v.type === 'percentage' ? 'percentage' : v.type === 'shipping' ? 'shipping' : 'fixed',
+              value: Number(v.discountValue || v.value) || 0,
+              minOrder: Number(v.minOrderValue || v.minOrder) || 0,
+              maxDiscount: Number(v.maxDiscount) || 0
+            };
+          });
+        }
+      }
+    }
+  } catch {}
+  return merged;
+}
+
 /**
  * Kiểm tra tính hợp lệ và tính số tiền giảm giá của mã voucher.
  * @param {string} rawCode - Mã voucher người dùng nhập
@@ -40,7 +67,8 @@ export function validateCoupon(rawCode, subtotal = 0, shippingFee = 0) {
     return { valid: false, message: 'Vui lòng nhập mã giảm giá.' };
   }
 
-  const coupon = AVAILABLE_COUPONS[code];
+  const allCoupons = getDynamicCoupons();
+  const coupon = allCoupons[code];
   if (!coupon) {
     return { valid: false, message: 'Mã giảm giá không tồn tại hoặc đã hết hạn.' };
   }

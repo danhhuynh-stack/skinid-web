@@ -47,8 +47,11 @@ async function prepare() {
 
   // 3. assets/
   if (fs.existsSync(path.join(distDir, 'assets'))) {
+    if (fs.existsSync(path.join(rootDir, 'assets'))) {
+      fs.rmSync(path.join(rootDir, 'assets'), { recursive: true, force: true });
+    }
     copyRecursiveSync(path.join(distDir, 'assets'), path.join(rootDir, 'assets'));
-    console.log('✅ Synchronized assets/ directory');
+    console.log('✅ Synchronized clean assets/ directory');
   }
 
   // 4. images/

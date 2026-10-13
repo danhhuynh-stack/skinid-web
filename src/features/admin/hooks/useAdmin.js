@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../auth/index.js';
 import { fetchAdminDashboard } from '../services/adminService.js';
 
@@ -9,14 +9,18 @@ export function useAdmin() {
   const [dashboard, setDashboard] = useState(emptyDashboard);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const hasLoadedOnce = useRef(false);
 
   const refresh = useCallback(async () => {
     if (!isAdmin && !isStaff) return emptyDashboard;
-    setLoading(true);
+    if (!hasLoadedOnce.current) {
+      setLoading(true);
+    }
     setError('');
     try {
       const result = await fetchAdminDashboard();
       setDashboard(result);
+      hasLoadedOnce.current = true;
       return result;
     } catch (requestError) {
       setError(requestError.message || 'Không thể tải dữ liệu quản trị.');
@@ -38,3 +42,4 @@ export function useAdmin() {
 
   return { user, role, isSuperAdmin, isAdmin, isStaff, authLoading, ...dashboard, loading, error, refresh };
 }
+

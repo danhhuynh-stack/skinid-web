@@ -29,7 +29,7 @@ function CopyIcon() {
 export default function PromotionsPage() {
   usePageMetadata({
     title: 'Khuyến Mãi & Voucher Ưu Đãi Độc Quyền — SkinID.vn',
-    description: 'Tổng hợp mã giảm giá độc quyền, voucher freeship và ưu đãi flash-sale dược mỹ phẩm chính hãng tại SkinID.vn.'
+    description: 'Tổng hợp mã giảm giá độc quyền, voucher freeship và ưu đãi flash-sale mỹ phẩm chăm sóc da chính hãng tại SkinID.vn.'
   });
 
   const { products, isReady } = useCatalog();
@@ -124,10 +124,10 @@ export default function PromotionsPage() {
                   <FlameIcon /> <span>Ưu đãi chớp nhoáng hôm nay</span>
                 </div>
                 <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight leading-tight">
-                  Săn Voucher &amp; Dược Mỹ Phẩm Giảm Đến 30%
+                  Săn Voucher &amp; Mỹ Phẩm Chính Hãng Giảm Đến 30%
                 </h1>
                 <p className="text-sm md:text-base text-rose-100 font-normal leading-relaxed">
-                  Cam kết 100% chính hãng từ Ý &amp; Việt Nam. Đầy đủ tem nhãn phụ và Phiếu công bố tiếp nhận từ Cục Quản lý Dược.
+                  Cam kết 100% chính hãng từ Ý &amp; Việt Nam. Đầy đủ tem nhãn phụ và Phiếu công bố sản phẩm hợp lệ.
                 </p>
               </div>
 
@@ -207,7 +207,7 @@ export default function PromotionsPage() {
                   <FlameIcon /> Đang Giảm Giá Sâu Nhất
                 </h2>
                 <p className="text-xs md:text-sm text-gray-500 mt-1">
-                  Tuyển chọn các dòng dược mỹ phẩm bán chạy đang áp dụng ưu đãi tốt nhất.
+                  Tuyển chọn các dòng sản phẩm chăm sóc da bán chạy đang áp dụng ưu đãi tốt nhất.
                 </p>
               </div>
               <a
