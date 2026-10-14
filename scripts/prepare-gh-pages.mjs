@@ -134,6 +134,36 @@ async function prepare() {
     'acie-vision': {
       title: 'Trợ Lý Da Liễu Ảo ACIE | SkinID.vn',
       canonical: 'https://skinid.vn/acie/'
+    },
+    'chinh-sach-bao-mat': {
+      title: 'Chính Sách Bảo Mật Thông Tin & Bảo Vệ Dữ Liệu Cá Nhân | SkinID.vn',
+      desc: 'Quy định chi tiết cách Công ty TNHH Fieldman thu thập, mã hóa và bảo vệ dữ liệu cá nhân, hình ảnh soi da AI theo Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 13/2023/NĐ-CP.',
+      canonical: 'https://skinid.vn/chinh-sach-bao-mat/'
+    },
+    'chinh-sach-van-chuyen': {
+      title: 'Chính Sách Vận Chuyển, Giao Nhận & Đồng Kiểm Hàng | SkinID.vn',
+      desc: 'Biểu phí giao hàng toàn quốc, thời gian vận chuyển 1-3 ngày, miễn phí vận chuyển cho đơn từ 500.000đ và quyền đồng kiểm hàng trước khi thanh toán tại SkinID.vn.',
+      canonical: 'https://skinid.vn/chinh-sach-van-chuyen/'
+    },
+    'chinh-sach-doi-tra': {
+      title: 'Chính Sách Đổi Trả Dược Mỹ Phẩm & Hoàn Tiền 100% | SkinID.vn',
+      desc: 'Quy định đổi trả dược mỹ phẩm trong vòng 7 ngày, bảo hành kích ứng da, quy trình hoàn tiền minh bạch từ 3-7 ngày làm việc của Công ty TNHH Fieldman.',
+      canonical: 'https://skinid.vn/chinh-sach-doi-tra/'
+    },
+    'chinh-sach-thanh-toan': {
+      title: 'Chính Sách Thanh Toán Tiền Mặt COD & Chuyển Khoản | SkinID.vn',
+      desc: 'Quy định phương thức thanh toán tiền mặt khi nhận hàng (COD) và chuyển khoản ngân hàng duy nhất vào tài khoản CÔNG TY TNHH FIELDMAN tại Vietcombank.',
+      canonical: 'https://skinid.vn/chinh-sach-thanh-toan/'
+    },
+    'dieu-khoan-giao-dich': {
+      title: 'Điều Khoản & Điều Kiện Giao Dịch Chung Mua Hàng | SkinID.vn',
+      desc: 'Quy định pháp lý về hợp đồng mua bán điện tử, cam kết dược mỹ phẩm chính hãng 100%, giới hạn trách nhiệm công cụ soi da AI tại website SkinID.vn.',
+      canonical: 'https://skinid.vn/dieu-khoan-giao-dich/'
+    },
+    'quy-trinh-khieu-nai': {
+      title: 'Quy Trình Tiếp Nhận & Giải Quyết Khiếu Nại Khách Hàng | SkinID.vn',
+      desc: 'Quy chuẩn 6 bước giải quyết khiếu nại người tiêu dùng theo Luật Bảo vệ quyền lợi người tiêu dùng 2023: tiếp nhận 24h, giải quyết dứt điểm trong 7 ngày của Fieldman.',
+      canonical: 'https://skinid.vn/quy-trinh-khieu-nai/'
     }
   };
 

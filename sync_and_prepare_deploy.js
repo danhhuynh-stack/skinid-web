@@ -42,7 +42,13 @@ const routes = [
   'acie-vision',
   'tra-cuu-cong-bo',
   'compliance',
-  'kiem-chung'
+  'kiem-chung',
+  'chinh-sach-bao-mat',
+  'chinh-sach-van-chuyen',
+  'chinh-sach-doi-tra',
+  'chinh-sach-thanh-toan',
+  'dieu-khoan-giao-dich',
+  'quy-trinh-khieu-nai'
 ];
 
 for (const r of routes) {

@@ -22,7 +22,13 @@ const SUBROUTES = [
   'admin',
   'profile',
   'acie',
-  'acie-vision'
+  'acie-vision',
+  'chinh-sach-bao-mat',
+  'chinh-sach-van-chuyen',
+  'chinh-sach-doi-tra',
+  'chinh-sach-thanh-toan',
+  'dieu-khoan-giao-dich',
+  'quy-trinh-khieu-nai'
 ];
 
 if (fs.existsSync(sourcePath)) {
