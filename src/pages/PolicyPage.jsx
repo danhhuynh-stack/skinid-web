@@ -8,6 +8,7 @@ import StorefrontModals from '../components/dialogs/StorefrontModals.jsx';
 import ProductDetailModal from '../features/catalog/ProductDetailModal.jsx';
 import usePageMetadata from '../hooks/usePageMetadata.js';
 import { LEGAL_POLICIES, POLICY_LIST, COMPANY_INFO, getPolicyBySlug } from '../data/legalPolicies.js';
+import PolicyContentRenderer, { renderInlineText } from '../components/policies/PolicyContentRenderer.jsx';
 
 function PolicyIcon({ id, className = "w-4 h-4" }) {
   if (id === 'chinh-sach-bao-mat') {
@@ -262,9 +263,7 @@ export default function PolicyPage({ explicitSlug = null }) {
 
                     {/* Nội dung dạng Text */}
                     {section.content && (
-                      <div className="prose prose-sm max-w-none text-gray-600 space-y-3 whitespace-pre-line leading-relaxed">
-                        {section.content}
-                      </div>
+                      <PolicyContentRenderer content={section.content} />
                     )}
 
                     {/* Nội dung dạng Table */}
@@ -290,7 +289,7 @@ export default function PolicyPage({ explicitSlug = null }) {
                                       colIndex === 0 ? 'font-semibold text-gray-900 bg-gray-50/30' : 'text-gray-600'
                                     }`}
                                   >
-                                    {cell}
+                                    {renderInlineText(cell)}
                                   </td>
                                 ))}
                               </tr>
@@ -302,8 +301,8 @@ export default function PolicyPage({ explicitSlug = null }) {
 
                     {/* Extra Callout hoặc Text sau Table */}
                     {section.extraContent && (
-                      <div className="mt-3 p-4 rounded-xl bg-gray-50 border border-gray-200/80 text-xs text-gray-600 leading-relaxed whitespace-pre-line">
-                        {section.extraContent}
+                      <div className="mt-4">
+                        <PolicyContentRenderer content={section.extraContent} />
                       </div>
                     )}
                   </section>

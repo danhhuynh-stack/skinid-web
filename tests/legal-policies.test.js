@@ -85,3 +85,56 @@ test('getPolicyBySlug lookup helper hoạt động chuẩn xác', () => {
   const defaultPolicy = getPolicyBySlug('unknown-slug');
   assert.equal(defaultPolicy, null);
 });
+
+test('parseInlineTokens chuyển đổi **in đậm** thành token bold và sạch 100% dấu hoa thị (*)', async () => {
+  const { parseInlineTokens, parsePolicyContent } = await import('../src/components/policies/policyParser.js');
+  const sample = '**CÔNG TY TNHH FIELDMAN** và Hotline **0924.093.461**';
+  const tokens = parseInlineTokens(sample);
+  assert.ok(Array.isArray(tokens));
+  assert.equal(tokens.length, 3);
+  assert.equal(tokens[0].type, 'bold');
+  assert.equal(tokens[0].text, 'CÔNG TY TNHH FIELDMAN');
+  assert.equal(tokens[1].type, 'text');
+  assert.equal(tokens[1].text, ' và Hotline ');
+  assert.equal(tokens[2].type, 'bold');
+  assert.equal(tokens[2].text, '0924.093.461');
+
+  // Khẳng định không còn bất kỳ dấu * nào trong text parsed
+  for (const t of tokens) {
+    assert.equal(t.text.includes('*'), false, 'Token text không được chứa dấu *');
+  }
+
+  // Test parsePolicyContent với khối danh sách hoa thị và alert callout
+  const rawMarkdown = `
+Đoạn văn mở đầu.
+* **Mục 1:** Nội dung A
+* **Mục 2:** Nội dung B
+1. Bước 1
+2. Bước 2
+> [!WARNING]
+> **CẢNH BÁO:** Không chuyển khoản tài khoản lạ.
+`;
+  const blocks = parsePolicyContent(rawMarkdown);
+  assert.ok(blocks.length >= 4);
+
+  // Khẳng định bullet list được gom đúng và bóc sạch dấu *
+  const bulletBlock = blocks.find((b) => b.type === 'bullet');
+  assert.ok(bulletBlock, 'Phải có block bullet');
+  assert.equal(bulletBlock.items.length, 2);
+  for (const itemTokens of bulletBlock.items) {
+    for (const t of itemTokens) {
+      assert.equal(t.text.includes('*'), false, 'Bullet item không được chứa dấu * thừa');
+    }
+  }
+
+  // Khẳng định callout được parse đúng loại warning và không chứa `>` hay `[!WARNING]`
+  const calloutBlock = blocks.find((b) => b.type === 'warning');
+  assert.ok(calloutBlock, 'Phải có block warning callout');
+  for (const lineTokens of calloutBlock.lines) {
+    for (const t of lineTokens) {
+      assert.equal(t.text.includes('>'), false, 'Callout line không được chứa ký tự >');
+      assert.equal(t.text.includes('[!'), false, 'Callout line không được chứa cú pháp [!');
+      assert.equal(t.text.includes('*'), false, 'Callout line không được chứa dấu *');
+    }
+  }
+});
