@@ -74,7 +74,9 @@ export default function OfferBar({ revealOnUpScroll = false }) {
 
   return (
     <div className={`offer-bar ${revealOnUpScroll ? 'offer-bar--scroll' : ''} ${isVisible ? 'is-visible' : ''}`.trim()} aria-hidden={revealOnUpScroll && !isVisible}>
-      Miễn phí giao hàng cho đơn từ 500.000₫ <span>·</span> Đổi trả trong 7 ngày <span>·</span> Hotline 0924.093.461
+      <a href="#khuyen-mai" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+        <strong>🔥 SĂN DEAL GIẢM 50% &amp; COMBO QUÀ TẶNG PHÁI ĐẸP</strong> <span>·</span> 100% Chính hãng TWON &amp; D'VAH <span>·</span> Hotline 0924.093.461 <span style={{ textDecoration: 'underline', marginLeft: '4px' }}>Xem ngay →</span>
+      </a>
     </div>
   );
 }

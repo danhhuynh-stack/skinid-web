@@ -18,7 +18,8 @@ const products = catalogFixture.map(product => ({
   name: String(product.name || ''),
   image: String(product.image || ''),
   volume: String(product.volume || ''),
-  price: Number(product.price)
+  price: Number(product.price),
+  bundleItems: Array.isArray(product.bundleItems) ? product.bundleItems : undefined
 }));
 
 if (!products.length || products.some(product => !product.id || !product.name || !Number.isFinite(product.price))) {

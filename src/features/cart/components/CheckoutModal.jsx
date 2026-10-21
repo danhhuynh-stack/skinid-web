@@ -7,9 +7,9 @@ import {
 } from '../../../shared/services/vietnamAddressService.js';
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
-import { calculateShippingFee, createOrder, FREE_SHIPPING_THRESHOLD } from '../services/checkoutService.js';
+import { FREE_SHIPPING_THRESHOLD, hasNonFreeshipItems } from '../services/checkoutService.js';
 import { syncOrderToS3 } from '../services/s3SyncService.js';
-import { validateCoupon } from '../services/couponService.js';
+import { getAvailableCoupons } from '../services/couponService.js';
 import { BANK_CONFIG } from '../../../config/bankConfig.js';
 import { getProductById } from '../../catalog/index.js';
 import { assetUrl } from '../../../assets/index.js';
@@ -36,23 +36,27 @@ function formFromUser(user) {
 export default function CheckoutModal() {
   const { user, refreshSession } = useAuth();
   const {
-    items, subtotal, isCheckoutOpen, closeCheckout, completeCheckout
+    items, subtotal, isCheckoutOpen, closeCheckout, completeCheckout,
+    appliedCoupon, couponDiscount, shippingFee, effectiveShippingFee, calculatedTotal, couponError,
+    applyCoupon, removeCoupon
   } = useCart();
+
   const [form, setForm] = useState(() => formFromUser(user));
   const [wards, setWards] = useState([]);
   const [isLoadingWards, setIsLoadingWards] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
-  const [couponError, setCouponError] = useState('');
+  const [couponInput, setCouponInput] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [createdOrder, setCreatedOrder] = useState(null);
   const [showQrModal, setShowQrModal] = useState(false);
   const attemptIdRef = useRef('');
   const isSubmittingRef = useRef(false);
   const closeButtonRef = useRef(null);
-  const shippingFee = useMemo(() => calculateShippingFee(subtotal), [subtotal]);
+  const availableCoupons = getAvailableCoupons();
+  const isComboInCart = hasNonFreeshipItems(items);
+  const isCouponFreeship = appliedCoupon?.type === 'shipping' || appliedCoupon?.code === 'FREESHIP';
+
   useBodyScrollLock(isCheckoutOpen && !createdOrder, 'checkout');
 
   useEffect(() => {
@@ -66,6 +70,7 @@ export default function CheckoutModal() {
     setCreatedOrder(null);
     setShowQrModal(false);
     setPaymentMethod('cod');
+    setCouponInput('');
     attemptIdRef.current = globalThis.crypto.randomUUID();
     requestAnimationFrame(() => closeButtonRef.current?.focus());
     const onKeyDown = (event) => {
@@ -100,26 +105,17 @@ export default function CheckoutModal() {
     setForm((current) => ({ ...current, [field]: event.target.value }));
   };
 
-  const handleApplyCoupon = () => {
-    setCouponError('');
-    const res = validateCoupon(couponCode, subtotal, shippingFee);
-    if (!res.valid) {
-      setCouponError(res.message);
-      return;
-    }
-    setAppliedCoupon(res);
+  const handleApplyCoupon = (codeToApply) => {
+    const code = (codeToApply || couponInput).trim().toUpperCase();
+    if (!code) return;
+    applyCoupon(code);
+    setCouponInput('');
   };
 
   const handleRemoveCoupon = () => {
-    setAppliedCoupon(null);
-    setCouponCode('');
-    setCouponError('');
+    removeCoupon();
+    setCouponInput('');
   };
-
-  const isCouponFreeship = appliedCoupon?.code === 'FREESHIP';
-  const effectiveShippingFee = isCouponFreeship ? 0 : shippingFee;
-  const couponDiscount = appliedCoupon ? (isCouponFreeship ? shippingFee : appliedCoupon.discount) : 0;
-  const calculatedTotal = Math.max(0, subtotal - (isCouponFreeship ? 0 : couponDiscount)) + effectiveShippingFee;
 
   const submit = async (event) => {
     event.preventDefault();
@@ -249,14 +245,14 @@ export default function CheckoutModal() {
                     <select
                       required
                       value={form.provinceCode}
-                      onChange={(event) => {
-                        setError('');
-                        setForm((current) => ({ ...current, provinceCode: event.target.value, wardCode: '' }));
+                      onChange={(e) => {
+                        const nextProvince = e.target.value;
+                        setForm((c) => ({ ...c, provinceCode: nextProvince, wardCode: '' }));
                       }}
                     >
-                      <option value="">Chọn tỉnh/thành</option>
-                      {vietnamProvinces.map((province) => (
-                        <option key={province.code} value={province.code}>{province.name}</option>
+                      <option value="">Chọn Tỉnh / Thành phố</option>
+                      {vietnamProvinces.map((p) => (
+                        <option key={p.code} value={p.code}>{p.name}</option>
                       ))}
                     </select>
                   </label>
@@ -265,68 +261,61 @@ export default function CheckoutModal() {
                     <select
                       required
                       value={form.wardCode}
-                      onChange={update('wardCode')}
                       disabled={!form.provinceCode || isLoadingWards}
+                      onChange={update('wardCode')}
                     >
-                      <option value="">
-                        {isLoadingWards ? 'Đang tải phường/xã…' : form.provinceCode ? 'Chọn phường/xã' : 'Chọn tỉnh/thành trước'}
-                      </option>
-                      {wards.map((ward) => (
-                        <option key={ward.code} value={ward.code}>{ward.name}</option>
+                      <option value="">{isLoadingWards ? 'Đang tải phường/xã…' : 'Chọn Phường / Xã'}</option>
+                      {wards.map((w) => (
+                        <option key={w.code} value={w.code}>{w.name}</option>
                       ))}
                     </select>
                   </label>
-                  <label className="react-checkout-wide">
-                    <span>Địa chỉ chi tiết *</span>
-                    <input
-                      required
-                      value={form.line1}
-                      onChange={update('line1')}
-                      autoComplete="street-address"
-                      placeholder="Số nhà, tên tòa nhà, tên đường…"
-                    />
-                  </label>
-                  <p className="react-checkout-address-note">Địa chỉ được lưu bảo mật trong tài khoản để tự động điền cho lần mua sau.</p>
-                  <label className="react-checkout-wide">
-                    <span>Ghi chú đơn hàng</span>
-                    <textarea rows="2" maxLength="1000" value={form.note} onChange={update('note')} placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao…" />
-                  </label>
                 </div>
+                <label className="react-checkout-full-field">
+                  <span>Địa chỉ chi tiết (Số nhà, tên đường…) *</span>
+                  <input required value={form.line1} onChange={update('line1')} autoComplete="street-address" placeholder="Ví dụ: 123 Lê Lợi, Phường Bến Nghé" />
+                </label>
+                <label className="react-checkout-full-field">
+                  <span>Ghi chú đơn hàng (Tùy chọn)</span>
+                  <textarea rows={2} value={form.note} onChange={update('note')} placeholder="Lời dặn cho shipper (giờ giao hàng, chỉ dẫn…)" />
+                </label>
               </section>
 
-              <fieldset className="react-checkout-payment">
-                <legend>
+              <fieldset className="react-checkout-payment-section">
+                <legend className="react-checkout-section-title">
                   <span>2</span> Phương thức thanh toán
                 </legend>
                 <div className="react-checkout-payment-options">
-                  <label className={`react-checkout-payment-option ${paymentMethod === 'cod' ? 'is-selected' : ''}`}>
+                  <label className={`react-checkout-payment-option ${paymentMethod === 'cod' ? 'active' : ''}`}>
                     <input
                       type="radio"
-                      name="payment-method"
+                      name="paymentMethod"
                       value="cod"
                       checked={paymentMethod === 'cod'}
                       onChange={() => setPaymentMethod('cod')}
                     />
-                    <span>
-                      <b>Thanh toán khi nhận hàng (COD)</b>
-                      <small>Thanh toán bằng tiền mặt sau khi nhận và kiểm tra kiện hàng.</small>
-                    </span>
+                    <div className="react-checkout-payment-icon">💵</div>
+                    <div className="react-checkout-payment-info">
+                      <strong>Thanh toán khi nhận hàng (COD)</strong>
+                      <small>Thanh toán tiền mặt cho shipper khi nhận và kiểm tra hàng.</small>
+                    </div>
                   </label>
 
-                  <label className={`react-checkout-payment-option ${paymentMethod === 'bank_transfer' ? 'is-selected' : ''}`}>
+                  <label className={`react-checkout-payment-option ${paymentMethod === 'vietqr' ? 'active' : ''}`}>
                     <input
                       type="radio"
-                      name="payment-method"
-                      value="bank_transfer"
-                      checked={paymentMethod === 'bank_transfer'}
-                      onChange={() => setPaymentMethod('bank_transfer')}
+                      name="paymentMethod"
+                      value="vietqr"
+                      checked={paymentMethod === 'vietqr'}
+                      onChange={() => setPaymentMethod('vietqr')}
                     />
-                    <span>
-                      <b>
-                        Chuyển khoản ngân hàng (VietQR)
-                        <span className="react-checkout-payment-badge">Vietcombank 1-Tap</span>
-                      </b>
-                      <small>Mở App ngân hàng tự điền sẵn hoặc quét mã VietQR Napas 24/7.</small>
+                    <div className="react-checkout-payment-icon">📱</div>
+                    <div className="react-checkout-payment-info">
+                      <strong>Chuyển khoản VietQR tức thì</strong>
+                      <small>Quét mã QR qua app ngân hàng hoặc MoMo. Tự động xác nhận.</small>
+                    </div>
+                    <span className="react-checkout-badge-fast">
+                      Khuyên dùng
                     </span>
                   </label>
                 </div>
@@ -345,6 +334,7 @@ export default function CheckoutModal() {
                   {items.map((item) => {
                     const product = getProductById(item.productId);
                     const itemPrice = Number(product?.price) || 0;
+                    const bundleItems = Array.isArray(product?.bundleItems) ? product.bundleItems : [];
                     return (
                       <div className="react-checkout-mini-item" key={item.productId}>
                         <img
@@ -353,12 +343,23 @@ export default function CheckoutModal() {
                           className="react-checkout-mini-thumb"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = assetUrl('/images/products/placeholder.jpg');
+                            e.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f8f9fa" width="100" height="100"/><text fill="%23ced4da" font-size="12" font-family="sans-serif" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">SkinID</text></svg>';
                           }}
                         />
                         <div className="react-checkout-mini-info">
                           <p title={product?.name}>{product?.name || item.productId}</p>
                           <small>SL: {item.quantity} × {formatPrice(itemPrice)}</small>
+                          {bundleItems.length > 0 && (
+                            <div className="react-checkout-bundle-breakdown">
+                              <span className="react-checkout-bundle-title">🎁 Gồm các món 0₫:</span>
+                              {bundleItems.map((bItem, idx) => (
+                                <div key={idx} className="react-checkout-bundle-subitem">
+                                  <span className="react-checkout-bundle-subname">↳ {bItem.name} {bItem.volume ? '(' + bItem.volume + ')' : ''}</span>
+                                  <span className="react-checkout-bundle-subprice">0₫</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                         <span className="react-checkout-mini-price">
                           {formatPrice(itemPrice * item.quantity)}
@@ -368,38 +369,53 @@ export default function CheckoutModal() {
                   })}
                 </div>
 
+                {/* Khối Mã Giảm Giá trong Checkout */}
                 <div className="react-checkout-coupon">
                   <div className="react-checkout-coupon-title">
                     <span>Mã giảm giá / Voucher</span>
                   </div>
                   {!appliedCoupon ? (
-                    <div className="react-checkout-coupon-input-group">
-                      <input
-                        type="text"
-                        value={couponCode}
-                        onChange={(e) => {
-                          setCouponCode(e.target.value.toUpperCase());
-                          if (couponError) setCouponError('');
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            handleApplyCoupon();
-                          }
-                        }}
-                        placeholder="Nhập mã ưu đãi…"
-                        className="react-checkout-coupon-input"
-                        aria-label="Mã giảm giá"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleApplyCoupon}
-                        className="react-checkout-coupon-btn"
-                        disabled={!couponCode.trim()}
-                      >
-                        Áp dụng
-                      </button>
-                    </div>
+                    <>
+                      <div className="react-checkout-coupon-input-group">
+                        <input
+                          type="text"
+                          value={couponInput}
+                          onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleApplyCoupon();
+                            }
+                          }}
+                          placeholder="Nhập mã ưu đãi…"
+                          className="react-checkout-coupon-input"
+                          aria-label="Mã giảm giá"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleApplyCoupon()}
+                          className="react-checkout-coupon-btn"
+                          disabled={!couponInput.trim()}
+                        >
+                          Áp dụng
+                        </button>
+                      </div>
+
+                      {/* Gợi ý mã 1 chạm */}
+                      <div className="react-checkout-coupon-suggestions">
+                        {availableCoupons.map((c) => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            className="react-checkout-coupon-chip"
+                            onClick={() => handleApplyCoupon(c.code)}
+                            title={c.description}
+                          >
+                            <strong>{c.code}</strong>: {c.description}
+                          </button>
+                        ))}
+                      </div>
+                    </>
                   ) : (
                     <div className="react-checkout-coupon-applied">
                       <div className="react-checkout-coupon-badge">
@@ -417,9 +433,10 @@ export default function CheckoutModal() {
                       </button>
                     </div>
                   )}
-                  {couponError && <p className="react-checkout-coupon-error">{couponError}</p>}
+                  {couponError && <p className="react-checkout-coupon-error">⚠️ {couponError}</p>}
                 </div>
 
+                {/* Bảng kê chi phí thanh toán */}
                 <div className="react-checkout-fee-rows">
                   <div className="react-checkout-fee-row">
                     <span>Tạm tính</span>
@@ -429,7 +446,7 @@ export default function CheckoutModal() {
                     <div className="react-checkout-fee-row discount">
                       <span>Mã giảm giá ({appliedCoupon.code})</span>
                       <b className="text-emerald-700 font-bold">
-                        {isCouponFreeship ? 'Miễn phí ship' : `-${formatPrice(couponDiscount)}`}
+                        {isCouponFreeship ? 'Miễn phí ship' : `−${formatPrice(couponDiscount)}`}
                       </b>
                     </div>
                   )}
@@ -445,11 +462,15 @@ export default function CheckoutModal() {
                       )}
                     </b>
                   </div>
-                  {subtotal < FREE_SHIPPING_THRESHOLD && !isCouponFreeship && (
+                  {isComboInCart ? (
+                    <small className="text-[11px] text-amber-700 font-medium">
+                      ℹ️ Gói Combo ưu đãi đặc biệt áp dụng phí ship chuẩn 30.000₫.
+                    </small>
+                  ) : subtotal < FREE_SHIPPING_THRESHOLD && !isCouponFreeship ? (
                     <small className="text-[11px] text-amber-700">
                       Mua thêm {formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} để được Freeship.
                     </small>
-                  )}
+                  ) : null}
                   <div className="react-checkout-fee-row total">
                     <span>Tổng thanh toán</span>
                     <strong>{formatPrice(calculatedTotal)}</strong>
@@ -463,7 +484,7 @@ export default function CheckoutModal() {
                   type="submit"
                   disabled={isSubmitting || !items.length}
                 >
-                  {isSubmitting ? 'Đang tạo đơn…' : 'Xác nhận đặt hàng →'}
+                  {isSubmitting ? 'Đang tạo đơn…' : `Xác nhận đặt hàng · ${formatPrice(calculatedTotal)} →`}
                 </button>
 
                 <div className="react-checkout-guarantees">

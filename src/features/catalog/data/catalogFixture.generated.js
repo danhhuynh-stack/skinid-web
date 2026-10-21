@@ -161,7 +161,7 @@ export const CATALOG_FIXTURE = [
     "expiry": "36 tháng kể từ NSX và 8-12 tháng sau khi mở nắp",
     "unit": "Chai",
     "sourceName": "SỮA RỬA MẶT TẨY TRANG",
-    "productCode": "I14V01730"
+    "productCode": "I14V01770"
   },
   {
     "id": "rilastil-2097",
@@ -211,7 +211,7 @@ export const CATALOG_FIXTURE = [
     "expiry": "36 tháng kể từ NSX và 8-12 tháng sau khi mở nắp",
     "unit": "Chai",
     "sourceName": "NƯỚC HOA HỒNG",
-    "productCode": "I14V01740"
+    "productCode": "I14V01780"
   },
   {
     "id": "rilastil-2096",
@@ -2448,7 +2448,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1Dwfry5VcSvbXewMwbVhRWmK6yJLJuInx.webp",
     "licenseUrl": "https://drive.google.com/file/d/1Dwfry5VcSvbXewMwbVhRWmK6yJLJuInx/view?usp=drivesdk",
     "unit": "Tuýp",
-    "sourceName": "Kem body Lotion"
+    "sourceName": "Kem body Lotion",
+    "productCode": "TWON-BODY-LOTION-200ML"
   },
   {
     "id": "twon-kem-u-trang",
@@ -2501,7 +2502,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1cicNb4LL_FhSX1NccsU4sq7CcU1b7y_5.webp",
     "licenseUrl": "https://drive.google.com/file/d/1cicNb4LL_FhSX1NccsU4sq7CcU1b7y_5/view?usp=drivesdk",
     "unit": "Tuýp",
-    "sourceName": "Kem ủ trắng"
+    "sourceName": "Kem ủ trắng",
+    "productCode": "TWON-U-TRANG-250ML"
   },
   {
     "id": "twon-sua-tam",
@@ -2553,7 +2555,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1x0F1I4igJtpi3bdm_cQ4hvoxWW_PLvlA.webp",
     "licenseUrl": "https://drive.google.com/file/d/1x0F1I4igJtpi3bdm_cQ4hvoxWW_PLvlA/view?usp=drivesdk",
     "unit": "Tuýp",
-    "sourceName": "Sữa tắm TWON"
+    "sourceName": "Sữa tắm TWON",
+    "productCode": "TWON-SUA-TAM-450ML"
   },
   {
     "id": "dvah-sarika",
@@ -2604,7 +2607,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1u8JJBCPHyVbAo-oDYcesWuEl0ychbKvS.webp",
     "licenseUrl": "https://drive.google.com/file/d/1u8JJBCPHyVbAo-oDYcesWuEl0ychbKvS/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Sarika"
+    "sourceName": "Nước hoa Sarika",
+    "productCode": "DVAH-SARIKA-10ML"
   },
   {
     "id": "dvah-kamal",
@@ -2655,7 +2659,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1GmX2S0moCZvVPHIo7V0guMH5HvfSGvlb.webp",
     "licenseUrl": "https://drive.google.com/file/d/1GmX2S0moCZvVPHIo7V0guMH5HvfSGvlb/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Kamal"
+    "sourceName": "Nước hoa Kamal",
+    "productCode": "DVAH-KAMAL-10ML"
   },
   {
     "id": "dvah-rakta",
@@ -2706,7 +2711,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1ki3o5W7Hu9k56TzdJZ06E0qfsllUtvTO.webp",
     "licenseUrl": "https://drive.google.com/file/d/1ki3o5W7Hu9k56TzdJZ06E0qfsllUtvTO/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Rakta"
+    "sourceName": "Nước hoa Rakta",
+    "productCode": "DVAH-RAKTA-10ML"
   },
   {
     "id": "dvah-tanmaya",
@@ -2757,7 +2763,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/17O4dFEZNuZV7YJvUi72JawqmGt-7-MpY.webp",
     "licenseUrl": "https://drive.google.com/file/d/17O4dFEZNuZV7YJvUi72JawqmGt-7-MpY/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Tamaya"
+    "sourceName": "Nước hoa Tamaya",
+    "productCode": "DVAH-TANMAYA-10ML"
   },
   {
     "id": "dvah-malini",
@@ -2808,7 +2815,8 @@ export const CATALOG_FIXTURE = [
     "licenseImageUrl": "/images/licenses/1RT-yO75h1yizNDlpSN444uMOjshpbSYr.webp",
     "licenseUrl": "https://drive.google.com/file/d/1RT-yO75h1yizNDlpSN444uMOjshpbSYr/view?usp=drivesdk",
     "unit": "Hộp",
-    "sourceName": "Nước hoa Malani"
+    "sourceName": "Nước hoa Malani",
+    "productCode": "DVAH-MALINI-10ML"
   },
   {
     "id": "rilastil-2110",
@@ -2912,5 +2920,502 @@ export const CATALOG_FIXTURE = [
     "unit": "Hộp",
     "sourceName": "KEM CHỐNG RẠN TRONG THỜI GIAN MANG THAI HOẶC THAY ĐỔI CÂN NẶNG, CHIỀU CAO ĐỘT NGỘT",
     "productCode": "I27V31950"
+  },
+  {
+    "id": "combo-nang-xinh",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "line": "COMBO ƯU ĐÃI",
+    "name": "Combo Nàng Xinh – Dưỡng Trắng Toàn Diện TWON",
+    "slug": "combo-nang-xinh-duong-trang-toan-dien",
+    "price": 529000,
+    "originalPrice": 707000,
+    "volume": "Bộ 3 món chính hãng",
+    "tier": "Exclusive Deal",
+    "category": "Combo Khuyến Mãi",
+    "stepType": "special",
+    "targetConcerns": [
+      "dullness",
+      "body_pigmentation",
+      "dryness"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Bộ 3 sản phẩm chăm sóc toàn diện: 1 Kem body dưỡng trắng 250ml + 1 Kem ủ trắng da 250ml + 1 Sữa tắm dưỡng da 450ml TWON kèm Túi quà tặng SkinID cao cấp.",
+    "bundleItems": [
+      {
+        "name": "Kem body dưỡng trắng TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Kem ủ trắng thảo mộc TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Sữa tắm dưỡng da lưu hương TWON",
+        "volume": "450ml",
+        "price": 0
+      },
+      {
+        "name": "Túi quà tặng SkinID phái đẹp cao cấp",
+        "volume": "Túi quà",
+        "price": 0
+      }
+    ],
+    "usage": "Bước 1: Tắm sạch với Sữa tắm TWON 450ml. Bước 2: Dùng Kem ủ trắng TWON 2-3 lần/tuần để tẩy tế bào chết và bật tone. Bước 3: Thoa Kem body dưỡng trắng TWON hàng ngày để khóa ẩm và dưỡng sáng.",
+    "keyActives": [
+      "NIACINAMIDE (B3) & ALPHA ARBUTIN: Bật tone da sáng mịn tự nhiên.",
+      "GLYCERIN & TINH DẦU THẢO MỘC: Nuôi dưỡng màng ẩm mềm mại suốt 24h.",
+      "HƯƠNG NƯỚC HOA QUÝ PHÁI: Lưu hương tinh tế, quyến rũ trên cơ thể."
+    ],
+    "mainActives": [
+      "NIACINAMIDE",
+      "ALPHA ARBUTIN",
+      "GLYCERIN"
+    ],
+    "fullIngredients": "Xem chi tiết trên bao bì từng sản phẩm trong bộ combo.",
+    "image": "/images/products/combos/combo-1-nang-xinh.jpg",
+    "benefits": [
+      "duong-trang-toan-than",
+      "cap-am-chuyen-sau"
+    ],
+    "benefitName": "Dưỡng trắng toàn diện & Cấp ẩm sâu",
+    "origin": "Việt Nam (Công nghệ Hàn Quốc)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Combo",
+    "sourceName": "Combo Nàng Xinh TWON",
+    "productCode": "COMBO-TWON-01"
+  },
+  {
+    "id": "combo-nang-quyen-ru",
+    "brand": "TWON x D'VAH",
+    "brandSlug": "twon",
+    "line": "COMBO ƯU ĐÃI",
+    "name": "Combo Nàng Quyến Rũ – Dưỡng Thể & Nước Hoa D'VAH Kamal",
+    "slug": "combo-nang-quyen-ru-huong-nuoc-hoa-sang-trong",
+    "price": 499000,
+    "originalPrice": 637000,
+    "volume": "Bộ 3 món chính hãng",
+    "tier": "Exclusive Deal",
+    "category": "Combo Khuyến Mãi",
+    "stepType": "special",
+    "targetConcerns": [
+      "dryness",
+      "roughness",
+      "body_fragrance"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Bộ giải pháp hương thơm quyến rũ: 1 Kem body dưỡng trắng 250ml + 1 Sữa tắm dưỡng da 450ml + 1 Nước hoa D'VAH KAMAL 10ml kèm Túi quà tặng SkinID cao cấp.",
+    "bundleItems": [
+      {
+        "name": "Kem body dưỡng trắng TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Sữa tắm dưỡng da TWON",
+        "volume": "450ml",
+        "price": 0
+      },
+      {
+        "name": "Nước hoa Mini D'VAH KAMAL (Ấm ngọt, quyến rũ)",
+        "volume": "10ml",
+        "price": 0
+      },
+      {
+        "name": "Túi quà tặng SkinID phái đẹp cao cấp",
+        "volume": "Túi quà",
+        "price": 0
+      }
+    ],
+    "usage": "Tắm sạch bằng Sữa tắm TWON, thoa Kem body dưỡng trắng và xịt 1-2 shot Nước hoa Kamal lên cổ tay, gáy để hương thơm vương vấn suốt cả ngày.",
+    "keyActives": [
+      "D'VAH KAMAL EDP 10ML: Nốt hương hổ phách, vani ấm ngọt, sang trọng và gợi cảm.",
+      "NIACINAMIDE & HYALURONIC ACID: Cho làn da ẩm mượt, căng mọng tức thì."
+    ],
+    "mainActives": [
+      "HƯƠNG KAMAL",
+      "NIACINAMIDE",
+      "HYALURONIC ACID"
+    ],
+    "fullIngredients": "Xem chi tiết trên bao bì từng sản phẩm trong bộ combo.",
+    "image": "/images/products/combos/combo-2-nang-quyen-ru.jpg",
+    "benefits": [
+      "luu-huong-quyen-ru",
+      "duong-am-sau"
+    ],
+    "benefitName": "Hương nước hoa sang trọng & Dưỡng mịn",
+    "origin": "Việt Nam (Nguyên liệu nhập khẩu)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Combo",
+    "sourceName": "Combo Nàng Quyến Rũ TWON DVAH",
+    "productCode": "COMBO-TWON-02"
+  },
+  {
+    "id": "combo-nang-thom",
+    "brand": "TWON x D'VAH",
+    "brandSlug": "twon",
+    "line": "COMBO ƯU ĐÃI",
+    "name": "Combo Nàng Thơm – Ủ Trắng & Nước Hoa D'VAH Tanmaya",
+    "slug": "combo-nang-thom-thom-mem-quyen-ru",
+    "price": 499000,
+    "originalPrice": 607000,
+    "volume": "Bộ 3 món chính hãng",
+    "tier": "Exclusive Deal",
+    "category": "Combo Khuyến Mãi",
+    "stepType": "special",
+    "targetConcerns": [
+      "dryness",
+      "roughness",
+      "body_fragrance"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Bộ chăm sóc lưu hương thanh tao: 1 Kem ủ trắng thảo mộc TWON 250ml + 1 Sữa tắm dưỡng da 450ml + 1 Nước hoa D'VAH TANMAYA 10ml kèm Túi quà tặng SkinID cao cấp.",
+    "bundleItems": [
+      {
+        "name": "Kem ủ trắng thảo mộc TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Sữa tắm dưỡng da TWON",
+        "volume": "450ml",
+        "price": 0
+      },
+      {
+        "name": "Nước hoa Mini D'VAH TANMAYA (Trầm ấm, cuốn hút)",
+        "volume": "10ml",
+        "price": 0
+      },
+      {
+        "name": "Túi quà tặng SkinID phái đẹp cao cấp",
+        "volume": "Túi quà",
+        "price": 0
+      }
+    ],
+    "usage": "Sử dụng Sữa tắm và Kem body dưỡng ẩm sau khi tắm, kết hợp xịt Nước hoa Tanmaya để tạo dấu ấn cá nhân sang trọng.",
+    "keyActives": [
+      "D'VAH TANMAYA EDP 10ML: Hương gỗ tuyết tùng trầm ấm, bí ẩn, lưu hương 8-12 tiếng.",
+      "TINH CHẤT DƯỠNG TRẮNG BODY: Giúp da bật tone và sáng khỏe mỗi ngày."
+    ],
+    "mainActives": [
+      "HƯƠNG TANMAYA",
+      "NIACINAMIDE",
+      "VITAMIN E"
+    ],
+    "fullIngredients": "Xem chi tiết trên bao bì từng sản phẩm trong bộ combo.",
+    "image": "/images/products/combos/combo-3-nang-thom.jpg",
+    "benefits": [
+      "luu-huong-quyen-ru",
+      "duong-am-sau"
+    ],
+    "benefitName": "Thơm mềm quyến rũ & Dưỡng trắng",
+    "origin": "Việt Nam (Nguyên liệu nhập khẩu)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Combo",
+    "sourceName": "Combo Nàng Thơm TWON DVAH",
+    "productCode": "COMBO-TWON-03"
+  },
+  {
+    "id": "deal50-twon-sua-tam",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "line": "FLASH DEAL 50%",
+    "name": "Sữa Tắm Dưỡng Da TWON 450ml (Deal 50% Like & Share)",
+    "slug": "deal-50-sua-tam-duong-da-twon-450ml",
+    "price": 89500,
+    "originalPrice": 179000,
+    "volume": "450 ml",
+    "tier": "Flash Deal",
+    "category": "Chăm sóc thể thao & Body",
+    "stepType": "cleanser",
+    "targetConcerns": [
+      "dryness",
+      "roughness"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Làm sạch dịu nhẹ, lưu hương nước hoa thư giãn quyến rũ, dưỡng ẩm mịn màng không gây nhờn rít sau khi tắm.",
+    "usage": "Lấy một lượng vừa đủ vào lòng bàn tay hoặc bông tắm, tạo bọt mịn và massage đều toàn thân, sau đó tắm lại bằng nước sạch.",
+    "keyActives": [
+      "GLYCERIN & CHIẾT XUẤT HOA ANH ĐÀO: Cấp ẩm, dưỡng mềm và làm sạch sâu dịu nhẹ."
+    ],
+    "mainActives": [
+      "GLYCERIN",
+      "CHIẾT XUẤT HOA ANH ĐÀO"
+    ],
+    "fullIngredients": "Aqua, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Glycerin, Parfum, Citric Acid, Phenoxyethanol.",
+    "image": "/images/products/twon-sua-tam.png",
+    "benefits": [
+      "lam-sach-sau",
+      "cap-am-chuyen-sau"
+    ],
+    "benefitName": "Làm sạch dịu nhẹ & Lưu hương",
+    "origin": "Việt Nam",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Chai",
+    "sourceName": "Sữa tắm TWON Deal 50%",
+    "productCode": "DEAL50-TWON-01"
+  },
+  {
+    "id": "deal50-twon-body",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "line": "FLASH DEAL 50%",
+    "name": "Kem Body Dưỡng Trắng TWON 250ml (Deal 50% Like & Share)",
+    "slug": "deal-50-kem-body-duong-trang-twon-250ml",
+    "price": 139500,
+    "originalPrice": 279000,
+    "volume": "250 ml",
+    "tier": "Flash Deal",
+    "category": "Chăm sóc thể thao & Body",
+    "stepType": "moisturizer",
+    "targetConcerns": [
+      "body_pigmentation",
+      "dryness"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Thấm nhanh sau 3 giây, bật tông tự nhiên tức thì, không lộ vân kem, dưỡng ẩm sâu và chống nắng nhẹ bảo vệ da.",
+    "usage": "Thoa một lớp mỏng đều lên da toàn thân sau khi tắm hoặc trước khi ra ngoài. Vỗ nhẹ để kem thẩm thấu hoàn toàn.",
+    "keyActives": [
+      "NIACINAMIDE & TITANIUM DIOXIDE: Dưỡng sáng mờ thâm và nâng tone da tự nhiên tức thì."
+    ],
+    "mainActives": [
+      "NIACINAMIDE",
+      "TITANIUM DIOXIDE"
+    ],
+    "fullIngredients": "Aqua, Niacinamide, Glycerin, Titanium Dioxide, Dimethicone, Parfum, Phenoxyethanol.",
+    "image": "/images/products/twon-body-lotion.png",
+    "benefits": [
+      "duong-trang-toan-than"
+    ],
+    "benefitName": "Bật tone 3 giây & Dưỡng trắng",
+    "origin": "Việt Nam",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Hộp",
+    "sourceName": "Kem Body TWON Deal 50%",
+    "productCode": "DEAL50-TWON-02"
+  },
+  {
+    "id": "deal50-twon-u-trang",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "line": "FLASH DEAL 50%",
+    "name": "Kem Ủ Trắng Da TWON 250ml (Deal 50% Like & Share)",
+    "slug": "deal-50-kem-u-trang-da-twon-250ml",
+    "price": 124500,
+    "originalPrice": 249000,
+    "volume": "250 ml",
+    "tier": "Flash Deal",
+    "category": "Chăm sóc thể thao & Body",
+    "stepType": "special",
+    "targetConcerns": [
+      "body_pigmentation",
+      "roughness"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Loại bỏ tế bào sừng cằn cỗi, phục hồi làn da cháy nắng, giúp da trắng hồng rạng rỡ và hấp thu kem body tốt hơn x3 lần.",
+    "usage": "Thoa kem ủ lên toàn thân, ủ trong 15-20 phút rồi xả sạch với nước. Dùng 2-3 lần/tuần.",
+    "keyActives": [
+      "AHA DƯỢC LIỆU & CHIẾT XUẤT THẢO MỘC: Bạt sừng dịu nhẹ, tái sinh làn da mịn như nhung."
+    ],
+    "mainActives": [
+      "AHA",
+      "GLYCOLIC ACID",
+      "ARBUTIN"
+    ],
+    "fullIngredients": "Aqua, Glycolic Acid, Cetearyl Alcohol, Arbutin, Glycerin, Parfum, Phenoxyethanol.",
+    "image": "/images/products/twon-kem-u-trang.png",
+    "benefits": [
+      "duong-trang-toan-than"
+    ],
+    "benefitName": "Bạt sừng dịu nhẹ & Bật tone",
+    "origin": "Việt Nam",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Hũ",
+    "sourceName": "Ủ Trắng TWON Deal 50%",
+    "productCode": "DEAL50-TWON-03"
+  },
+  {
+    "id": "deal50-dvah-kamal",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "line": "FLASH DEAL 50%",
+    "name": "Nước Hoa Mini 10ml D'VAH Kamal – Ấm Ngọt, Quyến Rũ (Deal 50%)",
+    "slug": "deal-50-nuoc-hoa-dvah-kamal-10ml",
+    "price": 89500,
+    "originalPrice": 179000,
+    "volume": "10 ml",
+    "tier": "Flash Deal",
+    "category": "Nước hoa cao cấp",
+    "stepType": "special",
+    "targetConcerns": [
+      "body_fragrance"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Nốt hương phương Đông ấm áp từ Hổ Phách & Vani, lưu hương sang trọng, tạo sức hút nồng nàn và quyến rũ.",
+    "usage": "Xịt cách cơ thể 15cm tại các điểm mạch: cổ tay, sau tai, ngực và gáy.",
+    "keyActives": [
+      "TINH DẦU NƯỚC HOA PHÁP CAO CẤP: Lưu hương 8-12 tiếng."
+    ],
+    "mainActives": [
+      "AMBER",
+      "VANILLA"
+    ],
+    "fullIngredients": "Alcohol Denat, Fragrance (Parfum), Aqua, Benzyl Salicylate, Linalool.",
+    "image": "/images/products/dvah-kamal.png",
+    "benefits": [
+      "luu-huong-quyen-ru"
+    ],
+    "benefitName": "Hổ phách ấm ngọt, quyến rũ",
+    "origin": "Việt Nam (Hương liệu Pháp)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Chai 10ml",
+    "sourceName": "DVAH Kamal Deal 50%",
+    "productCode": "DEAL50-DVAH-01"
+  },
+  {
+    "id": "deal50-dvah-malini",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "line": "FLASH DEAL 50%",
+    "name": "Nước Hoa Mini 10ml D'VAH Malini – Hoa Sen Thuần Khiết (Deal 50%)",
+    "slug": "deal-50-nuoc-hoa-dvah-malini-10ml",
+    "price": 89500,
+    "originalPrice": 179000,
+    "volume": "10 ml",
+    "tier": "Flash Deal",
+    "category": "Nước hoa cao cấp",
+    "stepType": "special",
+    "targetConcerns": [
+      "body_fragrance"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Hương hoa sen trắng và mẫu đơn thuần khiết, thanh lịch, nữ tính và trong trẻo như sương sớm.",
+    "usage": "Xịt trực tiếp lên các điểm mạch trên cơ thể để hương thơm lan tỏa dịu dàng.",
+    "keyActives": [
+      "TINH DẦU HOA SEN & MẪU ĐƠN: Hương hoa tự nhiên thanh khiết."
+    ],
+    "mainActives": [
+      "LOTUS",
+      "PEONY"
+    ],
+    "fullIngredients": "Alcohol Denat, Fragrance (Parfum), Aqua, Citronellol, Geraniol.",
+    "image": "/images/products/dvah-malini.png",
+    "benefits": [
+      "luu-huong-quyen-ru"
+    ],
+    "benefitName": "Hoa thuần khiết, nữ tính",
+    "origin": "Việt Nam (Hương liệu Pháp)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Chai 10ml",
+    "sourceName": "DVAH Malini Deal 50%",
+    "productCode": "DEAL50-DVAH-02"
+  },
+  {
+    "id": "deal50-dvah-sarika",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "line": "FLASH DEAL 50%",
+    "name": "Nước Hoa Mini 10ml D'VAH Sarika – Ngọt Sang Trọng, Tinh Tế (Deal 50%)",
+    "slug": "deal-50-nuoc-hoa-dvah-sarika-10ml",
+    "price": 89500,
+    "originalPrice": 179000,
+    "volume": "10 ml",
+    "tier": "Flash Deal",
+    "category": "Nước hoa cao cấp",
+    "stepType": "special",
+    "targetConcerns": [
+      "body_fragrance"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Nốt hương ngọt ngào, tinh tế, mang lại phong thái quý cô sang chảnh và thu hút mọi ánh nhìn.",
+    "usage": "Xịt nhẹ nhàng lên cổ tay, trang phục hoặc tóc để lưu hương suốt ngày dài.",
+    "keyActives": [
+      "TINH DẦU NƯỚC HOA SARIKA: Tươi trẻ, ngọt ngào và cuốn hút."
+    ],
+    "mainActives": [
+      "SWEET FLORAL",
+      "GOURMAND"
+    ],
+    "fullIngredients": "Alcohol Denat, Fragrance (Parfum), Aqua, Limonene, Linalool.",
+    "image": "/images/products/dvah-sarika.png",
+    "benefits": [
+      "luu-huong-quyen-ru"
+    ],
+    "benefitName": "Ngọt sang trọng, tinh tế",
+    "origin": "Việt Nam (Hương liệu Pháp)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Chai 10ml",
+    "sourceName": "DVAH Sarika Deal 50%",
+    "productCode": "DEAL50-DVAH-03"
+  },
+  {
+    "id": "deal50-dvah-tanmaya",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "line": "FLASH DEAL 50%",
+    "name": "Nước Hoa Mini 10ml D'VAH Tanmaya – Trầm Ấm, Cuốn Hút (Deal 50%)",
+    "slug": "deal-50-nuoc-hoa-dvah-tanmaya-10ml",
+    "price": 89500,
+    "originalPrice": 179000,
+    "volume": "10 ml",
+    "tier": "Flash Deal",
+    "category": "Nước hoa cao cấp",
+    "stepType": "special",
+    "targetConcerns": [
+      "body_fragrance"
+    ],
+    "skinTypes": [
+      "all"
+    ],
+    "uses": "Hương gỗ tuyết tùng và gia vị cay ấm, trầm mặc, bí ẩn và cuốn hút đầy cá tính.",
+    "usage": "Xịt vào gáy, cổ tay và ngực áo để cảm nhận chiều sâu của nốt hương gỗ.",
+    "keyActives": [
+      "TINH DẦU CEDARWOOD & SPICES: Trầm ấm, độc đáo và lôi cuốn."
+    ],
+    "mainActives": [
+      "CEDARWOOD",
+      "SPICES"
+    ],
+    "fullIngredients": "Alcohol Denat, Fragrance (Parfum), Aqua, Coumarin, Eugenol.",
+    "image": "/images/products/dvah-tanmaya.png",
+    "benefits": [
+      "luu-huong-quyen-ru"
+    ],
+    "benefitName": "Trầm ấm, cuốn hút, bí ẩn",
+    "origin": "Việt Nam (Hương liệu Pháp)",
+    "approvingAuthority": "Sở Y Tế",
+    "expiry": "36 tháng kể từ NSX",
+    "unit": "Chai 10ml",
+    "sourceName": "DVAH Tanmaya Deal 50%",
+    "productCode": "DEAL50-DVAH-04"
   }
 ];

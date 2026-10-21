@@ -3,6 +3,7 @@ import { assetUrl } from '../../../assets/index.js';
 import { getProductById } from '../../catalog/index.js';
 import { useBodyScrollLock } from '../../../shared/hooks/useBodyScrollLock.js';
 import { useCart } from '../context/CartContext.jsx';
+import { getAvailableCoupons } from '../services/couponService.js';
 import FreeShippingBar from './FreeShippingBar.jsx';
 import './CartDrawer.css';
 
@@ -13,11 +14,17 @@ const formatPrice = (value) => new Intl.NumberFormat('vi-VN', {
 export default function CartDrawer() {
   const {
     items, subtotal, isOpen, isHydrated, closeCart, removeItem,
-    updateQuantity, clearCart, openCheckout
+    updateQuantity, clearCart, openCheckout,
+    appliedCoupon, couponDiscount, shippingFee, effectiveShippingFee, calculatedTotal, couponError,
+    applyCoupon, removeCoupon
   } = useCart();
+
   const closeButtonRef = useRef(null);
   const [checkoutError, setCheckoutError] = useState('');
   const [isPreparing, setIsPreparing] = useState(false);
+  const [voucherInput, setVoucherInput] = useState('');
+  const availableCoupons = getAvailableCoupons();
+
   useBodyScrollLock(isOpen, 'cart');
 
   useEffect(() => {
@@ -31,6 +38,13 @@ export default function CartDrawer() {
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [closeCart, isOpen]);
+
+  const handleApplyVoucher = (codeToApply) => {
+    const code = (codeToApply || voucherInput).trim().toUpperCase();
+    if (!code) return;
+    applyCoupon(code);
+    setVoucherInput('');
+  };
 
   const startCheckout = async () => {
     setCheckoutError('');
@@ -57,7 +71,7 @@ export default function CartDrawer() {
         </header>
 
         {isHydrated && !!items.length && (
-          <FreeShippingBar subtotal={subtotal} />
+          <FreeShippingBar subtotal={subtotal} items={items} />
         )}
 
         <div className="react-cart-items">
@@ -72,6 +86,7 @@ export default function CartDrawer() {
           )}
           {items.map((item) => {
             const product = getProductById(item.productId);
+            const bundleItems = product?.bundleItems || [];
             return (
               <article className="react-cart-item" key={item.productId}>
                 <img
@@ -79,7 +94,7 @@ export default function CartDrawer() {
                   alt={product?.name || 'Sản phẩm'}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = assetUrl('/images/products/placeholder.jpg');
+                    e.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f8f9fa" width="100" height="100"/><text fill="%23ced4da" font-size="12" font-family="sans-serif" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle">SkinID</text></svg>';
                   }}
                 />
                 <div className="react-cart-item-copy">
@@ -91,6 +106,20 @@ export default function CartDrawer() {
                     <b>{item.quantity}</b>
                     <button type="button" onClick={() => updateQuantity(item.productId, item.quantity + 1)} aria-label="Tăng số lượng">+</button>
                   </div>
+
+                  {bundleItems.length > 0 && (
+                    <div className="react-cart-bundle-breakdown">
+                      <div className="react-cart-bundle-title">🎁 Sản phẩm trong combo ({item.quantity > 1 ? `x${item.quantity}` : 'gồm'}):</div>
+                      <ul className="react-cart-bundle-list">
+                        {bundleItems.map((bItem, idx) => (
+                          <li key={idx} className="react-cart-bundle-item">
+                            <span className="react-cart-bundle-name">↳ {bItem.name} {bItem.volume ? `(${bItem.volume})` : ''}</span>
+                            <span className="react-cart-bundle-price">0₫</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
                 <button type="button" className="react-cart-remove" onClick={() => removeItem(item.productId)} aria-label={`Xóa ${product?.name || 'sản phẩm'}`}>
                   Xóa
@@ -102,16 +131,114 @@ export default function CartDrawer() {
 
         {!!items.length && (
           <footer className="react-cart-footer">
-            <button type="button" className="react-cart-clear" onClick={clearCart}>Xóa tất cả</button>
-            <div>
-              <span>Tạm tính</span>
-              <strong>{formatPrice(subtotal)}</strong>
+            <div className="react-cart-footer-top">
+              <button type="button" className="react-cart-clear" onClick={clearCart}>Xóa tất cả</button>
             </div>
-            {checkoutError && <p role="alert">{checkoutError}</p>}
+
+            {/* Khối Nhập Mã Giảm Giá & Gợi Ý Voucher 1-Chạm */}
+            <div className="react-cart-voucher-section">
+              <div className="react-cart-voucher-header">
+                <span className="react-cart-voucher-title">🎟️ Mã ưu đãi / Voucher</span>
+              </div>
+
+              {!appliedCoupon ? (
+                <>
+                  <div className="react-cart-voucher-input-row">
+                    <input
+                      type="text"
+                      className="react-cart-voucher-input"
+                      placeholder="Nhập mã giảm giá…"
+                      value={voucherInput}
+                      onChange={(e) => setVoucherInput(e.target.value.toUpperCase())}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleApplyVoucher();
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="react-cart-voucher-btn"
+                      disabled={!voucherInput.trim()}
+                      onClick={() => handleApplyVoucher()}
+                    >
+                      Áp dụng
+                    </button>
+                  </div>
+
+                  {couponError && (
+                    <p className="react-cart-voucher-error" role="alert">
+                      ⚠️ {couponError}
+                    </p>
+                  )}
+
+                  {/* Kho Voucher Khả Dụng - 1 Chạm Áp Dụng Ngay */}
+                  <div className="react-cart-voucher-chips">
+                    <span className="react-cart-voucher-chips-label">Gợi ý mã:</span>
+                    {availableCoupons.map((coupon) => (
+                      <button
+                        key={coupon.code}
+                        type="button"
+                        className="react-cart-voucher-chip"
+                        onClick={() => handleApplyVoucher(coupon.code)}
+                        title={coupon.description}
+                      >
+                        <strong>{coupon.code}</strong>
+                        <span>({coupon.tag})</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="react-cart-voucher-applied-box">
+                  <div className="react-cart-voucher-applied-info">
+                    <span className="react-cart-voucher-tag">✓ {appliedCoupon.code}</span>
+                    <small>{appliedCoupon.description}</small>
+                  </div>
+                  <button
+                    type="button"
+                    className="react-cart-voucher-remove-btn"
+                    onClick={removeCoupon}
+                    aria-label="Bỏ mã giảm giá"
+                  >
+                    Bỏ mã ✕
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Bảng Chi Tiết Giá & Khấu Trừ Minh Bạch */}
+            <div className="react-cart-summary-breakdown">
+              <div className="react-cart-fee-row">
+                <span>Tạm tính</span>
+                <span>{formatPrice(subtotal)}</span>
+              </div>
+
+              {couponDiscount > 0 && (
+                <div className="react-cart-fee-row is-discount">
+                  <span>Giảm giá voucher</span>
+                  <span>−{formatPrice(couponDiscount)}</span>
+                </div>
+              )}
+
+              <div className="react-cart-fee-row">
+                <span>Phí vận chuyển dự kiến</span>
+                <span>{effectiveShippingFee === 0 ? <strong className="text-emerald-600">Miễn phí</strong> : formatPrice(effectiveShippingFee)}</span>
+              </div>
+
+              <div className="react-cart-fee-row is-total">
+                <span>Tổng thanh toán</span>
+                <strong>{formatPrice(calculatedTotal)}</strong>
+              </div>
+            </div>
+
+            {checkoutError && <p className="react-cart-error" role="alert">{checkoutError}</p>}
+
             <button type="button" className="react-cart-checkout" disabled={isPreparing || !isHydrated} onClick={startCheckout}>
-              {isPreparing ? 'Đang chuẩn bị…' : `Tiến hành thanh toán · ${formatPrice(subtotal)}`}
+              {isPreparing ? 'Đang chuẩn bị…' : `Tiến hành thanh toán · ${formatPrice(calculatedTotal)}`}
             </button>
-            <small>Miễn phí giao hàng cho đơn từ 500.000đ. Đảm bảo 100% chính hãng.</small>
+            <small>Đảm bảo 100% chính hãng · Đổi trả trong 7 ngày</small>
           </footer>
         )}
       </aside>

@@ -26,8 +26,10 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
     "firebase-admin": "^14.4.0",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.0",

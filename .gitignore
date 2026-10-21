@@ -17,3 +17,14 @@ gha-creds-*.json
 .secret.local
 .dev.vars
 .wrangler/
+
+# Scratch and Temporary Dev Scripts
+scratch/
+scratch_*
+temp_*
+preview_tester.js
+capture_acie_preview.js
+generate_acie_video.js
+local_preview_server.js
+scrape_rilastil.js
+khang_worker_download/

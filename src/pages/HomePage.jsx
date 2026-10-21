@@ -6,6 +6,7 @@ import AcieTeaser from '../components/home/AcieTeaser.jsx';
 import BrandShowcase from '../components/home/BrandShowcase.jsx';
 import HelpSection from '../components/home/HelpSection.jsx';
 import HeroBanner from '../components/home/HeroBanner.jsx';
+import PromotionCampaignSection from '../components/home/PromotionCampaignSection.jsx';
 import FeaturedProducts from '../components/home/FeaturedProducts.jsx';
 import TrustBenefits from '../components/home/TrustBenefits.jsx';
 import Footer from '../components/layout/Footer.jsx';
@@ -63,6 +64,7 @@ export default function HomePage() {
       <Header />
       <main id="top" ref={mainRef} className="home-refresh ambient-page-canvas scroll-reveal-root">
         <HeroBanner />
+        <PromotionCampaignSection />
         <FeaturedProducts />
         <HelpSection />
         <BrandShowcase />

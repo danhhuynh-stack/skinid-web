@@ -485,5 +485,161 @@ export const SERVER_CATALOG = [
     "image": "/images/products/rilastil/rilastil-kem-ngan-ngua-ran-da-rilastil-stretch-marks-cream-75ml.png",
     "volume": "75 ml",
     "price": 787050
+  },
+  {
+    "id": "combo-nang-xinh",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "name": "Combo Nàng Xinh – Dưỡng Trắng Toàn Diện TWON",
+    "image": "/images/products/combos/combo-1-nang-xinh.jpg",
+    "volume": "Bộ 3 món chính hãng",
+    "price": 529000,
+    "bundleItems": [
+      {
+        "name": "Kem body dưỡng trắng TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Kem ủ trắng thảo mộc TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Sữa tắm dưỡng da lưu hương TWON",
+        "volume": "450ml",
+        "price": 0
+      },
+      {
+        "name": "Túi quà tặng SkinID phái đẹp cao cấp",
+        "volume": "Túi quà",
+        "price": 0
+      }
+    ]
+  },
+  {
+    "id": "combo-nang-quyen-ru",
+    "brand": "TWON x D'VAH",
+    "brandSlug": "twon",
+    "name": "Combo Nàng Quyến Rũ – Dưỡng Thể & Nước Hoa D'VAH Kamal",
+    "image": "/images/products/combos/combo-2-nang-quyen-ru.jpg",
+    "volume": "Bộ 3 món chính hãng",
+    "price": 499000,
+    "bundleItems": [
+      {
+        "name": "Kem body dưỡng trắng TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Sữa tắm dưỡng da TWON",
+        "volume": "450ml",
+        "price": 0
+      },
+      {
+        "name": "Nước hoa Mini D'VAH KAMAL (Ấm ngọt, quyến rũ)",
+        "volume": "10ml",
+        "price": 0
+      },
+      {
+        "name": "Túi quà tặng SkinID phái đẹp cao cấp",
+        "volume": "Túi quà",
+        "price": 0
+      }
+    ]
+  },
+  {
+    "id": "combo-nang-thom",
+    "brand": "TWON x D'VAH",
+    "brandSlug": "twon",
+    "name": "Combo Nàng Thơm – Ủ Trắng & Nước Hoa D'VAH Tanmaya",
+    "image": "/images/products/combos/combo-3-nang-thom.jpg",
+    "volume": "Bộ 3 món chính hãng",
+    "price": 499000,
+    "bundleItems": [
+      {
+        "name": "Kem ủ trắng thảo mộc TWON",
+        "volume": "250ml",
+        "price": 0
+      },
+      {
+        "name": "Sữa tắm dưỡng da TWON",
+        "volume": "450ml",
+        "price": 0
+      },
+      {
+        "name": "Nước hoa Mini D'VAH TANMAYA (Trầm ấm, cuốn hút)",
+        "volume": "10ml",
+        "price": 0
+      },
+      {
+        "name": "Túi quà tặng SkinID phái đẹp cao cấp",
+        "volume": "Túi quà",
+        "price": 0
+      }
+    ]
+  },
+  {
+    "id": "deal50-twon-sua-tam",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "name": "Sữa Tắm Dưỡng Da TWON 450ml (Deal 50% Like & Share)",
+    "image": "/images/products/twon-sua-tam.png",
+    "volume": "450 ml",
+    "price": 89500
+  },
+  {
+    "id": "deal50-twon-body",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "name": "Kem Body Dưỡng Trắng TWON 250ml (Deal 50% Like & Share)",
+    "image": "/images/products/twon-body-lotion.png",
+    "volume": "250 ml",
+    "price": 139500
+  },
+  {
+    "id": "deal50-twon-u-trang",
+    "brand": "TWON",
+    "brandSlug": "twon",
+    "name": "Kem Ủ Trắng Da TWON 250ml (Deal 50% Like & Share)",
+    "image": "/images/products/twon-kem-u-trang.png",
+    "volume": "250 ml",
+    "price": 124500
+  },
+  {
+    "id": "deal50-dvah-kamal",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "name": "Nước Hoa Mini 10ml D'VAH Kamal – Ấm Ngọt, Quyến Rũ (Deal 50%)",
+    "image": "/images/products/dvah-kamal.png",
+    "volume": "10 ml",
+    "price": 89500
+  },
+  {
+    "id": "deal50-dvah-malini",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "name": "Nước Hoa Mini 10ml D'VAH Malini – Hoa Sen Thuần Khiết (Deal 50%)",
+    "image": "/images/products/dvah-malini.png",
+    "volume": "10 ml",
+    "price": 89500
+  },
+  {
+    "id": "deal50-dvah-sarika",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "name": "Nước Hoa Mini 10ml D'VAH Sarika – Ngọt Sang Trọng, Tinh Tế (Deal 50%)",
+    "image": "/images/products/dvah-sarika.png",
+    "volume": "10 ml",
+    "price": 89500
+  },
+  {
+    "id": "deal50-dvah-tanmaya",
+    "brand": "DVAH",
+    "brandSlug": "dvah",
+    "name": "Nước Hoa Mini 10ml D'VAH Tanmaya – Trầm Ấm, Cuốn Hút (Deal 50%)",
+    "image": "/images/products/dvah-tanmaya.png",
+    "volume": "10 ml",
+    "price": 89500
   }
 ];

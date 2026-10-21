@@ -1,0 +1,888 @@
+/* Promotion Campaign & Combo Showcase Styles - SkinID Luxury Aesthetic */
+
+.promo-campaign-section {
+  position: relative;
+  padding: 3.5rem 1rem 4rem;
+  background: linear-gradient(180deg, #fffafb 0%, #ffffff 40%, #fff8f9 100%);
+  overflow: hidden;
+  scroll-margin-top: 5.5rem;
+}
+
+.promo-campaign-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Banner */
+.promo-header {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 3rem;
+  position: relative;
+}
+
+.promo-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #ff4d6d 0%, #c82333 100%);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.45rem 1.25rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(233, 102, 130, 0.35);
+  margin-bottom: 1.25rem;
+}
+
+.promo-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ffe6eb;
+  border-radius: 50%;
+  animation: promoPulse 1.6s infinite;
+}
+
+@keyframes promoPulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.promo-title {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #1a1518;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.75rem;
+}
+
+.promo-title-accent {
+  background: linear-gradient(135deg, #d6336c 0%, #e03131 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.promo-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: #63585e;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+}
+
+/* Timer & Voucher Box */
+.promo-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: #ffffff;
+  padding: 1rem 1.75rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 30px rgba(220, 80, 110, 0.12);
+  border: 1px solid #ffe3e8;
+  max-width: fit-content;
+  margin: 0 auto;
+}
+
+.promo-countdown-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.promo-timer-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #a8324a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.promo-timer-boxes {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.promo-timer-box {
+  background: #1a1518;
+  color: #ffffff;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.1rem;
+  font-weight: 800;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+}
+
+.promo-timer-sep {
+  font-weight: 800;
+  color: #c82333;
+}
+
+.promo-divider-vertical {
+  width: 1px;
+  height: 24px;
+  background-color: #ecd4d8;
+}
+
+.promo-voucher-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff0f3;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.6rem;
+  border: 1.5px dashed #d6336c;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.promo-voucher-chip:hover {
+  background: #ffe3e8;
+  border-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.promo-voucher-chip.is-copied {
+  background: #ebfbee;
+  border-color: #2b8a3e;
+  border-style: solid;
+}
+
+.promo-voucher-chip.is-copied .promo-voucher-text,
+.promo-voucher-chip.is-copied .promo-voucher-code {
+  color: #2b8a3e;
+}
+
+.promo-voucher-text {
+  font-size: 0.82rem;
+  color: #661026;
+  font-weight: 600;
+}
+
+.promo-voucher-code {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #c82333;
+  letter-spacing: 0.05em;
+}
+
+.promo-copy-btn {
+  background: #fff;
+  border: 1px solid #d6336c;
+  color: #d6336c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.promo-voucher-chip:hover .promo-copy-btn {
+  background: #d6336c;
+  color: #fff;
+}
+
+.promo-voucher-chip.is-copied .promo-copy-btn {
+  background: #2b8a3e;
+  border-color: #2b8a3e;
+  color: #fff;
+}
+
+/* SECTION 1: COMBO SHOWCASE (TOP PRIORITY) */
+.promo-block {
+  margin-bottom: 4.5rem;
+}
+
+.promo-block-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.promo-block-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d6336c;
+  margin-bottom: 0.4rem;
+}
+
+.promo-block-title {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: #1a1518;
+  margin-bottom: 0.4rem;
+}
+
+.promo-block-desc {
+  font-size: 1rem;
+  color: #6f656b;
+}
+
+/* Combo Grid */
+.promo-combo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+@media (max-width: 992px) {
+  .promo-combo-grid {
+    grid-template-columns: 1fr;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+}
+
+.promo-combo-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  border: 2px solid #ffedf1;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.promo-combo-card:hover {
+  transform: translateY(-6px);
+  border-color: #f783ac;
+  box-shadow: 0 20px 40px rgba(214, 51, 108, 0.14);
+}
+
+.promo-combo-card.is-featured {
+  border-color: #e64980;
+  box-shadow: 0 16px 36px rgba(230, 73, 128, 0.15);
+  background: linear-gradient(180deg, #ffffff 0%, #fffbfd 100%);
+}
+
+.promo-card-tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #e64980 0%, #c2255c 100%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 1rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(194, 37, 92, 0.3);
+}
+
+.promo-combo-visual {
+  height: 235px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #ffffff;
+  border-radius: 1.25rem;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.promo-combo-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.promo-combo-card:hover .promo-combo-hero-img {
+  transform: scale(1.06);
+}
+
+
+.promo-combo-meta {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.promo-combo-category {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #a8324a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.promo-combo-name {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a1518;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.promo-combo-subtitle {
+  font-size: 0.88rem;
+  color: #746b70;
+  line-height: 1.45;
+  margin-bottom: 1.25rem;
+}
+
+/* Product list items inside combo */
+.promo-items-list {
+  background: #fff8f9;
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid #ffe8ed;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.promo-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: #3b3236;
+  margin-bottom: 0.45rem;
+  line-height: 1.4;
+}
+
+.promo-item-row:last-child {
+  margin-bottom: 0;
+}
+
+.promo-item-check {
+  color: #2b8a3e;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.promo-item-gift {
+  color: #d6336c;
+  font-weight: 700;
+  background: #ffe3eb;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.4rem;
+  margin-top: auto;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+/* Pricing */
+.promo-price-box {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #f3e5e8;
+  margin-bottom: 1.25rem;
+}
+
+.promo-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.promo-price-main {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #c82333;
+}
+
+.promo-price-original {
+  font-size: 0.95rem;
+  color: #8c8288;
+  text-decoration: line-through;
+}
+
+.promo-savings-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #2b8a3e;
+  background: #ebfbee;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.4rem;
+  display: inline-block;
+}
+
+/* CTA Button */
+.promo-btn-cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #e64980 0%, #c2255c 100%);
+  color: #ffffff;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.85rem 1.25rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(230, 73, 128, 0.3);
+}
+
+.promo-btn-cta:hover {
+  background: linear-gradient(135deg, #d6336c 0%, #a61e4d 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(214, 51, 108, 0.4);
+}
+
+.promo-btn-cta:active {
+  transform: scale(0.98);
+}
+
+.promo-btn-cta.is-added {
+  background: linear-gradient(135deg, #2b8a3e 0%, #237032 100%);
+  box-shadow: 0 4px 15px rgba(43, 138, 62, 0.35);
+}
+
+/* SECTION 2: 50% SALE SINGLE PRODUCTS (SECOND PRIORITY) */
+.promo-singles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .promo-singles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .promo-singles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.promo-single-card {
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: 1px solid #f1dfe3;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+}
+
+.promo-single-card:hover {
+  border-color: #f783ac;
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(233, 102, 130, 0.12);
+}
+
+.promo-sale-discount-flag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #e03131;
+  color: #fff;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.25rem 0.55rem;
+  border-radius: 0.4rem;
+  box-shadow: 0 3px 8px rgba(224, 49, 49, 0.3);
+  z-index: 2;
+}
+
+.promo-single-visual {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fdf6f7;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+}
+
+.promo-single-visual img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.promo-single-card:hover .promo-single-visual img {
+  transform: scale(1.08);
+}
+
+.promo-single-brand {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #9c36b5;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.promo-single-name {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a1518;
+  line-height: 1.35;
+  margin-bottom: 0.4rem;
+  min-height: 2.7rem;
+}
+
+.promo-single-desc {
+  font-size: 0.8rem;
+  color: #746b70;
+  line-height: 1.45;
+  margin-bottom: 0.85rem;
+  min-height: 2.6rem;
+}
+
+/* Scent picker tabs for D'VAH perfume - 2x2 Clean Grid */
+.promo-scent-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+}
+
+.promo-scent-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.55rem 0.65rem;
+  min-height: 42px;
+  border-radius: 0.5rem;
+  border: 1px solid #ecd4d8;
+  background: #fff;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.promo-scent-pill:hover {
+  border-color: #d6336c;
+  background: #fffafb;
+}
+
+.promo-scent-pill.is-active {
+  background: #1a1518;
+  color: #ffd43b;
+  border-color: #1a1518;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.promo-single-prices {
+  margin-top: auto;
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+
+.promo-single-deal-price {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #c82333;
+}
+
+.promo-single-orig-price {
+  font-size: 0.85rem;
+  color: #8c8288;
+  text-decoration: line-through;
+}
+
+.promo-btn-single-cart {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: #fff0f3;
+  color: #c2255c;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.7rem 1rem;
+  border-radius: 0.65rem;
+  border: 1.5px solid #fcc2d7;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 42px;
+}
+
+.promo-btn-single-cart:hover {
+  background: linear-gradient(135deg, #e64980 0%, #c2255c 100%);
+  color: #ffffff;
+  border-color: #c2255c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(194, 37, 92, 0.25);
+}
+
+.promo-btn-single-cart:active {
+  transform: scale(0.98);
+}
+
+.promo-btn-single-cart.is-added {
+  background: #2b8a3e;
+  color: #ffffff;
+  border-color: #2b8a3e;
+  box-shadow: 0 4px 12px rgba(43, 138, 62, 0.25);
+}
+
+/* SECTION 3: RULES & SERVICE PROMISES */
+.promo-rules-card {
+  background: linear-gradient(135deg, #261f23 0%, #171114 100%);
+  color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 850px) {
+  .promo-rules-card {
+    grid-template-columns: 1fr;
+    padding: 1.75rem;
+    gap: 1.75rem;
+  }
+}
+
+.promo-rules-title {
+  font-family: var(--font-heading, "Outfit", sans-serif);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #ffd43b;
+  margin-bottom: 0.75rem;
+}
+
+.promo-rules-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.promo-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.promo-step-num {
+  width: 28px;
+  height: 28px;
+  background: #e64980;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.promo-step-text {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #e9ecef;
+}
+
+.promo-step-text strong {
+  color: #ffffff;
+}
+
+.promo-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.promo-benefit-item {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.promo-benefit-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.promo-benefit-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+}
+
+.promo-benefit-sub {
+  font-size: 0.75rem;
+  color: #ced4da;
+  line-height: 1.4;
+}
+
+/* ========================================================
+   MOBILE RESPONSIVENESS & TOUCH POLISH (< 640px)
+   ======================================================== */
+@media (max-width: 640px) {
+  .promo-campaign-section {
+    padding: 4.75rem 0.85rem 3.5rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .promo-header {
+    margin-bottom: 2rem;
+  }
+
+  .promo-badge-pill {
+    font-size: 0.74rem;
+    padding: 0.35rem 0.85rem;
+    gap: 0.4rem;
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+    max-width: 95%;
+    text-align: center;
+  }
+
+  .promo-title {
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+
+  .promo-subtitle {
+    font-size: 0.92rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .promo-action-bar {
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem 0.85rem;
+    gap: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .promo-divider-vertical {
+    display: none;
+  }
+
+  .promo-countdown-wrap {
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+  }
+
+  .promo-timer-label {
+    font-size: 0.76rem;
+  }
+
+  .promo-voucher-chip {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.45rem 0.75rem;
+  }
+
+  .promo-block {
+    margin-bottom: 3.5rem;
+  }
+
+  .promo-block-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .promo-block-title {
+    font-size: 1.55rem;
+  }
+
+  .promo-block-desc {
+    font-size: 0.9rem;
+  }
+
+  .promo-combo-card {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .promo-combo-visual {
+    height: 200px;
+  }
+
+  .promo-items-list {
+    min-height: auto;
+    padding: 0.75rem;
+  }
+
+  .promo-item-row {
+    font-size: 0.8rem;
+  }
+
+  .promo-price-main {
+    font-size: 1.5rem;
+  }
+
+  .promo-singles-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .promo-single-card {
+    padding: 1.15rem;
+  }
+
+  .promo-single-visual {
+    height: 160px;
+  }
+
+  .promo-single-desc {
+    min-height: auto;
+  }
+
+  .promo-rules-card {
+    padding: 1.5rem 1.15rem;
+    border-radius: 1.25rem;
+  }
+
+  .promo-rules-title {
+    font-size: 1.35rem;
+  }
+
+  .promo-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}

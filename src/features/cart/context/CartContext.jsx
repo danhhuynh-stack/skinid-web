@@ -2,15 +2,20 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { useAuth } from '../../auth/index.js';
 import { getProductById } from '../../catalog/index.js';
 import { loadUserCart, mergeCartItems, sanitizeCartItems, saveUserCart } from '../services/cartService.js';
+import { calculateShippingFee } from '../services/checkoutService.js';
+import { validateCoupon } from '../services/couponService.js';
 import CartToast from '../components/CartToast.jsx';
 
 const CartContext = createContext(null);
 
 const fallbackCart = Object.freeze({
   items: [], totalItems: 0, subtotal: 0, isOpen: false, isCheckoutOpen: false, isHydrated: true,
+  appliedCoupon: null, couponDiscount: 0, shippingFee: 0, effectiveShippingFee: 0, calculatedTotal: 0,
+  couponError: '',
   addToCart: async () => [], removeItem: async () => [], updateQuantity: async () => [], clearCart: async () => [],
   openCart: () => {}, closeCart: () => {}, toggleCart: () => {}, openCheckout: async () => false,
-  closeCheckout: () => {}, completeCheckout: () => {}
+  closeCheckout: () => {}, completeCheckout: () => {},
+  applyCoupon: () => ({ valid: false }), removeCoupon: () => {}
 });
 
 export function CartProvider({ children }) {
@@ -20,6 +25,9 @@ export function CartProvider({ children }) {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [cartToast, setCartToast] = useState(null);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState('');
+  
   const itemsRef = useRef([]);
   const activeUserIdRef = useRef(null);
   const isHydratedRef = useRef(false);
@@ -160,7 +168,12 @@ export function CartProvider({ children }) {
       : current.map((item) => item.productId === productId ? { ...item, quantity: nextQuantity } : item);
   }), [commit]);
 
-  const clearCart = useCallback(() => commit(() => []), [commit]);
+  const clearCart = useCallback(() => {
+    setAppliedCoupon(null);
+    setCouponError('');
+    return commit(() => []);
+  }, [commit]);
+
   const openCart = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
   const toggleCart = useCallback(() => setIsOpen((current) => !current), []);
@@ -179,9 +192,12 @@ export function CartProvider({ children }) {
     return true;
   }, [openAuthModal, user?.uid]);
   openCheckoutRef.current = openCheckout;
+
   const closeCheckout = useCallback(() => setIsCheckoutOpen(false), []);
   const completeCheckout = useCallback(() => {
     replaceItems([]);
+    setAppliedCoupon(null);
+    setCouponError('');
     setIsCheckoutOpen(false);
   }, [replaceItems]);
 
@@ -191,11 +207,56 @@ export function CartProvider({ children }) {
     return sum + (product ? Number(product.price) * item.quantity : 0);
   }, 0), [items]);
 
+  const shippingFee = useMemo(() => calculateShippingFee(subtotal, items), [subtotal, items]);
+
+  // Tự động re-validate coupon khi giỏ hàng hoặc subtotal biến động
+  useEffect(() => {
+    if (!appliedCoupon) return;
+    const res = validateCoupon(appliedCoupon.code, subtotal, shippingFee, items);
+    if (!res.valid) {
+      setAppliedCoupon(null);
+      setCouponError(res.message);
+    } else {
+      setAppliedCoupon(res);
+      setCouponError('');
+    }
+  }, [subtotal, items, shippingFee]);
+
+  const applyCoupon = useCallback((rawCode) => {
+    setCouponError('');
+    const res = validateCoupon(rawCode, subtotal, shippingFee, items);
+    if (!res.valid) {
+      setCouponError(res.message);
+      return res;
+    }
+    setAppliedCoupon(res);
+    setCouponError('');
+    return res;
+  }, [subtotal, shippingFee, items]);
+
+  const removeCoupon = useCallback(() => {
+    setAppliedCoupon(null);
+    setCouponError('');
+  }, []);
+
+  const isCouponFreeship = appliedCoupon?.type === 'shipping' || appliedCoupon?.code === 'FREESHIP';
+  const effectiveShippingFee = isCouponFreeship ? 0 : shippingFee;
+  const couponDiscount = appliedCoupon ? (isCouponFreeship ? shippingFee : appliedCoupon.discount) : 0;
+  const calculatedTotal = Math.max(0, subtotal - (isCouponFreeship ? 0 : couponDiscount)) + effectiveShippingFee;
+
   const value = useMemo(() => ({
     items, totalItems, subtotal, isOpen, isCheckoutOpen, isHydrated,
+    appliedCoupon, couponDiscount, shippingFee, effectiveShippingFee, calculatedTotal, couponError,
+    applyCoupon, removeCoupon,
     addToCart, removeItem, updateQuantity, clearCart, openCart, closeCart, toggleCart,
     openCheckout, closeCheckout, completeCheckout
-  }), [items, totalItems, subtotal, isOpen, isCheckoutOpen, isHydrated, addToCart, removeItem, updateQuantity, clearCart, openCart, closeCart, toggleCart, openCheckout, closeCheckout, completeCheckout]);
+  }), [
+    items, totalItems, subtotal, isOpen, isCheckoutOpen, isHydrated,
+    appliedCoupon, couponDiscount, shippingFee, effectiveShippingFee, calculatedTotal, couponError,
+    applyCoupon, removeCoupon,
+    addToCart, removeItem, updateQuantity, clearCart, openCart, closeCart, toggleCart,
+    openCheckout, closeCheckout, completeCheckout
+  ]);
 
   return (
     <CartContext.Provider value={value}>
