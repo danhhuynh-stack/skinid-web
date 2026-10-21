@@ -16,6 +16,7 @@ import { getProductById } from '../../catalog/index.js';
 import { assetUrl } from '../../../assets/index.js';
 import VietQrPaymentModal from './VietQrPaymentModal.jsx';
 import OrderSuccessModal from './OrderSuccessModal.jsx';
+import SearchableSelect from './SearchableSelect.jsx';
 import './CheckoutModal.css';
 
 const formatPrice = (value) => new Intl.NumberFormat('vi-VN', {
@@ -268,80 +269,82 @@ export default function CheckoutModal() {
                   </label>
                   <label>
                     <span>Tỉnh / Thành phố *</span>
-                    <select
-                      required
+                    <SearchableSelect
+                      id="checkout-province"
+                      name="provinceCode"
+                      placeholder="Chọn Tỉnh / Thành phố"
+                      searchPlaceholder="🔍 Gõ tên hoặc viết tắt (vd: HCM, Hà Nội)..."
+                      options={vietnamProvinces}
                       value={form.provinceCode}
-                      onChange={(e) => {
-                        const nextProvince = e.target.value;
+                      onChange={(nextProvince) => {
                         setForm((c) => ({ ...c, provinceCode: nextProvince, wardCode: '' }));
                       }}
-                    >
-                      <option value="">Chọn Tỉnh / Thành phố</option>
-                      {vietnamProvinces.map((p) => (
-                        <option key={p.code} value={p.code}>{p.name}</option>
-                      ))}
-                    </select>
+                      required
+                    />
                   </label>
                   <label>
                     <span>Phường / Xã *</span>
-                    <select
-                      required
+                    <SearchableSelect
+                      id="checkout-ward"
+                      name="wardCode"
+                      placeholder={isLoadingWards ? 'Đang tải phường/xã…' : (form.provinceCode ? 'Chọn Phường / Xã' : 'Chọn Tỉnh/Thành trước')}
+                      searchPlaceholder="🔍 Gõ tên phường, xã để tìm nhanh..."
+                      options={wards}
                       value={form.wardCode}
                       disabled={!form.provinceCode || isLoadingWards}
-                      onChange={update('wardCode')}
-                    >
-                      <option value="">{isLoadingWards ? 'Đang tải phường/xã…' : 'Chọn Phường / Xã'}</option>
-                      {wards.map((w) => (
-                        <option key={w.code} value={w.code}>{w.name}</option>
-                      ))}
-                    </select>
+                      isLoading={isLoadingWards}
+                      onChange={(nextWard) => {
+                        setForm((c) => ({ ...c, wardCode: nextWard }));
+                      }}
+                      required
+                    />
+                  </label>
+                  <label className="react-checkout-wide">
+                    <span>Địa chỉ chi tiết (Số nhà, tên đường…) *</span>
+                    <input required value={form.line1} onChange={update('line1')} autoComplete="street-address" placeholder="Ví dụ: 123 Lê Lợi, Phường Bến Nghé" />
+                  </label>
+                  <label className="react-checkout-wide">
+                    <span>Ghi chú đơn hàng (Tùy chọn)</span>
+                    <textarea rows={2} value={form.note} onChange={update('note')} placeholder="Lời dặn cho shipper (giờ giao hàng, chỉ dẫn…)" />
                   </label>
                 </div>
-                <label className="react-checkout-full-field">
-                  <span>Địa chỉ chi tiết (Số nhà, tên đường…) *</span>
-                  <input required value={form.line1} onChange={update('line1')} autoComplete="street-address" placeholder="Ví dụ: 123 Lê Lợi, Phường Bến Nghé" />
-                </label>
-                <label className="react-checkout-full-field">
-                  <span>Ghi chú đơn hàng (Tùy chọn)</span>
-                  <textarea rows={2} value={form.note} onChange={update('note')} placeholder="Lời dặn cho shipper (giờ giao hàng, chỉ dẫn…)" />
-                </label>
               </section>
 
-              <fieldset className="react-checkout-payment-section">
+              <fieldset className="react-checkout-payment">
                 <legend className="react-checkout-section-title">
                   <span>2</span> Phương thức thanh toán
                 </legend>
                 <div className="react-checkout-payment-options">
-                  <label className={`react-checkout-payment-option ${paymentMethod === 'cod' ? 'active' : ''}`}>
+                  <label className={`react-checkout-payment-option ${paymentMethod === 'cod' ? 'is-selected' : ''}`}>
                     <input
                       type="radio"
-                      name="paymentMethod"
+                      name="payment-method"
                       value="cod"
                       checked={paymentMethod === 'cod'}
                       onChange={() => setPaymentMethod('cod')}
                     />
                     <div className="react-checkout-payment-icon">💵</div>
-                    <div className="react-checkout-payment-info">
-                      <strong>Thanh toán khi nhận hàng (COD)</strong>
+                    <span>
+                      <b>Thanh toán khi nhận hàng (COD)</b>
                       <small>Thanh toán tiền mặt cho shipper khi nhận và kiểm tra hàng.</small>
-                    </div>
+                    </span>
                   </label>
 
-                  <label className={`react-checkout-payment-option ${paymentMethod === 'vietqr' ? 'active' : ''}`}>
+                  <label className={`react-checkout-payment-option ${paymentMethod === 'bank_transfer' ? 'is-selected' : ''}`}>
                     <input
                       type="radio"
-                      name="paymentMethod"
-                      value="vietqr"
-                      checked={paymentMethod === 'vietqr'}
-                      onChange={() => setPaymentMethod('vietqr')}
+                      name="payment-method"
+                      value="bank_transfer"
+                      checked={paymentMethod === 'bank_transfer'}
+                      onChange={() => setPaymentMethod('bank_transfer')}
                     />
                     <div className="react-checkout-payment-icon">📱</div>
-                    <div className="react-checkout-payment-info">
-                      <strong>Chuyển khoản VietQR tức thì</strong>
-                      <small>Quét mã QR qua app ngân hàng hoặc MoMo. Tự động xác nhận.</small>
-                    </div>
-                    <span className="react-checkout-badge-fast">
-                      Khuyên dùng
+                    <span>
+                      <b>
+                        Chuyển khoản ngân hàng (VietQR)
+                        <span className="react-checkout-payment-badge">Khuyên dùng</span>
+                      </b>
+                      <small>Quét mã VietQR bằng app ngân hàng hoặc MoMo. Tự động xác nhận.</small>
                     </span>
                   </label>
                 </div>

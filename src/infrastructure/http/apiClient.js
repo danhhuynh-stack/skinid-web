@@ -12,6 +12,15 @@ function createApiError(payload, status) {
 }
 
 export async function apiRequest(path, options = {}) {
+  // Ensure Firebase Auth persistence is resolved before checking currentUser
+  if (auth.authStateReady && typeof auth.authStateReady === 'function') {
+    try {
+      await auth.authStateReady();
+    } catch {
+      // ignore initialization failures
+    }
+  }
+
   const user = auth.currentUser;
   if (!user) {
     const error = new Error('Vui lòng đăng nhập trước khi tiếp tục.');
@@ -19,7 +28,7 @@ export async function apiRequest(path, options = {}) {
     throw error;
   }
 
-  const token = await user.getIdToken();
+  let token = await user.getIdToken();
   const timeoutMs = Number(options.timeoutMs) || (path.includes('analyze') ? 60000 : 30000);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -34,7 +43,7 @@ export async function apiRequest(path, options = {}) {
     let lastError = null;
     for (const baseUrl of baseUrls) {
       try {
-        const response = await fetch(`${baseUrl}${path}`, {
+        let response = await fetch(`${baseUrl}${path}`, {
           ...fetchOptions,
           signal: controller.signal,
           headers: {
@@ -43,6 +52,26 @@ export async function apiRequest(path, options = {}) {
             ...(headers || {})
           }
         });
+
+        // Auto force-refresh token and retry on 401 (token expired / stale clock)
+        if (response.status === 401 && !options._retried) {
+          try {
+            console.warn('[SkinID API] 401 unauthorized detected, forcing token refresh and retrying...');
+            token = await user.getIdToken(true);
+            response = await fetch(`${baseUrl}${path}`, {
+              ...fetchOptions,
+              signal: controller.signal,
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                ...(headers || {})
+              }
+            });
+          } catch (refreshErr) {
+            console.error('[SkinID API] Token force refresh failed:', refreshErr);
+          }
+        }
+
         const payload = await response.json().catch(() => ({}));
         if (response.ok) return payload;
         if (response.status === 404 && baseUrls.indexOf(baseUrl) < baseUrls.length - 1) {
