@@ -5,7 +5,7 @@ import { applicationDefault, cert, getApps, initializeApp } from 'firebase-admin
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 
 const projectRoot = resolve(import.meta.dirname, '..');
-const projectId = 'skinid-df273';
+const projectId = 'skinid-official';
 const commit = process.argv.includes('--commit');
 
 async function readDotEnv() {

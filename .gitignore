@@ -28,3 +28,8 @@ generate_acie_video.js
 local_preview_server.js
 scrape_rilastil.js
 khang_worker_download/
+
+admin_*.png
+admin_shot.png
+scripts/capture_admin.mjs
+

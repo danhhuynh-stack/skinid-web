@@ -1,22 +1,26 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../auth/index.js';
 import { fetchAdminDashboard } from '../services/adminService.js';
 
 const emptyDashboard = { users: [], orders: [], products: [] };
 
 export function useAdmin() {
-  const { user, isAdmin, isLoading: authLoading } = useAuth();
+  const { user, role, isSuperAdmin, isAdmin, isStaff, isLoading: authLoading } = useAuth();
   const [dashboard, setDashboard] = useState(emptyDashboard);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const hasLoadedOnce = useRef(false);
 
   const refresh = useCallback(async () => {
-    if (!isAdmin) return emptyDashboard;
-    setLoading(true);
+    if (!isAdmin && !isStaff) return emptyDashboard;
+    if (!hasLoadedOnce.current) {
+      setLoading(true);
+    }
     setError('');
     try {
       const result = await fetchAdminDashboard();
       setDashboard(result);
+      hasLoadedOnce.current = true;
       return result;
     } catch (requestError) {
       setError(requestError.message || 'Không thể tải dữ liệu quản trị.');
@@ -24,17 +28,18 @@ export function useAdmin() {
     } finally {
       setLoading(false);
     }
-  }, [isAdmin]);
+  }, [isAdmin, isStaff]);
 
   useEffect(() => {
     if (authLoading) return;
-    if (!isAdmin) {
+    if (!isAdmin && !isStaff) {
       setLoading(false);
       setDashboard(emptyDashboard);
       return;
     }
     refresh().catch(() => undefined);
-  }, [authLoading, isAdmin, refresh]);
+  }, [authLoading, isAdmin, isStaff, refresh]);
 
-  return { user, isAdmin, authLoading, ...dashboard, loading, error, refresh };
+  return { user, role, isSuperAdmin, isAdmin, isStaff, authLoading, ...dashboard, loading, error, refresh };
 }
+

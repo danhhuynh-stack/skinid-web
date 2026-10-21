@@ -125,11 +125,48 @@ export function AuthProvider({ children }) {
   }, [session.user?.uid]);
 
   const isAuthenticated = Boolean(session.user?.uid);
-  const isAdmin = Boolean(session.user?.isAdmin || session.user?.customClaims?.admin);
+  const userEmail = session.user?.email ? String(session.user.email).toLowerCase() : '';
+  let overriddenRole = null;
+  try {
+    if (typeof window !== 'undefined' && window.localStorage && session.user) {
+      const rawOverrides = window.localStorage.getItem('skinid_admin_users_override');
+      if (rawOverrides) {
+        const parsed = JSON.parse(rawOverrides);
+        if (session.user.uid && parsed?.[session.user.uid]?.role && !parsed[session.user.uid].deleted) {
+          overriddenRole = parsed[session.user.uid].role;
+        } else if (userEmail) {
+          const matched = Object.values(parsed || {}).find(
+            (item) => item && !item.deleted && String(item.email || '').trim().toLowerCase() === userEmail
+          );
+          if (matched?.role) overriddenRole = matched.role;
+        }
+      }
+    }
+  } catch {}
+  const rawRole = overriddenRole || session.user?.role;
+  const isSuperAdmin = Boolean(
+    userEmail === 'danh.huynh@fieldman.vn' ||
+    rawRole === 'super_admin'
+  );
+  const isAdmin = Boolean(
+    isSuperAdmin ||
+    rawRole === 'admin' ||
+    session.user?.isAdmin ||
+    session.user?.customClaims?.admin
+  );
+  const isStaff = Boolean(
+    isAdmin ||
+    rawRole === 'staff'
+  );
+  const role = isSuperAdmin ? 'super_admin' : isAdmin ? 'admin' : isStaff ? 'staff' : 'customer';
+
   const value = useMemo(() => ({
     ...session,
     isAuthenticated,
+    role,
+    isSuperAdmin,
     isAdmin,
+    isStaff,
     isLoading,
     loginWithEmail,
     registerWithEmail,
@@ -141,7 +178,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     clearHistory,
     refreshSession
-  }), [session, isAuthenticated, isAdmin, isLoading, loginWithEmail, registerWithEmail, loginWithGoogle, logout, openAuthModal, closeAuthModal, updateProfile, resetPassword, clearHistory, refreshSession]);
+  }), [session, isAuthenticated, role, isSuperAdmin, isAdmin, isStaff, isLoading, loginWithEmail, registerWithEmail, loginWithGoogle, logout, openAuthModal, closeAuthModal, updateProfile, resetPassword, clearHistory, refreshSession]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
@@ -152,7 +189,10 @@ export function useAuth() {
   return {
     ...emptySession,
     isAuthenticated: false,
+    role: 'customer',
+    isSuperAdmin: false,
     isAdmin: false,
+    isStaff: false,
     isLoading: false,
     loginWithEmail: async () => ({ success: false }),
     registerWithEmail: async () => ({ success: false }),

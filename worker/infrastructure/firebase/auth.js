@@ -4,7 +4,7 @@ import { ApiError } from '../../app/errors.js';
 const jwksByProject = new Map();
 
 export async function authenticate(request, env) {
-  const projectId = env.FIREBASE_PROJECT_ID || 'skinid-df273';
+  const projectId = env.FIREBASE_PROJECT_ID || 'skinid-official';
   const token = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1];
   if (!token) {
     throw new ApiError(401, 'unauthenticated', 'Bạn cần đăng nhập trước khi thực hiện thao tác này.');

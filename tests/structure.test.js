@@ -101,8 +101,8 @@ const skinAnalysisService = read('src/features/skin-analysis/services/skinAnalys
 assert.match(skinAnalysisService, /apiRequest\('\/analyze-skin'/);
 assert.doesNotMatch(app, /analysisEndpoint|netlify/i);
 const runtimeConfig = read('src/shared/config/runtime.js');
-assert.match(runtimeConfig, /projectId: 'skinid-df273'/);
-assert.match(runtimeConfig, /measurementId: 'G-425CLMQ7YP'/);
+assert.match(runtimeConfig, /projectId: 'skinid-official'/);
+assert.match(runtimeConfig, /measurementId: 'G-Q5KZ61ESN8'/);
 assert(!runtimeConfig.includes('geminiApiKey'));
 assert.doesNotMatch(runtimeConfig, /netlify|analysisEndpoint/i);
 assert(!fs.existsSync(path.join(root, 'src/js/app/runtime-config.js')));

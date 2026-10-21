@@ -8,6 +8,7 @@ import HelpSection from '../components/home/HelpSection.jsx';
 import HeroBanner from '../components/home/HeroBanner.jsx';
 import PromotionCampaignSection from '../components/home/PromotionCampaignSection.jsx';
 import FeaturedProducts from '../components/home/FeaturedProducts.jsx';
+import HomeBlogTeaser from '../components/home/HomeBlogTeaser.jsx';
 import TrustBenefits from '../components/home/TrustBenefits.jsx';
 import Footer from '../components/layout/Footer.jsx';
 import Header from '../components/layout/Header.jsx';
@@ -69,6 +70,7 @@ export default function HomePage() {
         <HelpSection />
         <BrandShowcase />
         <AcieTeaser />
+        <HomeBlogTeaser />
         <TrustBenefits />
       </main>
       <Footer />

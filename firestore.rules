@@ -2,19 +2,46 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSuperAdmin() {
+      return request.auth != null && (
+        request.auth.token.admin == true ||
+        request.auth.token.email in ['admin@skinid.vn', 'admin@fieldman.vn', 'danh.huynh@fieldman.vn']
+      );
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['super_admin', 'admin']
+      );
+    }
+
+    function isStaff() {
+      return isAdmin() || (
+        request.auth != null &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['super_admin', 'admin', 'staff']
+      );
+    }
+
     match /products/{productId} {
       allow read: if true;
-      allow write: if request.auth != null && request.auth.token.admin == true;
+      allow write: if isAdmin();
     }
 
     match /users/{userId} {
-      allow read: if request.auth != null && (request.auth.uid == userId || request.auth.token.admin == true);
-      allow create: if request.auth != null && request.auth.uid == userId && !request.resource.data.keys().hasAny(['role']);
+      allow read: if request.auth != null && (request.auth.uid == userId || isStaff());
+      allow create: if request.auth != null && (
+        isSuperAdmin() ||
+        (request.auth.uid == userId && !request.resource.data.keys().hasAny(['role']))
+      );
       allow update: if request.auth != null && (
-        request.auth.token.admin == true ||
+        isSuperAdmin() ||
+        (isAdmin() && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role'])) ||
         (request.auth.uid == userId && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
       );
-      allow delete: if request.auth != null && request.auth.token.admin == true;
+      allow delete: if isSuperAdmin();
 
       match /skinReports/{reportId} {
         allow read, create, delete: if request.auth != null && request.auth.uid == userId;
@@ -35,6 +62,7 @@ service cloud.firestore {
 
       match /activities/{activityId} {
         allow read: if request.auth != null && request.auth.uid == userId;
+        allow create: if false;
         allow write: if false;
       }
 
@@ -44,19 +72,21 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
-      // Orders are created by the createOrder callable function so totals and
-      // product prices are always recalculated on the trusted server.
-      allow create: if false;
+      // Allow customer to create their own order directly from storefront or staff/admin
+      allow create: if request.auth != null && (
+        request.resource.data.userId == request.auth.uid ||
+        isStaff()
+      );
       allow read: if request.auth != null
-        && (resource.data.userId == request.auth.uid || request.auth.token.admin == true);
+        && (resource.data.userId == request.auth.uid || isStaff());
       allow update: if request.auth != null && (
-        request.auth.token.admin == true ||
+        isAdmin() ||
         (resource.data.userId == request.auth.uid
           && resource.data.status in ['pending', 'confirmed']
           && request.resource.data.status == 'cancelled'
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt']))
       );
-      allow delete: if request.auth != null && request.auth.token.admin == true;
+      allow delete: if isSuperAdmin();
     }
 
     match /{document=**} {

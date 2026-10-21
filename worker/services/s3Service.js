@@ -26,7 +26,7 @@ export async function getOrRefreshToken(config, fetchFn = fetch) {
     return cachedToken;
   }
 
-  const baseUrl = (config.baseUrl || 'https://m.present.es3.vn').replace(/\/+$/, '');
+  const baseUrl = (config.baseUrl || 'https://m.es3.vn').replace(/\/+$/, '');
   const loginUrl = `${baseUrl}/Vision/Accounts/Login/v3`;
 
   const response = await fetchFn(loginUrl, {
@@ -62,9 +62,9 @@ export async function getOrRefreshToken(config, fetchFn = fetch) {
  * Create or sync customer on S3 POS
  * Endpoint: POST /Vision/Customers/Search & POST /Vision/Customers
  */
-export async function syncCustomerToS3({ customer, token, config, fetchFn = fetch }) {
+export async function syncCustomerToS3({ customer, token, config = {}, fetchFn = fetch }) {
   const phone = String(customer?.phone || '').trim();
-  const baseUrl = (config.baseUrl || 'https://m.present.es3.vn').replace(/\/+$/, '');
+  const baseUrl = (config?.baseUrl || 'https://m.es3.vn').replace(/\/+$/, '');
 
   // 1. Search existing customer by phone if available
   if (phone) {
@@ -148,21 +148,25 @@ export async function syncCustomerToS3({ customer, token, config, fetchFn = fetc
 export function mapOrderToS3Payload(order, config, customerId = 0) {
   const isBankTransfer = order.paymentMethod === 'bank_transfer';
   const orderId = String(order.id || order.orderId || '').trim();
-  const branchId = Number(config.branchId || 9147);
-  const cashierId = Number(config.cashierId || 16668);
+  const branchId = Number(config.branchId || 9099);
+  const cashierId = Number(config.cashierId || 16614);
 
   const preOrderItems = (order.items || []).map((item, index) => {
     const unitPrice = Number(item.price || item.unitPrice || 0);
     const quantity = Number(item.quantity || 1);
     const productId = Number(item.s3ProductId || item.skuNumber || (index + 1));
-    const productName = String(item.name || item.productName || 'Sản phẩm SkinID').slice(0, 200);
+    const code = String(item.productCode || item.sku || '').trim();
+    const rawName = String(item.name || item.productName || 'Sản phẩm SkinID').trim();
+    const productName = code && !rawName.includes(code)
+      ? `[${code}] ${rawName}`.slice(0, 200)
+      : rawName.slice(0, 200);
 
     return {
       YS_ProductID: productId,
       QuantitySold: quantity,
       PriceSold: unitPrice,
       Discount: "0",
-      Attributes: "",
+      Attributes: code ? `SKU: ${code}` : "",
       AttributeKey: "",
       ReferenceCode: 0,
       UnitCost: unitPrice,

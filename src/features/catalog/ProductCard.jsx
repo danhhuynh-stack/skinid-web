@@ -52,14 +52,42 @@ export default function ProductCard({ product, onOpen }) {
       <div className="product-card__media">
         {imageFailed
           ? <div className="w-full h-full missing-image-placeholder text-center px-4 flex items-center justify-center text-xs text-gray-400 font-semibold">{product.brand}</div>
-          : <img src={image} alt={product.name} loading="lazy" decoding="async" onError={handleImageError} className="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 ease-in-out" />}
+          : (
+            <a
+              href={`/products?detail=${product.id}`}
+              className="block w-full h-full"
+              tabIndex={-1}
+              aria-hidden="true"
+              onClick={(event) => {
+                if (!event.ctrlKey && !event.metaKey && !event.shiftKey) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  onOpen(product.id);
+                }
+              }}
+            >
+              <img src={image} alt={product.name} loading="lazy" decoding="async" onError={handleImageError} className="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 ease-in-out" />
+            </a>
+          )}
       </div>
       <div className="product-card__content">
         <div className="product-card__actives">{medicalLine}</div>
         <div className="flex-grow">
           <div className="product-card__title-row">
             <h2 className="product-card__name">
-              <button type="button" className="product-card__title-link" onClick={(event) => { event.stopPropagation(); onOpen(product.id); }}>{displayName}</button>
+              <a
+                href={`/products?detail=${product.id}`}
+                className="product-card__title-link"
+                onClick={(event) => {
+                  if (!event.ctrlKey && !event.metaKey && !event.shiftKey) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    onOpen(product.id);
+                  }
+                }}
+              >
+                {displayName}
+              </a>
             </h2>
           </div>
           <p className="product-card__benefit">{productBenefit(product)}</p>

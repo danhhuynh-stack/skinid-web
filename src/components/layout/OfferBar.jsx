@@ -74,9 +74,7 @@ export default function OfferBar({ revealOnUpScroll = false }) {
 
   return (
     <div className={`offer-bar ${revealOnUpScroll ? 'offer-bar--scroll' : ''} ${isVisible ? 'is-visible' : ''}`.trim()} aria-hidden={revealOnUpScroll && !isVisible}>
-      <a href="#khuyen-mai" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-        <strong>🔥 SĂN DEAL GIẢM 50% &amp; COMBO QUÀ TẶNG PHÁI ĐẸP</strong> <span>·</span> 100% Chính hãng TWON &amp; D'VAH <span>·</span> Hotline 0924.093.461 <span style={{ textDecoration: 'underline', marginLeft: '4px' }}>Xem ngay →</span>
-      </a>
+      <a href="#khuyen-mai" className="offer-bar__promo-link font-bold hover:underline inline-flex items-center gap-1" style={{ color: 'inherit' }}>🔥 ƯU ĐÃI FLASH SALE 50% &amp; COMBO ĐẶC QUYỀN</a> <span>·</span> 100% Chính hãng TWON &amp; D'VAH <span>·</span> Hotline 0924.093.461
     </div>
   );
 }
