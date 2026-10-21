@@ -133,6 +133,7 @@ export default function AdminSidebar({
                   return (
                     <button
                       key={item.id}
+                      data-tab={item.id}
                       type="button"
                       onClick={() => {
                         onSelectTab(targetId);

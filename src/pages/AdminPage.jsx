@@ -8,12 +8,14 @@ import {
   deleteUserAccount,
   fetchAdminBlogPosts,
   fetchAdminPromotions,
+  fetchSystemSettings,
   resyncAdminOrderToS3,
   saveAdminBlogPost,
   saveAdminCampaign,
   saveAdminProduct,
   saveAdminUser,
   saveAdminVoucher,
+  saveSystemSettings,
   syncAllPendingOrdersToS3,
   updateAdminOrder,
   updateUserRole,
@@ -1764,7 +1766,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     let mounted = true;
-    Promise.allSettled([fetchAdminPromotions(), fetchAdminBlogPosts()]).then(([promoRes, blogRes]) => {
+    Promise.allSettled([fetchAdminPromotions(), fetchAdminBlogPosts(), fetchSystemSettings()]).then(([promoRes, blogRes, settingsRes]) => {
       if (!mounted) return;
       if (promoRes.status === 'fulfilled' && promoRes.value) {
         if (promoRes.value.vouchers?.length) setVouchers(promoRes.value.vouchers);
@@ -1773,6 +1775,10 @@ export default function AdminPage() {
       if (blogRes.status === 'fulfilled' && blogRes.value?.length) {
         setBlogPosts(blogRes.value);
         try { localStorage.setItem('skinid_admin_blog_posts', JSON.stringify(blogRes.value)); } catch {}
+      }
+      if (settingsRes.status === 'fulfilled' && settingsRes.value) {
+        setSystemSettings(settingsRes.value);
+        try { localStorage.setItem('skinid_system_settings', JSON.stringify(settingsRes.value)); } catch {}
       }
     });
 
@@ -1794,6 +1800,7 @@ export default function AdminPage() {
   const [teamRoleFilter, setTeamRoleFilter] = useState('all');
   const [userSearch, setUserSearch] = useState('');
   const [productSearch, setProductSearch] = useState('');
+  const [productCategoryFilter, setProductCategoryFilter] = useState('Tất cả');
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     try {
@@ -1992,12 +1999,26 @@ export default function AdminPage() {
         s3OrderId: 'HD-9099-16614-01',
         createdAt: { seconds: Math.floor(Date.now() / 1000) - 1800 },
         customer: { name: 'Nguyễn Thị Bích Trâm', phone: '0912 345 678', address: '124 Nguyễn Huệ, Q.1, TP.HCM' },
-        total: 890000,
+        note: 'Giao giờ hành chính, gọi trước 15 phút giúp mình nhé!',
+        total: 529000,
         paymentMethod: 'vietqr',
         paymentStatus: 'paid',
         status: 'shipping',
         s3SyncStatus: 'synced',
-        items: [{ name: 'Serum HA B5 Rilastil 30ml', quantity: 1, price: 890000 }]
+        items: [
+          {
+            name: 'Combo Nàng Xinh (Dưỡng trắng toàn diện)',
+            quantity: 1,
+            price: 529000,
+            isCombo: true,
+            bundleItems: [
+              { name: 'Sữa tắm dưỡng da TWON 450ml', quantity: 1 },
+              { name: 'Kem body dưỡng trắng TWON 250ml', quantity: 1 },
+              { name: 'Kem ủ trắng thảo mộc TWON 250ml', quantity: 1 },
+              { name: 'Túi quà thời trang SkinID thắt nơ lụa', quantity: 1 }
+            ]
+          }
+        ]
       },
       {
         id: 'ORD-2026-9802',
@@ -2135,16 +2156,36 @@ export default function AdminPage() {
     let sourceProducts = products;
     if (isDevPreview && (!sourceProducts || sourceProducts.length === 0)) {
       sourceProducts = [
-        { id: 'SP-RIL-001', name: 'Serum HA B5 Cấp Ẩm Phục Hồi 30ml', brand: 'Rilastil', price: 890000, category: 'Tinh chất (Serum)' },
-        { id: 'SP-RIL-002', name: 'Kem Dưỡng Ẩm Chuyên Sâu 72H 50ml', brand: 'Rilastil', price: 650000, category: 'Chăm sóc da' },
-        { id: 'SP-RIL-003', name: 'Kem Chống Nắng Phổ Rộng SPF50+ 50ml', brand: 'Rilastil', price: 720000, category: 'Chống nắng' },
-        { id: 'SP-SKIN-004', name: 'Gel Rửa Mặt Dịu Nhẹ pH 5.5 150ml', brand: 'SkinID Lab', price: 350000, category: 'Làm sạch' }
+        { id: 'SP-RIL-001', name: 'Serum HA B5 Cấp Ẩm Phục Hồi 30ml', brand: 'Rilastil', price: 890000, category: 'Tinh chất (Serum)', stock: 45 },
+        { id: 'SP-RIL-002', name: 'Kem Dưỡng Ẩm Chuyên Sâu 72H 50ml', brand: 'Rilastil', price: 650000, category: 'Chăm sóc da', stock: 12 },
+        { id: 'SP-RIL-003', name: 'Kem Chống Nắng Phổ Rộng SPF50+ 50ml', brand: 'Rilastil', price: 720000, category: 'Chống nắng', stock: 68 },
+        { id: 'SP-SKIN-004', name: 'Gel Rửa Mặt Dịu Nhẹ pH 5.5 150ml', brand: 'SkinID Lab', price: 350000, category: 'Làm sạch', stock: 85 }
       ];
     }
-    if (!productSearch.trim()) return sourceProducts;
+    let list = sourceProducts || [];
+    if (productCategoryFilter && productCategoryFilter !== 'Tất cả') {
+      const target = productCategoryFilter.toLowerCase();
+      list = list.filter((p) => {
+        const cat = (p.category || '').toLowerCase();
+        if (target.includes('tinh chất') || target.includes('serum')) {
+          return cat.includes('serum') || cat.includes('tinh chất');
+        }
+        if (target.includes('chống nắng')) {
+          return cat.includes('chống nắng') || cat.includes('sun');
+        }
+        if (target.includes('làm sạch')) {
+          return cat.includes('làm sạch') || cat.includes('rửa mặt') || cat.includes('cleanser');
+        }
+        if (target.includes('chăm sóc')) {
+          return cat.includes('chăm sóc') || cat.includes('dưỡng') || cat.includes('cream');
+        }
+        return cat.includes(target);
+      });
+    }
+    if (!productSearch.trim()) return list;
     const q = productSearch.toLowerCase();
-    return sourceProducts.filter((p) => (p.name || '').toLowerCase().includes(q) || (p.brand || '').toLowerCase().includes(q) || (p.id || '').toLowerCase().includes(q));
-  }, [products, productSearch, isDevPreview]);
+    return list.filter((p) => (p.name || '').toLowerCase().includes(q) || (p.brand || '').toLowerCase().includes(q) || (p.id || '').toLowerCase().includes(q));
+  }, [products, productSearch, productCategoryFilter, isDevPreview]);
 
   // Xử lý Batch Sync S3
   const handleBatchSyncS3 = async () => {
@@ -2303,12 +2344,8 @@ export default function AdminPage() {
     setSettingsSaving(true);
     try {
       localStorage.setItem('skinid_system_settings', JSON.stringify(systemSettings));
-      try {
-        await saveAdminCampaign({ ...campaign, systemSettings });
-      } catch (err) {
-        // non-blocking
-      }
-      setFlash('Đã lưu cấu hình cài đặt hệ thống SkinID thành công!');
+      await saveSystemSettings(systemSettings);
+      setFlash('Đã lưu cấu hình cài đặt hệ thống SkinID thành công lên máy chủ!');
     } catch (err) {
       setActionError('Không thể lưu cấu hình hệ thống: ' + err.message);
     } finally {
@@ -2884,18 +2921,43 @@ export default function AdminPage() {
                             <strong className="text-slate-900 block font-semibold truncate">{order.customer?.name || 'Khách vãng lai'}</strong>
                             <a href={`tel:${order.customer?.phone}`} className="text-slate-500 hover:text-slate-900 text-[11px] block font-mono mt-0.5 truncate">{order.customer?.phone}</a>
                             <span className="text-[11px] text-slate-400 truncate block mt-0.5" title={order.customer?.address}>{order.customer?.address}</span>
+                            {order.note && (
+                              <div className="mt-1.5 px-2 py-1 bg-amber-50/90 border border-amber-200/70 rounded-md text-[10px] text-amber-900 flex items-start gap-1 max-w-[220px]">
+                                <span className="font-bold text-amber-800 flex-shrink-0">💬 Lời dặn:</span>
+                                <span className="truncate italic" title={order.note}>{order.note}</span>
+                              </div>
+                            )}
                           </td>
                           <td className="py-3.5 px-3">
                             {order.items && order.items.length > 0 ? (
-                              <div className="space-y-1.5">
+                              <div className="space-y-2">
                                 {order.items.map((item, idx) => (
-                                  <div key={idx} className="text-[11px] text-slate-800 flex items-center gap-1.5">
-                                    <span className="font-bold text-[#BD3F5B] bg-rose-50 border border-rose-100 px-1.5 py-0.2 rounded-md text-[10px] flex-shrink-0">
-                                      {item.quantity || 1}×
-                                    </span>
-                                    <span className="truncate font-medium text-slate-800" title={item.name || item.title || item.sku}>
-                                      {item.name || item.title || item.sku || 'Sản phẩm SkinID'}
-                                    </span>
+                                  <div key={idx} className="space-y-0.5">
+                                    <div className="text-[11px] text-slate-800 flex items-center justify-between gap-1.5">
+                                      <div className="flex items-center gap-1.5 truncate">
+                                        <span className="font-bold text-[#BD3F5B] bg-rose-50 border border-rose-100 px-1.5 py-0.2 rounded-md text-[10px] flex-shrink-0">
+                                          {item.quantity || 1}×
+                                        </span>
+                                        <span className="truncate font-medium text-slate-800" title={item.name || item.title || item.sku}>
+                                          {item.name || item.title || item.sku || 'Sản phẩm SkinID'}
+                                        </span>
+                                      </div>
+                                      {(item.isCombo || item.id?.includes('combo')) && (
+                                        <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-pink-100 text-pink-700 uppercase tracking-wider flex-shrink-0">
+                                          Combo
+                                        </span>
+                                      )}
+                                    </div>
+                                    {Array.isArray(item.bundleItems) && item.bundleItems.length > 0 && (
+                                      <div className="ml-3 pl-2 border-l-2 border-rose-200 space-y-0.5">
+                                        {item.bundleItems.map((gift, gIdx) => (
+                                          <div key={gIdx} className="text-[10px] text-slate-500 flex items-center justify-between">
+                                            <span className="truncate">↳ {gift.quantity || 1}× {gift.name}</span>
+                                            <span className="text-emerald-600 font-semibold text-[9px] flex-shrink-0">0₫ (Quà)</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
                                   </div>
                                 ))}
                               </div>
@@ -2904,8 +2966,8 @@ export default function AdminPage() {
                                 <span className="font-bold text-[#BD3F5B] bg-rose-50 border border-rose-100 px-1.5 py-0.2 rounded-md text-[10px] flex-shrink-0">
                                   1×
                                 </span>
-                                <span className="truncate font-medium text-slate-700" title={order.note || 'Combo chăm sóc da tiêu chuẩn'}>
-                                  {order.note ? `Đơn hàng (${order.note})` : 'Combo chăm sóc da tiêu chuẩn'}
+                                <span className="truncate font-medium text-slate-700">
+                                  {order.note ? `Đơn dịch vụ (${order.note})` : 'Đơn hàng tiêu chuẩn SkinID'}
                                 </span>
                               </div>
                             )}
@@ -3052,6 +3114,100 @@ export default function AdminPage() {
                   </button>
                 </div>
               </form>
+            </div>
+
+            {/* Box 1.5: Các Chiến Dịch Khuyến Mãi & Combo Quà Tặng (Active Deals) */}
+            <div className="card-luxury p-5 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                <div>
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-500">Chiến dịch trọng điểm</span>
+                  <h3 className="font-bold text-sm text-slate-900 tracking-tight">3 Gói Combo Tri Ân & Flash Sale 50% Đang Áp Dụng</h3>
+                  <p className="text-xs text-slate-500 mt-0.5">Tự động kích hoạt trên Storefront và giỏ hàng của khách hàng.</p>
+                </div>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/80 flex items-center gap-1.5 w-fit">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Đang hoạt động trên Storefront</span>
+                </span>
+              </div>
+
+              {/* Grid 3 Combo */}
+              <div>
+                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
+                  1. Các Gói Combo Chăm Sóc Toàn Diện (Tặng kèm quà)
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+                  {[
+                    {
+                      name: 'Combo Nàng Xinh',
+                      tag: 'Best Seller · Giảm 25%',
+                      price: 529000,
+                      originalPrice: 707000,
+                      gifts: 'Sữa tắm 450ml + Kem body 250ml + Kem ủ 250ml + Túi quà SkinID',
+                      color: 'rose'
+                    },
+                    {
+                      name: 'Combo Nàng Quyến Rũ',
+                      tag: 'Hot Trend · Giảm 22%',
+                      price: 499000,
+                      originalPrice: 637000,
+                      gifts: 'Sữa tắm 450ml + Kem body 250ml + Nước hoa Mini Kamal 10ml + Túi quà',
+                      color: 'pink'
+                    },
+                    {
+                      name: 'Combo Nàng Thơm',
+                      tag: 'Yêu Thích · Giảm 18%',
+                      price: 499000,
+                      originalPrice: 607000,
+                      gifts: 'Kem ủ 250ml + Sữa tắm 450ml + Nước hoa Mini Tanmaya 10ml + Túi quà',
+                      color: 'amber'
+                    }
+                  ].map((c) => (
+                    <div key={c.name} className="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:border-rose-300 transition-all duration-200 shadow-2xs space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-bold text-xs text-slate-900">{c.name}</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
+                          {c.tag}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline gap-2">
+                        <span className="font-bold font-mono text-sm text-[#BD3F5B]">{money(c.price)}</span>
+                        <span className="text-xs font-mono text-slate-400 line-through">{money(c.originalPrice)}</span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 line-clamp-2">
+                        <span className="font-semibold text-slate-700">Bao gồm:</span> {c.gifts}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grid 4 Flash Sale Deals */}
+              <div className="pt-2 border-t border-slate-100">
+                <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5">
+                  2. Flash Sale Giảm 50% (Đồng hồ đếm ngược Live)
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {[
+                    { name: 'Sữa tắm trắng da TWON 450ml', salePrice: 89500, originalPrice: 179000, discount: '-50%' },
+                    { name: 'Kem body dưỡng trắng TWON 250ml', salePrice: 139500, originalPrice: 279000, discount: '-50%' },
+                    { name: "Nước hoa Kamal D'VAH 10ml", salePrice: 89500, originalPrice: 179000, discount: '-50%' },
+                    { name: "Nước hoa Tanmaya D'VAH 10ml", salePrice: 89500, originalPrice: 179000, discount: '-50%' },
+                  ].map((deal) => (
+                    <div key={deal.name} className="p-3 rounded-xl border border-slate-200/80 bg-white shadow-2xs flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="text-xs font-semibold text-slate-800 truncate" title={deal.name}>{deal.name}</div>
+                        <div className="flex items-baseline gap-1.5 mt-0.5">
+                          <span className="font-bold font-mono text-xs text-[#BD3F5B]">{money(deal.salePrice)}</span>
+                          <span className="text-[10px] font-mono text-slate-400 line-through">{money(deal.originalPrice)}</span>
+                        </div>
+                      </div>
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-red-100 text-red-600 flex-shrink-0">
+                        {deal.discount}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Box 2: Danh sách Vouchers / Mã Giảm Giá */}
@@ -3887,11 +4043,12 @@ export default function AdminPage() {
           <div className="space-y-4 admin-tab-content">
             {/* Quick Category Tabs (Linear / Apple Segmented Control) */}
             <div className="segmented-control w-fit">
-              {['Tất cả', 'Chăm sóc da', 'Tinh chất (Serum)', 'Chống nắng', 'Làm sạch'].map((cat, idx) => (
+              {['Tất cả', 'Chăm sóc da', 'Tinh chất (Serum)', 'Chống nắng', 'Làm sạch'].map((cat) => (
                 <button
                   key={cat}
                   type="button"
-                  className={`segmented-item ${idx === 0 ? 'active' : ''}`}
+                  onClick={() => setProductCategoryFilter(cat)}
+                  className={`segmented-item ${productCategoryFilter === cat ? 'active' : ''}`}
                 >
                   {cat}
                 </button>
@@ -3948,7 +4105,7 @@ export default function AdminPage() {
                       </tr>
                     ) : (
                       filteredProducts.map((item, idx) => {
-                        const stock = [120, 45, 32, 18, 65, 88, 14][idx % 7];
+                        const stock = typeof item.stock === 'number' ? item.stock : (typeof item.inventory === 'number' ? item.inventory : 45);
                         const isLowStock = stock <= 20;
 
                         return (

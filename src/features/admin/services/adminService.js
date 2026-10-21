@@ -659,3 +659,60 @@ export async function deleteAdminBlogPost(postId) {
   }
 }
 
+
+
+const SYSTEM_SETTINGS_KEY = 'skinid_system_settings';
+
+export async function fetchSystemSettings() {
+  let localSettings = null;
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem(SYSTEM_SETTINGS_KEY);
+      if (raw) localSettings = JSON.parse(raw);
+    }
+  } catch {}
+
+  try {
+    const { doc, getDoc } = sdk.firestore;
+    const snap = await getDoc(doc(db, 'settings', 'store_config'));
+    if (snap.exists()) {
+      const remote = snap.data();
+      const merged = { ...(localSettings || {}), ...remote };
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(SYSTEM_SETTINGS_KEY, JSON.stringify(merged));
+      }
+      return merged;
+    }
+  } catch (err) {
+    console.warn('[Admin Settings] Firestore read fallback to local:', err.message);
+  }
+
+  return localSettings;
+}
+
+export async function saveSystemSettings(settings) {
+  if (!settings || typeof settings !== 'object') throw new Error('Dữ liệu cài đặt không hợp lệ.');
+
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(SYSTEM_SETTINGS_KEY, JSON.stringify(settings));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('skinid:settings-updated', { detail: { settings } }));
+      }
+    }
+  } catch (e) {
+    console.warn('[Admin Settings] Local write error:', e.message);
+  }
+
+  try {
+    const { doc, serverTimestamp, setDoc } = sdk.firestore;
+    await setDoc(doc(db, 'settings', 'store_config'), {
+      ...settings,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (err) {
+    console.warn('[Admin Settings] Firestore save fallback to local:', err.message);
+  }
+
+  return settings;
+}
