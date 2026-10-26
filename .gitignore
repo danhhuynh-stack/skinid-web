@@ -20,3 +20,4 @@ gha-creds-*.json
 admin_*.png
 admin_shot.png
 scripts/capture_admin.mjs
+scripts/pack_complete_migration.mjs
