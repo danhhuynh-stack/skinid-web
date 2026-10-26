@@ -35,13 +35,13 @@ export function refreshProductCatalog(force = false) {
       if (snapshot.empty) throw new Error('Collection products đang trống.');
       const remote = new Map(snapshot.docs.map((snapshotDocument) => [snapshotDocument.id, snapshotDocument.data()]));
       
-      // 1. Merge remote overrides lên trên local fallback
+      // 1. Merge remote overrides len tren local fallback (giu vung bang gia niem yet goc)
       const mergedLocals = fallback.map((local) => {
         const remoteData = remote.get(local.id);
         if (!remoteData) return local;
         return applyStorefrontPrice({
+          ...remoteData,
           ...local,
-          ...remoteData, // Remote Firestore có quyền ghi đè cao hơn dữ liệu tĩnh
           id: local.id
         });
       });

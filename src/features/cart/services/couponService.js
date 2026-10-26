@@ -5,25 +5,25 @@
 export const AVAILABLE_COUPONS = {
   SKINID10: {
     code: 'SKINID10',
-    description: 'Giảm 10% tổng đơn hàng (Tối đa 50.000đ cho đơn từ 500.000đ)',
+    description: 'Giảm 10% tổng đơn hàng (Tối đa 150.000đ cho đơn từ 200.000đ)',
     type: 'percentage',
     value: 10,
-    minOrder: 500000,
-    maxDiscount: 50000
+    minOrder: 200000,
+    maxDiscount: 150000
   },
   WELCOME50: {
     code: 'WELCOME50',
-    description: 'Giảm ngay 50.000đ cho đơn hàng từ 350.000đ',
+    description: 'Giảm 50.000đ cho đơn từ 300.000đ',
     type: 'fixed',
     value: 50000,
-    minOrder: 350000
+    minOrder: 300000
   },
   FREESHIP: {
     code: 'FREESHIP',
-    description: 'Miễn phí vận chuyển toàn quốc 30.000đ cho đơn từ 500.000đ',
+    description: 'Miễn phí vận chuyển (Tối đa 30.000đ)',
     type: 'shipping',
     value: 30000,
-    minOrder: 500000
+    minOrder: 0
   }
 };
 

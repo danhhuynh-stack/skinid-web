@@ -20,17 +20,17 @@ function readDynamicCampaign() {
     }
   } catch {}
   return {
-    title: 'SIÊU SALE NGÀY ĐÔI · ĐẶC QUYỀN SKINID',
-    subtitle: 'Mỹ phẩm chăm sóc da nhập khẩu chính ngạch Ý & Việt Nam giảm đến 30%',
+    title: 'SIÊU SALE BÙNG NỔ · GIẢM ĐẾN 50% & 3 COMBO ĐẶC QUYỀN',
+    subtitle: 'Mỹ phẩm chăm sóc da chính hãng từ Ý & Việt Nam. 3 combo chuyên sâu và sản phẩm bán lẻ giảm đến 50%.',
     active: true
   };
 }
 
 function readDynamicVouchers() {
   const fallback = [
-    { code: 'SKINID10', label: 'Giảm 10%', sub: 'Đơn từ 500k' },
-    { code: 'WELCOME50', label: 'Giảm 50K', sub: 'Khách mới' },
-    { code: 'FREESHIP', label: 'Freeship', sub: 'Toàn quốc' }
+    { code: 'SKINID10', label: 'Giảm 10%', sub: 'Đơn từ 200k' },
+    { code: 'WELCOME50', label: 'Giảm 50K', sub: 'Đơn từ 300k' },
+    { code: 'FREESHIP', label: 'Freeship', sub: 'Toàn sàn' }
   ];
   try {
     if (typeof localStorage !== 'undefined') {
@@ -129,15 +129,28 @@ export default function FlashSaleBanner() {
     await addToCart(productId);
   };
 
-  // Top 3 best discount products
+  // Top 3 best discount products (ưu tiên các sản phẩm bán lẻ giảm sốc 50%)
   const topDeals = useMemo(() => {
     if (!products || !products.length) return [];
+    const retail50Ids = ['twon-body-lotion', 'twon-kem-u-trang', 'dvah-sarika', 'rilastil-2089'];
     return [...products]
-      .filter(p => p.originalPrice && p.originalPrice > p.price)
-      .map(p => ({
-        ...p,
-        discountPercent: Math.round((1 - p.price / p.originalPrice) * 100)
-      }))
+      .map(p => {
+        if (retail50Ids.includes(p.id)) {
+          return {
+            ...p,
+            originalPrice: Math.round(p.price * 2),
+            discountPercent: 50
+          };
+        }
+        const pct = p.originalPrice && p.originalPrice > p.price
+          ? Math.round((1 - p.price / p.originalPrice) * 100)
+          : 0;
+        return {
+          ...p,
+          discountPercent: pct
+        };
+      })
+      .filter(p => p.discountPercent > 0)
       .sort((a, b) => b.discountPercent - a.discountPercent)
       .slice(0, 3);
   }, [products]);
