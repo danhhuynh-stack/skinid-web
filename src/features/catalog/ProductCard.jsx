@@ -47,7 +47,7 @@ export default function ProductCard({ product, onOpen }) {
             {isFeatured ? 'Sản phẩm nổi bật' : product.tier}
           </span>
         )}
-        {discounted && <span className="product-card__discount">−{discount}%</span>}
+        {discounted && <span className="product-card__discount">-{discount}%</span>}
       </div>
       <div className="product-card__media">
         {imageFailed

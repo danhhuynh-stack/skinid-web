@@ -1,0 +1,52 @@
+{
+  "title": "SkinID.vn — Phân tích da AI & Dược mỹ phẩm Chính Hãng",
+  "bodyFont": "Manrope, \"Segoe UI\", Arial, sans-serif",
+  "bodyBg": "rgb(255, 255, 255)",
+  "bodyColor": "rgb(40, 35, 38)",
+  "h1": {
+    "text": "",
+    "fontSize": "74.88px",
+    "lineHeight": "71.8848px",
+    "color": "rgb(40, 35, 38)",
+    "fontWeight": "800"
+  },
+  "offerBar": {
+    "text": "",
+    "bg": "rgb(24, 21, 23)",
+    "color": "rgb(209, 203, 208)",
+    "fontSize": "12.7133px",
+    "height": 37
+  },
+  "nav": {
+    "height": 89,
+    "bg": "rgba(255, 255, 255, 0.98)",
+    "position": "sticky"
+  },
+  "footer": {
+    "height": 376,
+    "bg": "rgb(24, 24, 27)",
+    "color": "rgb(255, 255, 255)"
+  },
+  "sampleCardsCount": 1,
+  "sampleCards": [
+    {
+      "index": 0,
+      "tagName": "DIV",
+      "className": "routine-stage routine-stage--focused",
+      "width": 1339,
+      "height": 474,
+      "titleText": "Rilastil Aqua Face Cleanser\nSữa Rửa Mặt Dưỡng Ẩm",
+      "titleHeight": 85,
+      "titleFontSize": "28.8px",
+      "titleFontWeight": "800",
+      "priceText": "BƯỚC 01 · LÀM SẠCH DỊU LÀNH\nRilastil Aqua Face Cleanser\nSữa Rửa Mặt Dưỡng Ẩm\n\nLàm sạch sâu từng lỗ chân lông mà vẫn bảo toàn lớp màng lipid sinh học, chuẩn bị nền da hoàn hảo đón nhận dưỡng chất.\n\nKhởi Đầu Dịu Nhẹ · Ceramide\n200 ml\nThêm vào giỏ · 544.500₫\nXem chi tiết\n↗",
+      "priceColor": "rgb(38, 31, 35)",
+      "btnText": "Thêm vào giỏ · 544.500₫",
+      "btnSize": "243x53",
+      "btnBg": "rgb(224, 109, 129)",
+      "btnPadding": "14px 32px",
+      "imgDimensions": "2084x3334",
+      "imgRendered": "405x647"
+    }
+  ]
+}

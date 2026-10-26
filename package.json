@@ -29,6 +29,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "^6.1.1",
     "firebase-admin": "^14.4.0",
+    "puppeteer-core": "^25.13.0",
     "tailwindcss": "^4.3.3",
     "vite": "^8.3.0",
     "vite-plugin-static-copy": "^4.1.1",

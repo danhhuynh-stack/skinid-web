@@ -185,7 +185,11 @@ export async function saveAdminProduct(existingId, values) {
   if (!brand || !name) throw new Error('Tên và thương hiệu là bắt buộc.');
   const { doc, serverTimestamp, setDoc } = sdk.firestore;
   await setDoc(doc(db, 'products', id), {
-    name, slug: slugify(name), brand, brandSlug: slugify(brand), price,
+    name,
+    slug: values.slug ? slugify(values.slug) : slugify(name),
+    brand,
+    brandSlug: slugify(brand),
+    price,
     originalPrice: Number(values.originalPrice) || 0,
     volume: String(values.volume || '').trim(),
     stepType: String(values.stepType || 'special'),
@@ -193,12 +197,29 @@ export async function saveAdminProduct(existingId, values) {
     line: String(values.line || '').trim(),
     image: String(values.image || '').trim(),
     uses: String(values.uses || '').trim(),
+    // Các trường On-Page SEO
+    seoTitle: String(values.seoTitle || name).trim(),
+    seoDescription: String(values.seoDescription || values.uses || '').trim(),
+    ogImage: String(values.ogImage || values.image || '').trim(),
+    imageAlt: String(values.imageAlt || name).trim(),
+    canonicalUrl: String(values.canonicalUrl || '').trim(),
+    robotsMeta: String(values.robotsMeta || 'index_follow').trim(),
     updatedAt: serverTimestamp(),
     ...(existingId ? {} : {
-      createdAt: serverTimestamp(), tier: 'Essential', mainActives: [], keyActives: [],
-      skinTypes: ['all'], targetConcerns: []
+      createdAt: serverTimestamp(),
+      tier: 'Essential',
+      mainActives: [],
+      keyActives: [],
+      skinTypes: ['all'],
+      targetConcerns: []
     })
   }, { merge: true });
+
+  try {
+    const { refreshProductCatalog } = await import('../../catalog/services/catalogRepository.js');
+    await refreshProductCatalog(true);
+  } catch {}
+
   return id;
 }
 
@@ -207,8 +228,12 @@ export function updateAdminOrder(orderId, changes) {
   return updateDoc(doc(db, 'orders', orderId), { ...changes, updatedAt: serverTimestamp() });
 }
 
-export function deleteAdminProduct(productId) {
-  return sdk.firestore.deleteDoc(sdk.firestore.doc(db, 'products', productId));
+export async function deleteAdminProduct(productId) {
+  await sdk.firestore.deleteDoc(sdk.firestore.doc(db, 'products', productId));
+  try {
+    const { refreshProductCatalog } = await import('../../catalog/services/catalogRepository.js');
+    await refreshProductCatalog(true);
+  } catch {}
 }
 
 export function deleteAdminOrder(orderId) {
@@ -446,7 +471,13 @@ export async function fetchAdminPromotions() {
       mergedVouchers = Array.from(vMap.values());
     }
 
-    if (mergedVouchers) writeLocalVouchers(mergedVouchers);
+    if (mergedVouchers) {
+      writeLocalVouchers(mergedVouchers);
+      try {
+        const { setRemoteCoupons } = await import('../../cart/services/couponService.js');
+        setRemoteCoupons(mergedVouchers);
+      } catch {}
+    }
     if (mergedCampaign) writeLocalCampaign(mergedCampaign);
 
     return { vouchers: mergedVouchers, campaign: mergedCampaign };
@@ -572,8 +603,8 @@ export async function fetchAdminBlogPosts() {
       const remotePosts = documents(snapshot);
       if (localPosts && localPosts.length > 0) {
         const mergedMap = new Map();
-        remotePosts.forEach((p) => mergedMap.set(p.id, p));
-        localPosts.forEach((p) => mergedMap.set(p.id, { ...(mergedMap.get(p.id) || {}), ...p }));
+        localPosts.forEach((p) => mergedMap.set(p.id, p));
+        remotePosts.forEach((p) => mergedMap.set(p.id, { ...(mergedMap.get(p.id) || {}), ...p }));
         const merged = Array.from(mergedMap.values());
         writeLocalBlogPosts(merged);
         return merged;
@@ -659,3 +690,82 @@ export async function deleteAdminBlogPost(postId) {
   }
 }
 
+
+
+const SYSTEM_SETTINGS_STORAGE_KEY = 'skinid_system_settings';
+
+export const DEFAULT_SYSTEM_SETTINGS = {
+  brandName: 'SkinID.vn',
+  slogan: 'Healthier Skin, Happier You',
+  hotline: '0924 093 461',
+  supportEmail: 'operation@fieldman.vn',
+  showroomAddress: '35 đường số 3, Phường Tân Mỹ, TP. Hồ Chí Minh',
+  freeshipThreshold: 500000,
+  shippingFee: 30000,
+  allowInspection: true,
+  s3ApiEndpoint: 'https://m.es3.vn',
+  s3BranchId: '9099',
+  s3CashierId: '16614',
+  s3AutoSync: true,
+  soundAlertOrders: true,
+  emailAlertUnpaid: true,
+  // Cấu hình SEO & Tracking toàn trang
+  ga4Id: '',
+  gtmId: '',
+  metaPixelId: '',
+  gscVerification: ''
+};
+
+export function readLocalSystemSettings() {
+  try {
+    if (typeof localStorage === 'undefined') return null;
+    const raw = localStorage.getItem(SYSTEM_SETTINGS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeLocalSystemSettings(settings) {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(SYSTEM_SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('skinid:system-settings-updated', { detail: { settings } }));
+    }
+  } catch (err) {
+    console.warn('[System Settings] LocalStorage write error:', err.message);
+  }
+}
+
+export async function fetchSystemSettings() {
+  const local = readLocalSystemSettings();
+  try {
+    const { doc, getDoc } = sdk.firestore;
+    const docSnap = await getDoc(doc(db, 'settings', 'system_config')).catch(() => ({ exists: () => false }));
+    if (docSnap && typeof docSnap.exists === 'function' && docSnap.exists()) {
+      const remote = docSnap.data();
+      const merged = { ...DEFAULT_SYSTEM_SETTINGS, ...(local || {}), ...remote };
+      writeLocalSystemSettings(merged);
+      return merged;
+    }
+  } catch (err) {
+    console.warn('[System Settings] Firestore fetch failed, fallback local:', err.message);
+  }
+  return { ...DEFAULT_SYSTEM_SETTINGS, ...(local || {}) };
+}
+
+export async function saveSystemSettings(settings) {
+  const merged = { ...DEFAULT_SYSTEM_SETTINGS, ...settings, updatedAtIso: new Date().toISOString() };
+  writeLocalSystemSettings(merged);
+  try {
+    const { doc, setDoc, serverTimestamp } = sdk.firestore;
+    await setDoc(doc(db, 'settings', 'system_config'), {
+      ...merged,
+      updatedAtServer: serverTimestamp()
+    }, { merge: true });
+  } catch (err) {
+    console.warn('[System Settings] Firestore save deferred:', err.message);
+  }
+  return merged;
+}

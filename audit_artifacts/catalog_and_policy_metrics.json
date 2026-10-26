@@ -1,0 +1,113 @@
+{
+  "catalogMetrics": [
+    {
+      "index": 0,
+      "className": "",
+      "width": 1440,
+      "height": 9160,
+      "title": "KHOẢNG GIÁ:",
+      "titleHeight": 20,
+      "price": "🔥 Ưu đãi & Voucher hôm nay · Miễn phí giao hàng cho đơn từ 500.000₫ · Hotline 0924.093.461",
+      "btnText": "Menu",
+      "borderRadius": "0px",
+      "boxShadow": "none"
+    }
+  ],
+  "policyAudit": {
+    "sidebarBctViolations": [
+      {
+        "tag": "DIV",
+        "className": "",
+        "outerHTML": "<div id=\"root\"><div class=\"offer-bar  is-visible\" aria-hidden=\"false\"><a href=\"/khuyen-mai\" class=\"offer-bar__promo-link font-bold hover:underline inline-flex items-center gap-1\">🔥 Ưu đãi &amp; Vouch"
+      },
+      {
+        "tag": "DIV",
+        "className": "container mx-auto px-4 max-w-7xl",
+        "outerHTML": "<div class=\"container mx-auto px-4 max-w-7xl\"><nav class=\"flex items-center gap-2 text-xs text-gray-500 mb-6 flex-wrap\" aria-label=\"Đường dẫn\"><a class=\"hover:text-rose-600 transition-colors\" href=\"/\""
+      },
+      {
+        "tag": "DIV",
+        "className": "flex flex-col lg:flex-row gap-8 items-start",
+        "outerHTML": "<div class=\"flex flex-col lg:flex-row gap-8 items-start\"><aside class=\"w-full lg:w-[320px] flex-shrink-0 flex flex-col gap-5 sticky top-24\"><div class=\"bg-white rounded-2xl border border-gray-200/80 p"
+      },
+      {
+        "tag": "DIV",
+        "className": "bg-white rounded-2xl border border-gray-200/80 p-4 shadow-xs",
+        "outerHTML": "<div class=\"bg-white rounded-2xl border border-gray-200/80 p-4 shadow-xs\"><div class=\"flex items-center gap-2 pb-3 mb-3 border-b border-gray-100\"><div class=\"w-2.5 h-2.5 rounded-full bg-rose-600 anima"
+      },
+      {
+        "tag": "DIV",
+        "className": "flex items-center gap-2 pb-3 mb-3 border-b border-gray-100",
+        "outerHTML": "<div class=\"flex items-center gap-2 pb-3 mb-3 border-b border-gray-100\"><div class=\"w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse\"></div><h2 class=\"text-xs font-bold uppercase tracking-wider text"
+      },
+      {
+        "tag": "DIV",
+        "className": "bg-gradient-to-br from-blue-50/70 to-indigo-50/40 rounded-2xl border border-blue-100 p-4 shadow-2xs text-left",
+        "outerHTML": "<div class=\"bg-gradient-to-br from-blue-50/70 to-indigo-50/40 rounded-2xl border border-blue-100 p-4 shadow-2xs text-left\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 rounded-xl bg-blue"
+      },
+      {
+        "tag": "DIV",
+        "className": "flex items-center gap-3",
+        "outerHTML": "<div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs\"><svg class=\"w-5 h-5\" viewBox=\"0 0 24 24\" fill=\"no"
+      },
+      {
+        "tag": "DIV",
+        "className": "",
+        "outerHTML": "<div><span class=\"text-[10px] font-black uppercase text-blue-900 tracking-wider block\">ĐÃ THÔNG BÁO BCT</span><span class=\"text-[11px] text-blue-700 font-semibold block leading-tight\">Cổng TMĐT online"
+      },
+      {
+        "tag": "SPAN",
+        "className": "text-[10px] font-black uppercase text-blue-900 tracking-wider block",
+        "outerHTML": "<span class=\"text-[10px] font-black uppercase text-blue-900 tracking-wider block\">ĐÃ THÔNG BÁO BCT</span>"
+      },
+      {
+        "tag": "A",
+        "className": "inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-800 hover:text-blue-900 mt-2 pt-2 border-t border-blue-200/60 w-full",
+        "outerHTML": "<a href=\"http://online.gov.vn\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-800 hover:text-blue-900 mt-2 pt-2 border-t border-blue-"
+      },
+      {
+        "tag": "DIV",
+        "className": "space-y-10 text-gray-700 text-sm leading-relaxed",
+        "outerHTML": "<div class=\"space-y-10 text-gray-700 text-sm leading-relaxed\"><section id=\"tong-quan\" class=\"scroll-mt-28\"><h2 class=\"text-base sm:text-lg font-bold text-gray-900 mb-3 pb-2 border-b border-gray-100 fl"
+      },
+      {
+        "tag": "DIV",
+        "className": "policy-rich-content space-y-3.5 text-gray-700 leading-relaxed text-sm",
+        "outerHTML": "<div class=\"policy-rich-content space-y-3.5 text-gray-700 leading-relaxed text-sm\"><p class=\"leading-relaxed\">Chúng tôi chỉ thu thập và xử lý dữ liệu cá nhân cho các mục đích đã thông báo dưới đây:</p"
+      }
+    ],
+    "headingsCount": 19,
+    "headingsSample": [
+      {
+        "tag": "H2",
+        "text": "HỒ SƠ BỘ CÔNG THƯƠNG",
+        "fontSize": "12.546px"
+      },
+      {
+        "tag": "H1",
+        "text": "Chính sách bảo mật thông tin và bảo vệ dữ liệu cá nhân",
+        "fontSize": "31.365px"
+      },
+      {
+        "tag": "H2",
+        "text": "Thông tin chung & Căn cứ pháp lý",
+        "fontSize": "18.819px"
+      },
+      {
+        "tag": "H2",
+        "text": "1.1. Mục đích thu thập thông tin",
+        "fontSize": "18.819px"
+      },
+      {
+        "tag": "H2",
+        "text": "1.2. Phạm vi thông tin thu thập",
+        "fontSize": "18.819px"
+      },
+      {
+        "tag": "H2",
+        "text": "1.3. Quy định riêng về dữ liệu hình ảnh khuôn mặt khi Soi da",
+        "fontSize": "18.819px"
+      }
+    ]
+  }
+}

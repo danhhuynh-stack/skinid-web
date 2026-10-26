@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, ScrollRestoration } from 'react-router-dom';
 import AppErrorBoundary from './AppErrorBoundary.jsx';
 import NotFoundRoute from '../routes/not-found/NotFoundRoute.jsx';
 import PageLoader from '../shared/ui/PageLoader.jsx';
@@ -10,11 +10,21 @@ function lazyPage(importPage) {
   };
 }
 
+function RootLayout() {
+  return (
+    <>
+      <ScrollRestoration />
+      <Outlet />
+    </>
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: '/',
     ErrorBoundary: AppErrorBoundary,
     HydrateFallback: PageLoader,
+    element: <RootLayout />,
     children: [
       { index: true, lazy: lazyPage(() => import('../pages/HomePage.jsx')) },
       { path: 'products', lazy: lazyPage(() => import('../pages/ProductsPage.jsx')) },

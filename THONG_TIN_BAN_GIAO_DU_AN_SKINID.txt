@@ -1,0 +1,70 @@
+================================================================================
+BIÊN BẢN & TÀI LIỆU BÀN GIAO DỰ ÁN HỆ THỐNG WEBSITE THƯƠNG MẠI ĐIỆN TỬ SKINID.VN
+================================================================================
+Dự án: Nền tảng TMĐT Dược Mỹ phẩm Chính ngạch Châu Âu & Soi Da AI — SkinID.vn
+Đơn vị chủ quản: CÔNG TY TNHH FIELDMAN
+Mã số thuế: 0319200638 (Sở KH&ĐT TP.HCM cấp ngày 10/02/2026)
+Người đại diện theo pháp luật: Trần Long
+Ngày đóng gói bàn giao: 19/10/2026
+Phiên bản bàn giao: Production Release v1.0 (Full Source & Production Build)
+================================================================================
+
+1. TỔNG QUAN TÌNH TRẠNG HỆ THỐNG
+--------------------------------------------------------------------------------
+- Website chính thức: https://skinid.vn
+- Danh mục sản phẩm: 54 SKU chính ngạch (Rilastil, TWON, D'VAH) đồng bộ chuẩn S3 POS.
+- Tính năng nổi bật:
+  + Module Soi da AI phân tích chuyên sâu chuẩn y khoa.
+  + Module Tra cứu phiếu công bố sản phẩm mỹ phẩm (CBMP).
+  + Giỏ hàng & Thanh toán tự động (VietQR động & COD).
+  + Cổng Admin quản trị đơn hàng, khuyến mãi, bài viết blog, đồng bộ S3 POS.
+- Pháp lý Bộ Công Thương:
+  + Đã tích hợp đầy đủ Bộ 6 chính sách độc lập đúng chuẩn Nghị định 52/2013/NĐ-CP,
+    Nghị định 85/2021/NĐ-CP và Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15.
+  + Đã rà soát và gỡ bỏ triệt để các logo/huy hiệu giả mạo BCT vi phạm, sẵn sàng
+    100% nộp hồ sơ thẩm định chính thức trên Cổng thông tin online.gov.vn.
+
+2. CẤU TRÚC THƯ MỤC BÀN GIAO
+--------------------------------------------------------------------------------
+- src/                     : Toàn bộ mã nguồn React (Components, Pages, Hooks, Styles, Data).
+- dist/                    : Bản build Production tĩnh đã tối ưu sẵn sàng deploy ngay.
+- scripts/                 : Các script tự động hóa (Audit BCT, Sinh catalog, Build GitHub Pages).
+- worker/                  : Cloudflare Worker tích hợp đồng bộ dữ liệu S3 POS (fm.es3.vn).
+- images/ & videos/        : Toàn bộ tài nguyên đa phương tiện độ phân giải cao của dự án.
+- docs/ & tests/           : Tài liệu kỹ thuật kiến trúc hệ thống và test cases.
+- Danh_Muc_54_San_Pham_SkinID_S3POS.xlsx : Bảng dữ liệu đối soát 54 SKU theo chuẩn S3 POS.
+- Bao_Cao_Audit_SkinID_BCT_UXUI.md      : Báo cáo kiểm toán chuyên sâu thị giác và pháp lý BCT.
+- package.json & package-lock.json      : Quản lý dependencies dự án (Node.js/Vite/React).
+- vite.config.mjs          : Cấu hình build tối ưu đa nền tảng.
+- .env & .dev.vars         : Cấu hình môi trường (Firebase, Gemini API, S3 POS credentials).
+
+3. HƯỚNG DẪN CÀI ĐẶT & KHỞI CHẠY (DÀNH CHO ĐỘI NGŨ KỸ THUẬT)
+--------------------------------------------------------------------------------
+Bước 1: Cài đặt Node.js phiên bản LTS (khuyến nghị Node v20+ hoặc v22+).
+Bước 2: Giải nén gói mã nguồn vào thư mục làm việc.
+Bước 3: Mở terminal tại thư mục dự án và cài đặt dependencies:
+        npm install
+Bước 4: Chạy môi trường phát triển (Development):
+        npm run dev
+        -> Truy cập: http://localhost:5173
+Bước 5: Đóng gói và build bản Production:
+        npm run build
+        -> Kết quả build nằm tại thư mục dist/ và sẵn sàng triển khai.
+
+4. CẤU HÌNH DỊCH VỤ TÍCH HỢP
+--------------------------------------------------------------------------------
+- Firebase Project: skinid-official
+  + Authentication: Quản trị viên và khách hàng.
+  + Firestore Database: Lưu trữ đơn hàng, log soi da, danh mục bài viết blog.
+- S3 Retail Software (fm.es3.vn):
+  + Chi nhánh (Branch ID): 9099
+  + Thu ngân (Cashier ID): 16614
+  + Tài khoản đồng bộ: nghia.tran@fieldman.vn
+
+5. THÔNG TIN LIÊN HỆ & BẢO HÀNH DỰ ÁN
+--------------------------------------------------------------------------------
+- Đơn vị phụ trách: CÔNG TY TNHH FIELDMAN
+- Hotline kỹ thuật & vận hành: 0924.093.461
+- Email tiếp nhận: operation@fieldman.vn
+- Kênh Zalo CSKH: 0924.093.461
+================================================================================

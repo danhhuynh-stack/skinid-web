@@ -7,7 +7,8 @@ import StorefrontModals from '../components/dialogs/StorefrontModals.jsx';
 import ProductDetailModal from '../features/catalog/ProductDetailModal.jsx';
 import ProductCard from '../features/catalog/ProductCard.jsx';
 import { useCatalog } from '../features/catalog/index.js';
-import { AVAILABLE_COUPONS } from '../features/cart/services/couponService.js';
+import { AVAILABLE_COUPONS, getDynamicCoupons } from '../features/cart/services/couponService.js';
+import { fetchAdminPromotions } from '../features/admin/index.js';
 import usePageMetadata from '../hooks/usePageMetadata.js';
 
 function TagIcon() {
@@ -79,29 +80,33 @@ export default function PromotionsPage() {
       .slice(0, 12);
   }, [products]);
 
-  const coupons = [
-    {
-      code: 'SKINID10',
-      title: 'Giảm 10% đơn hàng',
-      desc: 'Áp dụng cho đơn từ 500.000₫. Giảm tối đa 50.000₫.',
-      badge: 'Phổ biến nhất',
-      color: 'from-rose-500 to-pink-600'
-    },
-    {
-      code: 'WELCOME50',
-      title: 'Giảm ngay 50.000₫',
-      desc: 'Dành riêng cho khách hàng mới với đơn từ 350.000₫.',
-      badge: 'Khách mới',
-      color: 'from-amber-500 to-orange-600'
-    },
-    {
-      code: 'FREESHIP',
-      title: 'Miễn phí vận chuyển',
-      desc: 'Tiết kiệm 30.000₫ phí ship toàn quốc cho đơn từ 500.000₫.',
-      badge: 'Freeship Extra',
-      color: 'from-emerald-500 to-teal-600'
-    }
-  ];
+  const [dynamicCouponsList, setDynamicCouponsList] = useState(() => {
+    const list = Object.values(getDynamicCoupons());
+    return list.map((c, i) => ({
+      code: c.code,
+      title: c.type === 'percentage' ? `Giảm ${c.value}% đơn hàng` : c.type === 'shipping' ? 'Miễn phí vận chuyển' : `Giảm ${new Intl.NumberFormat('vi-VN').format(c.value)} đ`,
+      desc: c.description || (c.minOrder ? `Đơn từ ${new Intl.NumberFormat('vi-VN').format(c.minOrder)} đ` : 'Áp dụng toàn sàn'),
+      badge: i === 0 ? 'Phổ biến nhất' : i === 1 ? 'Khách mới' : 'Freeship',
+      color: i % 3 === 0 ? 'from-rose-500 to-pink-600' : i % 3 === 1 ? 'from-amber-500 to-orange-600' : 'from-emerald-500 to-teal-600'
+    }));
+  });
+
+  useEffect(() => {
+    fetchAdminPromotions().then(res => {
+      if (res?.vouchers && res.vouchers.length > 0) {
+        const mapped = res.vouchers.filter(v => v.active !== false).map((c, i) => ({
+          code: c.code,
+          title: c.type === 'percent' || c.type === 'percentage' ? `Giảm ${c.discountValue || c.value}% đơn hàng` : c.type === 'shipping' ? 'Miễn phí vận chuyển' : `Giảm ${new Intl.NumberFormat('vi-VN').format(c.discountValue || c.value)} đ`,
+          desc: c.description || (c.minOrderValue ? `Đơn từ ${new Intl.NumberFormat('vi-VN').format(c.minOrderValue)} đ` : 'Áp dụng toàn sàn'),
+          badge: i === 0 ? 'Đang kích hoạt' : 'Voucher hot',
+          color: i % 3 === 0 ? 'from-rose-500 to-pink-600' : i % 3 === 1 ? 'from-amber-500 to-orange-600' : 'from-emerald-500 to-teal-600'
+        }));
+        if (mapped.length > 0) setDynamicCouponsList(mapped);
+      }
+    }).catch(() => {});
+  }, []);
+
+  const coupons = dynamicCouponsList;
 
   return (
     <>

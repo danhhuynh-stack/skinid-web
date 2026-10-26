@@ -14,6 +14,9 @@ export const COMPANY_INFO = {
   name: 'CÔNG TY TNHH FIELDMAN',
   brand: 'SkinID.vn',
   taxCode: '0319200638',
+  issueDate: '10/02/2026',
+  issuePlace: 'Sở Kế hoạch và Đầu tư TP. Hồ Chí Minh',
+  legalRepresentative: 'Trần Long',
   address: '35 đường số 3, Phường Tân Mỹ, Thành phố Hồ Chí Minh',
   hotline: '0924.093.461',
   hotlineDisplay: '0924.093.461',
@@ -51,9 +54,10 @@ Chính sách được xây dựng theo Điều 68–73 Nghị định 52/2013/N�
 
 **Thông tin đơn vị kiểm soát và xử lý dữ liệu:**
 * **Đơn vị:** CÔNG TY TNHH FIELDMAN
-* **Mã số thuế:** 0319200638
-* **Địa chỉ:** 35 đường số 3, Phường Tân Mỹ, Thành phố Hồ Chí Minh
-* **Hotline:** 0924.093.461
+* **Mã số thuế:** 0319200638 (Cấp ngày 10/02/2026 bởi Sở Kế hoạch và Đầu tư TP. Hồ Chí Minh)
+* **Người đại diện theo pháp luật:** Ông Trần Long
+* **Địa chỉ trụ sở:** 35 đường số 3, Phường Tân Mỹ, Thành phố Hồ Chí Minh
+* **Hotline hỗ trợ:** 0924.093.461
 * **Email tiếp nhận:** operation@fieldman.vn`
       },
       {

@@ -1,0 +1,27 @@
+{
+  "errors": [
+    "[Console Error]: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "pricingChecks": [
+    {
+      "page": "Trang chủ",
+      "products": []
+    }
+  ],
+  "uiAlignments": [
+    {
+      "mobileCheck": {
+        "scrollY": 0,
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "innerWidth": 390
+      }
+    }
+  ],
+  "pagesVisited": [
+    "Trang chủ Desktop",
+    "Trang Khuyến mãi Desktop",
+    "Trang Sản phẩm Desktop",
+    "Trang Admin Desktop"
+  ]
+}

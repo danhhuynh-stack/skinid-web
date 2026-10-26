@@ -1,0 +1,117 @@
+{
+  "bctViolations": [
+    {
+      "tag": "DIV",
+      "className": "",
+      "outerHTML": "<div id=\"root\"><div class=\"offer-bar offer-bar--scroll\" aria-hidden=\"true\"><a href=\"/khuyen-mai\" class=\"offer-bar__promo-link font-bold hover:underline inline-flex items-center gap-1\">🔥 Ưu đãi &amp; Voucher hôm nay</a> <span>·</span> Miễn phí giao hàng cho đơn từ 500.000₫ <span>·</span> Hotline 092",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": -4662,
+        "left": 0,
+        "width": 1440,
+        "height": 5562
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "container",
+      "outerHTML": "<div class=\"container\"><div class=\"footer-grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-4 gap-8 lg:gap-10\"><div><a class=\"brand footer-brand inline-block mb-3\" href=\"/#top\"><img alt=\"SkinID\" class=\"h-9 w-auto\" src=\"/images/logo-footer-transparent.png\"></a><p class=\"text-xs text-gray-400 leading-re",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": 581,
+        "left": 50,
+        "width": 1339,
+        "height": 294
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "footer-grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-4 gap-8 lg:gap-10",
+      "outerHTML": "<div class=\"footer-grid !grid-cols-1 md:!grid-cols-2 lg:!grid-cols-4 gap-8 lg:gap-10\"><div><a class=\"brand footer-brand inline-block mb-3\" href=\"/#top\"><img alt=\"SkinID\" class=\"h-9 w-auto\" src=\"/images/logo-footer-transparent.png\"></a><p class=\"text-xs text-gray-400 leading-relaxed max-w-sm mb-4\">Nề",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": 581,
+        "left": 50,
+        "width": 1339,
+        "height": 213
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "",
+      "outerHTML": "<div><a class=\"brand footer-brand inline-block mb-3\" href=\"/#top\"><img alt=\"SkinID\" class=\"h-9 w-auto\" src=\"/images/logo-footer-transparent.png\"></a><p class=\"text-xs text-gray-400 leading-relaxed max-w-sm mb-4\">Nền tảng thương mại điện tử phân phối dược mỹ phẩm chính ngạch Châu Âu (Rilastil, TWON, ",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": 581,
+        "left": 50,
+        "width": 303,
+        "height": 213
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "pt-1",
+      "outerHTML": "<div class=\"pt-1\"><a href=\"http://online.gov.vn\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-700 bg-gray-900/90 hover:border-blue-400 transition-all group\" title=\"Website Thương mại điện tử đã thông báo với Bộ Công Thương\"><",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": 760,
+        "left": 50,
+        "width": 303,
+        "height": 34
+      }
+    },
+    {
+      "tag": "A",
+      "className": "inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-700 bg-gray-900/90 hover:border-blue-400 transition-all group",
+      "outerHTML": "<a href=\"http://online.gov.vn\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-700 bg-gray-900/90 hover:border-blue-400 transition-all group\" title=\"Website Thương mại điện tử đã thông báo với Bộ Công Thương\"><svg class=\"w-5 h-5",
+      "matchedKeyword": "online.gov.vn",
+      "boundingBox": {
+        "top": 765,
+        "left": 50,
+        "width": 110,
+        "height": 24
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "leading-tight text-left",
+      "outerHTML": "<div class=\"leading-tight text-left\"><div class=\"text-[10px] font-extrabold text-blue-300 tracking-wider uppercase\">ĐÃ THÔNG BÁO</div><div class=\"text-[9px] font-bold text-gray-300 tracking-tight\">BỘ CÔNG THƯƠNG</div></div>",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": 765,
+        "left": 80,
+        "width": 80,
+        "height": 24
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "text-[10px] font-extrabold text-blue-300 tracking-wider uppercase",
+      "outerHTML": "<div class=\"text-[10px] font-extrabold text-blue-300 tracking-wider uppercase\">ĐÃ THÔNG BÁO</div>",
+      "matchedKeyword": "đã thông báo",
+      "boundingBox": {
+        "top": 765,
+        "left": 80,
+        "width": 80,
+        "height": 13
+      }
+    },
+    {
+      "tag": "DIV",
+      "className": "text-[9px] font-bold text-gray-300 tracking-tight",
+      "outerHTML": "<div class=\"text-[9px] font-bold text-gray-300 tracking-tight\">BỘ CÔNG THƯƠNG</div>",
+      "matchedKeyword": "bộ công thương",
+      "boundingBox": {
+        "top": 777,
+        "left": 80,
+        "width": 80,
+        "height": 11
+      }
+    }
+  ],
+  "footerInfo": {},
+  "productCards": [],
+  "typography": {},
+  "contrastIssues": [],
+  "responsiveMetrics": {}
+}

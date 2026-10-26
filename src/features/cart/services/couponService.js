@@ -1,34 +1,54 @@
 /**
  * Danh sách mã voucher hỗ trợ nội bộ SkinID.
- * Khi triển khai chiến dịch, có thể bổ sung hoặc cập nhật hạn mức tại đây.
+ * Điều kiện kiểm tra khớp 100% với hiển thị tại Trang Khuyến Mại.
  */
 export const AVAILABLE_COUPONS = {
   SKINID10: {
     code: 'SKINID10',
-    description: 'Giảm 10% tổng đơn hàng',
+    description: 'Giảm 10% tổng đơn hàng (Tối đa 50.000đ cho đơn từ 500.000đ)',
     type: 'percentage',
     value: 10,
-    minOrder: 200000,
-    maxDiscount: 150000
+    minOrder: 500000,
+    maxDiscount: 50000
   },
   WELCOME50: {
     code: 'WELCOME50',
-    description: 'Giảm 50.000đ cho đơn từ 300.000đ',
+    description: 'Giảm ngay 50.000đ cho đơn hàng từ 350.000đ',
     type: 'fixed',
     value: 50000,
-    minOrder: 300000
+    minOrder: 350000
   },
   FREESHIP: {
     code: 'FREESHIP',
-    description: 'Miễn phí vận chuyển (Tối đa 30.000đ)',
+    description: 'Miễn phí vận chuyển toàn quốc 30.000đ cho đơn từ 500.000đ',
     type: 'shipping',
     value: 30000,
-    minOrder: 0
+    minOrder: 500000
   }
 };
 
+let inMemoryFirestoreCoupons = {};
+
+export function setRemoteCoupons(remoteVouchers = []) {
+  if (!Array.isArray(remoteVouchers)) return;
+  const map = {};
+  remoteVouchers.forEach(v => {
+    if (!v?.code || v.active === false) return;
+    const normalizedCode = String(v.code).trim().toUpperCase();
+    map[normalizedCode] = {
+      code: normalizedCode,
+      description: v.description || `Mã ưu đãi ${normalizedCode}`,
+      type: v.type === 'percent' || v.type === 'percentage' ? 'percentage' : v.type === 'shipping' ? 'shipping' : 'fixed',
+      value: Number(v.discountValue || v.value) || 0,
+      minOrder: Number(v.minOrderValue || v.minOrder) || 0,
+      maxDiscount: Number(v.maxDiscount) || 0
+    };
+  });
+  inMemoryFirestoreCoupons = map;
+}
+
 export function getDynamicCoupons() {
-  const merged = { ...AVAILABLE_COUPONS };
+  const merged = { ...AVAILABLE_COUPONS, ...inMemoryFirestoreCoupons };
   try {
     if (typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem('skinid_admin_vouchers');
@@ -78,7 +98,7 @@ export function validateCoupon(rawCode, subtotal = 0, shippingFee = 0) {
     const formattedMin = new Intl.NumberFormat('vi-VN').format(coupon.minOrder);
     return {
       valid: false,
-      message: `Mã ${coupon.code} chỉ áp dụng cho đơn hàng từ ${formattedMin} ₫.`
+      message: `Mã ${coupon.code} chỉ áp dụng cho đơn hàng từ ${formattedMin} đ.`
     };
   }
 

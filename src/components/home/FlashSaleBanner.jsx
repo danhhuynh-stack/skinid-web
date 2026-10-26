@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useCatalog, formatPrice } from '../../features/catalog/index.js';
 import { useCart } from '../../features/cart/index.js';
+import { fetchAdminPromotions } from '../../features/admin/index.js';
 import { assetUrl } from '../../assets/index.js';
 
 function FlameIcon() {
@@ -55,6 +56,23 @@ export default function FlashSaleBanner() {
   const [copiedCode, setCopiedCode] = useState(null);
   const [campaign, setCampaign] = useState(readDynamicCampaign);
   const [vouchers, setVouchers] = useState(readDynamicVouchers);
+
+  // Tự động tải chiến dịch và voucher từ Firestore khi mount
+  useEffect(() => {
+    fetchAdminPromotions().then(res => {
+      if (res?.campaign && res.campaign.active !== false) {
+        setCampaign(prev => ({ ...prev, ...res.campaign }));
+      }
+      if (res?.vouchers && res.vouchers.length > 0) {
+        const activeV = res.vouchers.filter(v => v.active !== false).slice(0, 3).map(v => ({
+          code: v.code,
+          label: v.type === 'percent' || v.type === 'percentage' ? `Giảm ${v.discountValue || v.value}%` : v.type === 'shipping' ? 'Freeship' : `Giảm ${Math.round((v.discountValue || v.value) / 1000)}K`,
+          sub: v.description || (v.minOrderValue ? `Đơn từ ${Math.round(v.minOrderValue / 1000)}k` : 'Toàn sàn')
+        }));
+        if (activeV.length > 0) setVouchers(activeV);
+      }
+    }).catch(() => {});
+  }, []);
 
   // Lắng nghe cập nhật từ Admin Panel theo thời gian thực
   useEffect(() => {

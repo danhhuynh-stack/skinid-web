@@ -1,25 +1,25 @@
 /* SkinID Storefront: High-End Medical Dermo-Cosmetics & AI SkinTech Visual System.
    Clean clinical whites, deep obsidian authority, disciplined typography, and precision medical rose accents. */
 :root {
-  --skinid-primary: #E06D81;
+  --skinid-primary: #C83A5A;
   --skinid-accent: #FF6B8B;
   --skinid-blush: #FFF2F4;
   --skinid-petal: #FFD6DE;
   --skinid-soft-bg: #FFFAFB;
   --skinid-dark: #282326;
   --skinid-light: #fff8f9;
-  --brand-pink: #E06D81;
-  --rose: #E06D81;
-  --rose-dark: #bd3f5b;
+  --brand-pink: #C83A5A;
+  --rose: #C83A5A;
+  --rose-dark: #a82845;
   --rose-soft: #fff4f6;
   --rose-light: #ffd6de;
   --ink: #282326;
   --muted: #6f686b;
   --clinical-border: #f0ecee;
-  --cta-rose-start: #ff7893;
-  --cta-rose-mid: #f25576;
-  --cta-rose-end: #dc3e63;
-  --cta-rose-shadow: rgba(224, 62, 98, 0.3);
+  --cta-rose-start: #e0486a;
+  --cta-rose-mid: #c83a5a;
+  --cta-rose-end: #ab2847;
+  --cta-rose-shadow: rgba(200, 58, 90, 0.35);
   --skinid-font-heading: "Outfit", "Segoe UI", Arial, sans-serif;
   --skinid-font-body: "Manrope", "Segoe UI", Arial, sans-serif;
 }
@@ -34,9 +34,9 @@ body {
 /* 1. Top Offer Bar: Deep Obsidian Luxury */
 .offer-bar {
   background: #181517;
-  color: #d1cbd0;
+  color: #f3f4f6;
   font-weight: 500;
-  font-size: 0.76rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.04em;
   padding: 8px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);

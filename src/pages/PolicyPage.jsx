@@ -153,36 +153,31 @@ export default function PolicyPage({ explicitSlug = null }) {
                 </div>
               </div>
 
-              {/* Card Đã thông báo Bộ Công Thương */}
-              <div className="bg-gradient-to-br from-blue-50/70 to-indigo-50/40 rounded-2xl border border-blue-100 p-4 shadow-2xs text-left">
+              {/* Card Tuân thủ quy chế TMĐT */}
+              <div className="bg-gradient-to-br from-emerald-50/70 to-teal-50/40 rounded-2xl border border-emerald-100 p-4 shadow-2xs text-left">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs">
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                       <path d="m9 12 2 2 4-4" />
                     </svg>
                   </div>
                   <div>
-                    <span className="text-[10px] font-black uppercase text-blue-900 tracking-wider block">
-                      ĐÃ THÔNG BÁO BCT
+                    <span className="text-[10px] font-black uppercase text-emerald-900 tracking-wider block">
+                      QUY CHẾ HOẠT ĐỘNG
                     </span>
-                    <span className="text-[11px] text-blue-700 font-semibold block leading-tight">
-                      Cổng TMĐT online.gov.vn
+                    <span className="text-[11px] text-emerald-700 font-semibold block leading-tight">
+                      Tuân thủ Nghị định 52/2013/NĐ-CP
                     </span>
                   </div>
                 </div>
                 <p className="text-[11px] text-gray-600 mt-2.5 leading-relaxed">
-                  Hệ thống SkinID.vn tuân thủ đầy đủ quy chế hoạt động TMĐT bán hàng theo Nghị định 52/2013/NĐ-CP &amp; 85/2021/NĐ-CP.
+                  Hệ thống SkinID.vn xây dựng theo đúng quy chế TMĐT bán hàng và đang trong tiến trình hoàn tất thủ tục thông báo với Bộ Công Thương.
                 </p>
-                <a
-                  href="http://online.gov.vn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-800 hover:text-blue-900 mt-2 pt-2 border-t border-blue-200/60 w-full"
-                >
-                  <span>Tra cứu trên Cổng thông tin</span>
-                  <span aria-hidden="true">↗</span>
-                </a>
+                <div className="text-[10px] text-emerald-800 font-medium mt-2 pt-2 border-t border-emerald-200/60 flex items-center justify-between">
+                  <span>Trạng thái: Đang nộp hồ sơ trực tuyến</span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                </div>
               </div>
 
               {/* Card Hotline Hỗ Trợ Pháp Chế */}
@@ -192,6 +187,13 @@ export default function PolicyPage({ explicitSlug = null }) {
                 </div>
                 <div className="text-gray-500">
                   <span className="font-semibold text-gray-700">Mã số thuế:</span> {COMPANY_INFO.taxCode}
+                </div>
+                <div className="text-gray-500">
+                  <span className="font-semibold text-gray-700">Cấp ngày:</span> {COMPANY_INFO.issueDate} ({COMPANY_INFO.issuePlace})
+                </div>
+                <div className="text-gray-500">
+                  <span className="font-semibold text-gray-700">Đại diện pháp luật:</span>{' '}
+                  <span className="font-bold text-gray-800">{COMPANY_INFO.legalRepresentative}</span>
                 </div>
                 <div className="text-gray-500">
                   <span className="font-semibold text-gray-700">Hotline:</span>{' '}
@@ -206,7 +208,7 @@ export default function PolicyPage({ explicitSlug = null }) {
                   </a>
                 </div>
                 <div className="text-gray-500">
-                  <span className="font-semibold text-gray-700">Zalo Hotline:</span>{' '}
+                  <span className="font-semibold text-gray-700">Zalo CSKH:</span>{' '}
                   <a href={COMPANY_INFO.zaloUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-medium hover:underline">
                     {COMPANY_INFO.zaloName}
                   </a>

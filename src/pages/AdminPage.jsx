@@ -17,7 +17,9 @@ import {
   syncAllPendingOrdersToS3,
   updateAdminOrder,
   updateUserRole,
-  useAdmin
+  useAdmin,
+  fetchSystemSettings,
+  saveSystemSettings
 } from '../features/admin/index.js';
 import { DEFAULT_BLOG_ARTICLES } from '../data/blogArticles.js';
 import { AVAILABLE_COUPONS } from '../features/cart/services/couponService.js';
@@ -55,13 +57,25 @@ import {
   IconSettings
 } from '../features/admin/components/AdminIcons.jsx';
 
+const slugify = (text) => String(text || '')
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase()
+  .replace(/đ/g, 'd')
+  .replace(/[^a-z0-9\s-]/g, '')
+  .trim()
+  .replace(/\s+/g, '-')
+  .replace(/-+/g, '-');
+
 const money = (value) => new Intl.NumberFormat('vi-VN', {
   style: 'currency', currency: 'VND', maximumFractionDigits: 0
 }).format(Number(value) || 0);
 
 const emptyProduct = {
   id: '', name: '', brand: '', price: '', originalPrice: '', volume: '',
-  stepType: 'cleanser', line: '', image: '', uses: ''
+  stepType: 'cleanser', line: '', image: '', uses: '',
+  slug: '', seoTitle: '', seoDescription: '', ogImage: '', imageAlt: '',
+  canonicalUrl: '', robotsMeta: 'index, follow'
 };
 
 const ORDER_STATUSES = [
@@ -113,7 +127,11 @@ const DEFAULT_SYSTEM_SETTINGS = {
   s3CashierId: '16614',
   s3AutoSync: true,
   soundAlertOrders: true,
-  emailAlertUnpaid: true
+  emailAlertUnpaid: true,
+  gaId: '',
+  gtmId: '',
+  metaPixelId: '',
+  googleSiteVerification: ''
 };
 
 const TAB_CONFIGS = {
@@ -172,11 +190,13 @@ function EditorModal({ editor, onClose, onSaved }) {
   const [form, setForm] = useState(emptyProduct);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [modalTab, setModalTab] = useState('basic'); // 'basic' | 'seo'
   const titleId = useId();
 
   useEffect(() => {
     if (!editor) return;
     setError('');
+    setModalTab('basic');
     setForm(editor.kind === 'product' ? { ...emptyProduct, ...editor.item } : {
       name: editor.item.name || '',
       phone: editor.item.phone || '',
@@ -186,6 +206,25 @@ function EditorModal({ editor, onClose, onSaved }) {
         : (editor.item.role || 'customer')
     });
   }, [editor]);
+
+  const handleAutoGenerateSeo = () => {
+    const generatedSlug = slugify(form.name || form.id || 'san-pham');
+    const brandPrefix = form.brand ? ` | ${form.brand}` : ' | SkinID';
+    const generatedTitle = `${form.name || 'Sản phẩm'}${brandPrefix}`.slice(0, 60);
+    const rawDesc = form.uses || `Dược mỹ phẩm ${form.name} chính hãng phân phối tại SkinID.vn. Đảm bảo nguồn gốc xuất xứ, hỗ trợ tư vấn da liễu chuyên sâu.`;
+    const generatedDesc = rawDesc.slice(0, 160);
+
+    setForm((curr) => ({
+      ...curr,
+      slug: curr.slug || generatedSlug,
+      seoTitle: curr.seoTitle || generatedTitle,
+      seoDescription: curr.seoDescription || generatedDesc,
+      ogImage: curr.ogImage || curr.image || '',
+      imageAlt: curr.imageAlt || curr.name || '',
+      canonicalUrl: curr.canonicalUrl || `https://skinid.vn/products/${generatedSlug}`,
+      robotsMeta: curr.robotsMeta || 'index, follow'
+    }));
+  };
 
   if (!editor) return null;
   const update = (field) => (event) => setForm((curr) => ({ ...curr, [field]: event.target.value }));
@@ -260,41 +299,296 @@ function EditorModal({ editor, onClose, onSaved }) {
               </label>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <label className="block text-xs font-semibold text-slate-700">Mã sản phẩm (ID)
-                <input value={form.id} onChange={update('id')} disabled={Boolean(editor.item.id)} required className={`mt-1 w-full px-3 py-2 border rounded-xl text-sm outline-none transition font-mono ${editor.item.id ? 'bg-slate-100 text-slate-500 border-slate-200 cursor-not-allowed' : 'bg-white border-slate-300 focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81]'}`} />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700">Tên thương hiệu
-                <input value={form.brand} onChange={update('brand')} required className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Tên sản phẩm
-                <input value={form.name} onChange={update('name')} required className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700">Giá bán (VND)
-                <input value={form.price} onChange={update('price')} type="number" min="0" required className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-bold text-rose-600 font-mono" />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700">Giá gốc niêm yết (VND)
-                <input value={form.originalPrice} onChange={update('originalPrice')} type="number" min="0" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono" />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700">Dung tích / Quy cách
-                <input value={form.volume} onChange={update('volume')} placeholder="VD: 50ml, 200ml" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700">Danh mục sản phẩm
-                <select value={form.stepType} onChange={update('stepType')} className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition">
-                  <option value="cleanser">Làm sạch (Cleanser)</option>
-                  <option value="toner">Cân bằng (Toner)</option>
-                  <option value="treatment">Tinh chất chuyên sâu (Serum)</option>
-                  <option value="moisturizer">Dưỡng ẩm (Moisturizer)</option>
-                  <option value="sunscreen">Chống nắng (Sunscreen)</option>
-                  <option value="special">Cơ thể & Nước hoa (Body / Perfume)</option>
-                </select>
-              </label>
-              <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Đường dẫn hình ảnh
-                <input value={form.image} onChange={update('image')} placeholder="/images/products/..." className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono" />
-              </label>
-              <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Công dụng & Mô tả ngắn
-                <textarea value={form.uses} onChange={update('uses')} rows="3" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
-              </label>
+            <div className="space-y-4">
+              {/* Tab Selector */}
+              <div className="flex items-center gap-2 p-1 bg-slate-100/90 rounded-2xl border border-slate-200/80">
+                <button
+                  type="button"
+                  onClick={() => setModalTab('basic')}
+                  className={`flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                    modalTab === 'basic'
+                      ? 'bg-white text-slate-800 shadow-sm border border-slate-200/60'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  <span>📦</span> Thông tin cơ bản
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModalTab('seo')}
+                  className={`flex-1 py-2 text-xs font-bold rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                    modalTab === 'seo'
+                      ? 'bg-white text-[#D04862] shadow-sm border border-rose-200/70'
+                      : 'text-slate-500 hover:text-[#D04862]'
+                  }`}
+                >
+                  <span>🚀</span> Tối ưu SEO & SERP
+                </button>
+              </div>
+
+              {/* Tab 1: Thông tin cơ bản */}
+              {modalTab === 'basic' && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <label className="block text-xs font-semibold text-slate-700">Mã sản phẩm (ID)
+                    <input value={form.id} onChange={update('id')} disabled={Boolean(editor.item.id)} required className={`mt-1 w-full px-3 py-2 border rounded-xl text-sm outline-none transition font-mono ${editor.item.id ? 'bg-slate-100 text-slate-500 border-slate-200 cursor-not-allowed' : 'bg-white border-slate-300 focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81]'}`} />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700">Tên thương hiệu
+                    <input value={form.brand} onChange={update('brand')} required className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Tên sản phẩm
+                    <input value={form.name} onChange={update('name')} required className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700">Giá bán (VND)
+                    <input value={form.price} onChange={update('price')} type="number" min="0" required className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-bold text-rose-600 font-mono" />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700">Giá gốc niêm yết (VND)
+                    <input value={form.originalPrice} onChange={update('originalPrice')} type="number" min="0" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono" />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700">Dung tích / Quy cách
+                    <input value={form.volume} onChange={update('volume')} placeholder="VD: 50ml, 200ml" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700">Danh mục sản phẩm
+                    <select value={form.stepType} onChange={update('stepType')} className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition">
+                      <option value="cleanser">Làm sạch (Cleanser)</option>
+                      <option value="toner">Cân bằng (Toner)</option>
+                      <option value="treatment">Tinh chất chuyên sâu (Serum)</option>
+                      <option value="moisturizer">Dưỡng ẩm (Moisturizer)</option>
+                      <option value="sunscreen">Chống nắng (Sunscreen)</option>
+                      <option value="special">Cơ thể & Nước hoa (Body / Perfume)</option>
+                    </select>
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Đường dẫn hình ảnh
+                    <input value={form.image} onChange={update('image')} placeholder="/images/products/..." className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono" />
+                  </label>
+                  <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Công dụng & Mô tả ngắn
+                    <textarea value={form.uses} onChange={update('uses')} rows="3" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
+                  </label>
+                </div>
+              )}
+
+              {/* Tab 2: Tối ưu SEO & SERP Preview */}
+              {modalTab === 'seo' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-rose-50/60 border border-rose-200/80 rounded-2xl">
+                    <div>
+                      <span className="text-[11px] font-bold text-[#D04862] uppercase tracking-wide">Trợ lý SEO Tự động</span>
+                      <p className="text-[11px] text-slate-500">Tự động điền Slug, Meta Title, Description và Open Graph từ tên sản phẩm.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAutoGenerateSeo}
+                      className="px-3 py-1.5 bg-[#E06D81] hover:bg-[#D04862] text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>⚡</span> Tạo nhanh SEO
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* URL Slug */}
+                    <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">
+                      <div className="flex items-center justify-between mb-1">
+                        <span>Đường dẫn URL thân thiện (Slug)</span>
+                        <span className="text-[10px] text-slate-400 font-normal">Chữ thường, nối dấu gạch ngang</span>
+                      </div>
+                      <div className="flex items-center rounded-xl border border-slate-300 bg-white overflow-hidden focus-within:ring-2 focus-within:ring-[#E06D81]/20 focus-within:border-[#E06D81]">
+                        <span className="px-3 py-2 text-xs text-slate-400 bg-slate-50 border-r border-slate-200 font-mono">/products/</span>
+                        <input
+                          value={form.slug || ''}
+                          onChange={(e) => setForm(curr => ({ ...curr, slug: slugify(e.target.value) }))}
+                          placeholder="kem-duong-phuc-hoi-rilastil-40ml"
+                          className="w-full px-3 py-2 text-sm text-slate-800 outline-none font-mono"
+                        />
+                      </div>
+                    </label>
+
+                    {/* SEO Title */}
+                    <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">
+                      <div className="flex items-center justify-between mb-1">
+                        <span>Tiêu đề SEO (Meta Title)</span>
+                        <span className={`text-[10px] font-mono ${(form.seoTitle || '').length > 60 ? 'text-amber-600 font-bold' : 'text-slate-400'}`}>
+                          {(form.seoTitle || '').length}/60 ký tự { (form.seoTitle || '').length > 60 && '⚠️ (Khuyên dùng ≤ 60)' }
+                        </span>
+                      </div>
+                      <input
+                        value={form.seoTitle || ''}
+                        onChange={update('seoTitle')}
+                        placeholder={form.name ? `${form.name} | SkinID Dược Mỹ Phẩm` : 'Tiêu đề hiển thị trên Google'}
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition"
+                      />
+                    </label>
+
+                    {/* SEO Description */}
+                    <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">
+                      <div className="flex items-center justify-between mb-1">
+                        <span>Mô tả ngắn SEO (Meta Description)</span>
+                        <span className={`text-[10px] font-mono ${(form.seoDescription || '').length > 160 ? 'text-amber-600 font-bold' : 'text-slate-400'}`}>
+                          {(form.seoDescription || '').length}/160 ký tự { (form.seoDescription || '').length > 160 && '⚠️ (Khuyên dùng ≤ 160)' }
+                        </span>
+                      </div>
+                      <textarea
+                        value={form.seoDescription || ''}
+                        onChange={update('seoDescription')}
+                        rows="2"
+                        placeholder="Đoạn văn ngắn 120-160 ký tự mô tả thành phần, công dụng và giải pháp điều trị giúp tăng tỷ lệ click (CTR) trên Google."
+                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition"
+                      />
+                    </label>
+
+                    {/* Image Alt */}
+                    <label className="block text-xs font-semibold text-slate-700">
+                      <span>Mô tả hình ảnh (Image Alt Tag)</span>
+                      <input
+                        value={form.imageAlt || ''}
+                        onChange={update('imageAlt')}
+                        placeholder="VD: Kem dưỡng ẩm phục hồi da tổn thương Rilastil"
+                        className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition"
+                      />
+                    </label>
+
+                    {/* Robots Meta */}
+                    <label className="block text-xs font-semibold text-slate-700">
+                      <span>Chỉ thị Robots (Robots Meta Directive)</span>
+                      <select
+                        value={form.robotsMeta || 'index, follow'}
+                        onChange={update('robotsMeta')}
+                        className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono"
+                      >
+                        <option value="index, follow">index, follow (Cho phép lập chỉ mục)</option>
+                        <option value="noindex, nofollow">noindex, nofollow (Ẩn khỏi tìm kiếm)</option>
+                        <option value="noindex, follow">noindex, follow (Không lập chỉ mục, theo dõi liên kết)</option>
+                      </select>
+                    </label>
+
+                    {/* Open Graph Image */}
+                    <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">
+                      <span>Đường dẫn ảnh chia sẻ Mạng xã hội (OG:Image)</span>
+                      <input
+                        value={form.ogImage || ''}
+                        onChange={update('ogImage')}
+                        placeholder={form.image || 'https://skinid.vn/images/og-default.jpg'}
+                        className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono"
+                      />
+                      <span className="text-[10px] text-slate-400 mt-1 block">Tỉ lệ khuyến nghị 1200x630px để hiển thị đẹp nhất trên Zalo & Facebook.</span>
+                    </label>
+
+                    {/* Canonical URL */}
+                    <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">
+                      <span>Đường dẫn chuẩn hóa (Canonical URL)</span>
+                      <input
+                        value={form.canonicalUrl || ''}
+                        onChange={update('canonicalUrl')}
+                        placeholder={`https://skinid.vn/products/${form.slug || form.id || 'san-pham'}`}
+                        className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono"
+                      />
+                    </label>
+                  </div>
+
+                  {/* Live SERP Preview */}
+                  <div className="p-4 bg-slate-50 border border-slate-200/90 rounded-2xl space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 uppercase tracking-wide">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Xem trước kết quả tìm kiếm Google (SERP Preview)
+                      </span>
+                      <span className="text-slate-400 font-mono text-[10px]">Google Search Result</span>
+                    </div>
+
+                    <div className="p-3.5 bg-white rounded-xl border border-slate-200/70 shadow-sm space-y-1">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[9px] font-bold text-[#D04862]">S</div>
+                        <div className="text-[12px] text-slate-700 truncate font-sans">
+                          SkinID <span className="text-slate-400">› products › {form.slug || form.id || 'san-pham'}</span>
+                        </div>
+                      </div>
+                      <div className="text-[16px] font-medium text-[#1a0dab] hover:underline cursor-pointer truncate font-sans leading-snug">
+                        {form.seoTitle || form.name || 'Tiêu đề sản phẩm hiển thị trên Google'} | SkinID
+                      </div>
+                      <div className="text-[13px] text-[#4d5156] line-clamp-2 leading-relaxed font-sans">
+                        {form.seoDescription || form.uses || 'Mô tả tóm tắt tính năng sản phẩm dược mỹ phẩm chuẩn chuyên gia da liễu. Click để khám phá và nhận phác đồ chăm sóc chuyên biệt từ SkinID.'}
+                      </div>
+                    </div>
+                  </div>
+
+              {/* Khối 4: Cấu hình Tiếp thị & Mã Theo dõi (SEO & Analytics Tracking) */}
+              <div className="card-luxury p-5 space-y-4">
+                <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
+                  <div>
+                    <h4 className="font-bold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-2">
+                      <span>📊</span> 4. Cấu hình Tiếp thị & Mã Theo dõi (SEO & Analytics Tracking)
+                    </h4>
+                    <p className="text-[11px] text-slate-400 mt-0.5">
+                      Tích hợp trực tiếp mã đo lường Google Analytics 4, Tag Manager, Meta Pixel và thẻ xác minh Google Search Console.
+                    </p>
+                  </div>
+                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    Live Injected
+                  </span>
+                </div>
+
+                <div className="space-y-3.5 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">
+                        Google Analytics 4 (GA4 ID)
+                      </label>
+                      <input
+                        type="text"
+                        value={systemSettings.gaId || ''}
+                        onChange={(e) => setSystemSettings(prev => ({ ...prev, gaId: e.target.value.trim() }))}
+                        placeholder="G-XXXXXXXXXX"
+                        className="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-200/90 rounded-xl outline-none focus:bg-white focus:border-[#E06D81] focus:ring-2 focus:ring-[#E06D81]/15 transition text-slate-800 font-mono text-xs"
+                      />
+                      <span className="text-[10px] text-slate-400 block mt-1">Đo lường lượng truy cập và hành vi khách hàng.</span>
+                    </div>
+
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">
+                        Google Tag Manager (GTM ID)
+                      </label>
+                      <input
+                        type="text"
+                        value={systemSettings.gtmId || ''}
+                        onChange={(e) => setSystemSettings(prev => ({ ...prev, gtmId: e.target.value.trim() }))}
+                        placeholder="GTM-XXXXXXX"
+                        className="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-200/90 rounded-xl outline-none focus:bg-white focus:border-[#E06D81] focus:ring-2 focus:ring-[#E06D81]/15 transition text-slate-800 font-mono text-xs"
+                      />
+                      <span className="text-[10px] text-slate-400 block mt-1">Quản lý các thẻ tiếp thị nâng cao.</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">
+                        Meta Pixel ID (Facebook / Instagram Ads)
+                      </label>
+                      <input
+                        type="text"
+                        value={systemSettings.metaPixelId || ''}
+                        onChange={(e) => setSystemSettings(prev => ({ ...prev, metaPixelId: e.target.value.trim() }))}
+                        placeholder="VD: 123456789012345"
+                        className="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-200/90 rounded-xl outline-none focus:bg-white focus:border-[#E06D81] focus:ring-2 focus:ring-[#E06D81]/15 transition text-slate-800 font-mono text-xs"
+                      />
+                      <span className="text-[10px] text-slate-400 block mt-1">Theo dõi chuyển đổi đơn hàng cho quảng cáo Facebook.</span>
+                    </div>
+
+                    <div>
+                      <label className="block font-semibold text-slate-700 mb-1">
+                        Google Site Verification Meta Tag
+                      </label>
+                      <input
+                        type="text"
+                        value={systemSettings.googleSiteVerification || ''}
+                        onChange={(e) => setSystemSettings(prev => ({ ...prev, googleSiteVerification: e.target.value.trim() }))}
+                        placeholder="google-site-verification=abc..."
+                        className="w-full px-3.5 py-2 bg-slate-50/80 border border-slate-200/90 rounded-xl outline-none focus:bg-white focus:border-[#E06D81] focus:ring-2 focus:ring-[#E06D81]/15 transition text-slate-800 font-mono text-xs"
+                      />
+                      <span className="text-[10px] text-slate-400 block mt-1">Xác minh quyền sở hữu website trên Google Search Console.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -2297,18 +2591,29 @@ export default function AdminPage() {
     setFlash('Đã kiểm tra toàn bộ 3 dịch vụ hạ tầng hệ thống SkinID! Trạng thái: 100% Khỏe mạnh.');
   };
 
-  // Cài đặt Hệ thống (Store Settings)
+  // Tự động tải System Settings từ Firestore khi khởi động
+  useEffect(() => {
+    fetchSystemSettings().then(settings => {
+      if (settings && Object.keys(settings).length > 0) {
+        setSystemSettings(settings);
+      }
+    }).catch(err => {
+      console.warn('[AdminPage] Lỗi tải cấu hình hệ thống từ Firestore:', err);
+    });
+  }, []);
+
+  // Cài đặt Hệ thống (Store Settings) kết nối trực tiếp Firestore
   const handleSaveSystemSettings = async (e) => {
     if (e) e.preventDefault();
     setSettingsSaving(true);
     try {
-      localStorage.setItem('skinid_system_settings', JSON.stringify(systemSettings));
+      await saveSystemSettings(systemSettings);
       try {
         await saveAdminCampaign({ ...campaign, systemSettings });
       } catch (err) {
         // non-blocking
       }
-      setFlash('Đã lưu cấu hình cài đặt hệ thống SkinID thành công!');
+      setFlash('Đã lưu cấu hình cài đặt hệ thống & mã tracking SkinID thành công vào Firestore!');
     } catch (err) {
       setActionError('Không thể lưu cấu hình hệ thống: ' + err.message);
     } finally {
