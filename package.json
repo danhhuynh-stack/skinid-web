@@ -16,7 +16,7 @@
     "audit:catalog": "node scripts/audit-catalog.js",
     "firestore:import-products": "node scripts/import-products-to-firestore.mjs",
     "firebase:set-admin": "node scripts/set-admin-claim.mjs",
-    "firestore:deploy-rules": "npx firebase-tools@15.30.2 deploy --project skinid-official --only firestore --non-interactive"
+    "firestore:deploy-rules": "npx firebase-tools@15.30.2 deploy --project skinid-vietnam --only firestore --non-interactive"
   },
   "dependencies": {
     "firebase": "^12.19.0",

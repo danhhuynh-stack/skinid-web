@@ -1,4 +1,4 @@
-﻿import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import {
   assignAdminByEmail,
   deleteAdminBlogPost,
@@ -4568,7 +4568,7 @@ export default function AdminPage() {
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-slate-500">Mã dự án</span>
-                    <strong className="font-mono text-slate-800">skinid-official</strong>
+                    <strong className="font-mono text-slate-800">skinid-vietnam</strong>
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-slate-500">Cụm máy chủ</span>

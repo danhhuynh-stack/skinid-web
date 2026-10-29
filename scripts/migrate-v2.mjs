@@ -26,6 +26,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = resolve(__dirname, '..');
 
+// Tự động tải .env nếu có
+try {
+  if (existsSync(resolve(projectRoot, '.env'))) {
+    process.loadEnvFile(resolve(projectRoot, '.env'));
+  }
+} catch {
+  // Bỏ qua nếu lỗi
+}
+
 // 1. Phân tích tham số dòng lệnh (CLI Arguments)
 const args = process.argv.slice(2);
 const isCommit = args.includes('--commit');
@@ -40,7 +49,7 @@ const localExportPath = resolve(
   localExportArg ? localExportArg.split('=')[1].trim() : 'docs/archive/skinid-localstorage-export.json'
 );
 
-const projectId = targetEnv === 'staging' ? 'skinid-staging' : 'skinid-official';
+const projectId = process.env.FIREBASE_PROJECT_ID || (targetEnv === 'staging' ? 'skinid-staging' : 'skinid-vietnam');
 
 console.log('='.repeat(80));
 console.log(`🚀 [SkinID Migration v2] Khởi chạy di trú dữ liệu nền tảng Firestore`);
@@ -285,10 +294,14 @@ async function run() {
     const { getFirestore, FieldValue } = await import('firebase-admin/firestore');
 
     let credential;
+    const defaultLocalKey = resolve(projectRoot, 'config/skinid-vietnam-service-account.json');
     if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
       credential = cert(JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON));
     } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS && existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
       const credData = JSON.parse(readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8'));
+      credential = cert(credData);
+    } else if (existsSync(defaultLocalKey)) {
+      const credData = JSON.parse(readFileSync(defaultLocalKey, 'utf8'));
       credential = cert(credData);
     }
 

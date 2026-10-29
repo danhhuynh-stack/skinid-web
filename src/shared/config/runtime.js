@@ -1,11 +1,11 @@
 export const firebaseConfig = Object.freeze({
-  apiKey: 'AIzaSyBr1YHvfKvkWEv8Tcg-Mm7sS6_6-u9SBxg',
-  authDomain: 'skinid-official.firebaseapp.com',
-  projectId: 'skinid-official',
-  storageBucket: 'skinid-official.firebasestorage.app',
-  messagingSenderId: '313072494053',
-  appId: '1:313072494053:web:d8a85bc893d797faacbb0c',
-  measurementId: 'G-Q5KZ61ESN8'
+  apiKey: import.meta.env?.VITE_FIREBASE_API_KEY || 'AIzaSyAO6NL0qtQz0whIy75WoB9lJpJMqwMtfKg',
+  authDomain: import.meta.env?.VITE_FIREBASE_AUTH_DOMAIN || 'skinid-vietnam.firebaseapp.com',
+  projectId: import.meta.env?.VITE_FIREBASE_PROJECT_ID || 'skinid-vietnam',
+  storageBucket: import.meta.env?.VITE_FIREBASE_STORAGE_BUCKET || 'skinid-vietnam.firebasestorage.app',
+  messagingSenderId: import.meta.env?.VITE_FIREBASE_MESSAGING_SENDER_ID || '915066619862',
+  appId: import.meta.env?.VITE_FIREBASE_APP_ID || '1:915066619862:web:910237340c6509e51e4677',
+  measurementId: import.meta.env?.VITE_FIREBASE_MEASUREMENT_ID || 'G-JWWNEXFL94'
 });
 
 const CLOUDFLARE_WORKER_API_URL = 'https://skinid-web.hominhkhang01072005.workers.dev/api';

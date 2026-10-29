@@ -13,6 +13,10 @@ mingit/
 !.env.example
 *.local.js
 *-firebase-adminsdk-*.json
+service-account*.json
+config/service-account*.json
+config/*.json
+config/
 gha-creds-*.json
 .secret.local
 .dev.vars
