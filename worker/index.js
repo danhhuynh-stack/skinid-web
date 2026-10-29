@@ -5,7 +5,8 @@ import {
   encodeFields,
   getDocument,
   listDocuments,
-  runQuery
+  runQuery,
+  setFirebaseCustomUserClaims
 } from './firestore.js';
 import { SERVER_CATALOG } from './catalog.generated.js';
 import { ApiError } from './app/errors.js';
@@ -340,6 +341,79 @@ async function resyncOrderToS3(request, env, user, orderId) {
 }
 
 
+export const VALID_ROLES = [
+  'super_admin',
+  'admin',
+  'editor',
+  'marketing',
+  'sales',
+  'dermatologist',
+  'warehouse',
+  'customer'
+];
+if (typeof globalThis !== 'undefined') globalThis.VALID_ROLES = VALID_ROLES;
+
+const SUPER_ADMIN_EMAILS = [
+  'admin@skinid.vn',
+  'admin@fieldman.vn',
+  'danh.huynh@fieldman.vn',
+  'danhhuynh.nexus@gmail.com'
+];
+
+function isUserSuperAdmin(user) {
+  if (!user) return false;
+  if (user.role === 'super_admin') return true;
+  if (user.admin === true && (!user.role || user.role === 'super_admin')) return true;
+  if (user.email && SUPER_ADMIN_EMAILS.includes(String(user.email).toLowerCase())) return true;
+  return false;
+}
+
+function getUserRole(user) {
+  if (isUserSuperAdmin(user)) return 'super_admin';
+  return user.role || (user.admin ? 'admin' : 'customer');
+}
+
+function assertStaffRole(user, allowedRoles = []) {
+  const role = getUserRole(user);
+  if (role === 'super_admin') return role;
+  if (allowedRoles.includes(role)) return role;
+  if (user.admin === true && allowedRoles.includes('admin')) return 'admin';
+  throw new ApiError(403, 'permission_denied', 'Bạn không có quyền thực hiện thao tác này.');
+}
+
+const devAuditLogs = [];
+
+async function logAuditEvent(env, { actor, action, resource, resourceId, details = {}, request = null }) {
+  const now = new Date();
+  const logId = `log_${now.getTime()}_${crypto.randomUUID().slice(0, 8)}`;
+  const ip = request?.headers?.get ? (request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || '127.0.0.1') : 'internal';
+  const logEntry = {
+    action,
+    resource,
+    resourceId: String(resourceId || ''),
+    actorId: actor?.sub || 'system',
+    actorEmail: actor?.email || 'system@skinid.vn',
+    actorRole: getUserRole(actor),
+    details,
+    ip,
+    createdAt: now.toISOString()
+  };
+
+  if (isFirestoreConfigured(env)) {
+    try {
+      await commitWrites(env, [
+        updateWrite(env, `auditLogs/${logId}`, logEntry, null, { exists: false })
+      ]);
+    } catch (err) {
+      console.warn('[Audit Log Write Warning]', err.message);
+    }
+  } else {
+    devAuditLogs.unshift({ id: logId, ...logEntry });
+    if (devAuditLogs.length > 500) devAuditLogs.pop();
+  }
+  return logEntry;
+}
+
 const VALID_ORDER_TRANSITIONS = {
   pending: ['confirmed', 'cancelled'],
   confirmed: ['shipping', 'cancelled'],
@@ -350,9 +424,7 @@ const VALID_ORDER_TRANSITIONS = {
 };
 
 async function transitionOrderStatus(request, env, user, orderId) {
-  if (user.admin !== true) {
-    throw new ApiError(403, 'permission_denied', 'Chỉ quản trị viên mới có thể cập nhật trạng thái đơn hàng.');
-  }
+  assertStaffRole(user, ['super_admin', 'admin', 'sales', 'warehouse']);
   const hasFirestore = isFirestoreConfigured(env);
   let order = null;
   if (hasFirestore) {
@@ -417,6 +489,15 @@ async function transitionOrderStatus(request, env, user, orderId) {
   } else {
     Object.assign(order, updateFields);
   }
+
+  await logAuditEvent(env, {
+    actor: user,
+    action: 'order_transition',
+    resource: 'orders',
+    resourceId: orderId,
+    details: { fromStatus: currentStatus, toStatus: targetStatus, note },
+    request
+  });
 
   return json(request, env, {
     success: true,
@@ -730,7 +811,7 @@ async function analyzeSkin(request, env, user) {
 }
 
 async function deleteUser(request, env, user, uid) {
-  if (user.admin !== true) throw new ApiError(403, 'permission_denied', 'Chỉ quản trị viên mới có thể xóa tài khoản.');
+  assertStaffRole(user, ['super_admin', 'admin']);
   if (!uid || uid === user.sub) throw new ApiError(400, 'invalid_user', 'Không thể xóa tài khoản này.');
   const orders = await runQuery(env, {
     from: [{ collectionId: 'orders' }],
@@ -745,7 +826,138 @@ async function deleteUser(request, env, user, uid) {
   ];
   for (let index = 0; index < writes.length; index += 450) await commitWrites(env, writes.slice(index, index + 450));
   await deleteFirebaseUser(env, uid);
+
+  await logAuditEvent(env, {
+    actor: user,
+    action: 'delete_user',
+    resource: 'users',
+    resourceId: uid,
+    details: { deletedOrders: orders.length },
+    request
+  });
+
   return json(request, env, { success: true, uid, deletedOrders: orders.length });
+}
+
+async function listStaff(request, env, user) {
+  assertStaffRole(user, ['super_admin', 'admin']);
+  const hasFirestore = isFirestoreConfigured(env);
+  let staffList = [];
+  if (hasFirestore) {
+    try {
+      const allUsers = await listDocuments(env, 'users');
+      staffList = allUsers
+        .filter(u => u.role && u.role !== 'customer')
+        .map(u => ({
+          uid: u.id,
+          email: u.email || '',
+          name: u.name || u.displayName || '',
+          role: u.role,
+          updatedAt: u.updatedAt || u.createdAt || null
+        }));
+    } catch (err) {
+      console.warn('[Worker listStaff Warning]', err.message);
+    }
+  }
+  const emailLower = String(user?.email || '').toLowerCase();
+  if (isUserSuperAdmin(user) && !staffList.some(s => s.email?.toLowerCase() === emailLower)) {
+    staffList.unshift({
+      uid: user.sub,
+      email: user.email || '',
+      name: user.name || 'Super Admin',
+      role: 'super_admin',
+      updatedAt: new Date().toISOString()
+    });
+  }
+  return json(request, env, { success: true, staff: staffList });
+}
+
+async function assignStaffRole(request, env, user) {
+  assertStaffRole(user, ['super_admin']);
+  const payload = await request.json().catch(() => {
+    throw new ApiError(400, 'invalid_json', 'Dữ liệu gửi lên không hợp lệ.');
+  });
+  const targetUid = String(payload.uid || '').trim();
+  const newRole = String(payload.role || '').trim().toLowerCase();
+
+  if (!targetUid) {
+    throw new ApiError(400, 'missing_uid', 'Thiếu mã người dùng (UID).');
+  }
+  if (!VALID_ROLES.includes(newRole)) {
+    throw new ApiError(400, 'invalid_role', `Vai trò "${newRole}" không hợp lệ. Cho phép: ${VALID_ROLES.join(', ')}`);
+  }
+
+  const now = new Date();
+  const hasFirestore = isFirestoreConfigured(env);
+
+  if (hasFirestore) {
+    try {
+      if (typeof setFirebaseCustomUserClaims === 'function') {
+        await setFirebaseCustomUserClaims(env, targetUid, {
+          role: newRole,
+          admin: ['super_admin', 'admin'].includes(newRole)
+        });
+      }
+    } catch (err) {
+      console.warn('[Worker setCustomClaims Warning]', err.message);
+    }
+
+    const patch = {
+      role: newRole,
+      updatedAt: now
+    };
+    await commitWrites(env, [
+      updateWrite(env, `users/${targetUid}`, patch, ['role', 'updatedAt'])
+    ]);
+  }
+
+  await logAuditEvent(env, {
+    actor: user,
+    action: 'assign_role',
+    resource: 'staff',
+    resourceId: targetUid,
+    details: { assignedRole: newRole },
+    request
+  });
+
+  return json(request, env, { success: true, uid: targetUid, role: newRole });
+}
+
+async function listAuditLogs(request, env, user) {
+  assertStaffRole(user, ['super_admin', 'admin']);
+  const hasFirestore = isFirestoreConfigured(env);
+  let logs = [];
+  if (hasFirestore) {
+    try {
+      const docs = await listDocuments(env, 'auditLogs');
+      logs = docs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).slice(0, 100);
+    } catch (err) {
+      console.warn('[Worker listAuditLogs Warning]', err.message);
+    }
+  } else {
+    logs = devAuditLogs.slice(0, 100);
+  }
+  return json(request, env, { success: true, logs });
+}
+
+async function recordClientAuditLog(request, env, user) {
+  assertStaffRole(user, ['super_admin', 'admin', 'editor', 'marketing', 'sales', 'dermatologist', 'warehouse']);
+  const payload = await request.json().catch(() => ({}));
+  const action = String(payload.action || 'client_action').slice(0, 80);
+  const resource = String(payload.resource || 'general').slice(0, 80);
+  const resourceId = String(payload.resourceId || '').slice(0, 120);
+  const details = typeof payload.details === 'object' && payload.details ? payload.details : {};
+
+  const entry = await logAuditEvent(env, {
+    actor: user,
+    action,
+    resource,
+    resourceId,
+    details,
+    request
+  });
+
+  return json(request, env, { success: true, logId: entry.id });
 }
 
 async function handleApi(request, env) {
@@ -761,6 +973,10 @@ async function handleApi(request, env) {
   const orderMatch = url.pathname.match(/^\/api\/orders\/([^/]+)$/);
   if (request.method === 'PATCH' && orderMatch) return cancelOrder(request, env, user, decodeURIComponent(orderMatch[1]));
   if (request.method === 'POST' && url.pathname === '/api/analyze-skin') return analyzeSkin(request, env, user);
+  if (request.method === 'GET' && url.pathname === '/api/admin/staff') return listStaff(request, env, user);
+  if (request.method === 'POST' && url.pathname === '/api/admin/staff/roles') return assignStaffRole(request, env, user);
+  if (request.method === 'GET' && url.pathname === '/api/admin/audit-logs') return listAuditLogs(request, env, user);
+  if (request.method === 'POST' && url.pathname === '/api/admin/audit-logs') return recordClientAuditLog(request, env, user);
   const userMatch = url.pathname.match(/^\/api\/admin\/users\/([^/]+)$/);
   if (request.method === 'DELETE' && userMatch) return deleteUser(request, env, user, decodeURIComponent(userMatch[1]));
   throw new ApiError(404, 'not_found', 'Không tìm thấy API được yêu cầu.');

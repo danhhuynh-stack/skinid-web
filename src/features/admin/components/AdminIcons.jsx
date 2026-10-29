@@ -1,6 +1,16 @@
 // Bộ icon SVG Vector chuẩn tối giản & thanh lịch (Chuẩn Linear & Vercel Design System)
 // Không dùng emoji lòe loẹt, nét vẽ 1.75px mảnh mai, sắc nét
 
+export function IconAuditLogs({ className = 'w-4 h-4' }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 8v4l3 3" />
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 3a9 9 0 0 0-9 9" />
+    </svg>
+  );
+}
+
 export function IconDashboard({ className = 'w-4 h-4' }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">

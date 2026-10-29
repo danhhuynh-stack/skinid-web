@@ -7,6 +7,7 @@ import {
   IconMembers,
   IconSystem,
   IconSettings,
+  IconAuditLogs,
   IconExternalLink,
   IconClose
 } from './AdminIcons.jsx';
@@ -37,6 +38,7 @@ const NAV_GROUPS = [
     title: 'HỆ THỐNG',
     items: [
       { id: 'system', label: 'Hạ tầng & Kết nối', Icon: IconSystem },
+      { id: 'audit-logs', label: 'Nhật ký Truy vết', Icon: IconAuditLogs },
       { id: 'settings', label: 'Cài đặt hệ thống', Icon: IconSettings }
     ]
   }

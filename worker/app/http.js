@@ -15,7 +15,12 @@ export function corsHeaders(request, env) {
     'access-control-allow-headers': 'authorization, content-type, idempotency-key',
     'access-control-allow-methods': 'GET, POST, PATCH, DELETE, OPTIONS',
     'access-control-max-age': '86400',
-    vary: 'Origin'
+    vary: 'Origin',
+    'x-content-type-options': 'nosniff',
+    'x-frame-options': 'DENY',
+    'referrer-policy': 'strict-origin-when-cross-origin',
+    'permissions-policy': 'camera=(self), microphone=(), geolocation=()',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload'
   };
 }
 

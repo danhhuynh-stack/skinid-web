@@ -18,6 +18,8 @@ import {
   updateAdminOrder,
   updateUserRole,
   useAdmin,
+  useAdminIdleTimeout,
+  fetchAuditLogs,
   fetchSystemSettings,
   saveSystemSettings
 } from '../features/admin/index.js';
@@ -93,19 +95,49 @@ const ORDER_STATUSES = [
 const ROLE_DEFINITIONS = {
   super_admin: {
     label: 'Super Admin',
-    desc: 'Toàn quyền quản trị hệ thống',
+    desc: 'Toàn quyền quản trị hệ thống & bảo mật',
     badge: 'bg-rose-50 text-[#D04862] border-rose-200 font-bold',
     dot: 'bg-[#E06D81]'
   },
   admin: {
     label: 'Quản lý Vận hành',
-    desc: 'Xử lý đơn hàng, Kho & POS',
+    desc: 'Xử lý đơn hàng, danh mục, kho & POS',
     badge: 'bg-indigo-50 text-indigo-800 border-indigo-200 font-semibold',
     dot: 'bg-indigo-600'
   },
+  editor: {
+    label: 'Biên tập viên',
+    desc: 'Xuất bản bài viết, chỉnh sửa nội dung & banner',
+    badge: 'bg-amber-50 text-amber-800 border-amber-200 font-semibold',
+    dot: 'bg-amber-500'
+  },
+  marketing: {
+    label: 'Chuyên viên Marketing',
+    desc: 'Quản lý khuyến mãi, voucher chiết khấu & chiến dịch',
+    badge: 'bg-purple-50 text-purple-800 border-purple-200 font-semibold',
+    dot: 'bg-purple-500'
+  },
+  sales: {
+    label: 'CSKH & Bán hàng',
+    desc: 'Tra cứu, xử lý đơn hàng & chăm sóc khách hàng',
+    badge: 'bg-emerald-50 text-emerald-800 border-emerald-200 font-semibold',
+    dot: 'bg-emerald-500'
+  },
+  dermatologist: {
+    label: 'Chuyên gia Da liễu',
+    desc: 'Bác sĩ/Tư vấn viên soi da & phác đồ da liễu',
+    badge: 'bg-cyan-50 text-cyan-800 border-cyan-200 font-semibold',
+    dot: 'bg-cyan-500'
+  },
+  warehouse: {
+    label: 'Quản lý Kho vận',
+    desc: 'Cập nhật tồn kho sản phẩm, đóng gói & giao hàng',
+    badge: 'bg-blue-50 text-blue-800 border-blue-200 font-semibold',
+    dot: 'bg-blue-500'
+  },
   staff: {
     label: 'Nhân viên CSKH',
-    desc: 'Tra cứu & Hỗ trợ khách hàng',
+    desc: 'Tra cứu & Hỗ trợ đơn (tương đương CSKH)',
     badge: 'bg-emerald-50 text-emerald-800 border-emerald-200 font-semibold',
     dot: 'bg-emerald-500'
   },
@@ -178,6 +210,12 @@ const TAB_CONFIGS = {
   system: {
     title: 'Hạ tầng Kết nối & Trạng thái Hệ thống',
     desc: 'Giám sát độ sẵn sàng của cơ sở dữ liệu đám mây, kết nối phần mềm bán lẻ S3 POS và cổng thanh toán VietQR.',
+    category: 'Hệ thống Quản trị',
+    Icon: IconSystem
+  },
+  'audit-logs': {
+    title: 'Nhật ký Hoạt động & Truy vết Hệ thống (Audit Logs)',
+    desc: 'Theo dõi toàn bộ lịch sử thao tác của nhân sự (phân quyền, chuyển trạng thái đơn, thao tác hệ thống).',
     category: 'Hệ thống Quản trị',
     Icon: IconSystem
   },
@@ -292,10 +330,14 @@ function EditorModal({ editor, onClose, onSaved }) {
                   disabled={isEditingRoot}
                   className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm font-semibold focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition disabled:bg-slate-100 disabled:text-slate-500"
                 >
-                  <option value="super_admin">Super Admin — Toàn quyền hệ thống</option>
+                  <option value="super_admin">Super Admin — Toàn quyền hệ thống & bảo mật</option>
                   <option value="admin">Quản lý Vận hành — Đơn hàng, Kho & POS</option>
-                  <option value="staff">Nhân viên CSKH — Tra cứu & Hỗ trợ đơn</option>
-                  <option value="customer">Khách hàng — Tài khoản mua sắm</option>
+                  <option value="editor">Biên tập viên — CMS, Cẩm nang Skincare & Banner</option>
+                  <option value="marketing">Chuyên viên Marketing — Khuyến mãi & Voucher</option>
+                  <option value="sales">CSKH & Bán hàng — Xử lý đơn & Chăm sóc khách</option>
+                  <option value="dermatologist">Chuyên gia Da liễu — Soi da & Phác đồ liệu trình</option>
+                  <option value="warehouse">Quản lý Kho vận — Tồn kho sản phẩm & Giao hàng</option>
+                  <option value="customer">Khách hàng — Tài khoản thành viên mua sắm</option>
                 </select>
               </label>
               <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Địa chỉ giao hàng
@@ -666,9 +708,13 @@ function AddMemberModal({ isOpen, onClose, onCreated }) {
           </label>
           <label className="block text-xs font-semibold text-slate-700">Vai trò & Quyền hạn
             <select value={role} onChange={(e) => setRole(e.target.value)} className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-medium">
-              <option value="admin">Quản lý Vận hành (Admin) — Xử lý đơn, đồng bộ POS, cập nhật sản phẩm</option>
-              <option value="staff">Nhân viên CSKH (Staff) — Tra cứu đơn hàng, hỗ trợ khách hàng</option>
               <option value="super_admin">Super Admin (Ban Giám Đốc) — Toàn quyền quản trị hệ thống</option>
+              <option value="admin">Quản lý Vận hành (Admin) — Xử lý đơn, đồng bộ POS, cập nhật sản phẩm</option>
+              <option value="editor">Biên tập viên (Editor) — CMS, cẩm nang chăm da, chỉnh sửa bài viết</option>
+              <option value="marketing">Chuyên viên Marketing — Quản lý khuyến mãi, Flash sale, voucher</option>
+              <option value="sales">CSKH & Bán hàng (Sales) — Tra cứu đơn hàng, hỗ trợ khách hàng</option>
+              <option value="dermatologist">Chuyên gia Da liễu — Soi da & tư vấn liệu trình điều trị</option>
+              <option value="warehouse">Quản lý Kho vận — Cập nhật tồn kho, đóng gói và bàn giao ship</option>
             </select>
           </label>
           <div className="p-3 bg-amber-50/80 border border-amber-200/80 rounded-2xl text-[11px] text-amber-900 leading-relaxed shadow-2xs">
@@ -1986,12 +2032,41 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState(() => {
     if (typeof window !== 'undefined') {
       const q = new URLSearchParams(window.location.search).get('tab');
-      if (q && ['dashboard', 'orders', 'promotions', 'blog', 'members', 'products', 'system', 'settings'].includes(q)) {
+      if (q && ['dashboard', 'orders', 'promotions', 'blog', 'members', 'products', 'system', 'audit-logs', 'settings'].includes(q)) {
         return q;
       }
     }
     return 'dashboard';
   });
+
+  // Tự động đăng xuất sau 30 phút không thao tác theo chính sách bảo mật GĐ3
+  useAdminIdleTimeout(() => {
+    alert('Phiên làm việc quản trị đã hết hạn sau 30 phút không hoạt động để bảo vệ an toàn dữ liệu.');
+    window.location.reload();
+  });
+
+  const [auditLogs, setAuditLogs] = useState([]);
+  const [loadingAuditLogs, setLoadingAuditLogs] = useState(false);
+  const [auditFilter, setAuditFilter] = useState('all');
+
+  const loadAuditLogs = async () => {
+    setLoadingAuditLogs(true);
+    try {
+      const logs = await fetchAuditLogs();
+      setAuditLogs(logs || []);
+    } catch (err) {
+      console.warn('[Admin Audit Logs] Load failed:', err.message);
+    } finally {
+      setLoadingAuditLogs(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'audit-logs' && auditLogs.length === 0) {
+      loadAuditLogs();
+    }
+  }, [activeTab]);
+
   const handleSelectTab = (tabId) => {
     setActiveTab(tabId);
     if (typeof window !== 'undefined') {
@@ -4158,7 +4233,11 @@ export default function AdminPage() {
                                   >
                                     <option value="super_admin" className="bg-white text-slate-800 font-semibold">Super Admin</option>
                                     <option value="admin" className="bg-white text-slate-800 font-semibold">Quản lý Vận hành</option>
-                                    <option value="staff" className="bg-white text-slate-800 font-semibold">Nhân viên CSKH</option>
+                                    <option value="editor" className="bg-white text-slate-800 font-semibold">Biên tập viên</option>
+                                    <option value="marketing" className="bg-white text-slate-800 font-semibold">Marketing</option>
+                                    <option value="sales" className="bg-white text-slate-800 font-semibold">CSKH & Bán hàng</option>
+                                    <option value="dermatologist" className="bg-white text-slate-800 font-semibold">Chuyên gia Da liễu</option>
+                                    <option value="warehouse" className="bg-white text-slate-800 font-semibold">Kho vận</option>
                                     <option value="customer" className="bg-white text-slate-800 font-semibold">Hạ xuống Khách hàng</option>
                                   </select>
                                   <IconChevronDown className="w-3.5 h-3.5 absolute right-2.5 pointer-events-none opacity-70" />
@@ -4302,7 +4381,11 @@ export default function AdminPage() {
                                       className="appearance-none pl-6 pr-7 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200 hover:border-slate-300 outline-none cursor-pointer transition focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81]"
                                     >
                                       <option value="customer" className="bg-white text-slate-800 font-semibold">Khách hàng (Mặc định)</option>
-                                      <option value="staff" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Nhân viên CSKH</option>
+                                      <option value="sales" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: CSKH & Bán hàng</option>
+                                      <option value="editor" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Biên tập viên</option>
+                                      <option value="marketing" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Marketing</option>
+                                      <option value="dermatologist" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Chuyên gia Da liễu</option>
+                                      <option value="warehouse" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Kho vận</option>
                                       <option value="admin" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Quản lý Vận hành</option>
                                       <option value="super_admin" className="bg-white text-slate-800 font-semibold">↑ Thăng quyền: Super Admin</option>
                                     </select>
@@ -4775,6 +4858,138 @@ export default function AdminPage() {
                         </td>
                       </tr>
                     ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 8.1 TAB: NHẬT KÝ HOẠT ĐỘNG VÀ TRUY VẾT HỆ THỐNG (AUDIT LOGS - GĐ3) */}
+        {activeTab === 'audit-logs' && (
+          <div className="space-y-6 admin-tab-content">
+            {/* Header Nhật ký */}
+            <div className="card-luxury p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200/80 shadow-2xs flex-shrink-0">
+                  <IconSystem className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-sm text-slate-900 tracking-tight">Nhật ký Truy vết & Hoạt động Hệ thống (Audit Trail)</h3>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                      GĐ3 Security
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Ghi vết bất biến mọi thao tác nhạy cảm: gán quyền nhân sự, chuyển trạng thái đơn, tra cứu và bảo mật tài khoản.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={loadAuditLogs}
+                  disabled={loadingAuditLogs}
+                  className="btn-luxury-secondary text-xs flex items-center gap-2"
+                >
+                  <IconRefresh className={`w-3.5 h-3.5 ${loadingAuditLogs ? 'animate-spin' : ''}`} />
+                  <span>{loadingAuditLogs ? 'Đang tải...' : 'Làm mới'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Bộ lọc phân loại */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {[
+                { id: 'all', label: 'Tất cả nhật ký' },
+                { id: 'staff', label: 'Gán quyền nhân sự' },
+                { id: 'orders', label: 'Chuyển trạng thái đơn' },
+                { id: 'users', label: 'Quản trị tài khoản' }
+              ].map(f => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => setAuditFilter(f.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition cursor-pointer ${
+                    auditFilter === f.id
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-2xs'
+                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Bảng nhật ký */}
+            <div className="card-luxury overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-bold uppercase text-[10px] tracking-wider">
+                      <th className="py-3.5 px-4">Thời gian & IP</th>
+                      <th className="py-3.5 px-4">Nhân sự thực hiện</th>
+                      <th className="py-3.5 px-4">Hành động</th>
+                      <th className="py-3.5 px-4">Đối tượng</th>
+                      <th className="py-3.5 px-4">Chi tiết ghi nhận</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {loadingAuditLogs ? (
+                      <tr>
+                        <td colSpan={5} className="py-12 text-center text-slate-400">
+                          <div className="inline-flex items-center gap-2 text-xs font-medium">
+                            <span className="w-4 h-4 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin"></span>
+                            <span>Đang truy xuất nhật ký từ máy chủ...</span>
+                          </div>
+                        </td>
+                      </tr>
+                    ) : auditLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="py-12 text-center text-slate-400">
+                          Chưa có nhật ký hoạt động nào được ghi nhận.
+                        </td>
+                      </tr>
+                    ) : (
+                      auditLogs
+                        .filter(l => {
+                          if (auditFilter === 'all') return true;
+                          return l.resource === auditFilter;
+                        })
+                        .map((l, idx) => {
+                          const actorRoleMeta = ROLE_DEFINITIONS[l.actorRole] || ROLE_DEFINITIONS.admin;
+                          return (
+                            <tr key={l.id || idx} className="hover:bg-slate-50/70 transition-colors">
+                              <td className="py-3.5 px-4 font-mono text-slate-600 whitespace-nowrap">
+                                <div>{l.createdAt ? new Date(l.createdAt).toLocaleString('vi-VN') : '—'}</div>
+                                <div className="text-[10px] text-slate-400 font-mono mt-0.5">IP: {l.ip || 'internal'}</div>
+                              </td>
+                              <td className="py-3.5 px-4">
+                                <div className="font-semibold text-slate-900">{l.actorEmail || l.actorId}</div>
+                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 mt-1 rounded-md text-[10px] border ${actorRoleMeta.badge}`}>
+                                  <span className={`w-1.5 h-1.5 rounded-full ${actorRoleMeta.dot}`} />
+                                  <span>{actorRoleMeta.label}</span>
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 font-mono font-bold text-slate-800">
+                                <span className="px-2 py-1 rounded-lg bg-slate-100 border border-slate-200/80 text-[11px]">
+                                  {l.action}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 text-slate-700 font-mono text-[11px]">
+                                <span className="text-slate-400">{l.resource}/</span>
+                                <span className="font-semibold text-slate-900">{l.resourceId || '—'}</span>
+                              </td>
+                              <td className="py-3.5 px-4 text-slate-600 max-w-[280px]">
+                                <div className="font-mono text-[11px] truncate bg-slate-50 p-1.5 rounded-lg border border-slate-100" title={JSON.stringify(l.details || {})}>
+                                  {JSON.stringify(l.details || {})}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                    )}
                   </tbody>
                 </table>
               </div>

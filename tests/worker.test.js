@@ -46,4 +46,24 @@ assert.match(worker, /resolveShippingFee/);
 assert.match(worker, /duplicate: true/);
 assert.match(worker, /statusHistory/);
 
-console.log('PASS: Worker verifies Firebase tokens, recalculates orders, validates vouchers/shipping and enforces order state machine.');
+// GD3: Phân quyền 7 vai trò, Audit Logs, Staff API & Security Headers
+assert.match(worker, /VALID_ROLES/);
+assert.match(worker, /super_admin/);
+assert.match(worker, /dermatologist/);
+assert.match(worker, /warehouse/);
+assert.match(worker, /assertStaffRole/);
+assert.match(worker, /logAuditEvent/);
+assert.match(worker, /assignStaffRole/);
+assert.match(worker, /listStaff/);
+assert.match(worker, /listAuditLogs/);
+assert.match(worker, /\/api\/admin\/staff\/roles/);
+assert.match(worker, /\/api\/admin\/audit-logs/);
+assert.match(firestore, /setFirebaseCustomUserClaims/);
+assert.match(workerEnv + worker, /danh\.huynh@fieldman\.vn/);
+
+const httpModule = fs.readFileSync(path.join(root, 'worker/app/http.js'), 'utf8');
+assert.match(httpModule, /x-content-type-options/);
+assert.match(httpModule, /x-frame-options/);
+assert.match(httpModule, /strict-transport-security/);
+
+console.log('PASS: Worker verifies Firebase tokens, recalculates orders, validates vouchers/shipping, enforces 7 RBAC roles and logs audit trails.');

@@ -257,10 +257,31 @@ export async function syncAllPendingOrdersToS3(orders = []) {
   return { total: pendingOrders.length, successCount, failCount };
 }
 
+export const VALID_ROLES = [
+  'super_admin',
+  'admin',
+  'editor',
+  'marketing',
+  'sales',
+  'dermatologist',
+  'warehouse',
+  'customer'
+];
+
 export async function updateUserRole(userId, newRole, extraMeta = {}) {
   if (!userId) throw new Error('Mã người dùng không hợp lệ.');
-  const validRoles = ['super_admin', 'admin', 'staff', 'customer'];
-  if (!validRoles.includes(newRole)) throw new Error('Vai trò không hợp lệ.');
+  if (!VALID_ROLES.includes(newRole)) throw new Error('Vai trò không hợp lệ.');
+
+  let remoteSuccess = false;
+  try {
+    const res = await apiRequest('/admin/staff/roles', {
+      method: 'POST',
+      body: JSON.stringify({ uid: userId, role: newRole })
+    });
+    if (res && res.success) remoteSuccess = true;
+  } catch (err) {
+    console.warn('[Admin Staff API] Worker endpoint not available, falling back:', err.message);
+  }
 
   const overrides = readUserOverrides();
   overrides[userId] = {
@@ -273,14 +294,16 @@ export async function updateUserRole(userId, newRole, extraMeta = {}) {
   };
   writeUserOverrides(overrides);
 
-  try {
-    const { doc, serverTimestamp, setDoc } = sdk.firestore;
-    await setDoc(doc(db, 'users', userId), {
-      role: newRole,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-  } catch (err) {
-    console.warn('[Admin Users] Firestore updateUserRole fallback to local override:', err.message);
+  if (!remoteSuccess) {
+    try {
+      const { doc, serverTimestamp, setDoc } = sdk.firestore;
+      await setDoc(doc(db, 'users', userId), {
+        role: newRole,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (err) {
+      console.warn('[Admin Users] Firestore updateUserRole fallback to local override:', err.message);
+    }
   }
 }
 
@@ -289,15 +312,13 @@ export async function assignAdminByEmail(email, role = 'admin', name = '') {
   if (!cleanEmail || !cleanEmail.includes('@')) {
     throw new Error('Vui lòng nhập địa chỉ email hợp lệ.');
   }
-  const validRoles = ['super_admin', 'admin', 'staff', 'customer'];
-  if (!validRoles.includes(role)) throw new Error('Vai trò không hợp lệ.');
+  if (!VALID_ROLES.includes(role)) throw new Error('Vai trò không hợp lệ.');
 
   const slug = cleanEmail.replace(/[^a-z0-9]/g, '_');
   const tempId = `member_${slug}`;
   const displayName = String(name || '').trim() || cleanEmail.split('@')[0];
 
   const overrides = readUserOverrides();
-  // Check if any override already matches this email
   let targetKey = tempId;
   for (const [k, val] of Object.entries(overrides)) {
     if (String(val?.email || '').toLowerCase() === cleanEmail) {
@@ -331,11 +352,7 @@ export async function assignAdminByEmail(email, role = 'admin', name = '') {
       if (targetKey !== userDoc.id) delete overrides[targetKey];
       writeUserOverrides(overrides);
 
-      await setDoc(doc(db, 'users', userDoc.id), {
-        role,
-        ...(name ? { name: displayName } : {}),
-        updatedAt: serverTimestamp()
-      }, { merge: true });
+      await updateUserRole(userDoc.id, role, { name: displayName });
       return { isNew: false, id: userDoc.id, email: cleanEmail, role };
     }
 
@@ -352,6 +369,34 @@ export async function assignAdminByEmail(email, role = 'admin', name = '') {
     console.warn('[Admin Users] Firestore assignAdminByEmail fallback to local override:', err.message);
     return { isNew: true, id: targetKey, email: cleanEmail, role };
   }
+}
+
+export async function fetchAuditLogs() {
+  try {
+    const res = await apiRequest('/admin/audit-logs');
+    if (res?.logs) return res.logs;
+  } catch (err) {
+    console.warn('[Admin Audit Logs] API fetch failed, querying Firestore:', err.message);
+  }
+
+  try {
+    const { collection, getDocs, query, orderBy, limit } = sdk.firestore;
+    const snapshot = await getDocs(query(collection(db, 'auditLogs'), orderBy('createdAt', 'desc'), limit(50)));
+    return documents(snapshot);
+  } catch (err) {
+    console.warn('[Admin Audit Logs] Firestore direct query failed:', err.message);
+    return [];
+  }
+}
+
+export async function fetchStaffDirectory() {
+  try {
+    const res = await apiRequest('/admin/staff');
+    if (res?.staff) return res.staff;
+  } catch (err) {
+    console.warn('[Admin Staff Directory] API fetch failed:', err.message);
+  }
+  return [];
 }
 
 export {

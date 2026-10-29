@@ -213,3 +213,18 @@ export async function deleteFirebaseUser(env, uid) {
   if (!response.ok) throw new Error(payload?.error?.message || 'Không thể xóa tài khoản Firebase Authentication.');
   return payload;
 }
+
+export async function setFirebaseCustomUserClaims(env, uid, claims = {}) {
+  const token = await getGoogleAccessToken(env);
+  const response = await fetch(`https://identitytoolkit.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/accounts:update`, {
+    method: 'POST',
+    headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+    body: JSON.stringify({
+      localId: uid,
+      customAttributes: JSON.stringify(claims)
+    })
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload?.error?.message || 'Không thể cập nhật quyền người dùng trên Firebase Auth.');
+  return payload;
+}
