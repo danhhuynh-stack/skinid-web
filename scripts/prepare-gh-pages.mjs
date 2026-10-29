@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+﻿import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -27,23 +27,23 @@ function copyRecursiveSync(src, dest) {
 }
 
 async function prepare() {
-  console.log('🚀 Preparing repository root for GitHub Pages publication...\n');
+  console.log('ðŸš€ Preparing repository root for GitHub Pages publication...\n');
 
   if (!fs.existsSync(path.join(distDir, 'index.html'))) {
-    console.error('❌ dist/index.html not found! Run npm run build first.');
+    console.error('âŒ dist/index.html not found! Run npm run build first.');
     process.exit(1);
   }
 
   // 1. CNAME
   const cnamePath = path.join(rootDir, 'CNAME');
   fs.writeFileSync(cnamePath, 'skinid.vn\n', 'utf8');
-  console.log('✅ Created root CNAME: skinid.vn');
+  console.log('âœ… Created root CNAME: skinid.vn');
 
   // 2. index.html & 404.html
   const distIndex = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
   fs.writeFileSync(path.join(rootDir, 'index.html'), distIndex, 'utf8');
   fs.writeFileSync(path.join(rootDir, '404.html'), distIndex, 'utf8');
-  console.log('✅ Synchronized index.html and 404.html from dist/index.html');
+  console.log('âœ… Synchronized index.html and 404.html from dist/index.html');
 
   // 3. assets/
   if (fs.existsSync(path.join(distDir, 'assets'))) {
@@ -51,118 +51,118 @@ async function prepare() {
       fs.rmSync(path.join(rootDir, 'assets'), { recursive: true, force: true });
     }
     copyRecursiveSync(path.join(distDir, 'assets'), path.join(rootDir, 'assets'));
-    console.log('✅ Synchronized clean assets/ directory');
+    console.log('âœ… Synchronized clean assets/ directory');
   }
 
   // 4. images/
   if (fs.existsSync(path.join(distDir, 'images'))) {
     copyRecursiveSync(path.join(distDir, 'images'), path.join(rootDir, 'images'));
-    console.log('✅ Synchronized images/ directory');
+    console.log('âœ… Synchronized images/ directory');
   }
 
   // 5. videos/
   if (fs.existsSync(path.join(distDir, 'videos'))) {
     copyRecursiveSync(path.join(distDir, 'videos'), path.join(rootDir, 'videos'));
-    console.log('✅ Synchronized videos/ directory');
+    console.log('âœ… Synchronized videos/ directory');
   }
 
   // 6. og-image.jpg & root files
   if (fs.existsSync(path.join(distDir, 'og-image.jpg'))) {
     fs.copyFileSync(path.join(distDir, 'og-image.jpg'), path.join(rootDir, 'og-image.jpg'));
-    console.log('✅ Synchronized og-image.jpg');
+    console.log('âœ… Synchronized og-image.jpg');
   }
 
   // 7. SPA subroute entrypoints with unique canonical URLs and metadata
   const routeMeta = {
     'products': {
-      title: 'Tất cả Sản phẩm Dược mỹ phẩm Chính Hãng | SkinID.vn',
-      desc: 'Danh mục 54 sản phẩm dược mỹ phẩm Rilastil (Ý), chăm sóc cơ thể TWON và nước hoa D\'VAH nhập khẩu chính ngạch tại SkinID.vn.',
+      title: 'Táº¥t cáº£ Sáº£n pháº©m DÆ°á»£c má»¹ pháº©m ChÃ­nh HÃ£ng | SkinID.vn',
+      desc: 'Danh má»¥c 54 sáº£n pháº©m dÆ°á»£c má»¹ pháº©m Rilastil (Ã), chÄƒm sÃ³c cÆ¡ thá»ƒ TWON vÃ  nÆ°á»›c hoa D\'VAH nháº­p kháº©u chÃ­nh ngáº¡ch táº¡i SkinID.vn.',
       canonical: 'https://skinid.vn/products/'
     },
     'khuyen-mai': {
-      title: 'Khuyến Mãi & 3 Combo Độc Quyền — Giảm Đến 50% | SkinID.vn',
-      desc: 'Chương trình ưu đãi bùng nổ: 3 combo chăm sóc da chuyên sâu và tuyển chọn sản phẩm bán lẻ chính hãng giảm giá đến 50% tại SkinID.vn.',
+      title: 'Khuyáº¿n MÃ£i & 3 Combo Äá»™c Quyá»n â€” Giáº£m Äáº¿n 50% | SkinID.vn',
+      desc: 'ChÆ°Æ¡ng trÃ¬nh Æ°u Ä‘Ã£i bÃ¹ng ná»•: 3 combo chÄƒm sÃ³c da chuyÃªn sÃ¢u vÃ  tuyá»ƒn chá»n sáº£n pháº©m bÃ¡n láº» chÃ­nh hÃ£ng giáº£m giÃ¡ Ä‘áº¿n 50% táº¡i SkinID.vn.',
       canonical: 'https://skinid.vn/khuyen-mai/'
     },
     'blog': {
-      title: 'Góc Chăm Da & Cẩm Nang Dược Mỹ Phẩm Chuẩn Y Khoa | SkinID.vn',
-      desc: 'Kiến thức chăm sóc da khoa học theo 4 bước routine: Làm sạch, Đặc trị, Khóa ẩm, Bảo vệ từ đội ngũ chuyên môn SkinID.',
+      title: 'GÃ³c ChÄƒm Da & Cáº©m Nang DÆ°á»£c Má»¹ Pháº©m Chuáº©n Y Khoa | SkinID.vn',
+      desc: 'Kiáº¿n thá»©c chÄƒm sÃ³c da khoa há»c theo 4 bÆ°á»›c routine: LÃ m sáº¡ch, Äáº·c trá»‹, KhÃ³a áº©m, Báº£o vá»‡ tá»« Ä‘á»™i ngÅ© chuyÃªn mÃ´n SkinID.',
       canonical: 'https://skinid.vn/blog/'
     },
     'goc-cham-da': {
-      title: 'Góc Chăm Da & Cẩm Nang Dược Mỹ Phẩm Chuẩn Y Khoa | SkinID.vn',
-      desc: 'Kiến thức chăm sóc da khoa học theo 4 bước routine: Làm sạch, Đặc trị, Khóa ẩm, Bảo vệ từ đội ngũ chuyên môn SkinID.',
+      title: 'GÃ³c ChÄƒm Da & Cáº©m Nang DÆ°á»£c Má»¹ Pháº©m Chuáº©n Y Khoa | SkinID.vn',
+      desc: 'Kiáº¿n thá»©c chÄƒm sÃ³c da khoa há»c theo 4 bÆ°á»›c routine: LÃ m sáº¡ch, Äáº·c trá»‹, KhÃ³a áº©m, Báº£o vá»‡ tá»« Ä‘á»™i ngÅ© chuyÃªn mÃ´n SkinID.',
       canonical: 'https://skinid.vn/blog/'
     },
     'tin-tuc': {
-      title: 'Góc Chăm Da & Tin Tức Dược Mỹ Phẩm | SkinID.vn',
-      desc: 'Kiến thức chăm sóc da khoa học theo 4 bước routine từ chuyên gia SkinID.',
+      title: 'GÃ³c ChÄƒm Da & Tin Tá»©c DÆ°á»£c Má»¹ Pháº©m | SkinID.vn',
+      desc: 'Kiáº¿n thá»©c chÄƒm sÃ³c da khoa há»c theo 4 bÆ°á»›c routine tá»« chuyÃªn gia SkinID.',
       canonical: 'https://skinid.vn/blog/'
     },
     'tra-cuu-cong-bo': {
-      title: 'Tra cứu Phiếu Tiếp Nhận Công Bố Mỹ Phẩm Chính Ngạch | SkinID.vn',
-      desc: 'Hệ thống tra cứu số công bố mỹ phẩm (CBMP) cấp bởi Cục Quản Lý Dược - Bộ Y Tế cho toàn bộ sản phẩm tại SkinID.vn.',
+      title: 'Tra cá»©u Phiáº¿u Tiáº¿p Nháº­n CÃ´ng Bá»‘ Má»¹ Pháº©m ChÃ­nh Ngáº¡ch | SkinID.vn',
+      desc: 'Há»‡ thá»‘ng tra cá»©u sá»‘ cÃ´ng bá»‘ má»¹ pháº©m (CBMP) cáº¥p bá»Ÿi Cá»¥c Quáº£n LÃ½ DÆ°á»£c - Bá»™ Y Táº¿ cho toÃ n bá»™ sáº£n pháº©m táº¡i SkinID.vn.',
       canonical: 'https://skinid.vn/tra-cuu-cong-bo/'
     },
     'compliance': {
-      title: 'Tra cứu Phiếu Tiếp Nhận Công Bố Mỹ Phẩm Chính Ngạch | SkinID.vn',
-      desc: 'Hệ thống tra cứu số công bố mỹ phẩm (CBMP) cấp bởi Cục Quản Lý Dược - Bộ Y Tế cho toàn bộ sản phẩm tại SkinID.vn.',
+      title: 'Tra cá»©u Phiáº¿u Tiáº¿p Nháº­n CÃ´ng Bá»‘ Má»¹ Pháº©m ChÃ­nh Ngáº¡ch | SkinID.vn',
+      desc: 'Há»‡ thá»‘ng tra cá»©u sá»‘ cÃ´ng bá»‘ má»¹ pháº©m (CBMP) cáº¥p bá»Ÿi Cá»¥c Quáº£n LÃ½ DÆ°á»£c - Bá»™ Y Táº¿ cho toÃ n bá»™ sáº£n pháº©m táº¡i SkinID.vn.',
       canonical: 'https://skinid.vn/tra-cuu-cong-bo/'
     },
     'kiem-chung': {
-      title: 'Tra cứu Phiếu Tiếp Nhận Công Bố Mỹ Phẩm Chính Ngạch | SkinID.vn',
-      desc: 'Hệ thống tra cứu số công bố mỹ phẩm (CBMP) cấp bởi Cục Quản Lý Dược - Bộ Y Tế cho toàn bộ sản phẩm tại SkinID.vn.',
+      title: 'Tra cá»©u Phiáº¿u Tiáº¿p Nháº­n CÃ´ng Bá»‘ Má»¹ Pháº©m ChÃ­nh Ngáº¡ch | SkinID.vn',
+      desc: 'Há»‡ thá»‘ng tra cá»©u sá»‘ cÃ´ng bá»‘ má»¹ pháº©m (CBMP) cáº¥p bá»Ÿi Cá»¥c Quáº£n LÃ½ DÆ°á»£c - Bá»™ Y Táº¿ cho toÃ n bá»™ sáº£n pháº©m táº¡i SkinID.vn.',
       canonical: 'https://skinid.vn/tra-cuu-cong-bo/'
     },
     'skin-analysis': {
-      title: 'Phân Tích Da AI 3 Góc Độ Chuẩn Da Liễu | SkinID.vn',
-      desc: 'Công nghệ soi da AI 3 góc thời gian thực, đo lường tổn thương da và đề xuất routine dược mỹ phẩm cá nhân hóa.',
+      title: 'PhÃ¢n TÃ­ch Da AI 3 GÃ³c Äá»™ Chuáº©n Da Liá»…u | SkinID.vn',
+      desc: 'CÃ´ng nghá»‡ soi da AI 3 gÃ³c thá»i gian thá»±c, Ä‘o lÆ°á»ng tá»•n thÆ°Æ¡ng da vÃ  Ä‘á» xuáº¥t routine dÆ°á»£c má»¹ pháº©m cÃ¡ nhÃ¢n hÃ³a.',
       canonical: 'https://skinid.vn/skin-analysis/'
     },
     'admin': {
-      title: 'Quản Trị Hệ Thống | SkinID.vn',
+      title: 'Quáº£n Trá»‹ Há»‡ Thá»‘ng | SkinID.vn',
       canonical: 'https://skinid.vn/admin/'
     },
     'profile': {
-      title: 'Hồ Sơ Cá Nhân & Lịch Sử Soi Da | SkinID.vn',
+      title: 'Há»“ SÆ¡ CÃ¡ NhÃ¢n & Lá»‹ch Sá»­ Soi Da | SkinID.vn',
       canonical: 'https://skinid.vn/profile/'
     },
     'acie': {
-      title: 'Trợ Lý Da Liễu Ảo ACIE | SkinID.vn',
+      title: 'Trá»£ LÃ½ Da Liá»…u áº¢o ACIE | SkinID.vn',
       canonical: 'https://skinid.vn/acie/'
     },
     'acie-vision': {
-      title: 'Trợ Lý Da Liễu Ảo ACIE | SkinID.vn',
+      title: 'Trá»£ LÃ½ Da Liá»…u áº¢o ACIE | SkinID.vn',
       canonical: 'https://skinid.vn/acie/'
     },
     'chinh-sach-bao-mat': {
-      title: 'Chính Sách Bảo Mật Thông Tin & Bảo Vệ Dữ Liệu Cá Nhân | SkinID.vn',
-      desc: 'Quy định chi tiết cách Công ty TNHH Fieldman thu thập, mã hóa và bảo vệ dữ liệu cá nhân, hình ảnh soi da AI theo Luật Bảo vệ dữ liệu cá nhân 91/2025/QH15 và Nghị định 13/2023/NĐ-CP.',
+      title: 'ChÃ­nh SÃ¡ch Báº£o Máº­t ThÃ´ng Tin & Báº£o Vá»‡ Dá»¯ Liá»‡u CÃ¡ NhÃ¢n | SkinID.vn',
+      desc: 'Quy Ä‘á»‹nh chi tiáº¿t cÃ¡ch CÃ´ng ty TNHH Fieldman thu tháº­p, mÃ£ hÃ³a vÃ  báº£o vá»‡ dá»¯ liá»‡u cÃ¡ nhÃ¢n, hÃ¬nh áº£nh soi da AI theo Luáº­t Báº£o vá»‡ dá»¯ liá»‡u cÃ¡ nhÃ¢n 91/2025/QH15 vÃ  Nghá»‹ Ä‘á»‹nh 13/2023/NÄ-CP.',
       canonical: 'https://skinid.vn/chinh-sach-bao-mat/'
     },
     'chinh-sach-van-chuyen': {
-      title: 'Chính Sách Vận Chuyển, Giao Nhận & Đồng Kiểm Hàng | SkinID.vn',
-      desc: 'Biểu phí giao hàng toàn quốc, thời gian vận chuyển 1-3 ngày, miễn phí vận chuyển cho đơn từ 500.000đ và quyền đồng kiểm hàng trước khi thanh toán tại SkinID.vn.',
+      title: 'ChÃ­nh SÃ¡ch Váº­n Chuyá»ƒn, Giao Nháº­n & Äá»“ng Kiá»ƒm HÃ ng | SkinID.vn',
+      desc: 'Biá»ƒu phÃ­ giao hÃ ng toÃ n quá»‘c, thá»i gian váº­n chuyá»ƒn 1-3 ngÃ y, miá»…n phÃ­ váº­n chuyá»ƒn cho Ä‘Æ¡n tá»« 500.000Ä‘ vÃ  quyá»n Ä‘á»“ng kiá»ƒm hÃ ng trÆ°á»›c khi thanh toÃ¡n táº¡i SkinID.vn.',
       canonical: 'https://skinid.vn/chinh-sach-van-chuyen/'
     },
     'chinh-sach-doi-tra': {
-      title: 'Chính Sách Đổi Trả Dược Mỹ Phẩm & Hoàn Tiền 100% | SkinID.vn',
-      desc: 'Quy định đổi trả dược mỹ phẩm trong vòng 7 ngày, bảo hành kích ứng da, quy trình hoàn tiền minh bạch từ 3-7 ngày làm việc của Công ty TNHH Fieldman.',
+      title: 'ChÃ­nh SÃ¡ch Äá»•i Tráº£ DÆ°á»£c Má»¹ Pháº©m & HoÃ n Tiá»n 100% | SkinID.vn',
+      desc: 'Quy Ä‘á»‹nh Ä‘á»•i tráº£ dÆ°á»£c má»¹ pháº©m trong vÃ²ng 7 ngÃ y, báº£o hÃ nh kÃ­ch á»©ng da, quy trÃ¬nh hoÃ n tiá»n minh báº¡ch tá»« 3-7 ngÃ y lÃ m viá»‡c cá»§a CÃ´ng ty TNHH Fieldman.',
       canonical: 'https://skinid.vn/chinh-sach-doi-tra/'
     },
     'chinh-sach-thanh-toan': {
-      title: 'Chính Sách Thanh Toán Tiền Mặt COD & Chuyển Khoản | SkinID.vn',
-      desc: 'Quy định phương thức thanh toán tiền mặt khi nhận hàng (COD) và chuyển khoản ngân hàng duy nhất vào tài khoản CÔNG TY TNHH FIELDMAN tại Vietcombank.',
+      title: 'ChÃ­nh SÃ¡ch Thanh ToÃ¡n Tiá»n Máº·t COD & Chuyá»ƒn Khoáº£n | SkinID.vn',
+      desc: 'Quy Ä‘á»‹nh phÆ°Æ¡ng thá»©c thanh toÃ¡n tiá»n máº·t khi nháº­n hÃ ng (COD) vÃ  chuyá»ƒn khoáº£n ngÃ¢n hÃ ng duy nháº¥t vÃ o tÃ i khoáº£n CÃ”NG TY TNHH FIELDMAN táº¡i Vietcombank.',
       canonical: 'https://skinid.vn/chinh-sach-thanh-toan/'
     },
     'dieu-khoan-giao-dich': {
-      title: 'Điều Khoản & Điều Kiện Giao Dịch Chung Mua Hàng | SkinID.vn',
-      desc: 'Quy định pháp lý về hợp đồng mua bán điện tử, cam kết dược mỹ phẩm chính hãng 100%, giới hạn trách nhiệm công cụ soi da AI tại website SkinID.vn.',
+      title: 'Äiá»u Khoáº£n & Äiá»u Kiá»‡n Giao Dá»‹ch Chung Mua HÃ ng | SkinID.vn',
+      desc: 'Quy Ä‘á»‹nh phÃ¡p lÃ½ vá» há»£p Ä‘á»“ng mua bÃ¡n Ä‘iá»‡n tá»­, cam káº¿t dÆ°á»£c má»¹ pháº©m chÃ­nh hÃ£ng 100%, giá»›i háº¡n trÃ¡ch nhiá»‡m cÃ´ng cá»¥ soi da AI táº¡i website SkinID.vn.',
       canonical: 'https://skinid.vn/dieu-khoan-giao-dich/'
     },
     'quy-trinh-khieu-nai': {
-      title: 'Quy Trình Tiếp Nhận & Giải Quyết Khiếu Nại Khách Hàng | SkinID.vn',
-      desc: 'Quy chuẩn 6 bước giải quyết khiếu nại người tiêu dùng theo Luật Bảo vệ quyền lợi người tiêu dùng 2023: tiếp nhận 24h, giải quyết dứt điểm trong 7 ngày của Fieldman.',
+      title: 'Quy TrÃ¬nh Tiáº¿p Nháº­n & Giáº£i Quyáº¿t Khiáº¿u Náº¡i KhÃ¡ch HÃ ng | SkinID.vn',
+      desc: 'Quy chuáº©n 6 bÆ°á»›c giáº£i quyáº¿t khiáº¿u náº¡i ngÆ°á»i tiÃªu dÃ¹ng theo Luáº­t Báº£o vá»‡ quyá»n lá»£i ngÆ°á»i tiÃªu dÃ¹ng 2023: tiáº¿p nháº­n 24h, giáº£i quyáº¿t dá»©t Ä‘iá»ƒm trong 7 ngÃ y cá»§a Fieldman.',
       canonical: 'https://skinid.vn/quy-trinh-khieu-nai/'
     }
   };
@@ -189,9 +189,9 @@ async function prepare() {
     }
     fs.writeFileSync(path.join(routeDir, 'index.html'), customHtml, 'utf8');
   }
-  console.log(`✅ Generated ${routes.length} SEO-optimized SPA route entrypoints with dedicated canonical URLs: ${routes.join(', ')}`);
+  console.log(`âœ… Generated ${routes.length} SEO-optimized SPA route entrypoints with dedicated canonical URLs: ${routes.join(', ')}`);
 
-  console.log('\n🎉 All GitHub Pages files successfully prepared and synchronized!');
+  console.log('\nðŸŽ‰ All GitHub Pages files successfully prepared and synchronized!');
 }
 
 prepare().catch((err) => {

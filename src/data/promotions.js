@@ -1,56 +1,245 @@
 export const CURATED_COMBOS = [
   {
-    id: 'combo-acnestil-pb',
-    badge: 'ƯU ĐÃI 20%',
-    title: 'Bộ Đôi Kháng Khuẩn & Cân Bằng Dầu Acnestil',
-    subtitle: 'Acnestil Mousse 165ml + Acnestil H-Biome Cream 40ml',
-    description: 'Làm sạch sâu dịu nhẹ và cân bằng hệ vi sinh da, hỗ trợ giảm mụn và kiểm soát bã nhờn chuẩn y khoa.',
-    image: '/images/products/rilastil-rilastil-acnestil-cleansing-mousse.png',
-    brandSlug: 'rilastil',
-    targetProductId: 'rilastil-1524',
-    secondaryProductId: 'rilastil-2095',
-    items: [
-      'Bọt rửa mặt dịu nhẹ Acnestil Cleansing Mousse 165ml',
-      'Kem cấp ẩm cân bằng hệ vi sinh Acnestil H-Biome 40ml'
+    id: 'combo-nang-xinh',
+    code: 'COMBO 1',
+    badge: 'TIẾT KIỆM 25%',
+    title: 'Nàng Xinh ♡',
+    subtitle: 'DƯỠNG TRẮNG TOÀN DIỆN',
+    slogan: 'Da mịn màng — Tươi sáng mỗi ngày',
+    description: 'Bộ ba sản phẩm dưỡng trắng body toàn diện từ TWON: làm sạch, ủ dưỡng sáng mịn và dưỡng ẩm sâu mềm mượt, tặng kèm túi quà tặng SkinID sang trọng.',
+    tagline: '🎁 Tặng kèm Túi quà tặng SkinID sang trọng',
+    products: [
+      {
+        id: 'twon-body-lotion',
+        name: 'Kem body dưỡng trắng TWON',
+        capacity: '250ml',
+        image: '/images/products/twon/twon-body-lotion.png',
+        brandSlug: 'twon',
+        price: 279000
+      },
+      {
+        id: 'twon-kem-u-trang',
+        name: 'Kem ủ trắng TWON',
+        capacity: '250ml',
+        image: '/images/products/twon/twon-kem-u-trang.png',
+        brandSlug: 'twon',
+        price: 249000
+      },
+      {
+        id: 'twon-sua-tam',
+        name: 'Sữa tắm TWON',
+        capacity: '450ml',
+        image: '/images/products/twon/twon-sua-tam.png',
+        brandSlug: 'twon',
+        price: 179000
+      }
     ],
-    price: 1095000,
-    originalPrice: 1353000,
-    discountPercent: 20
-  },
-  {
-    id: 'combo-dclar-brightening',
-    badge: 'ƯU ĐÃI 25%',
-    title: 'Liệu Trình Mờ Thâm Nám Chuyên Sâu D-Clar',
-    subtitle: 'D-Clar Micropeeling 100ml + D-Clar Drops 30ml',
-    description: 'Tẩy da chết vi mô kết hợp tinh chất cô đặc làm mờ sạm nám, dưỡng da căng sáng đều màu từ Ý.',
-    image: '/images/products/rilastil-rilastil-d-clar-depigmenting-concentrate-drops-30ml.png',
-    brandSlug: 'rilastil',
-    targetProductId: 'rilastil-499',
-    secondaryProductId: 'rilastil-486',
-    items: [
-      'Dung dịch tẩy da chết vi mô D-Clar Micropeeling 100ml',
-      'Tinh chất làm mờ thâm nám D-Clar Concentrated Drops 30ml'
+    productIds: ['twon-body-lotion', 'twon-kem-u-trang', 'twon-sua-tam'],
+    features: [
+      'Dưỡng trắng an toàn',
+      'Làm mịn da đều màu',
+      'Lưu hương lâu',
+      'Không nhờn rít'
     ],
-    price: 2060000,
-    originalPrice: 2744500,
+    originalPrice: 707000,
+    price: 529000,
+    savedPrice: 178000,
     discountPercent: 25
   },
   {
-    id: 'combo-sun-aqua',
-    badge: 'ƯU ĐÃI 20%',
-    title: 'Bộ Đôi Chống Nắng Phổ Rộng & Cấp Nước 72H',
-    subtitle: 'Sun System Water Touch SPF50+ + Aqua Intense Gel 72H',
-    description: 'Màng lọc quang học chống tia UVA/UVB toàn diện kết hợp cấp ẩm đa tầng giữ da ẩm mượt cả ngày dài.',
-    image: '/images/products/rilastil-kem-chong-nang-cap-am-water-touch-rilastil-sun-system-water-touch-moisturizing-fluid-spf-50-50ml.png',
-    brandSlug: 'rilastil',
-    targetProductId: 'rilastil-1857',
-    secondaryProductId: 'rilastil-2067',
-    items: [
-      'Kem chống nắng cấp ẩm Water Touch Fluid SPF 50+ 50ml',
-      'Kem cấp ẩm chuyên sâu 72H Aqua Intense Gel 40ml'
+    id: 'combo-nang-quyen-ru',
+    code: 'COMBO 2',
+    badge: 'TIẾT KIỆM 22%',
+    title: 'Nàng Quyến Rũ ♡',
+    subtitle: 'HƯƠNG NƯỚC HOA SANG TRỌNG',
+    slogan: 'Tự tin tỏa sáng mỗi ngày',
+    description: 'Sự kết hợp hoàn hảo giữa làn da mịn màng thơm ngát cùng hương nước hoa D\'VAH Kamal ấm áp ngọt ngào, tặng kèm túi quà tặng SkinID sang trọng.',
+    tagline: '🎁 Tặng kèm Túi quà tặng SkinID sang trọng',
+    products: [
+      {
+        id: 'twon-body-lotion',
+        name: 'Kem body dưỡng trắng TWON',
+        capacity: '250ml',
+        image: '/images/products/twon/twon-body-lotion.png',
+        brandSlug: 'twon',
+        price: 279000
+      },
+      {
+        id: 'twon-sua-tam',
+        name: 'Sữa tắm TWON',
+        capacity: '450ml',
+        image: '/images/products/twon/twon-sua-tam.png',
+        brandSlug: 'twon',
+        price: 179000
+      },
+      {
+        id: 'dvah-kamal',
+        name: 'Nước hoa D\'VAH KAMAL Mini',
+        capacity: '10ml',
+        image: '/images/products/dvah/dvah-kamal.png',
+        brandSlug: 'dvah',
+        price: 179000
+      }
     ],
-    price: 1132000,
-    originalPrice: 1415700,
-    discountPercent: 20
+    productIds: ['twon-body-lotion', 'twon-sua-tam', 'dvah-kamal'],
+    features: [
+      'Hương thơm sang trọng',
+      'Làm sạch dịu nhẹ',
+      'Dưỡng ẩm mịn màng',
+      'Lưu hương dài lâu'
+    ],
+    originalPrice: 637000,
+    price: 499000,
+    savedPrice: 138000,
+    discountPercent: 22
+  },
+  {
+    id: 'combo-nang-thom',
+    code: 'COMBO 3',
+    badge: 'TIẾT KIỆM 18%',
+    title: 'Nàng Thơm ♡',
+    subtitle: 'THƠM MỀM QUYẾN RŨ',
+    slogan: 'Dưỡng sâu — Lưu hương dài lâu',
+    description: 'Chăm sóc body toàn diện kết hợp nước hoa D\'VAH Tanmaya trầm ấm hiện đại cuốn hút, tặng kèm túi quà tặng SkinID sang trọng.',
+    tagline: '🎁 Tặng kèm Túi quà tặng SkinID sang trọng',
+    products: [
+      {
+        id: 'twon-body-lotion',
+        name: 'Kem body dưỡng trắng TWON',
+        capacity: '250ml',
+        image: '/images/products/twon/twon-body-lotion.png',
+        brandSlug: 'twon',
+        price: 279000
+      },
+      {
+        id: 'twon-sua-tam',
+        name: 'Sữa tắm TWON',
+        capacity: '450ml',
+        image: '/images/products/twon/twon-sua-tam.png',
+        brandSlug: 'twon',
+        price: 179000
+      },
+      {
+        id: 'dvah-tanmaya',
+        name: 'Nước hoa D\'VAH TANMAYA Mini',
+        capacity: '10ml',
+        image: '/images/products/dvah/dvah-tanmaya.png',
+        brandSlug: 'dvah',
+        price: 179000
+      }
+    ],
+    productIds: ['twon-body-lotion', 'twon-sua-tam', 'dvah-tanmaya'],
+    features: [
+      'Dưỡng trắng an toàn',
+      'Lưu hương lâu',
+      'Giúp da mềm mịn',
+      'Thơm quyến rũ suốt ngày dài'
+    ],
+    originalPrice: 607000,
+    price: 499000,
+    savedPrice: 108000,
+    discountPercent: 18
   }
+];
+
+export const RETAIL_50_DEALS = [
+  {
+    id: 'twon-sua-tam',
+    name: 'Sữa tắm dưỡng da TWON 450ml',
+    brand: 'TWON',
+    brandSlug: 'twon',
+    image: '/images/products/twon/twon-sua-tam.png',
+    originalPrice: 179000,
+    price: 89500,
+    discountPercent: 50,
+    features: ['Làm sạch dịu nhẹ', 'Dưỡng ẩm mịn màng', 'Lưu hương lâu', 'Không nhờn rít']
+  },
+  {
+    id: 'twon-body-lotion',
+    name: 'Kem body dưỡng trắng TWON 250ml',
+    brand: 'TWON',
+    brandSlug: 'twon',
+    image: '/images/products/twon/twon-body-lotion.png',
+    originalPrice: 279000,
+    price: 139500,
+    discountPercent: 50,
+    features: ['Dưỡng trắng an toàn', 'Làm mịn da, đều màu', 'Thấm nhanh, không nhờn rít', 'Hương nước hoa nhẹ nhàng']
+  },
+  {
+    id: 'twon-kem-u-trang',
+    name: 'Kem ủ trắng TWON 250ml',
+    brand: 'TWON',
+    brandSlug: 'twon',
+    image: '/images/products/twon/twon-kem-u-trang.png',
+    originalPrice: 249000,
+    price: 124500,
+    discountPercent: 50,
+    features: ['Dưỡng trắng chuyên sâu', 'Cải thiện thô ráp', 'Giúp da sáng mịn', 'Hương thơm sang trọng']
+  },
+  {
+    id: 'dvah-kamal',
+    name: 'Nước hoa Mini 10ml D\'VAH KAMAL',
+    brand: "D'VAH",
+    brandSlug: 'dvah',
+    image: '/images/products/dvah/dvah-kamal.png',
+    originalPrice: 179000,
+    price: 89500,
+    discountPercent: 50,
+    scent: 'Hương ấm ngọt ngào Quyến rũ',
+    features: ['Hương ấm ngọt ngào', 'Quyến rũ tinh tế', 'Độ lưu hương 6-8h']
+  },
+  {
+    id: 'dvah-malini',
+    name: 'Nước hoa Mini 10ml D\'VAH MALINI',
+    brand: "D'VAH",
+    brandSlug: 'dvah',
+    image: '/images/products/dvah/dvah-malini.png',
+    originalPrice: 179000,
+    price: 89500,
+    discountPercent: 50,
+    scent: 'Hương hoa thuần khiết Nữ tính',
+    features: ['Hương hoa thuần khiết', 'Nữ tính dịu dàng', 'Độ lưu hương 6-8h']
+  },
+  {
+    id: 'dvah-sarika',
+    name: 'Nước hoa Mini 10ml D\'VAH SARIKA',
+    brand: "D'VAH",
+    brandSlug: 'dvah',
+    image: '/images/products/dvah/dvah-sarika.png',
+    originalPrice: 179000,
+    price: 89500,
+    discountPercent: 50,
+    scent: 'Hương ngọt sang trọng Tinh tế',
+    features: ['Hương ngọt sang trọng', 'Tinh tế cuốn hút', 'Độ lưu hương 6-8h']
+  },
+  {
+    id: 'dvah-tanmaya',
+    name: 'Nước hoa Mini 10ml D\'VAH TANMAYA',
+    brand: "D'VAH",
+    brandSlug: 'dvah',
+    image: '/images/products/dvah/dvah-tanmaya.png',
+    originalPrice: 179000,
+    price: 89500,
+    discountPercent: 50,
+    scent: 'Hương trầm ấm Hiện đại Cuốn hút',
+    features: ['Hương trầm ấm hiện đại', 'Cuốn hút quyến rũ', 'Độ lưu hương 6-8h']
+  },
+  {
+    id: 'dvah-rakta',
+    name: 'Nước hoa Mini 10ml D\'VAH RAKTA',
+    brand: "D'VAH",
+    brandSlug: 'dvah',
+    image: '/images/products/dvah/dvah-rakta.png',
+    originalPrice: 179000,
+    price: 89500,
+    discountPercent: 50,
+    scent: 'Hương thơm nồng nàn Cá tính',
+    features: ['Hương nồng nàn cá tính', 'Sang trọng đẳng cấp', 'Độ lưu hương 6-8h']
+  }
+];
+
+export const CAMPAIGN_STEPS = [
+  { step: '1', title: 'LIKE & FOLLOW', desc: 'Fanpage chính thức SkinID' },
+  { step: '2', title: 'SHARE BÀI VIẾT', desc: 'Ở chế độ CÔNG KHAI trên trang cá nhân' },
+  { step: '3', title: 'COMMENT "SKINID50"', desc: 'Ngay dưới bài viết để nhận mã xác nhận' }
 ];

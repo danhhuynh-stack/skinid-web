@@ -2013,8 +2013,8 @@ export default function AdminPage() {
     active: true
   })));
   const [campaign, setCampaign] = useState({
-    title: 'SIÊU SALE NGÀY ĐÔI · ĐẶC QUYỀN SKINID',
-    subtitle: 'Mỹ phẩm chăm sóc da nhập khẩu chính ngạch Ý & Việt Nam giảm đến 30%',
+    title: "TWON - D'VAH · LIKE & SHARE SĂN DEAL GIẢM 50%",
+    subtitle: 'Yêu thương bản thân — Đẹp hơn mỗi ngày cùng SkinID. 3 Combo quà tặng đặc quyền và sản phẩm chính hãng giảm nửa giá.',
     active: true
   });
   const [campaignBusy, setCampaignBusy] = useState(false);
