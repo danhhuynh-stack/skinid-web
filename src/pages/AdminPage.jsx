@@ -1976,7 +1976,7 @@ export default function AdminPage() {
     users, orders, products, loading, error, refresh
   } = useAdmin();
 
-  const isDevPreview = typeof window !== 'undefined' && Boolean(new URLSearchParams(window.location.search).get('preview'));
+  const isDevPreview = Boolean(import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('preview'));
   const effectiveUser = user || (isDevPreview ? { email: 'danh.huynh@fieldman.vn', name: 'Danh Huỳnh Thanh', role: 'super_admin' } : null);
   const effectiveIsAdmin = isAdmin || (isDevPreview ? true : false);
   const effectiveIsStaff = isStaff || (isDevPreview ? true : false);

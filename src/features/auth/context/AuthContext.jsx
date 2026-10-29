@@ -125,29 +125,8 @@ export function AuthProvider({ children }) {
   }, [session.user?.uid]);
 
   const isAuthenticated = Boolean(session.user?.uid);
-  const userEmail = session.user?.email ? String(session.user.email).toLowerCase() : '';
-  let overriddenRole = null;
-  try {
-    if (typeof window !== 'undefined' && window.localStorage && session.user) {
-      const rawOverrides = window.localStorage.getItem('skinid_admin_users_override');
-      if (rawOverrides) {
-        const parsed = JSON.parse(rawOverrides);
-        if (session.user.uid && parsed?.[session.user.uid]?.role && !parsed[session.user.uid].deleted) {
-          overriddenRole = parsed[session.user.uid].role;
-        } else if (userEmail) {
-          const matched = Object.values(parsed || {}).find(
-            (item) => item && !item.deleted && String(item.email || '').trim().toLowerCase() === userEmail
-          );
-          if (matched?.role) overriddenRole = matched.role;
-        }
-      }
-    }
-  } catch {}
-  const rawRole = overriddenRole || session.user?.role;
-  const isSuperAdmin = Boolean(
-    userEmail === 'danh.huynh@fieldman.vn' ||
-    rawRole === 'super_admin'
-  );
+  const rawRole = session.user?.role || session.user?.customClaims?.role;
+  const isSuperAdmin = Boolean(rawRole === 'super_admin');
   const isAdmin = Boolean(
     isSuperAdmin ||
     rawRole === 'admin' ||

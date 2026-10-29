@@ -1,35 +1,14 @@
 import { firebaseServices } from '../../../infrastructure/firebase/index.js';
 import { apiRequest } from '../../../infrastructure/http/apiClient.js';
-import { syncOrderToS3 } from '../../cart/services/s3SyncService.js';
 
 const { db, sdk } = firebaseServices;
 const documents = (snapshot) => snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
 
-const USER_OVERRIDES_KEY = 'skinid_admin_users_override';
+// GĐ0: Removed localStorage override for roles
 
-function readUserOverrides() {
-  try {
-    if (typeof localStorage === 'undefined') return {};
-    const raw = localStorage.getItem(USER_OVERRIDES_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch {
-    return {};
-  }
-}
+function readUserOverrides() { return {}; }
 
-function writeUserOverrides(overrides) {
-  try {
-    if (typeof localStorage === 'undefined') return;
-    localStorage.setItem(USER_OVERRIDES_KEY, JSON.stringify(overrides));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('skinid:users-updated', { detail: { overrides } }));
-    }
-  } catch (err) {
-    console.warn('[Admin Users] LocalStorage write warning:', err.message);
-  }
-}
+function writeUserOverrides() {}
 
 function mergeUsersWithOverrides(remoteUsers = []) {
   const overrides = readUserOverrides();
@@ -263,25 +242,7 @@ export async function deleteUserAccount(userId) {
 export async function resyncAdminOrderToS3(orderOrId) {
   const order = typeof orderOrId === 'object' && orderOrId !== null ? orderOrId : null;
   const orderId = order ? order.id : String(orderOrId || '');
-
-  if (order) {
-    const s3Result = await syncOrderToS3({ orderId, order });
-    if (s3Result.success) {
-      await updateAdminOrder(orderId, {
-        s3SyncStatus: 'synced',
-        s3OrderId: s3Result.s3OrderId,
-        s3SyncedAt: s3Result.syncedAt || new Date().toISOString()
-      });
-      return s3Result;
-    }
-
-    await updateAdminOrder(orderId, {
-      s3SyncStatus: 'failed',
-      s3SyncError: s3Result.error || 'Lỗi đồng bộ S3'
-    });
-    throw new Error(`Đồng bộ S3 thất bại: ${s3Result.error}`);
-  }
-
+  if (!orderId) throw new Error('Mã đơn hàng không hợp lệ.');
   return apiRequest(`/admin/orders/${encodeURIComponent(orderId)}/resync-s3`, { method: 'POST' });
 }
 

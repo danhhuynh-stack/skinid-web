@@ -6,11 +6,11 @@
 
 export const DEFAULT_S3_CONFIG = {
   baseUrl: 'https://m.es3.vn',
-  username: 'nghia.tran@fieldman.vn',
-  password: 'nghia.tran@fieldman.vn',
+  username: '',
+  password: '',
   branchId: 9099,
   cashierId: 16614,
-  enabled: true
+  enabled: false
 };
 
 let cachedToken = null;

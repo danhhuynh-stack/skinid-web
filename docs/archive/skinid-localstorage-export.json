@@ -1,0 +1,116 @@
+{
+  "exportedAt": "2026-10-29T17:31:00.970Z",
+  "origin": "https://skinid.vn",
+  "data": {
+    "skinid_orders_QY8UOfF33ja0KQrd9MRMnAxfGg43": [
+      {
+        "id": "sk_mv4zt3k0b03nbf",
+        "userId": "QY8UOfF33ja0KQrd9MRMnAxfGg43",
+        "customer": {
+          "name": "Danh Huỳnh Thành",
+          "email": "danh.huynh@nexusdigital.vn",
+          "phone": "0898617512",
+          "address": "test, Xã Kim Bôi, Tỉnh Phú Thọ",
+          "shippingAddress": {
+            "line1": "test",
+            "provinceCode": 25,
+            "provinceName": "Tỉnh Phú Thọ",
+            "wardCode": 4978,
+            "wardName": "Xã Kim Bôi",
+            "fullAddress": "test, Xã Kim Bôi, Tỉnh Phú Thọ"
+          }
+        },
+        "items": [
+          {
+            "productId": "rilastil-1939",
+            "name": "rilastil-1939",
+            "image": "",
+            "volume": "",
+            "price": 0,
+            "quantity": 1,
+            "lineTotal": 0
+          },
+          {
+            "productId": "rilastil-525",
+            "name": "rilastil-525",
+            "image": "",
+            "volume": "",
+            "price": 0,
+            "quantity": 2,
+            "lineTotal": 0
+          },
+          {
+            "productId": "rilastil-1844",
+            "name": "rilastil-1844",
+            "image": "",
+            "volume": "",
+            "price": 0,
+            "quantity": 1,
+            "lineTotal": 0
+          }
+        ],
+        "note": "",
+        "subtotal": 0,
+        "discountAmount": 0,
+        "couponCode": null,
+        "shippingFee": 30000,
+        "total": 30000,
+        "paymentMethod": "cod",
+        "paymentStatus": "unpaid",
+        "status": "pending",
+        "s3SyncStatus": "synced",
+        "source": "client-direct",
+        "createdAt": "2026-10-12T08:31:11.424Z",
+        "updatedAt": "2026-10-12T08:31:11.424Z",
+        "s3OrderId": "SKINID-sk_mv4zt3k0b03nb",
+        "s3SyncedAt": "2026-10-12T08:31:12.411Z"
+      },
+      {
+        "id": "sk_mv4znm62uis8kq",
+        "userId": "QY8UOfF33ja0KQrd9MRMnAxfGg43",
+        "customer": {
+          "name": "Danh Huỳnh Thành",
+          "email": "danh.huynh@nexusdigital.vn",
+          "phone": "0898617512",
+          "address": "test, Xã Kim Bôi, Tỉnh Phú Thọ",
+          "shippingAddress": {
+            "line1": "test",
+            "provinceCode": 25,
+            "provinceName": "Tỉnh Phú Thọ",
+            "wardCode": 4978,
+            "wardName": "Xã Kim Bôi",
+            "fullAddress": "test, Xã Kim Bôi, Tỉnh Phú Thọ"
+          }
+        },
+        "items": [
+          {
+            "productId": "rilastil-1939",
+            "name": "rilastil-1939",
+            "image": "",
+            "volume": "",
+            "price": 0,
+            "quantity": 1,
+            "lineTotal": 0
+          }
+        ],
+        "note": "",
+        "subtotal": 0,
+        "discountAmount": 0,
+        "couponCode": null,
+        "shippingFee": 30000,
+        "total": 30000,
+        "paymentMethod": "cod",
+        "paymentStatus": "unpaid",
+        "status": "pending",
+        "s3SyncStatus": "synced",
+        "source": "client-direct",
+        "createdAt": "2026-10-12T08:26:55.610Z",
+        "updatedAt": "2026-10-12T08:26:55.610Z",
+        "s3OrderId": "SKINID-sk_mv4znm62uis8k",
+        "s3SyncedAt": "2026-10-12T08:26:57.072Z"
+      }
+    ],
+    "skinid_admin_vouchers": [],
+    "skinid_cart": []
+  }
+}

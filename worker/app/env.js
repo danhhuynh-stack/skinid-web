@@ -42,10 +42,10 @@ export function requiredFirebaseEnv(env) {
 export function getS3Config(env = {}) {
   return {
     baseUrl: env.S3_BASE_URL || 'https://m.es3.vn',
-    username: env.S3_USERNAME || 'nghia.tran@fieldman.vn',
-    password: env.S3_PASSWORD || 'nghia.tran@fieldman.vn',
+    username: env.S3_USERNAME || '',
+    password: env.S3_PASSWORD || '',
     branchId: Number(env.S3_BRANCH_ID || 9099),
     cashierId: Number(env.S3_CASHIER_ID || 16614),
-    enabled: env.S3_SYNC_ENABLED !== 'false' && env.S3_SYNC_ENABLED !== false
+    enabled: Boolean(env.S3_SYNC_ENABLED !== 'false' && env.S3_SYNC_ENABLED !== false && env.S3_USERNAME && env.S3_PASSWORD)
   };
 }

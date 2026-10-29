@@ -13,10 +13,10 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
   // 1. Config Defaults and Overrides
   const defaultConfig = getS3Config({});
   assert.equal(defaultConfig.baseUrl, 'https://m.es3.vn');
-  assert.equal(defaultConfig.username, 'nghia.tran@fieldman.vn');
+  assert.equal(defaultConfig.username, '');
   assert.equal(defaultConfig.branchId, 9099);
   assert.equal(defaultConfig.cashierId, 16614);
-  assert.equal(defaultConfig.enabled, true);
+  assert.equal(defaultConfig.enabled, false);
 
   const customConfig = getS3Config({
     S3_BASE_URL: 'https://m.fm.es3.vn',
@@ -110,6 +110,12 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
   assert.equal(loginFetchCalls, 1);
 
   // 5. Fail-Safe Resilience: Network failure must NEVER throw
+  const testEnv = {
+    S3_USERNAME: 'test_cashier',
+    S3_PASSWORD: 'test_password_123',
+    S3_SYNC_ENABLED: 'true'
+  };
+
   resetS3TokenCache();
   const failingFetch = async () => {
     throw new Error('ETIMEDOUT: Connection to S3 POS timed out');
@@ -118,7 +124,7 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
   const failResult = await syncOrderToS3({
     orderId: 'ord_fail_test',
     order: mockBankOrder,
-    env: {},
+    env: testEnv,
     fetchFn: failingFetch
   });
 
@@ -156,7 +162,7 @@ test('S3 Retail Software Integration - Config, Mapping, Token & Fail-Safe', asyn
   const successResult = await syncOrderToS3({
     orderId: 'ord_success_test_123',
     order: mockBankOrder,
-    env: {},
+    env: testEnv,
     fetchFn: successfulFetch
   });
 

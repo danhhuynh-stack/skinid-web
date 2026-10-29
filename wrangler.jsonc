@@ -6,6 +6,16 @@
   "placement": {
     "region": "gcp:us-central1"
   },
+  "routes": [
+    {
+      "pattern": "skinid.vn/*",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.skinid.vn/*",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
