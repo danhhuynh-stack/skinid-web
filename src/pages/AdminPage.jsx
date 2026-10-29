@@ -22,6 +22,8 @@ import {
   saveSystemSettings
 } from '../features/admin/index.js';
 import { DEFAULT_BLOG_ARTICLES } from '../data/blogArticles.js';
+import { CURATED_COMBOS, RETAIL_50_DEALS } from '../data/promotions.js';
+import { assetUrl } from '../assets/index.js';
 import { AVAILABLE_COUPONS } from '../features/cart/services/couponService.js';
 import AdminSidebar from '../features/admin/components/AdminSidebar.jsx';
 import AdminTopbar from '../features/admin/components/AdminTopbar.jsx';
@@ -3453,6 +3455,162 @@ export default function AdminPage() {
                     </tbody>
                   </table>
                 </div>
+              </div>
+            </div>
+
+            {/* Box 3: Giám sát Trực quan 3 Combo Quà Tặng Độc Quyền */}
+            <div className="card-luxury p-6 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">
+                      Live Storefront
+                    </span>
+                    <h3 className="font-bold text-base text-slate-900 tracking-tight">
+                      3 Bộ Combo Quà Tặng Độc Quyền ({CURATED_COMBOS.length})
+                    </h3>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Đồng bộ tự động giữa Trang Chủ (#khuyen-mai) và Trang Khuyến Mãi (/khuyen-mai). Kèm ảnh mockup studio thật.
+                  </p>
+                </div>
+                <a
+                  href="/khuyen-mai"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-luxury-secondary text-xs flex items-center gap-1.5 self-start sm:self-auto"
+                >
+                  <IconExternalLink className="w-3.5 h-3.5" />
+                  <span>Xem trên Web Khách Hàng</span>
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {CURATED_COMBOS.map((combo) => (
+                  <div
+                    key={combo.id}
+                    className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-md transition-all p-4 flex flex-col justify-between overflow-hidden"
+                  >
+                    <div>
+                      <div className="relative aspect-[4/3] rounded-xl bg-slate-50 overflow-hidden border border-slate-100 mb-3 group/img">
+                        <img
+                          src={assetUrl(combo.image)}
+                          alt={combo.title}
+                          className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                        />
+                        <span className="absolute top-2 left-2 bg-rose-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full shadow-xs">
+                          {combo.code}
+                        </span>
+                        <span className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-white font-semibold text-[10px] px-2 py-0.5 rounded-full">
+                          Tiết kiệm {combo.discountPercent}%
+                        </span>
+                      </div>
+
+                      <h4 className="font-black text-sm text-slate-900 tracking-tight font-serif">
+                        {combo.title}
+                      </h4>
+                      <p className="text-[11px] font-bold text-rose-600 uppercase tracking-wide mt-0.5">
+                        {combo.subtitle}
+                      </p>
+                      <p className="text-[11px] text-slate-500 italic mt-0.5 line-clamp-1">
+                        {combo.slogan}
+                      </p>
+
+                      <div className="bg-slate-50 rounded-xl p-2.5 my-3 border border-slate-100">
+                        <span className="text-[10px] font-bold uppercase text-slate-500 block mb-1.5">
+                          Chi tiết {combo.products.length} sản phẩm:
+                        </span>
+                        <div className="space-y-1">
+                          {combo.products.map((p) => (
+                            <div key={p.id} className="flex items-center justify-between text-[11px] text-slate-700">
+                              <span className="truncate">• {p.name}</span>
+                              <span className="font-mono text-[10px] text-slate-500 ml-1 flex-shrink-0">{p.capacity}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100 flex items-baseline justify-between">
+                      <div>
+                        <span className="text-[10px] text-slate-400 line-through mr-1.5">
+                          {money(combo.originalPrice)}
+                        </span>
+                        <span className="text-sm font-black text-rose-600 font-mono">
+                          {money(combo.price)}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        -{money(combo.savedPrice)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Box 4: Giám sát 8 Sản Phẩm Bán Lẻ Flash Sale 50% */}
+            <div className="card-luxury p-6 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                      Flash Sale 50%
+                    </span>
+                    <h3 className="font-bold text-base text-slate-900 tracking-tight">
+                      Sản Phẩm Bán Lẻ Giảm Đến 50% ({RETAIL_50_DEALS.length} sản phẩm)
+                    </h3>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Áp dụng cho dòng chăm sóc cơ thể TWON &amp; Tuyển tập nước hoa Mini 10ml D'VAH chính hãng.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-xl">
+                  Trạng thái: Đang áp dụng toàn sàn
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-4">
+                {RETAIL_50_DEALS.map((p) => (
+                  <div
+                    key={p.id}
+                    className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-md transition-all p-3 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="relative aspect-square rounded-xl bg-slate-50 p-2 overflow-hidden border border-slate-100 mb-2 flex items-center justify-center">
+                        <img
+                          src={assetUrl(p.image, p.brandSlug)}
+                          alt={p.name}
+                          className="max-h-full max-w-full object-contain"
+                          loading="lazy"
+                        />
+                        <span className="absolute top-1.5 left-1.5 bg-rose-600 text-white font-black text-[9px] px-1.5 py-0.5 rounded">
+                          -50%
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                        {p.brand}
+                      </span>
+                      <h4 className="font-bold text-xs text-slate-900 line-clamp-2 mt-0.5 leading-snug">
+                        {p.name}
+                      </h4>
+                      {p.scent && (
+                        <p className="text-[10px] font-semibold text-rose-600 mt-0.5 line-clamp-1">
+                          {p.scent}
+                        </p>
+                      )}
+                    </div>
+                    <div className="pt-2 mt-2 border-t border-slate-100 flex items-baseline justify-between">
+                      <span className="text-xs font-black text-rose-600 font-mono">
+                        {money(p.price)}
+                      </span>
+                      <span className="text-[10px] text-slate-400 line-through font-mono">
+                        {money(p.originalPrice)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
