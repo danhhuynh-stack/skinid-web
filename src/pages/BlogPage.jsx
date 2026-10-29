@@ -21,15 +21,6 @@ const ROUTINE_TABS = [
 ];
 
 function readInitialBlogArticles() {
-  try {
-    if (typeof localStorage !== 'undefined') {
-      const saved = localStorage.getItem('skinid_admin_blog_posts');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    }
-  } catch {}
   return DEFAULT_BLOG_ARTICLES;
 }
 

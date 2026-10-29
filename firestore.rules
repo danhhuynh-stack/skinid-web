@@ -1,93 +1,338 @@
 rules_version = '2';
 
+// ===============================================================
+// Assumed Data Model & Architecture (Giai Đoạn 1 - Nền Dữ Liệu)
+// ===============================================================
+//
+// 1. products: Public catalog (read-only for storefront, write: isAdmin())
+//    - Subcollection private/cost: Sensitive cost & supplier margins (read/write: isAdmin())
+// 2. productPriceHistory: Server-managed price audit trail (read: isAdmin(), write: false)
+// 3. categories, brands: Public taxonomy (read: public, write: isAdmin())
+// 4. orders: E-commerce transactions
+//    - create: BLOCKED for client-side (allow create: if false; L2 critical security fix)
+//    - read: document owner or isStaff()
+//    - update: isAdmin() OR customer self-cancellation for 'pending'/'confirmed' statuses only
+//    - delete: isSuperAdmin()
+// 5. users: Customer profile & account data (read: owner or isStaff())
+//    - create/update: role self-assignment strictly forbidden
+//    - Subcollections:
+//      * skinReports: read/create/delete by owner or isStaff(), update: false (immutable)
+//      * commerce, addresses, wishlist: read/write by owner
+//      * activities: read by owner, write: false (server-managed)
+//      * private: read/write: false (server-only secrets)
+// 6. posts / blog_posts: Articles & skincare routines (read: published/scheduled or isStaff(), write: isAdmin())
+//    - revisions: read/write by isStaff()
+// 7. postCategories: Blog categories (read: public, write: isAdmin())
+// 8. pages: Static CMS pages (read: public, write: isAdmin())
+// 9. promotions, coupons, vouchers: Discounts (read: public, write: isAdmin())
+// 10. campaigns: Marketing campaigns & flash sales (read: public, write: isAdmin())
+// 11. settings: Application settings (system_config, campaign_config, tracking_scripts, seo_config)
+//     - Public read for general config, private docs require isAdmin(), write: isAdmin()
+// 12. media: Media library assets (read: public, write: isStaff())
+// 13. redirects: 301 URL redirects (read: public, write: isAdmin())
+// 14. contacts: Inquiries from visitors (create: public, read/update: isStaff(), delete: isAdmin())
+// 15. stats, auditLogs: Analytics & system logs (read: isAdmin(), write: false)
+// 16. Default Deny catch-all for any undefined paths
+// ===============================================================
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions: Authentication & Role-Based Access Control
+    // ===============================================================
+
     function isSuperAdmin() {
       return request.auth != null && (
-        request.auth.token.admin == true ||
-        request.auth.token.email in ['admin@skinid.vn', 'admin@fieldman.vn', 'danh.huynh@fieldman.vn']
+        ('role' in request.auth.token && request.auth.token.role == 'super_admin') ||
+        ('admin' in request.auth.token && request.auth.token.admin == true) ||
+        ('email' in request.auth.token && request.auth.token.email in [
+          'admin@skinid.vn',
+          'admin@fieldman.vn',
+          'danh.huynh@fieldman.vn'
+        ])
       );
     }
 
     function isAdmin() {
       return isSuperAdmin() || (
-        request.auth != null &&
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['super_admin', 'admin']
+        request.auth != null && (
+          ('role' in request.auth.token && request.auth.token.role in ['super_admin', 'admin']) ||
+          (
+            exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['super_admin', 'admin']
+          )
+        )
       );
     }
 
     function isStaff() {
       return isAdmin() || (
-        request.auth != null &&
-        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['super_admin', 'admin', 'staff']
+        request.auth != null && (
+          ('role' in request.auth.token && request.auth.token.role in [
+            'super_admin', 'admin', 'editor', 'marketing', 'sales', 'consultant', 'warehouse', 'staff'
+          ]) ||
+          (
+            exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in [
+              'super_admin', 'admin', 'editor', 'marketing', 'sales', 'consultant', 'warehouse', 'staff'
+            ]
+          )
+        )
       );
     }
+
+    // ===============================================================
+    // 1. Products Catalog & Private Cost Subcollection
+    // ===============================================================
 
     match /products/{productId} {
       allow read: if true;
       allow write: if isAdmin();
+
+      // Private cost & margins: strictly restricted to Administrators
+      match /private/{document=**} {
+        allow read, write: if isAdmin();
+      }
     }
+
+    // ===============================================================
+    // 2. Product Price History (Worker/Server-only writes)
+    // ===============================================================
+
+    match /productPriceHistory/{historyId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ===============================================================
+    // 3. Categories & Brands
+    // ===============================================================
+
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /brands/{brandId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ===============================================================
+    // 4. Orders (Critical Security Architecture)
+    // ===============================================================
+
+    match /orders/{orderId} {
+      // CRITICAL FIX (L2): Direct client creation is completely blocked.
+      // All orders MUST be processed via Cloudflare Worker API to enforce price/coupon integrity.
+      allow create: if false;
+
+      // Customers can inspect their own orders; Staff can inspect all orders
+      allow read: if request.auth != null && (
+        resource.data.userId == request.auth.uid ||
+        isStaff()
+      );
+
+      // Admin has full update rights. Customer can ONLY cancel pending/confirmed order.
+      allow update: if request.auth != null && (
+        isAdmin() ||
+        (
+          resource.data.userId == request.auth.uid &&
+          resource.data.status in ['pending', 'confirmed'] &&
+          request.resource.data.status == 'cancelled' &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        )
+      );
+
+      // Only Super Admin can hard-delete orders
+      allow delete: if isSuperAdmin();
+    }
+
+    // ===============================================================
+    // 5. Users & User Subcollections (RBAC & PII Isolation)
+    // ===============================================================
 
     match /users/{userId} {
       allow read: if request.auth != null && (request.auth.uid == userId || isStaff());
+
+      // Normal users cannot set their own role upon account registration
       allow create: if request.auth != null && (
         isSuperAdmin() ||
         (request.auth.uid == userId && !request.resource.data.keys().hasAny(['role']))
       );
+
+      // Privilege escalation protection: role can never be updated by standard users or regular admins
       allow update: if request.auth != null && (
         isSuperAdmin() ||
         (isAdmin() && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role'])) ||
         (request.auth.uid == userId && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
       );
+
       allow delete: if isSuperAdmin();
 
+      // Diagnostic skin analysis reports: immutable history
       match /skinReports/{reportId} {
-        allow read, create, delete: if request.auth != null && request.auth.uid == userId;
+        allow read, create, delete: if request.auth != null && (request.auth.uid == userId || isStaff());
         allow update: if false;
       }
 
+      // Customer commerce state (active cart, checkout draft)
       match /commerce/{documentId} {
-        allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
+      // Customer saved delivery addresses
       match /addresses/{addressId} {
-        allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
+      // Customer wishlist
       match /wishlist/{productId} {
-        allow read, create, update, delete: if request.auth != null && request.auth.uid == userId;
+        allow read, write: if request.auth != null && request.auth.uid == userId;
       }
 
+      // Customer activity timeline (read-only for user, write by server)
       match /activities/{activityId} {
         allow read: if request.auth != null && request.auth.uid == userId;
-        allow create: if false;
         allow write: if false;
       }
 
+      // Private credentials/sensitive tokens
       match /private/{documentId} {
         allow read, write: if false;
       }
     }
 
-    match /orders/{orderId} {
-      // Allow customer to create their own order directly from storefront or staff/admin
-      allow create: if request.auth != null && (
-        request.resource.data.userId == request.auth.uid ||
-        isStaff()
-      );
-      allow read: if request.auth != null
-        && (resource.data.userId == request.auth.uid || isStaff());
-      allow update: if request.auth != null && (
-        isAdmin() ||
-        (resource.data.userId == request.auth.uid
-          && resource.data.status in ['pending', 'confirmed']
-          && request.resource.data.status == 'cancelled'
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt']))
-      );
-      allow delete: if isSuperAdmin();
+    // ===============================================================
+    // 6. Posts & Blog Posts (Knowledge Base & SEO Content)
+    // ===============================================================
+
+    match /posts/{postId} {
+      allow read: if ('status' in resource.data && resource.data.status in ['published', 'scheduled']) || isStaff();
+      allow write: if isAdmin();
+
+      match /revisions/{revisionId} {
+        allow read, write: if isStaff();
+      }
     }
+
+    // Alias for legacy blog_posts collection compatibility
+    match /blog_posts/{postId} {
+      allow read: if ('status' in resource.data && resource.data.status in ['published', 'scheduled']) || isStaff();
+      allow write: if isAdmin();
+
+      match /revisions/{revisionId} {
+        allow read, write: if isStaff();
+      }
+    }
+
+    // ===============================================================
+    // 7. Post Categories & CMS Pages
+    // ===============================================================
+
+    match /postCategories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ===============================================================
+    // 8. Promotions, Coupons & Vouchers
+    // ===============================================================
+
+    match /promotions/{promotionId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /coupons/{couponId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /vouchers/{voucherId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ===============================================================
+    // 9. Marketing Campaigns
+    // ===============================================================
+
+    match /campaigns/{campaignId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ===============================================================
+    // 10. Global Settings (Storefront & Sensitive Config Separation)
+    // ===============================================================
+
+    match /settings/{settingId} {
+      // General public settings (hotline, banners, SEO metadata, tracking tags) are readable
+      // Private config docs (e.g. credentials, secrets, private) require admin
+      allow read: if (
+        settingId != 'private' &&
+        settingId != 'secrets' &&
+        (!('isPrivate' in resource.data) || resource.data.isPrivate != true)
+      ) || isAdmin();
+      allow write: if isAdmin();
+
+      match /private/{document=**} {
+        allow read, write: if isAdmin();
+      }
+    }
+
+    // ===============================================================
+    // 11. Media Library
+    // ===============================================================
+
+    match /media/{mediaId} {
+      allow read: if true;
+      allow write: if isStaff();
+    }
+
+    // ===============================================================
+    // 12. 301 URL Redirects
+    // ===============================================================
+
+    match /redirects/{redirectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ===============================================================
+    // 13. Customer Contacts & Inquiries
+    // ===============================================================
+
+    match /contacts/{contactId} {
+      allow create: if true;
+      allow read, update: if isStaff();
+      allow delete: if isAdmin();
+    }
+
+    // ===============================================================
+    // 14. Analytics Stats & Audit Logs (Worker/Server-only writes)
+    // ===============================================================
+
+    match /stats/{statId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ===============================================================
+    // 15. Root Default Deny (Fallback Security Boundary)
+    // ===============================================================
 
     match /{document=**} {
       allow read, write: if false;

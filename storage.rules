@@ -1,0 +1,78 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSuperAdmin() {
+      return request.auth != null && (
+        request.auth.token.role == 'super_admin' ||
+        request.auth.token.admin == true ||
+        request.auth.token.email in ['admin@skinid.vn', 'admin@fieldman.vn', 'danh.huynh@fieldman.vn']
+      );
+    }
+
+    function isAdmin() {
+      return isSuperAdmin() || (
+        request.auth != null && request.auth.token.role in ['super_admin', 'admin']
+      );
+    }
+
+    function isStaff() {
+      return isAdmin() || (
+        request.auth != null && request.auth.token.role in [
+          'super_admin', 'admin', 'editor', 'marketing', 'sales', 'consultant', 'warehouse', 'staff'
+        ]
+      );
+    }
+
+    // 1. Ảnh soi da của khách hàng: Cực kỳ nhạy cảm (Luật 91/2025/QH15)
+    // Chỉ chủ tài khoản và Bác sĩ/Tư vấn/Admin mới được xem
+    match /users/{userId}/skin_scans/{fileName} {
+      allow read: if request.auth != null && (
+        request.auth.uid == userId ||
+        isAdmin() ||
+        request.auth.token.role == 'consultant'
+      );
+      allow create: if request.auth != null &&
+        request.auth.uid == userId &&
+        request.resource.size < 10 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+      allow update, delete: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+    }
+
+    // 2. Ảnh đại diện khách hàng (Avatar)
+    match /users/{userId}/avatars/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null &&
+        request.auth.uid == userId &&
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+    }
+
+    // 3. Thư viện truyền thông, ảnh bài viết, ảnh sản phẩm, banner do nhân viên upload
+    match /media/{fileName} {
+      allow read: if true;
+      allow write: if isStaff() &&
+        request.resource.size < 15 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*|application/pdf');
+    }
+
+    match /posts/{fileName} {
+      allow read: if true;
+      allow write: if isStaff() &&
+        request.resource.size < 10 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+    }
+
+    match /products/{fileName} {
+      allow read: if true;
+      allow write: if isStaff() &&
+        request.resource.size < 10 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+    }
+
+    // 4. Mặc định chặn tất cả các đường dẫn khác
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

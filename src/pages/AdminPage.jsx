@@ -2006,15 +2006,6 @@ export default function AdminPage() {
 
   // Khuyến mãi & Cẩm nang Skincare
   const [vouchers, setVouchers] = useState(() => {
-    try {
-      if (typeof localStorage !== 'undefined') {
-        const raw = localStorage.getItem('skinid_admin_vouchers');
-        if (raw !== null) {
-          const list = JSON.parse(raw);
-          if (Array.isArray(list)) return list;
-        }
-      }
-    } catch {}
     return Object.entries(AVAILABLE_COUPONS).map(([code, v]) => ({
       code,
       type: v.type,
@@ -2031,16 +2022,7 @@ export default function AdminPage() {
     active: true
   });
   const [campaignBusy, setCampaignBusy] = useState(false);
-  const [blogPosts, setBlogPosts] = useState(() => {
-    try {
-      const saved = localStorage.getItem('skinid_admin_blog_posts');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {}
-    return DEFAULT_BLOG_ARTICLES;
-  });
+  const [blogPosts, setBlogPosts] = useState(DEFAULT_BLOG_ARTICLES);
   const [voucherModal, setVoucherModal] = useState(null);
   const [blogModal, setBlogModal] = useState(null);
 
@@ -2066,13 +2048,7 @@ export default function AdminPage() {
   ]);
 
   // Cấu hình Cài đặt Hệ thống (Store Settings)
-  const [systemSettings, setSystemSettings] = useState(() => {
-    try {
-      const saved = localStorage.getItem('skinid_system_settings');
-      if (saved) return { ...DEFAULT_SYSTEM_SETTINGS, ...JSON.parse(saved) };
-    } catch {}
-    return DEFAULT_SYSTEM_SETTINGS;
-  });
+  const [systemSettings, setSystemSettings] = useState(DEFAULT_SYSTEM_SETTINGS);
   const [settingsSaving, setSettingsSaving] = useState(false);
 
   useEffect(() => {
@@ -2085,7 +2061,7 @@ export default function AdminPage() {
       }
       if (blogRes.status === 'fulfilled' && blogRes.value?.length) {
         setBlogPosts(blogRes.value);
-        try { localStorage.setItem('skinid_admin_blog_posts', JSON.stringify(blogRes.value)); } catch {}
+        
       }
     });
 
@@ -2110,7 +2086,7 @@ export default function AdminPage() {
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     try {
-      return localStorage.getItem('skinid_admin_sidebar_collapsed') === 'true';
+      return localStorage.getItem('skinid_sidebar_collapsed') === 'true';
     } catch {
       return false;
     }
@@ -2122,7 +2098,7 @@ export default function AdminPage() {
     setIsSidebarCollapsed((prev) => {
       const next = !prev;
       try {
-        localStorage.setItem('skinid_admin_sidebar_collapsed', String(next));
+        localStorage.setItem('skinid_sidebar_collapsed', String(next));
       } catch {}
       return next;
     });
@@ -2520,7 +2496,7 @@ export default function AdminPage() {
   const handleBulkUpdateBlogStatus = (newStatus) => {
     const updated = blogPosts.map(p => selectedBlogIds.includes(p.id) ? { ...p, status: newStatus } : p);
     setBlogPosts(updated);
-    try { localStorage.setItem('skinid_admin_blog_posts', JSON.stringify(updated)); } catch {}
+    
     setSelectedBlogIds([]);
     setFlash(`Đã chuyển ${selectedBlogIds.length} bài viết sang trạng thái "${newStatus}".`);
   };
@@ -2529,7 +2505,7 @@ export default function AdminPage() {
     if (!globalThis.confirm(`Bạn có chắc muốn xóa ${selectedBlogIds.length} bài viết đã chọn?`)) return;
     const updated = blogPosts.filter(p => !selectedBlogIds.includes(p.id));
     setBlogPosts(updated);
-    try { localStorage.setItem('skinid_admin_blog_posts', JSON.stringify(updated)); } catch {}
+    
     setSelectedBlogIds([]);
     setFlash(`Đã xóa ${selectedBlogIds.length} bài viết thành công.`);
   };
@@ -3921,7 +3897,7 @@ export default function AdminPage() {
                                   onClick={() => remove(`bài viết "${post.title}"`, async () => {
                                     const next = blogPosts.filter((x) => x.id !== post.id);
                                     setBlogPosts(next);
-                                    try { localStorage.setItem('skinid_admin_blog_posts', JSON.stringify(next)); } catch {}
+                                    
                                     await deleteAdminBlogPost(post.id);
                                   }, 'Đã xóa bài viết.')}
                                   className="px-2.5 py-1 text-rose-500 hover:bg-rose-50 rounded-lg font-semibold text-[11px] transition cursor-pointer"
@@ -5125,7 +5101,7 @@ export default function AdminPage() {
             : [savedPost, ...blogPosts];
           setBlogPosts(updated);
           try {
-            localStorage.setItem('skinid_admin_blog_posts', JSON.stringify(updated));
+            
             if (typeof window !== 'undefined') {
               window.dispatchEvent(new CustomEvent('skinid:blog-updated', { detail: { posts: updated } }));
             }

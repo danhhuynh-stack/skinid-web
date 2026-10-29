@@ -46,7 +46,7 @@ function formatVoucherPrice(num) {
 }
 
 function readDynamicStorefrontCoupons() {
-  const fallback = [
+  return [
     {
       code: 'SKINID10',
       title: 'Giảm 10% đơn hàng',
@@ -69,35 +69,6 @@ function readDynamicStorefrontCoupons() {
       color: 'from-emerald-500 to-teal-600'
     }
   ];
-
-  try {
-    if (typeof localStorage !== 'undefined') {
-      const raw = localStorage.getItem('skinid_admin_vouchers');
-      if (raw !== null) {
-        const list = JSON.parse(raw);
-        if (Array.isArray(list)) {
-          const colors = [
-            'from-rose-500 to-pink-600',
-            'from-amber-500 to-orange-600',
-            'from-emerald-500 to-teal-600',
-            'from-indigo-500 to-purple-600'
-          ];
-          return list.filter(v => v.active !== false).map((v, i) => ({
-            code: v.code,
-            title: v.type === 'percent' || v.type === 'percentage'
-              ? `Giảm ${v.discountValue || v.value}%`
-              : v.type === 'shipping'
-              ? 'Miễn phí vận chuyển'
-              : `Giảm ngay ${formatVoucherPrice(v.discountValue || v.value)}`,
-            desc: v.description || (v.minOrderValue ? `Áp dụng cho đơn từ ${formatVoucherPrice(v.minOrderValue)}.` : 'Áp dụng cho mọi đơn hàng.'),
-            badge: v.badge || (i === 0 ? 'Phổ biến nhất' : v.type === 'shipping' ? 'Freeship Extra' : 'Ưu đãi hot'),
-            color: colors[i % colors.length]
-          }));
-        }
-      }
-    }
-  } catch {}
-  return fallback;
 }
 
 export default function PromotionsPage() {

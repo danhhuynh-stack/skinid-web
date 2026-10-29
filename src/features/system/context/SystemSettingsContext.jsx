@@ -1,21 +1,18 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import {
   DEFAULT_SYSTEM_SETTINGS,
-  fetchSystemSettings,
-  readLocalSystemSettings
-} from '../../admin/services/adminService.js';
+  fetchSystemSettings
+} from '../../content/index.js';
 
 const SystemSettingsContext = createContext(DEFAULT_SYSTEM_SETTINGS);
 
 export function SystemSettingsProvider({ children }) {
-  const [settings, setSettings] = useState(() => {
-    return readLocalSystemSettings() || DEFAULT_SYSTEM_SETTINGS;
-  });
+  const [settings, setSettings] = useState(DEFAULT_SYSTEM_SETTINGS);
 
   useEffect(() => {
     let mounted = true;
 
-    // Kéo cấu hình mới nhất từ Firestore
+    // Kéo cấu hình mới nhất từ Firestore (Single Source of Truth)
     fetchSystemSettings()
       .then((remoteSettings) => {
         if (mounted && remoteSettings) {

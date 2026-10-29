@@ -40,8 +40,8 @@ export function refreshProductCatalog(force = false) {
         const remoteData = remote.get(local.id);
         if (!remoteData) return local;
         return applyStorefrontPrice({
-          ...remoteData,
           ...local,
+          ...remoteData,
           id: local.id
         });
       });

@@ -37,10 +37,10 @@ test('published products render while the shared Firestore enrichment is still p
   assert.equal(reads(), 1);
   assert.equal(await context.loadProductCatalog(), products);
 
-  finishRemote({ empty: false, docs: [{ id: 'p1', data: () => ({ price: 1, name: 'Stale', rating: 4.8 }) }] });
+  finishRemote({ empty: false, docs: [{ id: 'p1', data: () => ({ price: 120, name: 'Remote Updated', rating: 4.8 }) }] });
   const enriched = await refresh;
-  assert.equal(enriched[0].price, 100);
-  assert.equal(enriched[0].name, 'Published');
+  assert.equal(enriched[0].price, 120);
+  assert.equal(enriched[0].name, 'Remote Updated');
   assert.equal(enriched[0].rating, 4.8);
   assert.equal(await context.loadProductCatalog(), enriched);
   assert.equal(reads(), 1);

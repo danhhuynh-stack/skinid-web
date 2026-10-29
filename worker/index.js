@@ -81,7 +81,7 @@ async function createOrder(request, env, user) {
     if (!hasFirestore) return bundledProducts.get(id) || null;
     const remoteProduct = await getDocument(env, `products/${id}`);
     const localProduct = bundledProducts.get(id);
-    return localProduct ? { ...remoteProduct, ...localProduct } : remoteProduct || null;
+    return localProduct ? { ...localProduct, ...remoteProduct } : remoteProduct || null;
   }));
   const items = products.map((product, index) => {
     const productId = productIds[index];
