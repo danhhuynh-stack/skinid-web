@@ -107,27 +107,100 @@ async function createOrder(request, env, user) {
     throw new ApiError(400, 'invalid_phone', 'Số điện thoại Việt Nam chưa đúng định dạng.');
   }
   const subtotal = items.reduce((sum, item) => sum + item.lineTotal, 0);
-  const shippingFee = subtotal >= 500000 ? 0 : 30000;
+  const now = new Date();
+
+  // Validate coupon against Firestore promotions or fallback
   const couponCode = String(payload.couponCode || '').trim().toUpperCase();
   let discountAmount = 0;
-  if (couponCode === 'SKINID10' && subtotal >= 200000) {
-    discountAmount = Math.min(150000, Math.round(subtotal * 0.1));
-  } else if (couponCode === 'WELCOME50' && subtotal >= 300000) {
-    discountAmount = Math.min(50000, subtotal);
-  } else if (couponCode === 'FREESHIP') {
-    discountAmount = Math.min(30000, shippingFee);
+  let isFreeshipCoupon = false;
+  let promotionDoc = null;
+
+  if (couponCode) {
+    if (hasFirestore) {
+      try {
+        promotionDoc = await getDocument(env, `promotions/${couponCode}`);
+      } catch (err) {
+        console.warn('[Worker Promo Lookup Warning]', err.message);
+      }
+    }
+
+    // Fallback dictionary for offline / staging / standard coupons
+    if (!promotionDoc) {
+      const STATIC_COUPONS = {
+        SKINID10: { code: 'SKINID10', type: 'percent', discountValue: 10, minOrderValue: 200000, maxDiscount: 150000, active: true },
+        WELCOME50: { code: 'WELCOME50', type: 'fixed', discountValue: 50000, minOrderValue: 300000, maxDiscount: 50000, active: true },
+        FREESHIP: { code: 'FREESHIP', type: 'freeship', discountValue: 30000, minOrderValue: 0, maxDiscount: 30000, active: true }
+      };
+      promotionDoc = STATIC_COUPONS[couponCode] || null;
+    }
+
+    if (!promotionDoc) {
+      throw new ApiError(400, 'invalid_coupon', `Mã giảm giá "${couponCode}" không tồn tại hoặc đã bị xóa.`);
+    }
+
+    if (promotionDoc.active === false) {
+      throw new ApiError(400, 'coupon_inactive', `Mã giảm giá "${couponCode}" đã tạm ngừng áp dụng.`);
+    }
+
+    const nowIso = now.toISOString();
+    if (promotionDoc.startAt && String(promotionDoc.startAt) > nowIso) {
+      throw new ApiError(400, 'coupon_not_started', `Mã giảm giá "${couponCode}" chưa đến thời gian áp dụng.`);
+    }
+    if (promotionDoc.endAt && String(promotionDoc.endAt) < nowIso) {
+      throw new ApiError(400, 'coupon_expired', `Mã giảm giá "${couponCode}" đã hết hạn sử dụng.`);
+    }
+
+    const minOrder = Number(promotionDoc.minOrderValue || promotionDoc.minOrder || 0);
+    if (minOrder > 0 && subtotal < minOrder) {
+      throw new ApiError(
+        400,
+        'coupon_min_order',
+        `Đơn hàng cần tối thiểu ${minOrder.toLocaleString('vi-VN')}đ để sử dụng mã "${couponCode}".`
+      );
+    }
+
+    const usageLimit = Number(promotionDoc.usageLimit || 0);
+    const usedCount = Number(promotionDoc.usedCount || 0);
+    if (usageLimit > 0 && usedCount >= usageLimit) {
+      throw new ApiError(400, 'coupon_limit_exceeded', `Mã giảm giá "${couponCode}" đã hết lượt sử dụng.`);
+    }
+
+    const pType = String(promotionDoc.type || 'percent').toLowerCase();
+    const val = Number(promotionDoc.discountValue || promotionDoc.value || 0);
+    const maxCap = Number(promotionDoc.maxDiscount || 0);
+
+    if (pType === 'percent') {
+      discountAmount = Math.round(subtotal * (val / 100));
+      if (maxCap > 0) discountAmount = Math.min(discountAmount, maxCap);
+    } else if (pType === 'fixed') {
+      discountAmount = Math.min(subtotal, val);
+    } else if (pType === 'freeship') {
+      isFreeshipCoupon = true;
+    }
+  }
+
+  // Shipping Fee calculation (standard BCT rules)
+  function resolveShippingFee(provinceName, orderSubtotal, isFreeShip) {
+    if (isFreeShip || orderSubtotal >= 500000) return 0;
+    const name = String(provinceName || '').toLowerCase();
+    if (name.includes('hồ chí minh') || name.includes('hcm')) return 25000;
+    if (name.includes('hà nội') || name.includes('đà nẵng') || name.includes('bình dương') || name.includes('đồng nai')) return 30000;
+    return 30000;
+  }
+  const shippingFee = resolveShippingFee(shippingAddress.provinceName, subtotal, isFreeshipCoupon);
+  if (isFreeshipCoupon) {
+    discountAmount = Math.min(30000, 30000);
   }
   const finalTotal = Math.max(0, subtotal - discountAmount) + shippingFee;
 
-  const now = new Date();
-  const idempotencyKey = String(request.headers.get('idempotency-key') || '').trim();
+  const idempotencyKey = String(request.headers.get('idempotency-key') || payload.idempotencyKey || '').trim();
   let orderId = crypto.randomUUID().replaceAll('-', '');
   if (idempotencyKey) {
-    if (!/^[A-Za-z0-9_-]{16,100}$/.test(idempotencyKey)) throw new ApiError(400, 'invalid_idempotency_key', 'Mã xác nhận đơn hàng không hợp lệ.');
+    if (!/^[A-Za-z0-9_-]{8,100}$/.test(idempotencyKey)) throw new ApiError(400, 'invalid_idempotency_key', 'Mã xác nhận đơn hàng không hợp lệ.');
     const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${user.sub}:${idempotencyKey}`));
     orderId = [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('').slice(0, 32);
-    const existingOrder = await getDocument(env, `orders/${orderId}`);
-    if (existingOrder?.userId === user.sub) {
+    const existingOrder = hasFirestore ? await getDocument(env, `orders/${orderId}`) : devOrdersStore.get(orderId);
+    if (existingOrder && existingOrder.userId === user.sub) {
       return json(request, env, {
         success: true,
         duplicate: true,
@@ -135,7 +208,9 @@ async function createOrder(request, env, user) {
         subtotal: existingOrder.subtotal,
         discount: existingOrder.discountAmount || 0,
         shippingFee: existingOrder.shippingFee,
-        total: existingOrder.total
+        total: existingOrder.total,
+        status: existingOrder.status,
+        message: 'Đơn hàng đã được ghi nhận trước đó.'
       });
     }
   }
@@ -174,13 +249,20 @@ async function createOrder(request, env, user) {
   const activity = { type: 'order_created', orderId, total: order.total, createdAt: now };
 
   if (hasFirestore) {
-    await commitWrites(env, [
+    const writes = [
       updateWrite(env, `orders/${orderId}`, order, null, { exists: false }),
       updateWrite(env, `users/${user.sub}`, profile, Object.keys(profile)),
       updateWrite(env, `users/${user.sub}/addresses/default`, address),
       updateWrite(env, `users/${user.sub}/activities/${orderId}`, activity),
       { delete: documentName(env, `users/${user.sub}/commerce/cart`) }
-    ]);
+    ];
+    if (couponCode && promotionDoc && hasFirestore) {
+      const nextCount = (Number(promotionDoc.usedCount) || 0) + 1;
+      writes.push(
+        updateWrite(env, `promotions/${couponCode}`, { usedCount: nextCount, updatedAtServer: now }, ['usedCount', 'updatedAtServer'])
+      );
+    }
+    await commitWrites(env, writes);
   } else {
     order.id = orderId;
     devOrdersStore.set(orderId, order);
@@ -255,6 +337,95 @@ async function resyncOrderToS3(request, env, user, orderId) {
   }
 
   return json(request, env, { success: true, orderId, s3Result });
+}
+
+
+const VALID_ORDER_TRANSITIONS = {
+  pending: ['confirmed', 'cancelled'],
+  confirmed: ['shipping', 'cancelled'],
+  shipping: ['completed', 'returned', 'cancelled'],
+  completed: [],
+  returned: [],
+  cancelled: []
+};
+
+async function transitionOrderStatus(request, env, user, orderId) {
+  if (user.admin !== true) {
+    throw new ApiError(403, 'permission_denied', 'Chỉ quản trị viên mới có thể cập nhật trạng thái đơn hàng.');
+  }
+  const hasFirestore = isFirestoreConfigured(env);
+  let order = null;
+  if (hasFirestore) {
+    order = await getDocument(env, `orders/${orderId}`);
+  } else {
+    order = devOrdersStore.get(orderId);
+  }
+  if (!order) throw new ApiError(404, 'order_not_found', 'Không tìm thấy đơn hàng.');
+
+  const body = await request.json().catch(() => ({}));
+  const targetStatus = text(body.targetStatus, 'trạng thái đích', 40).toLowerCase();
+  const note = String(body.note || '').trim().slice(0, 500);
+
+  const currentStatus = String(order.status || 'pending').toLowerCase();
+  const allowed = VALID_ORDER_TRANSITIONS[currentStatus] || [];
+  if (!allowed.includes(targetStatus)) {
+    throw new ApiError(
+      400,
+      'invalid_transition',
+      `Không thể chuyển trạng thái đơn hàng từ "${currentStatus}" sang "${targetStatus}". Các trạng thái hợp lệ tiếp theo: ${allowed.join(', ') || 'Không có (đây là trạng thái kết thúc)'}.`
+    );
+  }
+
+  const now = new Date();
+  const transitionEntry = {
+    from: currentStatus,
+    to: targetStatus,
+    changedBy: user.email || user.sub,
+    note,
+    timestamp: now.toISOString()
+  };
+  const statusHistory = Array.isArray(order.statusHistory) ? [...order.statusHistory, transitionEntry] : [transitionEntry];
+
+  const updateFields = {
+    status: targetStatus,
+    statusHistory,
+    updatedAt: now
+  };
+
+  // If transition to confirmed and S3 POS is not synced yet, trigger S3 sync
+  let s3SyncResult = null;
+  if (targetStatus === 'confirmed' && order.s3SyncStatus !== 'synced') {
+    if (typeof syncOrderToS3 === 'function') {
+      try {
+        const res = await syncOrderToS3({ orderId, order: { ...order, status: targetStatus }, env, timeoutMs: 4000 });
+        if (res.success) {
+          updateFields.s3SyncStatus = 'synced';
+          updateFields.s3OrderId = res.s3OrderId;
+          updateFields.s3SyncedAt = res.syncedAt;
+          s3SyncResult = res;
+        }
+      } catch (s3Err) {
+        console.warn('[Worker Transition S3 Warning]', s3Err.message);
+      }
+    }
+  }
+
+  if (hasFirestore) {
+    await commitWrites(env, [
+      updateWrite(env, `orders/${orderId}`, updateFields, Object.keys(updateFields))
+    ]);
+  } else {
+    Object.assign(order, updateFields);
+  }
+
+  return json(request, env, {
+    success: true,
+    orderId,
+    previousStatus: currentStatus,
+    status: targetStatus,
+    statusHistory,
+    s3SyncResult
+  });
 }
 
 async function cancelOrder(request, env, user, orderId) {
@@ -585,6 +756,8 @@ async function handleApi(request, env) {
   if (request.method === 'POST' && url.pathname === '/api/orders') return createOrder(request, env, user);
   const s3ResyncMatch = url.pathname.match(/^\/api\/admin\/orders\/([^/]+)\/resync-s3$/);
   if (request.method === 'POST' && s3ResyncMatch) return resyncOrderToS3(request, env, user, decodeURIComponent(s3ResyncMatch[1]));
+  const transitionMatch = url.pathname.match(/^\/api\/admin\/orders\/([^/]+)\/transition$/);
+  if (request.method === 'POST' && transitionMatch) return transitionOrderStatus(request, env, user, decodeURIComponent(transitionMatch[1]));
   const orderMatch = url.pathname.match(/^\/api\/orders\/([^/]+)$/);
   if (request.method === 'PATCH' && orderMatch) return cancelOrder(request, env, user, decodeURIComponent(orderMatch[1]));
   if (request.method === 'POST' && url.pathname === '/api/analyze-skin') return analyzeSkin(request, env, user);

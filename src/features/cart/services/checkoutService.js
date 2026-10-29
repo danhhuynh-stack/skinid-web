@@ -119,38 +119,54 @@ export async function createOrderDirect({ items, customer, note = '', paymentMet
 }
 
 export async function createOrder({ items, customer, note = '', paymentMethod = 'cod', couponCode = '', idempotencyKey }) {
-  // Try worker API if not on production domain skinid.vn
-  if (typeof window !== 'undefined' && !window.location.hostname.includes('skinid.vn') && !window.location.hostname.includes('github.io')) {
-    try {
-      return await apiRequest('/orders', {
-        method: 'POST',
-        headers: { 'Idempotency-Key': idempotencyKey },
-        body: JSON.stringify({
-          customer,
-          note: String(note).trim(),
-          paymentMethod,
-          couponCode: String(couponCode).trim().toUpperCase(),
-          items: items.map(({ productId, quantity }) => ({ productId, quantity }))
-        })
-      });
-    } catch (workerError) {
-      console.warn('[SkinID Checkout] Worker order attempt failed, falling back to direct creation:', workerError.message);
-    }
-  } else if (typeof window === 'undefined') {
-    // For Node.js / unit tests environment fallback pattern
-    return apiRequest('/orders', {
+  const resolvedIdempotencyKey = idempotencyKey || ('idemp_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10));
+
+  try {
+    const response = await apiRequest('/orders', {
       method: 'POST',
-      headers: { 'Idempotency-Key': idempotencyKey },
+      headers: { 'Idempotency-Key': resolvedIdempotencyKey },
       body: JSON.stringify({
         customer,
-        note: String(note).trim(),
+        note: String(note || '').trim(),
         paymentMethod,
-        couponCode: String(couponCode).trim().toUpperCase(),
-        items: items.map(({ productId, quantity }) => ({ productId, quantity }))
+        couponCode: String(couponCode || '').trim().toUpperCase(),
+        items: (items || []).map(item => ({
+          productId: item.productId || item.sku || item.id,
+          quantity: Math.max(1, Math.trunc(Number(item.quantity) || 1))
+        }))
       })
     });
-  }
 
-  // Direct client order creation for production skinid.vn
-  return createOrderDirect({ items, customer, note, paymentMethod, couponCode, idempotencyKey });
+    if (response?.orderId) {
+      const user = auth.currentUser;
+      if (user?.uid) {
+        saveCachedOrder(user.uid, {
+          id: response.orderId,
+          orderId: response.orderId,
+          userId: user.uid,
+          customer,
+          items,
+          note,
+          subtotal: response.subtotal,
+          discountAmount: response.discount,
+          shippingFee: response.shippingFee,
+          total: response.total,
+          paymentMethod,
+          paymentStatus: response.paymentStatus || (paymentMethod === 'cod' ? 'unpaid' : 'pending_transfer'),
+          status: response.status || 'pending',
+          s3SyncStatus: response.s3SyncStatus || 'pending',
+          createdAt: new Date().toISOString()
+        });
+      }
+    }
+
+    return response;
+  } catch (workerError) {
+    if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+      console.warn('[SkinID Checkout] Dev local fallback:', workerError.message);
+      return createOrderDirect({ items, customer, note, paymentMethod, couponCode, idempotencyKey: resolvedIdempotencyKey });
+    }
+    console.error('[SkinID Checkout] Server order creation error:', workerError.message);
+    throw workerError;
+  }
 }

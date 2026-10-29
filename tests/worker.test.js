@@ -34,4 +34,16 @@ assert.doesNotMatch(worker + firestore + firebaseAuth + workerEnv, /AIza[\w-]{30
 assert.match(workflow, /CLOUDFLARE_API_TOKEN/);
 assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID/);
 
-console.log('PASS: Worker verifies Firebase tokens, recalculates orders and keeps credentials server-side.');
+// GD2: Tiền ở Server - Voucher validation, Shipping calculation & State machine
+assert.match(worker, /VALID_ORDER_TRANSITIONS/);
+assert.match(worker, /async function transitionOrderStatus/);
+assert.match(worker, /transitionMatch/);
+assert.match(worker, /coupon_min_order/);
+assert.match(worker, /coupon_expired/);
+assert.match(worker, /coupon_inactive/);
+assert.match(worker, /coupon_limit_exceeded/);
+assert.match(worker, /resolveShippingFee/);
+assert.match(worker, /duplicate: true/);
+assert.match(worker, /statusHistory/);
+
+console.log('PASS: Worker verifies Firebase tokens, recalculates orders, validates vouchers/shipping and enforces order state machine.');
