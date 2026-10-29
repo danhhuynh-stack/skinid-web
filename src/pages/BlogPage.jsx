@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/layout/Header.jsx';
 import Footer from '../components/layout/Footer.jsx';
 import OfferBar from '../components/layout/OfferBar.jsx';
@@ -39,6 +40,7 @@ export default function BlogPage() {
   });
 
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   const [articles, setArticles] = useState(readInitialBlogArticles);
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -175,7 +177,7 @@ export default function BlogPage() {
                   <article
                     key={article.id}
                     className="bg-white rounded-2xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col group cursor-pointer"
-                    onClick={() => setSelectedArticle(article)}
+                    onClick={() => navigate(`/blog/${article.slug || article.id}`)}
                   >
                     <div className={`h-52 bg-stone-100 flex items-center justify-center relative overflow-hidden ${isProductCutout ? 'p-6' : ''}`}>
                       <img

@@ -13,6 +13,7 @@ import { json, corsHeaders } from './app/http.js';
 import { isValidFirebasePrivateKey, requiredFirebaseEnv } from './app/env.js';
 import { authenticate } from './infrastructure/firebase/auth.js';
 import { syncOrderToS3 } from './services/s3Service.js';
+import { sendTelegramOrderNotification } from './services/telegramService.js';
 
 const bundledProducts = new Map(SERVER_CATALOG.map(product => [product.id, product]));
 
@@ -209,6 +210,17 @@ async function createOrder(request, env, user) {
     } catch (err) {
       console.warn('[Worker S3 Sync Exception]', err.message);
     }
+  }
+
+  // Instant real-time alert via Telegram
+  try {
+    if (typeof sendTelegramOrderNotification === 'function') {
+      sendTelegramOrderNotification({ orderId, order, env }).catch(err => {
+        console.warn('[Worker Telegram Sync Exception]', err.message);
+      });
+    }
+  } catch (err) {
+    console.warn('[Worker Telegram Dispatch Error]', err.message);
   }
 
   return json(request, env, { success: true, orderId, subtotal, discount: discountAmount, shippingFee, total: order.total, s3SyncStatus }, 201);
@@ -819,12 +831,60 @@ async function applyDynamicSeo(request, env, url, response) {
   return response;
 }
 
+function generateSitemapXml(request, env) {
+  const origin = new URL(request.url).origin;
+  const staticRoutes = [
+    '',
+    'products',
+    'khuyen-mai',
+    'blog',
+    'skin-analysis',
+    'acie',
+    'tra-cuu-cong-bo',
+    'chinh-sach-bao-mat',
+    'chinh-sach-van-chuyen',
+    'chinh-sach-doi-tra',
+    'chinh-sach-thanh-toan',
+    'dieu-khoan-giao-dich',
+    'quy-trinh-khieu-nai'
+  ];
+
+  const now = new Date().toISOString().split('T')[0];
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+  for (const r of staticRoutes) {
+    const loc = r ? `${origin}/${r}` : `${origin}/`;
+    const priority = r === '' ? '1.0' : (r === 'products' ? '0.9' : '0.8');
+    xml += `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+  }
+
+  for (const p of SERVER_CATALOG) {
+    const slug = p.slug || p.id;
+    xml += `  <url>\n    <loc>${origin}/products/${slug}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
+  }
+
+  xml += '</urlset>';
+
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'public, max-age=3600'
+    }
+  });
+}
+
 export default {
   async fetch(request, env) {
     try {
       const url = new URL(request.url);
       if (url.pathname.startsWith('/api/')) return await handleApi(request, env);
-      return env.ASSETS.fetch(request);
+      if (url.pathname === '/sitemap.xml') return generateSitemapXml(request, env);
+      const response = await env.ASSETS.fetch(request);
+      if (request.method === 'GET' && response.status === 200 && response.headers.get('content-type')?.includes('text/html')) {
+        return await applyDynamicSeo(request, env, url, response);
+      }
+      return response;
     } catch (error) {
       console.error('[SkinID Worker]', { code: error.code, message: error.message });
       const isExpected = error instanceof ApiError;

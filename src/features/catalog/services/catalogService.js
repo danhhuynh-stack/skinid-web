@@ -154,6 +154,13 @@ export function setAvailableProducts(products) {
  * Finds a single product by ID.
  * @param {string} productId
  */
+export function getProductBySlug(slugOrId) {
+  if (!slugOrId) return null;
+  const products = getAvailableProducts();
+  const normalized = String(slugOrId).toLowerCase().trim();
+  return products.find((p) => (p.slug && p.slug.toLowerCase() === normalized) || p.id === slugOrId) || null;
+}
+
 export function getProductById(productId) {
   const products = getAvailableProducts();
   return products.find((p) => p.id === productId) || null;

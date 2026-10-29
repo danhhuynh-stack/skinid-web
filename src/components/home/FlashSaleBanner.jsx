@@ -2,10 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { useCatalog, formatPrice } from '../../features/catalog/index.js';
 import { useCart } from '../../features/cart/index.js';
 import { fetchAdminPromotions } from '../../features/admin/index.js';
+import { CURATED_COMBOS } from '../../data/promotions.js';
 import { assetUrl } from '../../assets/index.js';
 
 function FlameIcon() {
   return <svg aria-hidden="true" className="w-5 h-5 text-amber-400 animate-pulse" viewBox="0 0 24 24" fill="currentColor"><path d="M12 23c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 9.03 3 14c0 4.97 4.03 9 9 9z" /></svg>;
+}
+
+function SparklesIcon() {
+  return <svg aria-hidden="true" className="w-4 h-4 text-rose-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" /></svg>;
 }
 
 function CheckIcon() {
@@ -54,6 +59,7 @@ export default function FlashSaleBanner() {
   const { products, isReady } = useCatalog();
   const { addToCart } = useCart();
   const [copiedCode, setCopiedCode] = useState(null);
+  const [addedComboId, setAddedComboId] = useState(null);
   const [campaign, setCampaign] = useState(readDynamicCampaign);
   const [vouchers, setVouchers] = useState(readDynamicVouchers);
 
@@ -127,6 +133,13 @@ export default function FlashSaleBanner() {
   const handleAddToCart = async (e, productId) => {
     e.stopPropagation();
     await addToCart(productId);
+  };
+
+  const handleAddComboToCart = async (combo) => {
+    setAddedComboId(combo.id);
+    if (combo.targetProductId) await addToCart(combo.targetProductId);
+    if (combo.secondaryProductId) await addToCart(combo.secondaryProductId);
+    setTimeout(() => setAddedComboId(null), 2000);
   };
 
   // Top 3 best discount products (ưu tiên các sản phẩm bán lẻ giảm sốc 50%)
@@ -225,11 +238,107 @@ export default function FlashSaleBanner() {
           })}
         </div>
 
-        {/* 3 Hot Deals Products */}
+        {/* 3 Curated Combos Section */}
+        <div className="pt-6 pb-6 border-b border-rose-800/40 relative z-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <SparklesIcon />
+              <span className="text-xs font-extrabold uppercase tracking-wider text-rose-300">
+                3 Combo Chăm Sóc Da Độc Quyền · Tiết Kiệm Đến 25%
+              </span>
+            </div>
+            <a
+              href="/khuyen-mai"
+              className="text-xs font-bold text-rose-400 hover:text-white transition-colors inline-flex items-center gap-1"
+            >
+              Xem trang khuyến mãi <span>→</span>
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {CURATED_COMBOS.map((combo) => {
+              const isAdded = addedComboId === combo.id;
+              return (
+                <div
+                  key={combo.id}
+                  className="bg-white text-gray-900 rounded-2xl p-4 flex flex-col justify-between shadow-lg hover:shadow-xl transition-all duration-300 group border border-rose-100"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider text-rose-700 bg-rose-50 border border-rose-100">
+                        {combo.badge}
+                      </span>
+                      <span className="text-[10px] font-semibold text-stone-400 uppercase tracking-wider">
+                        Đặc Quyền SkinID
+                      </span>
+                    </div>
+
+                    <div
+                      className="relative aspect-video rounded-xl bg-stone-50 p-2 mb-3 flex items-center justify-center overflow-hidden cursor-pointer"
+                      onClick={() => openProduct(combo.targetProductId)}
+                    >
+                      <img
+                        src={assetUrl(combo.image, combo.brandSlug)}
+                        alt={combo.title}
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <h3
+                      className="text-sm font-bold text-gray-900 hover:text-rose-600 transition-colors cursor-pointer line-clamp-1"
+                      onClick={() => openProduct(combo.targetProductId)}
+                    >
+                      {combo.title}
+                    </h3>
+                    <p className="text-[11px] font-semibold text-rose-600 mt-0.5 line-clamp-1">
+                      {combo.subtitle}
+                    </p>
+                    <p className="text-[11px] text-gray-600 mt-1.5 line-clamp-2 leading-relaxed">
+                      {combo.description}
+                    </p>
+
+                    <div className="mt-3 pt-2.5 border-t border-dashed border-gray-100">
+                      <div className="text-[10px] font-bold text-gray-500 mb-1">Bộ sản phẩm bao gồm:</div>
+                      <ul className="space-y-0.5">
+                        {combo.items.map((item, idx) => (
+                          <li key={idx} className="text-[11px] text-gray-600 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0" />
+                            <span className="truncate">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <div>
+                      <div className="text-base font-black text-rose-700">{formatPrice(combo.price)}</div>
+                      <div className="text-[11px] text-gray-400 line-through">{formatPrice(combo.originalPrice)}</div>
+                    </div>
+                    <button
+                      type="button"
+                      className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+                        isAdded
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-rose-600 text-white hover:bg-rose-700 shadow-xs'
+                      }`}
+                      onClick={() => handleAddComboToCart(combo)}
+                    >
+                      {isAdded ? <><CheckIcon /> Đã thêm giỏ</> : <span>+ Thêm Combo</span>}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 3 Hot Deals Products Giảm Đến 50% */}
         <div className="pt-6 relative z-10">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-extrabold uppercase tracking-wider text-rose-300">
-              Sản phẩm giảm sâu nhất hôm nay
+              Sản phẩm bán lẻ Flash Sale giảm đến 50%
             </span>
             <a
               href="/khuyen-mai"

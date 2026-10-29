@@ -28,8 +28,10 @@ export const router = createBrowserRouter([
     children: [
       { index: true, lazy: lazyPage(() => import('../pages/HomePage.jsx')) },
       { path: 'products', lazy: lazyPage(() => import('../pages/ProductsPage.jsx')) },
+      { path: 'products/:productSlug', lazy: lazyPage(() => import('../pages/ProductDetailPage.jsx')) },
       { path: 'khuyen-mai', lazy: lazyPage(() => import('../pages/PromotionsPage.jsx')) },
       { path: 'blog', lazy: lazyPage(() => import('../pages/BlogPage.jsx')) },
+      { path: 'blog/:postSlug', lazy: lazyPage(() => import('../pages/BlogDetailPage.jsx')) },
       { path: 'goc-cham-da', lazy: lazyPage(() => import('../pages/BlogPage.jsx')) },
       { path: 'tin-tuc', element: <Navigate to="/blog" replace /> },
       { path: 'profile', lazy: lazyPage(() => import('../pages/ProfilePage.jsx')) },

@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState } from 'react';
+﻿import { useEffect, useId, useMemo, useState } from 'react';
 import {
   assignAdminByEmail,
   deleteAdminBlogPost,
@@ -25,6 +25,8 @@ import { DEFAULT_BLOG_ARTICLES } from '../data/blogArticles.js';
 import { AVAILABLE_COUPONS } from '../features/cart/services/couponService.js';
 import AdminSidebar from '../features/admin/components/AdminSidebar.jsx';
 import AdminTopbar from '../features/admin/components/AdminTopbar.jsx';
+import AdminImageUploader from '../features/admin/components/AdminImageUploader.jsx';
+import AdminSeoInspector from '../features/admin/components/AdminSeoInspector.jsx';
 import AdminActionCenter from '../features/admin/components/AdminActionCenter.jsx';
 import AdminAnalyticsOverview from '../features/admin/components/AdminAnalyticsOverview.jsx';
 import CommandPaletteModal from '../features/admin/components/CommandPaletteModal.jsx';
@@ -357,9 +359,13 @@ function EditorModal({ editor, onClose, onSaved }) {
                       <option value="special">Cơ thể & Nước hoa (Body / Perfume)</option>
                     </select>
                   </label>
-                  <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Đường dẫn hình ảnh
-                    <input value={form.image} onChange={update('image')} placeholder="/images/products/..." className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition font-mono" />
-                  </label>
+                  <div className="sm:col-span-2">
+                    <AdminImageUploader
+                      value={form.image}
+                      onChange={(val) => setForm((curr) => ({ ...curr, image: val }))}
+                      label="Hình ảnh sản phẩm (Kéo thả, chọn file từ máy hoặc nhập URL)"
+                    />
+                  </div>
                   <label className="block text-xs font-semibold text-slate-700 sm:col-span-2">Công dụng & Mô tả ngắn
                     <textarea value={form.uses} onChange={update('uses')} rows="3" className="mt-1 w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-[#E06D81]/20 focus:border-[#E06D81] outline-none transition" />
                   </label>

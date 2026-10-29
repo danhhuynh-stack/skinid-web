@@ -24,7 +24,7 @@ export default function Footer() {
             <div className="pt-1">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-800 bg-gray-900/60 text-[11px] text-gray-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                <span>Hồ sơ TMĐT tuân thủ NĐ 52/2013/NĐ-CP</span>
+                <span>Hồ sơ TMĐT đăng ký Cổng online.gov.vn theo NĐ 52/2013/NĐ-CP</span>
               </div>
             </div>
           </div>

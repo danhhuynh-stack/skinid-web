@@ -78,8 +78,8 @@ export function refreshProductCatalog(force = false) {
       const catalog = setAvailableProducts(products);
       catalogRequest = Promise.resolve(catalog);
 
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('skinid:catalog-updated', { detail: { count: catalog.length } }));
+      if (typeof globalThis !== 'undefined' && typeof globalThis.dispatchEvent === 'function') {
+        globalThis.dispatchEvent(new CustomEvent('skinid:catalog-updated', { detail: { count: catalog.length } }));
       }
 
       return catalog;

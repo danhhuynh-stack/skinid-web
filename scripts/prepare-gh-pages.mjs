@@ -80,8 +80,8 @@ async function prepare() {
       canonical: 'https://skinid.vn/products/'
     },
     'khuyen-mai': {
-      title: 'Khuyến Mãi & Voucher Giảm Giá Độc Quyền | SkinID.vn',
-      desc: 'Tổng hợp mã giảm giá, voucher freeship và ưu đãi flash sale dược mỹ phẩm chính hãng tại SkinID.vn.',
+      title: 'Khuyến Mãi & 3 Combo Độc Quyền — Giảm Đến 50% | SkinID.vn',
+      desc: 'Chương trình ưu đãi bùng nổ: 3 combo chăm sóc da chuyên sâu và tuyển chọn sản phẩm bán lẻ chính hãng giảm giá đến 50% tại SkinID.vn.',
       canonical: 'https://skinid.vn/khuyen-mai/'
     },
     'blog': {
