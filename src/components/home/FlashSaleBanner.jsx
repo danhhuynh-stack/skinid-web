@@ -151,9 +151,8 @@ export default function FlashSaleBanner() {
     setTimeout(() => setAddedComboId(null), 2500);
   };
 
-  if (campaign && campaign.active === false) {
-    return null;
-  }
+  // Banner khuyến mãi chính luôn hiển thị để phục vụ khách hàng
+  // if (campaign && campaign.active === false) return null;
 
   return (
     <section className="container my-8 md:my-12" aria-label="Khuyến mãi & Combo Ngày Đôi">
@@ -275,6 +274,19 @@ export default function FlashSaleBanner() {
                     <p className="text-xs text-stone-500 italic mt-0.5">
                       {combo.slogan}
                     </p>
+
+                    {/* HERO VISUAL MOCKUP ẢNH CHỤP COMBO SANG TRỌNG */}
+                    <div className="relative aspect-[4/3] rounded-2xl bg-white my-3 overflow-hidden border border-rose-100 shadow-sm flex items-center justify-center group/hero">
+                      <img
+                        src={assetUrl(combo.image)}
+                        alt={combo.title}
+                        className="w-full h-full object-cover group-hover/hero:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1.5 border border-white/20">
+                        <GiftIcon /> Trọn bộ 3 món + Túi quà tặng cao cấp
+                      </div>
+                    </div>
 
                     {/* GALLERY ROW: HIỂN THỊ CÁC SẢN PHẨM RÕ RÀNG */}
                     <div className="bg-rose-50/70 border border-rose-100 rounded-2xl p-3 my-4">

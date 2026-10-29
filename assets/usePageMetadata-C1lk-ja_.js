@@ -1,1 +1,0 @@
-import{r as e}from"./rolldown-runtime-hePW80VL.js";import{Q as t}from"./app-1elgPtxQ.js";var n=e(t());function r({title:e,description:t,bodyClass:r=``}){(0,n.useEffect)(()=>{document.title=e;let n=document.querySelector(`meta[name="description"]`);return n&&n.setAttribute(`content`,t),document.body.className=r,()=>{document.body.className=``}},[r,t,e])}export{r as t};

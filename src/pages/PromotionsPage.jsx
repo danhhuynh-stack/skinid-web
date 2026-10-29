@@ -213,6 +213,19 @@ export default function PromotionsPage() {
                         {combo.slogan}
                       </p>
 
+                      {/* HERO VISUAL MOCKUP ẢNH CHỤP COMBO SANG TRỌNG */}
+                      <div className="relative aspect-[4/3] rounded-2xl bg-white my-3.5 overflow-hidden border border-rose-100 shadow-sm flex items-center justify-center group/hero">
+                        <img
+                          src={assetUrl(combo.image)}
+                          alt={combo.title}
+                          className="w-full h-full object-cover group-hover/hero:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-white flex items-center gap-1.5 border border-white/20">
+                          <GiftIcon /> Trọn bộ 3 món + Túi quà tặng cao cấp
+                        </div>
+                      </div>
+
                       {/* DẢI HIỂN THỊ CÁC SẢN PHẨM RÕ RÀNG TRONG COMBO */}
                       <div className="bg-rose-50/70 border border-rose-100 rounded-2xl p-4 my-4">
                         <div className="text-[11px] font-black uppercase tracking-wider text-rose-800 mb-2.5 text-center">

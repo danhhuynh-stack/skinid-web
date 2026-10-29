@@ -1,45 +1,56 @@
+/**
+ * Chiến dịch khuyến mãi SkinID: TWON & D'VAH
+ * 3 Combo Quà Tặng Độc Quyền & Sản Phẩm Bán Lẻ Flash Sale Giảm 50%
+ */
+
 export const CURATED_COMBOS = [
   {
     id: 'combo-nang-xinh',
     code: 'COMBO 1',
-    badge: 'TIẾT KIỆM 25%',
+    badge: 'BEST SELLER · TIẾT KIỆM 25%',
     title: 'Nàng Xinh ♡',
     subtitle: 'DƯỠNG TRẮNG TOÀN DIỆN',
     slogan: 'Da mịn màng — Tươi sáng mỗi ngày',
-    description: 'Bộ ba sản phẩm dưỡng trắng body toàn diện từ TWON: làm sạch, ủ dưỡng sáng mịn và dưỡng ẩm sâu mềm mượt, tặng kèm túi quà tặng SkinID sang trọng.',
-    tagline: '🎁 Tặng kèm Túi quà tặng SkinID sang trọng',
+    description: 'Bộ ba sản phẩm dưỡng trắng body toàn diện từ TWON: làm sạch, ủ dưỡng sáng mịn và dưỡng ẩm sâu mềm mượt, giúp da bật tone tự nhiên không nhờn rít.',
+    tagline: '100% Chính Hãng TWON',
+    image: '/images/products/combos/combo-1-nang-xinh.jpg',
     products: [
       {
         id: 'twon-body-lotion',
         name: 'Kem body dưỡng trắng TWON',
         capacity: '250ml',
-        image: '/images/products/twon/twon-body-lotion.png',
+        image: '/images/products/twon-body-lotion.png',
         brandSlug: 'twon',
         price: 279000
       },
       {
         id: 'twon-kem-u-trang',
-        name: 'Kem ủ trắng TWON',
+        name: 'Kem ủ trắng thảo mộc TWON',
         capacity: '250ml',
-        image: '/images/products/twon/twon-kem-u-trang.png',
+        image: '/images/products/twon-kem-u-trang.png',
         brandSlug: 'twon',
         price: 249000
       },
       {
         id: 'twon-sua-tam',
-        name: 'Sữa tắm TWON',
+        name: 'Sữa tắm dưỡng da lưu hương TWON',
         capacity: '450ml',
-        image: '/images/products/twon/twon-sua-tam.png',
+        image: '/images/products/twon-sua-tam.png',
         brandSlug: 'twon',
         price: 179000
       }
     ],
+    items: [
+      '01 Kem body dưỡng trắng TWON (250ml)',
+      '01 Kem ủ trắng thảo mộc TWON (250ml)',
+      '01 Sữa tắm dưỡng da lưu hương TWON (450ml)'
+    ],
     productIds: ['twon-body-lotion', 'twon-kem-u-trang', 'twon-sua-tam'],
     features: [
-      'Dưỡng trắng an toàn',
-      'Làm mịn da đều màu',
-      'Lưu hương lâu',
-      'Không nhờn rít'
+      'Dưỡng trắng chuyên sâu an toàn',
+      'Làm mịn da, đều màu toàn thân',
+      'Lưu hương nước hoa bền lâu',
+      'Thấm nhanh 3s, không nhờn rít'
     ],
     originalPrice: 707000,
     price: 529000,
@@ -49,44 +60,50 @@ export const CURATED_COMBOS = [
   {
     id: 'combo-nang-quyen-ru',
     code: 'COMBO 2',
-    badge: 'TIẾT KIỆM 22%',
+    badge: 'HOT TREND · TIẾT KIỆM 22%',
     title: 'Nàng Quyến Rũ ♡',
     subtitle: 'HƯƠNG NƯỚC HOA SANG TRỌNG',
     slogan: 'Tự tin tỏa sáng mỗi ngày',
-    description: 'Sự kết hợp hoàn hảo giữa làn da mịn màng thơm ngát cùng hương nước hoa D\'VAH Kamal ấm áp ngọt ngào, tặng kèm túi quà tặng SkinID sang trọng.',
-    tagline: '🎁 Tặng kèm Túi quà tặng SkinID sang trọng',
+    description: 'Sự kết hợp hoàn hảo giữa làn da mịn màng thơm ngát cùng hương nước hoa D\'VAH Kamal ấm áp ngọt ngào, lưu lại dấu ấn kiêu kỳ khó phai.',
+    tagline: '100% Chính Hãng TWON & D\'VAH',
+    image: '/images/products/combos/combo-2-nang-quyen-ru.jpg',
     products: [
       {
         id: 'twon-body-lotion',
         name: 'Kem body dưỡng trắng TWON',
         capacity: '250ml',
-        image: '/images/products/twon/twon-body-lotion.png',
+        image: '/images/products/twon-body-lotion.png',
         brandSlug: 'twon',
         price: 279000
       },
       {
         id: 'twon-sua-tam',
-        name: 'Sữa tắm TWON',
+        name: 'Sữa tắm dưỡng da TWON',
         capacity: '450ml',
-        image: '/images/products/twon/twon-sua-tam.png',
+        image: '/images/products/twon-sua-tam.png',
         brandSlug: 'twon',
         price: 179000
       },
       {
         id: 'dvah-kamal',
-        name: 'Nước hoa D\'VAH KAMAL Mini',
+        name: 'Nước hoa Mini D\'VAH KAMAL (Ấm ngọt)',
         capacity: '10ml',
-        image: '/images/products/dvah/dvah-kamal.png',
+        image: '/images/products/dvah-kamal.png',
         brandSlug: 'dvah',
         price: 179000
       }
     ],
+    items: [
+      '01 Kem body dưỡng trắng TWON (250ml)',
+      '01 Sữa tắm dưỡng da TWON (450ml)',
+      '01 Nước hoa Mini D\'VAH KAMAL 10ml (Ấm ngọt, quyến rũ)'
+    ],
     productIds: ['twon-body-lotion', 'twon-sua-tam', 'dvah-kamal'],
     features: [
-      'Hương thơm sang trọng',
-      'Làm sạch dịu nhẹ',
-      'Dưỡng ẩm mịn màng',
-      'Lưu hương dài lâu'
+      'Hương nước hoa Kamal ấm ngọt quyến rũ',
+      'Làm sạch dịu nhẹ da ẩm mượt',
+      'Dưỡng trắng bật tone tự nhiên',
+      'Lưu hương 6-8 tiếng trên da'
     ],
     originalPrice: 637000,
     price: 499000,
@@ -96,44 +113,50 @@ export const CURATED_COMBOS = [
   {
     id: 'combo-nang-thom',
     code: 'COMBO 3',
-    badge: 'TIẾT KIỆM 18%',
+    badge: 'ĐƯỢC YÊU THÍCH · TIẾT KIỆM 18%',
     title: 'Nàng Thơm ♡',
     subtitle: 'THƠM MỀM QUYẾN RŨ',
     slogan: 'Dưỡng sâu — Lưu hương dài lâu',
-    description: 'Chăm sóc body toàn diện kết hợp nước hoa D\'VAH Tanmaya trầm ấm hiện đại cuốn hút, tặng kèm túi quà tặng SkinID sang trọng.',
-    tagline: '🎁 Tặng kèm Túi quà tặng SkinID sang trọng',
+    description: 'Chăm sóc body toàn diện với kem ủ thảo mộc và sữa tắm dưỡng da kết hợp nước hoa D\'VAH Tanmaya gỗ tuyết tùng trầm ấm hiện đại cuốn hút.',
+    tagline: '100% Chính Hãng TWON & D\'VAH',
+    image: '/images/products/combos/combo-3-nang-thom.jpg',
     products: [
       {
-        id: 'twon-body-lotion',
-        name: 'Kem body dưỡng trắng TWON',
+        id: 'twon-kem-u-trang',
+        name: 'Kem ủ trắng thảo mộc TWON',
         capacity: '250ml',
-        image: '/images/products/twon/twon-body-lotion.png',
+        image: '/images/products/twon-kem-u-trang.png',
         brandSlug: 'twon',
-        price: 279000
+        price: 249000
       },
       {
         id: 'twon-sua-tam',
-        name: 'Sữa tắm TWON',
+        name: 'Sữa tắm dưỡng da TWON',
         capacity: '450ml',
-        image: '/images/products/twon/twon-sua-tam.png',
+        image: '/images/products/twon-sua-tam.png',
         brandSlug: 'twon',
         price: 179000
       },
       {
         id: 'dvah-tanmaya',
-        name: 'Nước hoa D\'VAH TANMAYA Mini',
+        name: 'Nước hoa Mini D\'VAH TANMAYA (Trầm ấm)',
         capacity: '10ml',
-        image: '/images/products/dvah/dvah-tanmaya.png',
+        image: '/images/products/dvah-tanmaya.png',
         brandSlug: 'dvah',
         price: 179000
       }
     ],
-    productIds: ['twon-body-lotion', 'twon-sua-tam', 'dvah-tanmaya'],
+    items: [
+      '01 Kem ủ trắng thảo mộc TWON (250ml)',
+      '01 Sữa tắm dưỡng da TWON (450ml)',
+      '01 Nước hoa Mini D\'VAH TANMAYA 10ml (Trầm ấm, cuốn hút)'
+    ],
+    productIds: ['twon-kem-u-trang', 'twon-sua-tam', 'dvah-tanmaya'],
     features: [
-      'Dưỡng trắng an toàn',
-      'Lưu hương lâu',
-      'Giúp da mềm mịn',
-      'Thơm quyến rũ suốt ngày dài'
+      'Kem ủ bạt sừng, da sáng mịn',
+      'Hương gỗ Tanmaya trầm ấm bí ẩn',
+      'Làm dịu & dưỡng ẩm sâu',
+      'Thơm ngát quyến rũ suốt ngày dài'
     ],
     originalPrice: 607000,
     price: 499000,
@@ -148,7 +171,7 @@ export const RETAIL_50_DEALS = [
     name: 'Sữa tắm dưỡng da TWON 450ml',
     brand: 'TWON',
     brandSlug: 'twon',
-    image: '/images/products/twon/twon-sua-tam.png',
+    image: '/images/products/twon-sua-tam.png',
     originalPrice: 179000,
     price: 89500,
     discountPercent: 50,
@@ -159,7 +182,7 @@ export const RETAIL_50_DEALS = [
     name: 'Kem body dưỡng trắng TWON 250ml',
     brand: 'TWON',
     brandSlug: 'twon',
-    image: '/images/products/twon/twon-body-lotion.png',
+    image: '/images/products/twon-body-lotion.png',
     originalPrice: 279000,
     price: 139500,
     discountPercent: 50,
@@ -167,10 +190,10 @@ export const RETAIL_50_DEALS = [
   },
   {
     id: 'twon-kem-u-trang',
-    name: 'Kem ủ trắng TWON 250ml',
+    name: 'Kem ủ trắng thảo mộc TWON 250ml',
     brand: 'TWON',
     brandSlug: 'twon',
-    image: '/images/products/twon/twon-kem-u-trang.png',
+    image: '/images/products/twon-kem-u-trang.png',
     originalPrice: 249000,
     price: 124500,
     discountPercent: 50,
@@ -181,7 +204,7 @@ export const RETAIL_50_DEALS = [
     name: 'Nước hoa Mini 10ml D\'VAH KAMAL',
     brand: "D'VAH",
     brandSlug: 'dvah',
-    image: '/images/products/dvah/dvah-kamal.png',
+    image: '/images/products/dvah-kamal.png',
     originalPrice: 179000,
     price: 89500,
     discountPercent: 50,
@@ -193,7 +216,7 @@ export const RETAIL_50_DEALS = [
     name: 'Nước hoa Mini 10ml D\'VAH MALINI',
     brand: "D'VAH",
     brandSlug: 'dvah',
-    image: '/images/products/dvah/dvah-malini.png',
+    image: '/images/products/dvah-malini.png',
     originalPrice: 179000,
     price: 89500,
     discountPercent: 50,
@@ -205,7 +228,7 @@ export const RETAIL_50_DEALS = [
     name: 'Nước hoa Mini 10ml D\'VAH SARIKA',
     brand: "D'VAH",
     brandSlug: 'dvah',
-    image: '/images/products/dvah/dvah-sarika.png',
+    image: '/images/products/dvah-sarika.png',
     originalPrice: 179000,
     price: 89500,
     discountPercent: 50,
@@ -217,7 +240,7 @@ export const RETAIL_50_DEALS = [
     name: 'Nước hoa Mini 10ml D\'VAH TANMAYA',
     brand: "D'VAH",
     brandSlug: 'dvah',
-    image: '/images/products/dvah/dvah-tanmaya.png',
+    image: '/images/products/dvah-tanmaya.png',
     originalPrice: 179000,
     price: 89500,
     discountPercent: 50,
@@ -229,7 +252,7 @@ export const RETAIL_50_DEALS = [
     name: 'Nước hoa Mini 10ml D\'VAH RAKTA',
     brand: "D'VAH",
     brandSlug: 'dvah',
-    image: '/images/products/dvah/dvah-rakta.png',
+    image: '/images/products/dvah-rakta.png',
     originalPrice: 179000,
     price: 89500,
     discountPercent: 50,
@@ -241,5 +264,5 @@ export const RETAIL_50_DEALS = [
 export const CAMPAIGN_STEPS = [
   { step: '1', title: 'LIKE & FOLLOW', desc: 'Fanpage chính thức SkinID' },
   { step: '2', title: 'SHARE BÀI VIẾT', desc: 'Ở chế độ CÔNG KHAI trên trang cá nhân' },
-  { step: '3', title: 'COMMENT "SKINID50"', desc: 'Ngay dưới bài viết để nhận mã xác nhận' }
+  { step: '3', title: 'MUA SẮM THẢ GA', desc: 'Nhận ngay mức giá giảm sốc 50% khi đặt hàng' }
 ];
