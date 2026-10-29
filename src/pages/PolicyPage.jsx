@@ -282,20 +282,23 @@ export default function PolicyPage({ explicitSlug = null }) {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-100 bg-white">
-                            {section.tableData.rows.map((row, rowIndex) => (
-                              <tr key={rowIndex} className="hover:bg-gray-50/70 transition-colors">
-                                {row.map((cell, colIndex) => (
-                                  <td
-                                    key={colIndex}
-                                    className={`px-4 py-3 border-r border-gray-100 last:border-r-0 align-top ${
-                                      colIndex === 0 ? 'font-semibold text-gray-900 bg-gray-50/30' : 'text-gray-600'
-                                    }`}
-                                  >
-                                    {renderInlineText(cell)}
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
+                            {section.tableData.rows.map((row, rowIndex) => {
+                              const cells = Array.isArray(row) ? row : (row.cells || []);
+                              return (
+                                <tr key={rowIndex} className="hover:bg-gray-50/70 transition-colors">
+                                  {cells.map((cell, colIndex) => (
+                                    <td
+                                      key={colIndex}
+                                      className={`px-4 py-3 border-r border-gray-100 last:border-r-0 align-top ${
+                                        colIndex === 0 ? 'font-semibold text-gray-900 bg-gray-50/30' : 'text-gray-600'
+                                      }`}
+                                    >
+                                      {renderInlineText(cell)}
+                                    </td>
+                                  ))}
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </table>
                       </div>

@@ -190,7 +190,18 @@ async function loadSourceLegalPages() {
       description: p.seoDesc,
       canonical: p.canonical
     },
-    sections: p.sections,
+    sections: p.sections.map(s => {
+      if (s.tableData && Array.isArray(s.tableData.rows)) {
+        return {
+          ...s,
+          tableData: {
+            ...s.tableData,
+            rows: s.tableData.rows.map(r => (Array.isArray(r) ? { cells: r } : r))
+          }
+        };
+      }
+      return s;
+    }),
     status: 'published'
   }));
 }
@@ -326,18 +337,32 @@ async function run() {
       for (const item of items) {
         const docId = String(item[idKey] || item.id || item.code || item.slug);
         const docRef = db.collection(collectionName).doc(docId);
-        const docSnap = await docRef.get();
+        let attempts = 0;
+        while (attempts < 3) {
+          try {
+            attempts++;
+            const docSnap = await docRef.get();
 
-        if (docSnap.exists) {
-          skippedCount++;
-        } else {
-          await docRef.set({
-            ...item,
-            createdAtServer: FieldValue.serverTimestamp(),
-            updatedAtServer: FieldValue.serverTimestamp(),
-            version: 1
-          });
-          createdCount++;
+            if (docSnap.exists) {
+              skippedCount++;
+            } else {
+              await docRef.set({
+                ...item,
+                createdAtServer: FieldValue.serverTimestamp(),
+                updatedAtServer: FieldValue.serverTimestamp(),
+                version: 1
+              });
+              createdCount++;
+            }
+            break;
+          } catch (itemErr) {
+            if (attempts >= 3) {
+              console.error(`❌ Lỗi tại [${collectionName}] docId=${docId} sau 3 lần thử:`, itemErr.message);
+              throw itemErr;
+            }
+            console.log(`⚠️ Gặp lỗi tại [${collectionName}] docId=${docId}, thử lại lần ${attempts + 1} sau 2s...`);
+            await new Promise(r => setTimeout(r, 2000));
+          }
         }
       }
       console.log(`   * [${collectionName}]: Tạo mới ${createdCount} docs, bỏ qua ${skippedCount} docs đã tồn tại.`);
@@ -355,7 +380,7 @@ async function run() {
 
     console.log('\n🎉 [HOÀN TẤT DI TRÚ GĐ1] Tất cả dữ liệu nền tảng đã nằm an toàn trên Firestore!');
   } catch (err) {
-    console.error('❌ Lỗi trong quá trình commit lên Firestore:', err.message);
+    console.error('❌ Lỗi trong quá trình commit lên Firestore:', err);
     process.exit(1);
   }
 }
