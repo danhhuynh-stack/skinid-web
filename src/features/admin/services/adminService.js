@@ -451,6 +451,14 @@ export async function fetchAdminPromotions() {
   const localVouchers = readLocalVouchers();
   const localCampaign = readLocalCampaign();
 
+  let deletedSet = new Set();
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const deletedRaw = localStorage.getItem('skinid_deleted_vouchers');
+      if (deletedRaw) deletedSet = new Set(JSON.parse(deletedRaw));
+    }
+  } catch {}
+
   try {
     const { collection, getDocs, doc, getDoc } = sdk.firestore;
     const [voucherSnapshot, campaignDoc] = await Promise.all([
@@ -461,17 +469,16 @@ export async function fetchAdminPromotions() {
     const remoteCampaign = campaignDoc.exists() ? campaignDoc.data() : null;
 
     const mergedCampaign = remoteCampaign || localCampaign;
-    let mergedVouchers = remoteVouchers;
-    if (!mergedVouchers && localVouchers) {
-      mergedVouchers = localVouchers;
-    } else if (mergedVouchers && localVouchers) {
-      const vMap = new Map();
-      mergedVouchers.forEach(v => vMap.set(v.code, v));
-      localVouchers.forEach(v => vMap.set(v.code, { ...(vMap.get(v.code) || {}), ...v }));
-      mergedVouchers = Array.from(vMap.values());
+    let mergedVouchers = null;
+
+    if (localVouchers !== null) {
+      // Ưu tiên TUYỆT ĐỐI danh sách local của Admin nếu đã có thao tác trên máy này
+      mergedVouchers = localVouchers.filter(v => !deletedSet.has(String(v.code).trim().toUpperCase()));
+    } else if (remoteVouchers) {
+      mergedVouchers = remoteVouchers.filter(v => !deletedSet.has(String(v.code).trim().toUpperCase()));
     }
 
-    if (mergedVouchers) {
+    if (mergedVouchers !== null) {
       writeLocalVouchers(mergedVouchers);
       try {
         const { setRemoteCoupons } = await import('../../cart/services/couponService.js');
@@ -480,10 +487,11 @@ export async function fetchAdminPromotions() {
     }
     if (mergedCampaign) writeLocalCampaign(mergedCampaign);
 
-    return { vouchers: mergedVouchers, campaign: mergedCampaign };
+    return { vouchers: mergedVouchers || [], campaign: mergedCampaign };
   } catch (err) {
     console.warn('[Admin Promotions] Fetch failed, fallback:', err.message);
-    return { vouchers: localVouchers, campaign: localCampaign };
+    const safeLocal = (localVouchers || []).filter(v => !deletedSet.has(String(v.code).trim().toUpperCase()));
+    return { vouchers: safeLocal, campaign: localCampaign };
   }
 }
 
@@ -502,7 +510,19 @@ export async function saveAdminVoucher(id, voucherData) {
     updatedAtIso: new Date().toISOString()
   };
 
-  // 1. Cập nhật LocalStorage
+  // 1. Gỡ khỏi danh sách blacklist đã xóa nếu tạo lại mã
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const deletedRaw = localStorage.getItem('skinid_deleted_vouchers');
+      if (deletedRaw) {
+        const deletedSet = new Set(JSON.parse(deletedRaw));
+        deletedSet.delete(code);
+        localStorage.setItem('skinid_deleted_vouchers', JSON.stringify([...deletedSet]));
+      }
+    }
+  } catch {}
+
+  // 2. Cập nhật LocalStorage
   const localList = readLocalVouchers() || [];
   const existingIdx = localList.findIndex(v => v.code === code);
   if (existingIdx >= 0) {
@@ -512,7 +532,13 @@ export async function saveAdminVoucher(id, voucherData) {
   }
   writeLocalVouchers(localList);
 
-  // 2. Cập nhật Firestore
+  // 3. Đồng bộ ngay vào giỏ hàng & checkout
+  try {
+    const { setRemoteCoupons } = await import('../../cart/services/couponService.js');
+    setRemoteCoupons(localList);
+  } catch {}
+
+  // 4. Cập nhật Firestore
   try {
     const { doc, serverTimestamp, setDoc } = sdk.firestore;
     await setDoc(doc(db, 'promotions', code), {
@@ -528,18 +554,40 @@ export async function saveAdminVoucher(id, voucherData) {
 
 export async function deleteAdminVoucher(code) {
   if (!code) throw new Error('Mã voucher không hợp lệ.');
+  const normalizedCode = String(code).trim().toUpperCase();
 
   // 1. Cập nhật LocalStorage
   const localList = readLocalVouchers() || [];
-  const filtered = localList.filter(v => v.code !== code);
+  const filtered = localList.filter(v => String(v.code).trim().toUpperCase() !== normalizedCode);
   writeLocalVouchers(filtered);
 
-  // 2. Cập nhật Firestore
+  // 2. Đưa vào blacklist mã đã xóa để không bị remote Firestore hồi sinh
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const deletedRaw = localStorage.getItem('skinid_deleted_vouchers');
+      const deletedSet = new Set(deletedRaw ? JSON.parse(deletedRaw) : []);
+      deletedSet.add(normalizedCode);
+      localStorage.setItem('skinid_deleted_vouchers', JSON.stringify([...deletedSet]));
+    }
+  } catch {}
+
+  // 3. Đồng bộ ngay lập tức vào giỏ hàng & checkout
+  try {
+    const { setRemoteCoupons } = await import('../../cart/services/couponService.js');
+    setRemoteCoupons(filtered);
+  } catch {}
+
+  // 4. Cập nhật Firestore
   try {
     const { doc, deleteDoc } = sdk.firestore;
-    await deleteDoc(doc(db, 'promotions', code));
+    await deleteDoc(doc(db, 'promotions', normalizedCode));
   } catch (err) {
     console.warn('[Admin Voucher] Firestore delete deferred:', err.message);
+  }
+
+  // 5. Phát sự kiện realtime cho toàn bộ các tab và component
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('skinid:vouchers-updated', { detail: { vouchers: filtered } }));
   }
 }
 

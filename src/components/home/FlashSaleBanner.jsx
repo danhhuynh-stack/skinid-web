@@ -48,12 +48,16 @@ function readDynamicVouchers() {
   try {
     if (typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem('skinid_admin_vouchers');
-      if (raw) {
+      if (raw !== null) {
         const list = JSON.parse(raw);
-        if (Array.isArray(list) && list.length > 0) {
+        if (Array.isArray(list)) {
           return list.filter(v => v.active !== false).slice(0, 3).map(v => ({
             code: v.code,
-            label: v.type === 'percent' ? `Giảm ${v.discountValue}%` : v.type === 'shipping' ? 'Freeship' : `Giảm ${Math.round(v.discountValue / 1000)}K`,
+            label: v.type === 'percent' || v.type === 'percentage'
+              ? `Giảm ${v.discountValue || v.value}%`
+              : v.type === 'shipping'
+              ? 'Freeship'
+              : `Giảm ${Math.round((v.discountValue || v.value) / 1000)}K`,
             sub: v.description || (v.minOrderValue ? `Đơn từ ${Math.round(v.minOrderValue / 1000)}k` : 'Toàn sàn')
           }));
         }
@@ -77,13 +81,13 @@ export default function FlashSaleBanner() {
       if (res?.campaign && res.campaign.active !== false) {
         setCampaign(prev => ({ ...prev, ...res.campaign }));
       }
-      if (res?.vouchers && res.vouchers.length > 0) {
+      if (res?.vouchers && Array.isArray(res.vouchers)) {
         const activeV = res.vouchers.filter(v => v.active !== false).slice(0, 3).map(v => ({
           code: v.code,
           label: v.type === 'percent' || v.type === 'percentage' ? `Giảm ${v.discountValue || v.value}%` : v.type === 'shipping' ? 'Freeship' : `Giảm ${Math.round((v.discountValue || v.value) / 1000)}K`,
           sub: v.description || (v.minOrderValue ? `Đơn từ ${Math.round(v.minOrderValue / 1000)}k` : 'Toàn sàn')
         }));
-        if (activeV.length > 0) setVouchers(activeV);
+        setVouchers(activeV);
       }
     }).catch(() => {});
   }, []);
@@ -187,7 +191,8 @@ export default function FlashSaleBanner() {
         </div>
 
         {/* Voucher Fast Strip */}
-        <div className="py-4 border-b border-rose-800/40 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
+        {vouchers.length > 0 && (
+          <div className="py-4 border-b border-rose-800/40 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
           {vouchers.map(v => {
             const isCopied = copiedCode === v.code;
             return (
@@ -218,7 +223,8 @@ export default function FlashSaleBanner() {
               </div>
             );
           })}
-        </div>
+          </div>
+        )}
 
         {/* 3 Curated Combos Section with clear individual products */}
         <div className="pt-6 pb-6 border-b border-rose-800/40 relative z-10">

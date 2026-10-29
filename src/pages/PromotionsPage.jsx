@@ -8,6 +8,7 @@ import ProductDetailModal from '../features/catalog/ProductDetailModal.jsx';
 import { useCatalog, formatPrice } from '../features/catalog/index.js';
 import { useCart } from '../features/cart/index.js';
 import { CURATED_COMBOS, RETAIL_50_DEALS, CAMPAIGN_STEPS } from '../data/promotions.js';
+import { fetchAdminPromotions } from '../features/admin/index.js';
 import { assetUrl } from '../assets/index.js';
 import usePageMetadata from '../hooks/usePageMetadata.js';
 
@@ -37,6 +38,66 @@ function HeartIcon() {
 
 function GiftIcon() {
   return <svg aria-hidden="true" className="w-4 h-4 text-rose-500 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="8" width="18" height="4" rx="1" /><path d="M12 8v13" /><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" /><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 4.8 0 0 1 12 8a4.8 4.8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" /></svg>;
+}
+
+
+function formatVoucherPrice(num) {
+  return new Intl.NumberFormat('vi-VN').format(num) + '₫';
+}
+
+function readDynamicStorefrontCoupons() {
+  const fallback = [
+    {
+      code: 'SKINID10',
+      title: 'Giảm 10% đơn hàng',
+      desc: 'Áp dụng cho đơn từ 200.000₫. Giảm tối đa 150.000₫.',
+      badge: 'Phổ biến nhất',
+      color: 'from-rose-500 to-pink-600'
+    },
+    {
+      code: 'WELCOME50',
+      title: 'Giảm ngay 50.000₫',
+      desc: 'Dành riêng cho khách hàng mới với đơn từ 300.000₫.',
+      badge: 'Khách mới',
+      color: 'from-amber-500 to-orange-600'
+    },
+    {
+      code: 'FREESHIP',
+      title: 'Miễn phí vận chuyển',
+      desc: 'Hỗ trợ 30.000₫ phí ship toàn quốc cho mọi đơn hàng.',
+      badge: 'Freeship Extra',
+      color: 'from-emerald-500 to-teal-600'
+    }
+  ];
+
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem('skinid_admin_vouchers');
+      if (raw !== null) {
+        const list = JSON.parse(raw);
+        if (Array.isArray(list)) {
+          const colors = [
+            'from-rose-500 to-pink-600',
+            'from-amber-500 to-orange-600',
+            'from-emerald-500 to-teal-600',
+            'from-indigo-500 to-purple-600'
+          ];
+          return list.filter(v => v.active !== false).map((v, i) => ({
+            code: v.code,
+            title: v.type === 'percent' || v.type === 'percentage'
+              ? `Giảm ${v.discountValue || v.value}%`
+              : v.type === 'shipping'
+              ? 'Miễn phí vận chuyển'
+              : `Giảm ngay ${formatVoucherPrice(v.discountValue || v.value)}`,
+            desc: v.description || (v.minOrderValue ? `Áp dụng cho đơn từ ${formatVoucherPrice(v.minOrderValue)}.` : 'Áp dụng cho mọi đơn hàng.'),
+            badge: v.badge || (i === 0 ? 'Phổ biến nhất' : v.type === 'shipping' ? 'Freeship Extra' : 'Ưu đãi hot'),
+            color: colors[i % colors.length]
+          }));
+        }
+      }
+    }
+  } catch {}
+  return fallback;
 }
 
 export default function PromotionsPage() {
@@ -94,30 +155,41 @@ export default function PromotionsPage() {
     setTimeout(() => setAddedComboId(null), 2500);
   };
 
-  // Bộ 3 mã voucher gốc
-  const coupons = [
-    {
-      code: 'SKINID10',
-      title: 'Giảm 10% đơn hàng',
-      desc: 'Áp dụng cho đơn từ 200.000₫. Giảm tối đa 150.000₫.',
-      badge: 'Phổ biến nhất',
-      color: 'from-rose-500 to-pink-600'
-    },
-    {
-      code: 'WELCOME50',
-      title: 'Giảm ngay 50.000₫',
-      desc: 'Dành riêng cho khách hàng mới với đơn từ 300.000₫.',
-      badge: 'Khách mới',
-      color: 'from-amber-500 to-orange-600'
-    },
-    {
-      code: 'FREESHIP',
-      title: 'Miễn phí vận chuyển',
-      desc: 'Hỗ trợ 30.000₫ phí ship toàn quốc cho mọi đơn hàng.',
-      badge: 'Freeship Extra',
-      color: 'from-emerald-500 to-teal-600'
-    }
-  ];
+  const [coupons, setCoupons] = useState(readDynamicStorefrontCoupons);
+
+  // Đồng bộ realtime với Admin khi xóa hoặc thêm voucher
+  useEffect(() => {
+    fetchAdminPromotions().then(res => {
+      if (res?.vouchers && Array.isArray(res.vouchers)) {
+        const colors = [
+          'from-rose-500 to-pink-600',
+          'from-amber-500 to-orange-600',
+          'from-emerald-500 to-teal-600',
+          'from-indigo-500 to-purple-600'
+        ];
+        const activeV = res.vouchers.filter(v => v.active !== false).map((v, i) => ({
+          code: v.code,
+          title: v.type === 'percent' || v.type === 'percentage'
+            ? `Giảm ${v.discountValue || v.value}%`
+            : v.type === 'shipping'
+            ? 'Miễn phí vận chuyển'
+            : `Giảm ngay ${formatVoucherPrice(v.discountValue || v.value)}`,
+          desc: v.description || (v.minOrderValue ? `Áp dụng cho đơn từ ${formatVoucherPrice(v.minOrderValue)}.` : 'Áp dụng cho mọi đơn hàng.'),
+          badge: v.badge || (i === 0 ? 'Phổ biến nhất' : v.type === 'shipping' ? 'Freeship Extra' : 'Ưu đãi hot'),
+          color: colors[i % colors.length]
+        }));
+        setCoupons(activeV);
+      }
+    }).catch(() => {});
+
+    const handleSync = () => setCoupons(readDynamicStorefrontCoupons());
+    window.addEventListener('storage', handleSync);
+    window.addEventListener('skinid:vouchers-updated', handleSync);
+    return () => {
+      window.removeEventListener('storage', handleSync);
+      window.removeEventListener('skinid:vouchers-updated', handleSync);
+    };
+  }, []);
 
   return (
     <>
@@ -328,8 +400,9 @@ export default function PromotionsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {coupons.map((c) => {
+            {coupons.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {coupons.map((c) => {
                 const isCopied = copiedCode === c.code;
                 return (
                   <div
@@ -367,7 +440,13 @@ export default function PromotionsPage() {
                   </div>
                 );
               })}
-            </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-8 text-center text-gray-500">
+                <p className="text-sm font-bold text-gray-700">Các mã giảm giá mới đang được cập nhật</p>
+                <p className="text-xs text-gray-400 mt-1">Quý khách vẫn có thể chọn mua các bộ Combo tiết kiệm đến 25% hoặc Flash Sale 50% bên dưới!</p>
+              </div>
+            )}
           </section>
 
           {/* SECTION 3: SẢN PHẨM BÁN LẺ FLASH SALE GIẢM ĐẾN 50% */}

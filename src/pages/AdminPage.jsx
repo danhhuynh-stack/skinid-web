@@ -2005,15 +2005,26 @@ export default function AdminPage() {
   const [isBatchSyncing, setIsBatchSyncing] = useState(false);
 
   // Khuyến mãi & Cẩm nang Skincare
-  const [vouchers, setVouchers] = useState(() => Object.entries(AVAILABLE_COUPONS).map(([code, v]) => ({
-    code,
-    type: v.type,
-    discountValue: v.value,
-    minOrderValue: v.minOrder,
-    maxDiscount: v.maxDiscount || 0,
-    description: v.desc || '',
-    active: true
-  })));
+  const [vouchers, setVouchers] = useState(() => {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const raw = localStorage.getItem('skinid_admin_vouchers');
+        if (raw !== null) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list)) return list;
+        }
+      }
+    } catch {}
+    return Object.entries(AVAILABLE_COUPONS).map(([code, v]) => ({
+      code,
+      type: v.type,
+      discountValue: v.value,
+      minOrderValue: v.minOrder,
+      maxDiscount: v.maxDiscount || 0,
+      description: v.desc || '',
+      active: true
+    }));
+  });
   const [campaign, setCampaign] = useState({
     title: "TWON - D'VAH · LIKE & SHARE SĂN DEAL GIẢM 50%",
     subtitle: 'Yêu thương bản thân — Đẹp hơn mỗi ngày cùng SkinID. 3 Combo quà tặng đặc quyền và sản phẩm chính hãng giảm nửa giá.',
@@ -2069,7 +2080,7 @@ export default function AdminPage() {
     Promise.allSettled([fetchAdminPromotions(), fetchAdminBlogPosts()]).then(([promoRes, blogRes]) => {
       if (!mounted) return;
       if (promoRes.status === 'fulfilled' && promoRes.value) {
-        if (promoRes.value.vouchers?.length) setVouchers(promoRes.value.vouchers);
+        if (Array.isArray(promoRes.value.vouchers)) setVouchers(promoRes.value.vouchers);
         if (promoRes.value.campaign) setCampaign(promoRes.value.campaign);
       }
       if (blogRes.status === 'fulfilled' && blogRes.value?.length) {
@@ -3440,9 +3451,7 @@ export default function AdminPage() {
                                 type="button"
                                 onClick={() => remove(`voucher ${v.code}`, async () => {
                                   await deleteAdminVoucher(v.code);
-                                  const data = await fetchAdminPromotions();
-                                  if (data?.vouchers) setVouchers(data.vouchers);
-                                  else setVouchers((curr) => curr.filter((x) => x.code !== v.code));
+                                  setVouchers((curr) => curr.filter((x) => String(x.code).trim().toUpperCase() !== String(v.code).trim().toUpperCase()));
                                 }, 'Đã xóa voucher.')}
                                 className="px-2.5 py-1 text-rose-600 hover:bg-rose-50 rounded-lg font-bold text-[11px] transition cursor-pointer"
                               >

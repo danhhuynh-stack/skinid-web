@@ -48,17 +48,18 @@ export function setRemoteCoupons(remoteVouchers = []) {
 }
 
 export function getDynamicCoupons() {
-  const merged = { ...AVAILABLE_COUPONS, ...inMemoryFirestoreCoupons };
+  // NGUỒN SỰ THẬT TỐI THƯỢNG: Nếu Admin đã có cấu hình trong localStorage, dùng ĐÚNG danh sách đó
   try {
     if (typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem('skinid_admin_vouchers');
-      if (raw) {
+      if (raw !== null) {
         const list = JSON.parse(raw);
         if (Array.isArray(list)) {
+          const customMap = {};
           list.forEach((v) => {
             if (!v?.code || v.active === false) return;
             const normalizedCode = String(v.code).trim().toUpperCase();
-            merged[normalizedCode] = {
+            customMap[normalizedCode] = {
               code: normalizedCode,
               description: v.description || `Mã giảm giá ${normalizedCode}`,
               type: v.type === 'percent' || v.type === 'percentage' ? 'percentage' : v.type === 'shipping' ? 'shipping' : 'fixed',
@@ -67,11 +68,19 @@ export function getDynamicCoupons() {
               maxDiscount: Number(v.maxDiscount) || 0
             };
           });
+          return customMap;
         }
       }
     }
   } catch {}
-  return merged;
+
+  // Nếu có cache remote từ Firestore
+  if (Object.keys(inMemoryFirestoreCoupons).length > 0) {
+    return inMemoryFirestoreCoupons;
+  }
+
+  // Fallback mặc định ban đầu khi hệ thống mới tinh chưa cấu hình
+  return { ...AVAILABLE_COUPONS };
 }
 
 /**
@@ -98,14 +107,16 @@ export function validateCoupon(rawCode, subtotal = 0, shippingFee = 0) {
     const formattedMin = new Intl.NumberFormat('vi-VN').format(coupon.minOrder);
     return {
       valid: false,
-      message: `Mã ${coupon.code} chỉ áp dụng cho đơn hàng từ ${formattedMin} đ.`
+      message: `Mã ${coupon.code} chỉ áp dụng cho đơn hàng từ ${formattedMin}₫ trở lên.`
     };
   }
 
   let discount = 0;
   if (coupon.type === 'percentage') {
-    const rawDiscount = Math.round((numericSubtotal * coupon.value) / 100);
-    discount = coupon.maxDiscount ? Math.min(rawDiscount, coupon.maxDiscount) : rawDiscount;
+    discount = Math.round((numericSubtotal * coupon.value) / 100);
+    if (coupon.maxDiscount && discount > coupon.maxDiscount) {
+      discount = coupon.maxDiscount;
+    }
   } else if (coupon.type === 'fixed') {
     discount = Math.min(coupon.value, numericSubtotal);
   } else if (coupon.type === 'shipping') {
@@ -115,8 +126,8 @@ export function validateCoupon(rawCode, subtotal = 0, shippingFee = 0) {
   return {
     valid: true,
     code: coupon.code,
+    type: coupon.type,
     discount,
-    description: coupon.description,
-    message: `Đã áp dụng mã ${coupon.code} thành công!`
+    message: `Áp dụng thành công mã ${coupon.code}!`
   };
 }
