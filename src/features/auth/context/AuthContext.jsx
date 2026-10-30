@@ -4,6 +4,7 @@ import {
   authErrorMessage,
   clearUserHistory,
   fetchHistory,
+  isRootAdminEmail,
   loadAuthSession,
   loginWithEmail as loginWithEmailService,
   loginWithGoogle as loginWithGoogleService,
@@ -125,8 +126,9 @@ export function AuthProvider({ children }) {
   }, [session.user?.uid]);
 
   const isAuthenticated = Boolean(session.user?.uid);
+  const isRootAdmin = isRootAdminEmail(session.user?.email);
   const rawRole = session.user?.role || session.user?.customClaims?.role;
-  const isSuperAdmin = Boolean(rawRole === 'super_admin');
+  const isSuperAdmin = Boolean(rawRole === 'super_admin' || session.user?.isSuperAdmin || isRootAdmin);
   const isAdmin = Boolean(
     isSuperAdmin ||
     rawRole === 'admin' ||

@@ -2361,12 +2361,15 @@ export default function AdminPage() {
     users, orders, products, loading, error, refresh
   } = useAdmin();
 
+  const ROOT_ADMIN_EMAILS = ['danh.huynh@fieldman.vn'];
+  const isRootAdmin = Boolean(user?.email && ROOT_ADMIN_EMAILS.includes(user.email.toLowerCase()));
+
   const isDevPreview = Boolean(import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('preview'));
   const effectiveUser = user || (isDevPreview ? { email: 'danh.huynh@fieldman.vn', name: 'Danh Huỳnh Thanh', role: 'super_admin' } : null);
-  const effectiveIsAdmin = isAdmin || (isDevPreview ? true : false);
-  const effectiveIsStaff = isStaff || (isDevPreview ? true : false);
-  const effectiveIsSuperAdmin = isSuperAdmin || (isDevPreview ? true : false);
-  const effectiveRole = role || (isDevPreview ? 'super_admin' : 'customer');
+  const effectiveIsSuperAdmin = isSuperAdmin || isRootAdmin || (isDevPreview ? true : false);
+  const effectiveIsAdmin = isAdmin || effectiveIsSuperAdmin || (isDevPreview ? true : false);
+  const effectiveIsStaff = isStaff || effectiveIsAdmin || (isDevPreview ? true : false);
+  const effectiveRole = (isRootAdmin || effectiveIsSuperAdmin) ? 'super_admin' : (role || (isDevPreview ? 'super_admin' : 'customer'));
 
   const [activeTab, setActiveTab] = useState(() => {
     if (typeof window !== 'undefined') {

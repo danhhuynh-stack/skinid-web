@@ -24,6 +24,13 @@ export function authErrorMessage(error) {
   return firebaseMessages[error?.code] || error?.message || 'Không thể hoàn tất yêu cầu.';
 }
 
+export const ROOT_ADMIN_EMAILS = ['danh.huynh@fieldman.vn'];
+
+export function isRootAdminEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  return ROOT_ADMIN_EMAILS.includes(email.trim().toLowerCase());
+}
+
 async function loadProfile(firebaseUser, initialProfile = {}) {
   const { doc, getDoc, serverTimestamp, setDoc } = sdk.firestore;
   const reference = doc(db, 'users', firebaseUser.uid);
@@ -37,20 +44,42 @@ async function loadProfile(firebaseUser, initialProfile = {}) {
     provider
   };
 
+  const isRootAdmin = isRootAdminEmail(firebaseUser.email);
+
   if (!snapshot.exists()) {
-    await setDoc(reference, { ...defaults, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+    const initialData = {
+      ...defaults,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      ...(isRootAdmin ? { role: 'super_admin', isAdmin: true } : {})
+    };
+    await setDoc(reference, initialData);
   }
   const profile = snapshot.data() || {};
-  const token = await sdk.auth.getIdTokenResult(firebaseUser).catch(() => ({ claims: {} }));
+
+  // Tự động nâng cấp tài khoản Root Admin nếu Firestore chưa đồng bộ
+  if (isRootAdmin && (profile.role !== 'super_admin' || !profile.isAdmin)) {
+    profile.role = 'super_admin';
+    profile.isAdmin = true;
+    await setDoc(reference, { role: 'super_admin', isAdmin: true, updatedAt: serverTimestamp() }, { merge: true }).catch(() => {});
+  }
+
+  // Force refresh token đối với tài khoản root admin để nhận Custom Claims tức thì
+  const token = await sdk.auth.getIdTokenResult(firebaseUser, isRootAdmin).catch(() => ({ claims: {} }));
+  const isSuperAdminUser = Boolean(isRootAdmin || profile.role === 'super_admin' || token.claims?.role === 'super_admin');
+  const isAdminUser = Boolean(isSuperAdminUser || profile.role === 'admin' || profile.isAdmin === true || token.claims?.admin === true);
+
   return {
     id: firebaseUser.uid,
     uid: firebaseUser.uid,
     ...defaults,
     ...profile,
+    role: isSuperAdminUser ? 'super_admin' : (profile.role || 'customer'),
+    isAdmin: isAdminUser,
+    isSuperAdmin: isSuperAdminUser,
     picture: String(profile.picture || '').startsWith('data:image/')
       ? profile.picture
       : (firebaseUser.photoURL || profile.picture || null),
-    isAdmin: token.claims?.admin === true,
     customClaims: token.claims || {}
   };
 }
