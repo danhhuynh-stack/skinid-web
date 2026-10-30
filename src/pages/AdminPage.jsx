@@ -2380,7 +2380,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState(() => {
     if (typeof window !== 'undefined') {
       const q = new URLSearchParams(window.location.search).get('tab');
-      if (q && ['dashboard', 'orders', 'promotions', 'blog', 'members', 'products', 'system', 'audit-logs', 'settings'].includes(q)) {
+      if (q && ['dashboard', 'orders', 'cms', 'promotions', 'blog', 'members', 'products', 'system', 'audit-logs', 'settings'].includes(q)) {
         return q;
       }
     }
@@ -4877,7 +4877,7 @@ export default function AdminPage() {
                     Chọn trực tiếp cấp bậc trong ô Vai trò hoặc bấm nút chuyển quyền nhanh bên phải để nâng/hạ quyền tức thì.
                   </p>
                 </div>
-                {(isSuperAdmin || isAdmin) && (
+                {(effectiveIsSuperAdmin || effectiveIsAdmin) && (
                   <button
                     type="button"
                     onClick={() => setIsMemberModalOpen(true)}
@@ -4928,7 +4928,7 @@ export default function AdminPage() {
                       <th className="py-3.5 px-4">Email đăng nhập</th>
                       <th className="py-3.5 px-4">Vai trò (Role)</th>
                       <th className="py-3.5 px-4">Phương thức</th>
-                      {(isSuperAdmin || isAdmin) && <th className="py-3.5 px-4 text-right">Phân quyền nhanh & Thao tác</th>}
+                      {(effectiveIsSuperAdmin || effectiveIsAdmin) && <th className="py-3.5 px-4 text-right">Phân quyền nhanh & Thao tác</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -5010,7 +5010,7 @@ export default function AdminPage() {
                                 {member.provider || 'Google'}
                               </span>
                             </td>
-                            {(isSuperAdmin || isAdmin) && (
+                            {(effectiveIsSuperAdmin || effectiveIsAdmin) && (
                               <td className="py-3.5 px-4 text-right">
                                 {isRoot ? (
                                   <span className="text-[11px] text-slate-400 italic">Mặc định toàn quyền</span>
@@ -5101,7 +5101,7 @@ export default function AdminPage() {
                       <th className="py-3.5 px-4">Email</th>
                       <th className="py-3.5 px-4">Số điện thoại</th>
                       <th className="py-3.5 px-4">Địa chỉ giao hàng</th>
-                      {(isSuperAdmin || isAdmin) && <th className="py-3.5 px-4 text-right">Cấp quyền & Thao tác</th>}
+                      {(effectiveIsSuperAdmin || effectiveIsAdmin) && <th className="py-3.5 px-4 text-right">Cấp quyền & Thao tác</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -5133,7 +5133,7 @@ export default function AdminPage() {
                             <td className="py-3.5 px-4 font-mono text-slate-600">{c.email}</td>
                             <td className="py-3.5 px-4 text-slate-700">{c.phone || '—'}</td>
                             <td className="py-3.5 px-4 text-slate-500 max-w-[200px] truncate" title={c.address}>{c.address || '—'}</td>
-                            {(isSuperAdmin || isAdmin) && (
+                            {(effectiveIsSuperAdmin || effectiveIsAdmin) && (
                               <td className="py-3.5 px-4 text-right">
                                 <div className="inline-flex items-center justify-end gap-1.5 flex-wrap">
                                   <button
