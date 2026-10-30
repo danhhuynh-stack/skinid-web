@@ -1,7 +1,7 @@
 import { auth } from '../firebase/index.js';
 import { runtimeConfig } from '../../shared/config/runtime.js';
 
-const WORKER_FALLBACK_URL = 'https://skinid-web.hominhkhang01072005.workers.dev/api';
+const WORKER_FALLBACK_URL = import.meta.env?.VITE_WORKER_API_URL || '';
 
 function createApiError(payload, status) {
   const message = payload?.message || (status === 404 ? 'Máy chủ xử lý đơn hàng đang chuyển hướng. Vui lòng thử lại.' : 'Không thể hoàn tất yêu cầu.');
@@ -26,7 +26,7 @@ export async function apiRequest(path, options = {}) {
   const { timeoutMs: _ignored, headers, ...fetchOptions } = options;
 
   const baseUrls = [runtimeConfig.apiBaseUrl.replace(/\/$/, '')];
-  if (!baseUrls[0].includes('workers.dev')) {
+  if (WORKER_FALLBACK_URL && !baseUrls[0].includes('workers.dev')) {
     baseUrls.push(WORKER_FALLBACK_URL);
   }
 

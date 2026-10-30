@@ -8,13 +8,14 @@ export const firebaseConfig = Object.freeze({
   measurementId: import.meta.env?.VITE_FIREBASE_MEASUREMENT_ID || 'G-JWWNEXFL94'
 });
 
-const CLOUDFLARE_WORKER_API_URL = 'https://skinid-web.hominhkhang01072005.workers.dev/api';
+const CLOUDFLARE_WORKER_API_URL = import.meta.env?.VITE_WORKER_API_URL || '/api';
 
 function resolveApiBaseUrl() {
   if (typeof window === 'undefined') return '/api';
   if (window.SKINID_CONFIG?.apiBaseUrl) return window.SKINID_CONFIG.apiBaseUrl;
   if (window.location.hostname.endsWith('workers.dev')) return '/api';
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return '/api';
+  if (window.location.hostname === 'skinid.vn' || window.location.hostname === 'www.skinid.vn') return '/api';
   return CLOUDFLARE_WORKER_API_URL;
 }
 
