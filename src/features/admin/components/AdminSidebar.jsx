@@ -21,8 +21,9 @@ const NAV_GROUPS = [
     ]
   },
   {
-    title: 'MARKETING',
+    title: 'MARKETING & NỘI DUNG',
     items: [
+      { id: 'cms', label: 'Khối Trang chủ & Banner', Icon: IconPromotions },
       { id: 'promotions', label: 'Khuyến mãi & Flash Sale', Icon: IconPromotions, countKey: 'promotions' },
       { id: 'blog', label: 'Cẩm nang Skincare', Icon: IconBlog, countKey: 'blog' }
     ]

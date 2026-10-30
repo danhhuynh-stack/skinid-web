@@ -3,3 +3,4 @@ export * from './hooks/useAdmin.js';
 export * from './hooks/useAdminIdleTimeout.js';
 export { default as AdminImageUploader } from './components/AdminImageUploader.jsx';
 export { default as AdminSeoInspector } from './components/AdminSeoInspector.jsx';
+export { default as MediaLibraryModal } from './components/MediaLibraryModal.jsx';

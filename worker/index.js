@@ -9,6 +9,7 @@ import {
   setFirebaseCustomUserClaims
 } from './firestore.js';
 import { SERVER_CATALOG } from './catalog.generated.js';
+import { SERVER_ARTICLES } from './articles.generated.js';
 import { ApiError } from './app/errors.js';
 import { json, corsHeaders } from './app/http.js';
 import { isValidFirebasePrivateKey, requiredFirebaseEnv } from './app/env.js';
@@ -17,6 +18,7 @@ import { syncOrderToS3 } from './services/s3Service.js';
 import { sendTelegramOrderNotification } from './services/telegramService.js';
 
 const bundledProducts = new Map(SERVER_CATALOG.map(product => [product.id, product]));
+const bundledArticles = new Map((typeof SERVER_ARTICLES !== 'undefined' ? SERVER_ARTICLES : []).map(article => [article.id, article]));
 
 function text(value, label, maxLength = 500) {
   const normalized = String(value || '').trim();
@@ -1062,6 +1064,16 @@ function handleSitemapXml(url) {
   </url>\n`;
   }
 
+  for (const article of (typeof SERVER_ARTICLES !== 'undefined' ? SERVER_ARTICLES : [])) {
+    const aLoc = `${origin}/blog/${encodeURIComponent(article.id)}`;
+    xml += `  <url>
+    <loc>${aLoc}</loc>
+    <lastmod>${article.date || today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>\n`;
+  }
+
   xml += '</urlset>';
 
   return new Response(xml, {
@@ -1191,6 +1203,91 @@ async function applyDynamicSeo(request, env, url, response) {
     return rewriter.transform(response);
   }
 
+  // Check blog route: /blog/:id, /goc-cham-da/:id, or ?post=:id
+  let targetArticle = null;
+  const articlesList = typeof SERVER_ARTICLES !== 'undefined' ? SERVER_ARTICLES : [];
+  const blogMatch = pathname.match(/^\/(?:blog|goc-cham-da)\/([^/]+)$/);
+  if (blogMatch) {
+    const rawPostId = decodeURIComponent(blogMatch[1]);
+    targetArticle = bundledArticles.get(rawPostId) || articlesList.find(a => a.id === rawPostId);
+    if (!targetArticle && env && isFirestoreConfigured(env)) {
+      try {
+        const remoteDoc = await getDocument(env, `blog_posts/${rawPostId}`);
+        if (remoteDoc && remoteDoc.title) targetArticle = remoteDoc;
+      } catch (err) {
+        console.warn('[SkinID Edge SEO] Firestore lookup error for blog post:', rawPostId, err.message);
+      }
+    }
+  } else if (url.searchParams.has('post')) {
+    const pId = url.searchParams.get('post');
+    targetArticle = bundledArticles.get(pId) || articlesList.find(a => a.id === pId);
+    if (!targetArticle && env && isFirestoreConfigured(env)) {
+      try {
+        const remoteDoc = await getDocument(env, `blog_posts/${pId}`);
+        if (remoteDoc && remoteDoc.title) targetArticle = remoteDoc;
+      } catch (err) {
+        console.warn('[SkinID Edge SEO] Firestore lookup error for blog post query:', pId, err.message);
+      }
+    }
+  }
+
+  if (targetArticle) {
+    const title = `${targetArticle.title} | Cẩm nang Skincare Khoa học SkinID`;
+    const desc = (targetArticle.excerpt || targetArticle.description || targetArticle.title).slice(0, 160);
+    const img = targetArticle.image ? (targetArticle.image.startsWith('http') ? targetArticle.image : `${url.origin}${targetArticle.image}`) : `${url.origin}/images/og-default.jpg`;
+    const canonical = `${url.origin}/blog/${targetArticle.id}`;
+    const schemaArticle = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": targetArticle.title,
+      "description": desc,
+      "image": [img],
+      "datePublished": targetArticle.date || new Date().toISOString().split('T')[0],
+      "author": {
+        "@type": "Person",
+        "name": targetArticle.author || "Chuyên gia Da liễu SkinID"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "SkinID.vn",
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${url.origin}/logo.png`
+        }
+      }
+    };
+
+    const rewriter = new HTMLRewriter()
+      .on('title', {
+        element(el) {
+          el.setInnerContent(title);
+        }
+      })
+      .on('meta[name="description"]', {
+        element(el) {
+          el.setAttribute('content', desc);
+        }
+      })
+      .on('head', {
+        element(el) {
+          el.append(`<link rel="canonical" href="${canonical}" />`, { html: true });
+          el.append(`<meta property="og:title" content="${title}" />`, { html: true });
+          el.append(`<meta property="og:description" content="${desc}" />`, { html: true });
+          el.append(`<meta property="og:image" content="${img}" />`, { html: true });
+          el.append(`<meta property="og:url" content="${canonical}" />`, { html: true });
+          el.append(`<meta property="og:type" content="article" />`, { html: true });
+          el.append(`<meta property="og:site_name" content="SkinID.vn" />`, { html: true });
+          el.append(`<meta name="twitter:card" content="summary_large_image" />`, { html: true });
+          el.append(`<meta name="twitter:title" content="${title}" />`, { html: true });
+          el.append(`<meta name="twitter:description" content="${desc}" />`, { html: true });
+          el.append(`<meta name="twitter:image" content="${img}" />`, { html: true });
+          el.append(`<script type="application/ld+json">${JSON.stringify(schemaArticle)}</script>`, { html: true });
+        }
+      });
+
+    return rewriter.transform(response);
+  }
+
   // Check policy route
   const policyMeta = POLICY_META_MAP[pathname];
   if (policyMeta) {
@@ -1251,6 +1348,10 @@ function generateSitemapXml(request, env) {
   for (const p of SERVER_CATALOG) {
     const slug = p.slug || p.id;
     xml += `  <url>\n    <loc>${origin}/products/${slug}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
+  }
+
+  for (const a of (typeof SERVER_ARTICLES !== 'undefined' ? SERVER_ARTICLES : [])) {
+    xml += `  <url>\n    <loc>${origin}/blog/${a.id}</loc>\n    <lastmod>${a.date || now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
   }
 
   xml += '</urlset>';

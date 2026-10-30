@@ -21,8 +21,18 @@ import {
   useAdminIdleTimeout,
   fetchAuditLogs,
   fetchSystemSettings,
-  saveSystemSettings
+  saveSystemSettings,
+  MediaLibraryModal
 } from '../features/admin/index.js';
+import {
+  DEFAULT_HOME_BLOCKS,
+  fetchHomePageBlocks,
+  saveHomePageBlocks,
+  listHomePageVersions,
+  restoreHomePageVersion,
+  validateCosmeticCompliance,
+  generateArticleJsonLd
+} from '../features/content/index.js';
 import { DEFAULT_BLOG_ARTICLES } from '../data/blogArticles.js';
 import { CURATED_COMBOS, RETAIL_50_DEALS } from '../data/promotions.js';
 import { assetUrl } from '../assets/index.js';
@@ -183,6 +193,12 @@ const TAB_CONFIGS = {
     category: 'Kinh doanh & Vận hành',
     Icon: IconOrders
   },
+  cms: {
+    title: 'Khối Trang chủ & Banners (Block CMS)',
+    desc: 'Điều chỉnh thứ tự hiển thị các khối trang chủ, tải lên banner máy tính & điện thoại, hẹn giờ chiến dịch.',
+    category: 'Góc Chăm Da & Blog',
+    Icon: IconPromotions
+  },
   promotions: {
     title: 'Chiến dịch Khuyến mãi & Flash Sale',
     desc: 'Cấu hình banner Flash Sale trang chủ và tạo mã giảm giá chiết khấu đặc quyền.',
@@ -225,6 +241,17 @@ const TAB_CONFIGS = {
     category: 'Hệ thống Quản trị',
     Icon: IconSettings
   }
+};
+
+const BLOCK_DEFINITIONS = {
+  hero: { name: '1. Hero Banner Slider & Soi Da AI', desc: 'Slider banner màn hình rộng + nút Soi da AI khuôn mặt' },
+  flash_sale: { name: '2. Chiến dịch Flash Sale & Hot Deals', desc: 'Banner khuyến mãi & giảm giá 50% theo giờ' },
+  featured_products: { name: '3. Bộ sưu tập & Sản phẩm Nổi bật', desc: 'Danh sách sản phẩm được yêu thích và bán chạy nhất' },
+  help_section: { name: '4. Trợ giúp Chọn Routine & Thử Da', desc: 'Gợi ý giải pháp theo loại da và tư vấn chuyên gia' },
+  brand_showcase: { name: '5. Thương hiệu Đối tác Chính ngạch', desc: 'Showcase thương hiệu: Rilastil, TWON, D\'VAH' },
+  acie_teaser: { name: '6. Trợ lý AI Acie Beauty Teaser', desc: 'Khối giới thiệu trợ lý Acie tư vấn cá nhân hóa' },
+  home_blog: { name: '7. Cẩm nang Skincare Chuyên gia', desc: 'Bài viết khoa học làn da mới nhất trên trang chủ' },
+  trust_benefits: { name: '8. Cam kết Vàng & Quyền lợi Khách hàng', desc: '100% Chính ngạch, Đổi trả 7 ngày, Miễn phí vận chuyển' }
 };
 
 // Modal Chỉnh sửa Dữ liệu (Sản phẩm & Thành viên / Khách hàng)
@@ -973,7 +1000,232 @@ function buildInitialBlogForm(post) {
   };
 }
 
-function BlogModal({ post, products = [], onClose, onSaved }) {
+function BannerModal({ banner, isOpen, onClose, onSave, onOpenMediaLibrary }) {
+  const [form, setForm] = useState({
+    id: '',
+    label: '',
+    title: '',
+    subtitle: '',
+    desktopImage: '',
+    mobileImage: '',
+    alt: '',
+    ctaText: '',
+    ctaLink: '',
+    startAt: '',
+    endAt: '',
+    active: true
+  });
+
+  useEffect(() => {
+    if (banner) {
+      setForm({
+        id: banner.id || `banner_${Date.now()}`,
+        label: banner.label || '',
+        title: banner.title || '',
+        subtitle: banner.subtitle || '',
+        desktopImage: banner.desktopImage || '',
+        mobileImage: banner.mobileImage || '',
+        alt: banner.alt || '',
+        ctaText: banner.ctaText || 'Khám phá ngay',
+        ctaLink: banner.ctaLink || '/products',
+        startAt: banner.startAt || '',
+        endAt: banner.endAt || '',
+        active: banner.active !== false
+      });
+    }
+  }, [banner]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return alert('Vui lòng nhập tiêu đề banner.');
+    if (!form.desktopImage.trim()) return alert('Vui lòng nhập ảnh banner máy tính (1920x720).');
+    if (!form.alt.trim()) return alert('Bắt buộc nhập thẻ Alt text chuẩn SEO cho banner.');
+    onSave(form);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-slate-950/65 backdrop-blur-md p-4 flex items-center justify-center overflow-y-auto" role="dialog" aria-modal="true">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden flex flex-col max-h-[92vh]">
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+          <div>
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#BD3F5B]">CMS Trang Chủ</span>
+            <h3 className="font-bold text-base text-slate-900 tracking-tight">
+              {banner?.isNew ? 'Thêm Banner Slider Mới' : 'Chỉnh sửa Banner Slider'}
+            </h3>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-8 h-8 rounded-full border border-slate-200/70 flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="block text-xs font-semibold text-slate-700">
+              Nhãn chiến dịch / Thương hiệu
+              <input
+                value={form.label}
+                onChange={e => setForm(f => ({ ...f, label: e.target.value }))}
+                placeholder="VD: RILASTIL · DƯỢC MỸ PHẨM Ý"
+                className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold"
+              />
+            </label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Trạng thái hiển thị
+              <select
+                value={form.active ? 'true' : 'false'}
+                onChange={e => setForm(f => ({ ...f, active: e.target.value === 'true' }))}
+                className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold"
+              >
+                <option value="true">Đang kích hoạt (Hiển thị trên web)</option>
+                <option value="false">Tạm ẩn (Inactive)</option>
+              </select>
+            </label>
+          </div>
+
+          <label className="block text-xs font-semibold text-slate-700">
+            Tiêu đề chính của Banner (Title) <span className="text-rose-500">*</span>
+            <input
+              value={form.title}
+              onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+              placeholder="VD: Dịu dàng với da. Yêu thương chính mình."
+              className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold"
+              required
+            />
+          </label>
+
+          <label className="block text-xs font-semibold text-slate-700">
+            Mô tả phụ (Subtitle)
+            <textarea
+              value={form.subtitle}
+              onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))}
+              rows="2"
+              placeholder="VD: Sản phẩm rõ nguồn gốc, thông tin đầy đủ và phân loại dễ tìm..."
+              className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+            />
+          </label>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-semibold text-slate-700">Ảnh Desktop (1920x720) <span className="text-rose-500">*</span></span>
+                {typeof onOpenMediaLibrary === 'function' && (
+                  <button
+                    type="button"
+                    onClick={() => onOpenMediaLibrary(url => setForm(f => ({ ...f, desktopImage: url })))}
+                    className="text-[11px] font-bold text-[#E06D81] hover:underline cursor-pointer"
+                  >
+                    Chọn từ Thư viện
+                  </button>
+                )}
+              </div>
+              <input
+                value={form.desktopImage}
+                onChange={e => setForm(f => ({ ...f, desktopImage: e.target.value }))}
+                placeholder="/images/banners/..."
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono"
+                required
+              />
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-semibold text-slate-700">Ảnh Mobile (750x1000)</span>
+                {typeof onOpenMediaLibrary === 'function' && (
+                  <button
+                    type="button"
+                    onClick={() => onOpenMediaLibrary(url => setForm(f => ({ ...f, mobileImage: url })))}
+                    className="text-[11px] font-bold text-[#E06D81] hover:underline cursor-pointer"
+                  >
+                    Chọn từ Thư viện
+                  </button>
+                )}
+              </div>
+              <input
+                value={form.mobileImage}
+                onChange={e => setForm(f => ({ ...f, mobileImage: e.target.value }))}
+                placeholder="/images/banners/..."
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono"
+              />
+            </div>
+          </div>
+
+          <label className="block text-xs font-semibold text-slate-700">
+            Thẻ Alt Text SEO <span className="text-rose-500">*</span>
+            <input
+              value={form.alt}
+              onChange={e => setForm(f => ({ ...f, alt: e.target.value }))}
+              placeholder="VD: Bộ mỹ phẩm cao cấp Rilastil chính ngạch từ Ý"
+              className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+              required
+            />
+          </label>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="block text-xs font-semibold text-slate-700">
+              Nút kêu gọi (CTA Text)
+              <input
+                value={form.ctaText}
+                onChange={e => setForm(f => ({ ...f, ctaText: e.target.value }))}
+                placeholder="VD: Mua sắm ngay"
+                className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+              />
+            </label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Đường link CTA (CTA Link)
+              <input
+                value={form.ctaLink}
+                onChange={e => setForm(f => ({ ...f, ctaLink: e.target.value }))}
+                placeholder="VD: /products"
+                className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+              />
+            </label>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <label className="block text-xs font-semibold text-slate-700">
+              Hẹn giờ Bắt đầu (Start At)
+              <input
+                type="datetime-local"
+                value={form.startAt ? form.startAt.slice(0, 16) : ''}
+                onChange={e => setForm(f => ({ ...f, startAt: e.target.value ? new Date(e.target.value).toISOString() : '' }))}
+                className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+              />
+            </label>
+            <label className="block text-xs font-semibold text-slate-700">
+              Hẹn giờ Kết thúc (End At)
+              <input
+                type="datetime-local"
+                value={form.endAt ? form.endAt.slice(0, 16) : ''}
+                onChange={e => setForm(f => ({ ...f, endAt: e.target.value ? new Date(e.target.value).toISOString() : '' }))}
+                className="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
+              />
+            </label>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-100">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer"
+            >
+              Hủy
+            </button>
+            <button type="submit" className="btn-luxury-primary text-xs cursor-pointer">
+              Lưu cấu hình Banner
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function BlogModal({ post, products = [], onClose, onSaved, onOpenMediaLibrary }) {
   const [modalTab, setModalTab] = useState('basic');
   const [form, setForm] = useState(() => buildInitialBlogForm(post));
   const [activeSectionIdx, setActiveSectionIdx] = useState(0);
@@ -984,6 +1236,15 @@ function BlogModal({ post, products = [], onClose, onSaved }) {
   const [productQuery, setProductQuery] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+
+  const fullArticleText = [
+    form.title,
+    form.excerpt,
+    form.seoTitle,
+    form.seoDescription,
+    ...form.sections.map((s) => `${s.heading} ${s.text}`)
+  ].join(' ');
+  const compliance = validateCosmeticCompliance(fullArticleText);
 
   useEffect(() => {
     if (post) {
@@ -1244,18 +1505,47 @@ function BlogModal({ post, products = [], onClose, onSaved }) {
             })}
           </div>
           <div className="hidden sm:flex items-center gap-2 py-1.5">
-            <span className="text-[11px] text-slate-400">Trạng thái:</span>
+            <span className="text-[11px] text-slate-400">Quy trình:</span>
             <select
-              value={form.status}
+              value={form.status || 'published'}
               onChange={update('status')}
               className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-bold text-slate-700 outline-none focus:border-[#E06D81] cursor-pointer"
             >
-              <option value="published">Đã xuất bản</option>
-              <option value="review">Chờ duyệt</option>
-              <option value="draft">Bản nháp</option>
+              <option value="draft">Bản nháp (Draft)</option>
+              <option value="pending_review">Chờ duyệt (Review)</option>
+              <option value="scheduled">Hẹn giờ (Scheduled)</option>
+              <option value="published">Đã xuất bản (Live)</option>
+              <option value="archived">Lưu trữ (Archived)</option>
             </select>
           </div>
         </div>
+
+        {/* Hộp cảnh báo Tuân thủ Quảng cáo Mỹ phẩm (Thông tư 06/2011/TT-BYT) */}
+        {!compliance.isCompliant && (
+          <div className="mx-6 mt-3 p-3.5 bg-rose-50/90 border border-rose-200/90 rounded-2xl flex items-start gap-3 flex-shrink-0">
+            <span className="text-base flex-shrink-0">⚠️</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-rose-900">
+                  Cảnh báo tuân thủ quy chế quảng cáo mỹ phẩm (Thông tư 06/2011/TT-BYT)
+                </span>
+                <span className="px-2 py-0.5 bg-rose-200/80 text-rose-800 text-[10px] font-extrabold rounded-full">
+                  {compliance.flaggedWords.length} từ ngữ y khoa bị cấm
+                </span>
+              </div>
+              <p className="text-[11px] text-rose-700 leading-relaxed">
+                Nội dung bài viết chứa các cụm từ thuộc phạm vi điều trị bệnh y khoa. Vui lòng thay bằng các từ ngữ mỹ phẩm chuẩn khoa học (&quot;hỗ trợ cải thiện&quot;, &quot;giúp phục hồi&quot;, &quot;chăm sóc da&quot;):
+              </p>
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {compliance.flaggedWords.map((word) => (
+                  <span key={word} className="px-2 py-0.5 bg-rose-100 text-rose-700 text-[10px] font-bold rounded-md border border-rose-200">
+                    &quot;{word}&quot;
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Body Content (Scrollable) */}
         <form
@@ -1350,13 +1640,24 @@ function BlogModal({ post, products = [], onClose, onSaved }) {
                     <span className="text-xs font-bold text-slate-700">
                       Hình ảnh đại diện bài viết <span className="text-rose-500">*</span>
                     </span>
-                    <button
-                      type="button"
-                      onClick={() => setShowCoverGallery((v) => !v)}
-                      className="text-[11px] font-bold text-[#E06D81] hover:underline cursor-pointer"
-                    >
-                      {showCoverGallery ? 'Đóng kho ảnh ▲' : 'Chọn từ kho ảnh có sẵn ▾'}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {typeof onOpenMediaLibrary === 'function' && (
+                        <button
+                          type="button"
+                          onClick={() => onOpenMediaLibrary((url) => setForm((curr) => ({ ...curr, image: url })))}
+                          className="text-[11px] font-bold text-slate-600 hover:text-[#E06D81] transition cursor-pointer"
+                        >
+                          Thư viện Ảnh 🖼️
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setShowCoverGallery((v) => !v)}
+                        className="text-[11px] font-bold text-[#E06D81] hover:underline cursor-pointer"
+                      >
+                        {showCoverGallery ? 'Đóng kho ảnh ▲' : 'Chọn từ kho ảnh có sẵn ▾'}
+                      </button>
+                    </div>
                   </div>
 
                   {/* Khung Preview & Kéo thả / Chọn file từ máy tính */}
@@ -1836,44 +2137,80 @@ function BlogModal({ post, products = [], onClose, onSaved }) {
 
           {/* TAB 3: CẤU HÌNH SEO */}
           {modalTab === 'seo' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto py-2">
-              <div className="space-y-4">
-                <label className="block text-xs font-bold text-slate-700">
-                  Tiêu đề chuẩn SEO (Meta Title)
-                  <input
-                    value={form.seoTitle}
-                    onChange={update('seoTitle')}
-                    placeholder={form.title || 'Tiêu đề hiển thị trên Google...'}
-                    className="mt-1 w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:border-[#E06D81]"
-                  />
-                </label>
-                <label className="block text-xs font-bold text-slate-700">
-                  Mô tả chuẩn SEO (Meta Description)
-                  <textarea
-                    value={form.seoDescription}
-                    onChange={update('seoDescription')}
-                    rows="4"
-                    placeholder={form.excerpt || 'Mô tả thu hút người dùng click từ kết quả tìm kiếm...'}
-                    className="mt-1 w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:border-[#E06D81] resize-none"
-                  />
-                </label>
-              </div>
+            <div className="space-y-6 max-w-4xl mx-auto py-2">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700">
+                        Tiêu đề chuẩn SEO (Meta Title)
+                      </label>
+                      <span className={`text-[10px] font-mono font-bold ${
+                        (form.seoTitle?.length || 0) > 60 ? 'text-rose-600' : 'text-emerald-600'
+                      }`}>
+                        {form.seoTitle?.length || 0} / 60 ký tự
+                      </span>
+                    </div>
+                    <input
+                      value={form.seoTitle}
+                      onChange={update('seoTitle')}
+                      placeholder={form.title || 'Tiêu đề hiển thị trên Google...'}
+                      className="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:border-[#E06D81]"
+                    />
+                  </div>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2 self-start">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                  Xem trước hiển thị trên Google Search
-                </span>
-                <div className="p-3.5 bg-white rounded-xl border border-slate-200/60 space-y-1">
-                  <div className="text-[11px] text-emerald-700 truncate">
-                    https://skinid.vn/blog/{post.id || 'cam-nang-skincare'}
-                  </div>
-                  <div className="text-sm font-bold text-blue-700 line-clamp-2">
-                    {form.seoTitle || form.title || 'Tiêu đề bài viết Cẩm nang Skincare — SkinID.vn'}
-                  </div>
-                  <div className="text-xs text-slate-600 line-clamp-3">
-                    {form.seoDescription || form.excerpt || 'Mô tả tóm tắt nội dung bài viết chăm sóc da khoa học từ đội ngũ chuyên gia SkinID.'}
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold text-slate-700">
+                        Mô tả chuẩn SEO (Meta Description)
+                      </label>
+                      <span className={`text-[10px] font-mono font-bold ${
+                        (form.seoDescription?.length || 0) > 160 ? 'text-rose-600' : 'text-emerald-600'
+                      }`}>
+                        {form.seoDescription?.length || 0} / 160 ký tự
+                      </span>
+                    </div>
+                    <textarea
+                      value={form.seoDescription}
+                      onChange={update('seoDescription')}
+                      rows="4"
+                      placeholder={form.excerpt || 'Mô tả thu hút người dùng click từ kết quả tìm kiếm...'}
+                      className="w-full px-3.5 py-2 border border-slate-200 rounded-xl text-xs outline-none focus:border-[#E06D81] resize-none"
+                    />
                   </div>
                 </div>
+
+                <div className="space-y-3">
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                      Xem trước hiển thị trên Google Search
+                    </span>
+                    <div className="p-3.5 bg-white rounded-xl border border-slate-200/60 space-y-1">
+                      <div className="text-[11px] text-emerald-700 truncate">
+                        https://skinid.vn/blog/{post.id || 'cam-nang-skincare'}
+                      </div>
+                      <div className="text-sm font-bold text-[#1a0dab] line-clamp-2 hover:underline cursor-pointer">
+                        {form.seoTitle || form.title || 'Tiêu đề bài viết Cẩm nang Skincare — SkinID.vn'}
+                      </div>
+                      <div className="text-xs text-slate-600 line-clamp-3">
+                        {form.seoDescription || form.excerpt || 'Mô tả tóm tắt nội dung bài viết chăm sóc da khoa học từ đội ngũ chuyên gia SkinID.'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cấu trúc dữ liệu Schema JSON-LD Article */}
+              <div className="p-4 bg-slate-900 rounded-2xl text-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold text-emerald-400 font-mono">
+                    ✓ Schema.org Structured Data (Article JSON-LD)
+                  </span>
+                  <span className="text-[10px] text-slate-400">Googlebot Rich Snippet Ready</span>
+                </div>
+                <pre className="text-[10px] font-mono text-slate-300 overflow-x-auto max-h-40 p-2.5 bg-slate-950/70 rounded-xl border border-slate-800">
+                  {JSON.stringify(generateArticleJsonLd({ ...form, id: post.id || 'bai-viet-moi' }), null, 2)}
+                </pre>
               </div>
             </div>
           )}
@@ -1889,13 +2226,15 @@ function BlogModal({ post, products = [], onClose, onSaved }) {
                   </p>
                 </div>
                 <select
-                  value={form.status}
+                  value={form.status || 'published'}
                   onChange={update('status')}
                   className="px-3 py-2 bg-white border border-rose-200 rounded-xl text-xs font-bold text-slate-800 outline-none cursor-pointer"
                 >
-                  <option value="published">Xuất bản công khai ngay</option>
-                  <option value="review">Lưu trạng thái Chờ duyệt</option>
-                  <option value="draft">Lưu làm Bản nháp</option>
+                  <option value="draft">Bản nháp (Draft)</option>
+                  <option value="pending_review">Chờ duyệt (Pending Review)</option>
+                  <option value="scheduled">Hẹn giờ (Scheduled)</option>
+                  <option value="published">Xuất bản công khai (Published)</option>
+                  <option value="archived">Lưu trữ / Tạm ẩn (Archived)</option>
                 </select>
               </div>
 
@@ -2126,6 +2465,15 @@ export default function AdminPage() {
   const [systemSettings, setSystemSettings] = useState(DEFAULT_SYSTEM_SETTINGS);
   const [settingsSaving, setSettingsSaving] = useState(false);
 
+  // CMS Trang Chủ & Banner (Block CMS - GĐ4)
+  const [homeBlocks, setHomeBlocks] = useState(DEFAULT_HOME_BLOCKS);
+  const [loadingCms, setLoadingCms] = useState(false);
+  const [savingCms, setSavingCms] = useState(false);
+  const [editingBanner, setEditingBanner] = useState(null);
+  const [isBannerModalOpen, setIsBannerModalOpen] = useState(false);
+  const [cmsVersions, setCmsVersions] = useState([]);
+  const [mediaModalState, setMediaModalState] = useState({ isOpen: false, onSelect: null });
+
   useEffect(() => {
     let mounted = true;
     Promise.allSettled([fetchAdminPromotions(), fetchAdminBlogPosts()]).then(([promoRes, blogRes]) => {
@@ -2140,6 +2488,13 @@ export default function AdminPage() {
       }
     });
 
+    fetchHomePageBlocks().then((res) => {
+      if (mounted && res) setHomeBlocks(res);
+    });
+    listHomePageVersions().then((vers) => {
+      if (mounted && vers) setCmsVersions(vers);
+    });
+
     const handleOrderCreated = () => {
       refresh().catch(() => undefined);
     };
@@ -2150,6 +2505,80 @@ export default function AdminPage() {
       window.removeEventListener('skinid:order-created', handleOrderCreated);
     };
   }, [refresh]);
+
+  const handleSaveHomePage = async () => {
+    setSavingCms(true);
+    try {
+      const saved = await saveHomePageBlocks(homeBlocks);
+      setHomeBlocks(saved);
+      const vers = await listHomePageVersions();
+      setCmsVersions(vers || []);
+      finish('Đã xuất bản cấu hình Khối Trang chủ & Banners lên SkinID.vn thành công!');
+    } catch (err) {
+      alert('Không thể lưu cấu hình khối trang chủ: ' + err.message);
+    } finally {
+      setSavingCms(false);
+    }
+  };
+
+  const handleMoveBlock = (index, direction) => {
+    const order = [...homeBlocks.blockOrder];
+    const targetIdx = index + direction;
+    if (targetIdx < 0 || targetIdx >= order.length) return;
+    const temp = order[index];
+    order[index] = order[targetIdx];
+    order[targetIdx] = temp;
+    setHomeBlocks(curr => ({ ...curr, blockOrder: order }));
+  };
+
+  const handleToggleBlockVisibility = (blockKey) => {
+    setHomeBlocks(curr => ({
+      ...curr,
+      blockVisibility: {
+        ...curr.blockVisibility,
+        [blockKey]: !curr.blockVisibility[blockKey]
+      }
+    }));
+  };
+
+  const handleSaveBannerModal = (bannerData) => {
+    setHomeBlocks(curr => {
+      const exists = curr.banners.some(b => b.id === bannerData.id);
+      const newBanners = exists
+        ? curr.banners.map(b => b.id === bannerData.id ? bannerData : b)
+        : [...curr.banners, bannerData];
+      return { ...curr, banners: newBanners };
+    });
+  };
+
+  const handleDeleteBanner = (bannerId) => {
+    if (!window.confirm('Bạn có chắc muốn xóa banner này?')) return;
+    setHomeBlocks(curr => ({
+      ...curr,
+      banners: curr.banners.filter(b => b.id !== bannerId)
+    }));
+  };
+
+  const handleToggleBanner = (bannerId) => {
+    setHomeBlocks(curr => ({
+      ...curr,
+      banners: curr.banners.map(b => b.id === bannerId ? { ...b, active: !b.active } : b)
+    }));
+  };
+
+  const handleRestoreCmsVersion = async (ver) => {
+    if (!window.confirm(`Khôi phục giao diện trang chủ về phiên bản ngày ${new Date(ver.updatedAtIso).toLocaleString('vi-VN')}?`)) return;
+    setSavingCms(true);
+    try {
+      const restored = await restoreHomePageVersion(ver);
+      setHomeBlocks(restored);
+      finish('Đã khôi phục thành công phiên bản trang chủ!');
+    } catch (err) {
+      alert('Khôi phục thất bại: ' + err.message);
+    } finally {
+      setSavingCms(false);
+    }
+  };
 
   // Bộ lọc
   const [orderSearch, setOrderSearch] = useState('');
@@ -3672,6 +4101,323 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB CMS TRANG CHỦ & BANNERS (BLOCK CMS - GĐ4) */}
+        {activeTab === 'cms' && (
+          <div className="space-y-6 admin-tab-content">
+            {/* Thanh tác vụ trên cùng */}
+            <div className="card-luxury p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#FFF0F3] text-[#BD3F5B] border border-rose-200">
+                    GĐ4: Quản trị Nội dung
+                  </span>
+                  <span className="text-xs text-slate-400 font-mono">pages/home</span>
+                </div>
+                <h3 className="font-bold text-base text-slate-900 tracking-tight mt-1">
+                  Khối Trang chủ & Banner Sliders (Block CMS)
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Tùy biến banner máy tính (1920x720) & điện thoại (750x1000), bật/tắt và đổi thứ tự 8 khối trang chủ theo thời gian thực.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setMediaModalState({ isOpen: true, onSelect: null })}
+                  className="btn-luxury-secondary text-xs flex items-center gap-1.5"
+                >
+                  <span>Thư viện Ảnh 🖼️</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingBanner({ isNew: true });
+                    setIsBannerModalOpen(true);
+                  }}
+                  className="btn-luxury-secondary text-xs flex items-center gap-1.5"
+                >
+                  <IconPlus className="w-3.5 h-3.5" />
+                  <span>Thêm Banner mới</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveHomePage}
+                  disabled={savingCms}
+                  className="btn-luxury-primary text-xs flex items-center gap-2"
+                >
+                  {savingCms && <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>}
+                  <span>{savingCms ? 'Đang xuất bản…' : 'Xuất bản Khối Trang Chủ'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* PHẦN 1: QUẢN LÝ BANNER SLIDER */}
+            <div className="card-luxury p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900 tracking-tight">
+                    Danh sách Banner Slider ({homeBlocks.banners?.length || 0})
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    Hiển thị ở slide đầu trang chủ. Tự động chuyển đổi giữa ảnh Desktop và Mobile.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(homeBlocks.banners || []).map((b, idx) => (
+                  <div
+                    key={b.id || idx}
+                    className="p-4 bg-slate-50/70 border border-slate-200/80 rounded-2xl flex flex-col justify-between space-y-3 hover:border-slate-300 transition"
+                  >
+                    <div className="space-y-2">
+                      <div className="relative h-36 w-full rounded-xl bg-slate-900/10 border border-slate-200/80 overflow-hidden flex items-center justify-center">
+                        <img
+                          src={assetUrl(b.desktopImage || '')}
+                          alt={b.alt || b.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-2 left-2 flex gap-1.5">
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            b.active !== false ? 'bg-emerald-600 text-white' : 'bg-slate-600 text-slate-200'
+                          }`}>
+                            {b.active !== false ? 'Hiển thị' : 'Đã ẩn'}
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-900/80 text-white">
+                            Slide #{idx + 1}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div>
+                        {b.label && <span className="text-[10px] font-bold uppercase tracking-wider text-[#BD3F5B] block">{b.label}</span>}
+                        <h5 className="font-bold text-xs text-slate-900 line-clamp-1">{b.title}</h5>
+                        {b.subtitle && <p className="text-[11px] text-slate-500 line-clamp-1">{b.subtitle}</p>}
+                      </div>
+
+                      <div className="text-[10px] text-slate-500 space-y-0.5 bg-white p-2 rounded-lg border border-slate-100">
+                        <div><strong className="text-slate-700">Alt SEO:</strong> {b.alt || 'Chưa có thẻ Alt'}</div>
+                        <div><strong className="text-slate-700">Nút bấm:</strong> {b.ctaText || '—'} → {b.ctaLink || '—'}</div>
+                        {(b.startAt || b.endAt) && (
+                          <div>
+                            <strong className="text-slate-700">Hẹn giờ:</strong>{' '}
+                            {b.startAt ? new Date(b.startAt).toLocaleDateString('vi-VN') : 'Hiện tại'} - {b.endAt ? new Date(b.endAt).toLocaleDateString('vi-VN') : 'Vô thời hạn'}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-200/60">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleBanner(b.id)}
+                        className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition ${
+                          b.active !== false ? 'text-amber-700 hover:bg-amber-50' : 'text-emerald-700 hover:bg-emerald-50'
+                        }`}
+                      >
+                        {b.active !== false ? 'Tạm ẩn' : 'Bật hiển thị'}
+                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingBanner(b);
+                            setIsBannerModalOpen(true);
+                          }}
+                          className="px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-200/80 rounded-lg transition"
+                        >
+                          Chỉnh sửa
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteBanner(b.id)}
+                          className="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                        >
+                          Xóa
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* PHẦN 2: QUẢN TRỊ THỨ TỰ & ẨN/HIỆN 8 KHỐI TRANG CHỦ */}
+            <div className="card-luxury p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900 tracking-tight">
+                    Cấu hình Bố cục & Thứ tự Khối Trang Chủ (8 Khối)
+                  </h4>
+                  <p className="text-xs text-slate-500">
+                    Bấm mũi tên Lên/Xuống để đổi vị trí, bấm Bật/Tắt để ẩn hiện khối ngay trên trang chủ.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-2.5">
+                {(homeBlocks.blockOrder || []).map((blockKey, idx) => {
+                  const def = BLOCK_DEFINITIONS[blockKey] || { name: blockKey, desc: '' };
+                  const isVisible = homeBlocks.blockVisibility?.[blockKey] !== false;
+                  return (
+                    <div
+                      key={blockKey}
+                      className={`p-3.5 rounded-2xl border transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                        isVisible
+                          ? 'bg-white border-slate-200/80 shadow-2xs'
+                          : 'bg-slate-50/70 border-slate-200 opacity-60'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-slate-100 font-bold text-slate-700 text-xs flex items-center justify-center flex-shrink-0">
+                          #{idx + 1}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h5 className="font-bold text-xs text-slate-900">{def.name}</h5>
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                              isVisible ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500'
+                            }`}>
+                              {isVisible ? 'Đang hiển thị' : 'Đã ẩn'}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-slate-400 mt-0.5">{def.desc}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-end sm:self-center">
+                        <button
+                          type="button"
+                          onClick={() => handleMoveBlock(idx, -1)}
+                          disabled={idx === 0}
+                          title="Di chuyển lên trên"
+                          className="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleMoveBlock(idx, 1)}
+                          disabled={idx === homeBlocks.blockOrder.length - 1}
+                          title="Di chuyển xuống dưới"
+                          className="w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
+                        >
+                          ↓
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleToggleBlockVisibility(blockKey)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                            isVisible
+                              ? 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
+                              : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+                          }`}
+                        >
+                          {isVisible ? 'Ẩn khối này' : 'Bật hiển thị'}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* PHẦN 3: THANH THÔNG BÁO ĐẦU TRANG */}
+            <div className="card-luxury p-6 space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900 tracking-tight">Thanh Thông Báo Đầu Trang (Announcement Bar)</h4>
+                  <p className="text-xs text-slate-500">Dòng chữ khuyến mãi nhỏ ghim cố định trên cùng trang web.</p>
+                </div>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={homeBlocks.announcement?.active !== false}
+                    onChange={(e) => setHomeBlocks(curr => ({
+                      ...curr,
+                      announcement: { ...(curr.announcement || {}), active: e.target.checked }
+                    }))}
+                    className="w-4 h-4 rounded text-slate-900 accent-slate-900"
+                  />
+                  <span className="text-xs font-bold text-slate-700">
+                    {homeBlocks.announcement?.active !== false ? 'Đang bật' : 'Đang tắt'}
+                  </span>
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="block text-xs font-semibold text-slate-700">
+                  Nội dung thông báo
+                  <input
+                    value={homeBlocks.announcement?.text || ''}
+                    onChange={(e) => setHomeBlocks(curr => ({
+                      ...curr,
+                      announcement: { ...(curr.announcement || {}), text: e.target.value }
+                    }))}
+                    placeholder="VD: Ưu đãi SkinID: Freeship toàn quốc từ 500k"
+                    className="mt-1 w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium"
+                  />
+                </label>
+                <label className="block text-xs font-semibold text-slate-700">
+                  Đường dẫn liên kết (Link)
+                  <input
+                    value={homeBlocks.announcement?.link || ''}
+                    onChange={(e) => setHomeBlocks(curr => ({
+                      ...curr,
+                      announcement: { ...(curr.announcement || {}), link: e.target.value }
+                    }))}
+                    placeholder="VD: /khuyen-mai"
+                    className="mt-1 w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono"
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* PHẦN 4: LỊCH SỬ PHIÊN BẢN & ROLLBACK 1 CHẠM */}
+            <div className="card-luxury p-6 space-y-4">
+              <div className="pb-3 border-b border-slate-100">
+                <h4 className="font-bold text-sm text-slate-900 tracking-tight">
+                  Lịch sử Phiên bản Bố cục (Rollback 1 chạm)
+                </h4>
+                <p className="text-xs text-slate-500">
+                  Mỗi lần nhấn xuất bản, Firestore tự động lưu 1 snapshot lịch sử để khôi phục khi cần.
+                </p>
+              </div>
+
+              {cmsVersions.length > 0 ? (
+                <div className="space-y-2">
+                  {cmsVersions.map((ver, vIdx) => (
+                    <div
+                      key={ver.id || vIdx}
+                      className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between text-xs"
+                    >
+                      <div>
+                        <span className="font-bold text-slate-800">
+                          Phiên bản {new Date(ver.updatedAtIso || Date.now()).toLocaleString('vi-VN')}
+                        </span>
+                        <span className="text-slate-400 ml-2 font-mono text-[10px]">
+                          ({ver.banners?.length || 0} banners, {ver.blockOrder?.length || 8} khối)
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRestoreCmsVersion(ver)}
+                        className="px-3 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-xs font-bold transition"
+                      >
+                        Khôi phục phiên bản này ↺
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-xs text-slate-400 p-4 text-center bg-slate-50 rounded-xl">
+                  Chưa có lịch sử phiên bản nào được lưu trong Firestore.
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -5309,6 +6055,7 @@ export default function AdminPage() {
         post={blogModal}
         products={products}
         onClose={() => setBlogModal(null)}
+        onOpenMediaLibrary={(cb) => setMediaModalState({ isOpen: true, onSelect: cb })}
         onSaved={async (savedPost, msg) => {
           const exists = blogPosts.some((p) => p.id === savedPost?.id);
           const updated = exists
@@ -5316,12 +6063,31 @@ export default function AdminPage() {
             : [savedPost, ...blogPosts];
           setBlogPosts(updated);
           try {
-            
             if (typeof window !== 'undefined') {
               window.dispatchEvent(new CustomEvent('skinid:blog-updated', { detail: { posts: updated } }));
             }
           } catch {}
           finish(msg);
+        }}
+      />
+      <BannerModal
+        isOpen={isBannerModalOpen}
+        banner={editingBanner}
+        onClose={() => {
+          setIsBannerModalOpen(false);
+          setEditingBanner(null);
+        }}
+        onSave={handleSaveBannerModal}
+        onOpenMediaLibrary={(cb) => setMediaModalState({ isOpen: true, onSelect: cb })}
+      />
+      <MediaLibraryModal
+        isOpen={mediaModalState.isOpen}
+        onClose={() => setMediaModalState({ isOpen: false, onSelect: null })}
+        onSelect={(item) => {
+          if (typeof mediaModalState.onSelect === 'function') {
+            mediaModalState.onSelect(item.url);
+          }
+          setMediaModalState({ isOpen: false, onSelect: null });
         }}
       />
 
