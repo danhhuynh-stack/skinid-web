@@ -15,7 +15,7 @@ export default function AdminAnalyticsOverview({
   const [activePointIndex, setActivePointIndex] = useState(6); // Mặc định điểm mới nhất (07/06)
   const [hoveredSlice, setHoveredSlice] = useState(null);
 
-  // 1. Data cho Biểu đồ Doanh thu 7 ngày gần đây
+  // 1. Data cho Biểu đồ Doanh thu 7 ngày gần đây (Tính toán thực tế từ đơn hàng thật - Không số giả)
   const revenueChartData = useMemo(() => {
     // Tạo 7 ngày gần nhất tính đến hôm nay
     const days = [];
@@ -32,6 +32,8 @@ export default function AdminAnalyticsOverview({
       let dayOrders = 0;
       if (orders && orders.length > 0) {
         orders.forEach((ord) => {
+          // Bỏ qua đơn hủy hoặc hoàn tiền khỏi doanh thu thực
+          if (ord.status === 'cancelled' || ord.paymentStatus === 'refunded') return;
           const ordDate = ord.createdAt?.seconds
             ? new Date(ord.createdAt.seconds * 1000)
             : ord.createdAt ? new Date(ord.createdAt) : null;
@@ -42,20 +44,12 @@ export default function AdminAnalyticsOverview({
         });
       }
 
-      // Mẫu chuẩn dự phòng khi ngày chưa có đơn thật
-      const baseSamples = [95000000, 135000000, 168000000, 155000000, 210000000, 245000000, 258500000];
-      const baseOrders = [120, 154, 182, 165, 220, 260, 278];
-      const sampleIdx = 6 - i;
-
-      const finalAmount = dayAmount > 0 ? dayAmount : baseSamples[sampleIdx];
-      const finalOrders = dayOrders > 0 ? dayOrders : baseOrders[sampleIdx];
-
       days.push({
         date: dateStr,
         dayFull,
-        amount: finalAmount,
-        orders: finalOrders,
-        change: ['+8%', '+12%', '+15%', '-4%', '+22%', '+16%', '+18%'][sampleIdx]
+        amount: dayAmount,
+        orders: dayOrders,
+        change: dayOrders > 0 ? `+${dayOrders} đơn` : '0 đơn'
       });
     }
 
@@ -66,7 +60,8 @@ export default function AdminAnalyticsOverview({
     const paddingBottom = 32;
 
     const isRevenue = selectedMetric === 'revenue';
-    const maxVal = isRevenue ? 300000000 : 300;
+    const highestVal = Math.max(...days.map((d) => (isRevenue ? d.amount : d.orders)), 0);
+    const maxVal = highestVal > 0 ? highestVal * 1.25 : (isRevenue ? 10000000 : 10);
     const minVal = 0;
 
     const points = days.map((d, index) => {
@@ -93,9 +88,15 @@ export default function AdminAnalyticsOverview({
 
     const areaD = `${pathD} L ${points[points.length - 1].x} ${height - paddingBottom} L ${points[0].x} ${height - paddingBottom} Z`;
 
-    const yAxisLabels = isRevenue
-      ? ['250tr', '200tr', '150tr', '100tr', '50tr', '0']
-      : ['250', '200', '150', '100', '50', '0'];
+    const step = maxVal / 5;
+    const yAxisLabels = [
+      isRevenue ? `${Math.round((step * 5) / 1000000)}tr` : `${Math.round(step * 5)}`,
+      isRevenue ? `${Math.round((step * 4) / 1000000)}tr` : `${Math.round(step * 4)}`,
+      isRevenue ? `${Math.round((step * 3) / 1000000)}tr` : `${Math.round(step * 3)}`,
+      isRevenue ? `${Math.round((step * 2) / 1000000)}tr` : `${Math.round(step * 2)}`,
+      isRevenue ? `${Math.round((step * 1) / 1000000)}tr` : `${Math.round(step * 1)}`,
+      '0'
+    ];
 
     return { points, pathD, areaD, width, height, paddingBottom, yAxisLabels, isRevenue };
   }, [orders, selectedMetric]);
@@ -110,22 +111,33 @@ export default function AdminAnalyticsOverview({
     let cancelledCount = 0;
     let returnedCount = 0;
 
-    if (list.length > 0) {
-      list.forEach((o) => {
-        const st = o.status || 'pending';
-        if (st === 'pending' || st === 'confirmed') pendingCount++;
-        else if (st === 'completed' || st === 'shipping') completedCount++;
-        else if (st === 'cancelled') cancelledCount++;
-        else returnedCount++;
-      });
-    } else {
-      pendingCount = 474;
-      completedCount = 524;
-      cancelledCount = 150;
-      returnedCount = 100;
-    }
+    list.forEach((o) => {
+      const st = o.status || 'pending';
+      if (st === 'pending' || st === 'confirmed' || st === 'packing') pendingCount++;
+      else if (st === 'completed' || st === 'shipping' || st === 'delivered') completedCount++;
+      else if (st === 'cancelled') cancelledCount++;
+      else returnedCount++;
+    });
 
     const totalOrders = pendingCount + completedCount + cancelledCount + returnedCount;
+
+    if (totalOrders === 0) {
+      return {
+        total: '0',
+        slices: [
+          {
+            id: 'empty',
+            label: 'Chưa có đơn hàng',
+            percent: 100,
+            color: '#E2E8F0',
+            count: 0,
+            strokeDasharray: `${2 * Math.PI * 45} 0`,
+            strokeDashoffset: 0
+          }
+        ]
+      };
+    }
+
     const rawSlices = [
       { id: 'pending', label: 'Đang xử lý', percent: Math.round((pendingCount / totalOrders) * 100) || 0, color: '#F59E0B', count: pendingCount },
       { id: 'completed', label: 'Đã giao', percent: Math.round((completedCount / totalOrders) * 100) || 0, color: '#10B981', count: completedCount },

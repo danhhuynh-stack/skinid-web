@@ -22,7 +22,12 @@ import {
   fetchAuditLogs,
   fetchSystemSettings,
   saveSystemSettings,
-  MediaLibraryModal
+  MediaLibraryModal,
+  OrderTimelineModal,
+  CustomerDetailDrawer,
+  BulkCouponModal,
+  exportOrdersToExcelXml,
+  calculateCustomer360Metrics
 } from '../features/admin/index.js';
 import {
   DEFAULT_HOME_BLOCKS,
@@ -2420,6 +2425,9 @@ export default function AdminPage() {
   const [flash, setFlash] = useState('');
   const [actionError, setActionError] = useState('');
   const [isBatchSyncing, setIsBatchSyncing] = useState(false);
+  const [timelineOrder, setTimelineOrder] = useState(null);
+  const [selectedCustomerFor360, setSelectedCustomerFor360] = useState(null);
+  const [isBulkCouponModalOpen, setIsBulkCouponModalOpen] = useState(false);
 
   // Khuyến mãi & Cẩm nang Skincare
   const [vouchers, setVouchers] = useState(() => {
@@ -2711,50 +2719,33 @@ export default function AdminPage() {
       return;
     }
 
-    const headers = [
-      'Mã Đơn Hàng (ID)',
-      'Mã S3 POS (s3OrderId)',
-      'Ngày Đặt',
-      'Tên Khách Hàng',
-      'Số Điện Thoại',
-      'Địa Chỉ Giao Hàng',
-      'Tổng Tiền (VNĐ)',
-      'Hình Thức Thanh Toán',
-      'Trạng Thái Thanh Toán',
-      'Trạng Thái Đơn Hàng',
-      'Trạng Thái S3 POS'
-    ];
+    try {
+      const xmlContent = exportOrdersToExcelXml(listToExport);
+      const blob = new Blob([xmlContent], { type: 'application/vnd.ms-excel;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `SkinID_BaoCao_DonHang_${new Date().toISOString().split('T')[0]}.xls`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      setFlash(`Đã xuất báo cáo ${listToExport.length} đơn hàng chuẩn Excel Executive Grade!`);
+    } catch (err) {
+      setActionError(`Lỗi khi xuất báo cáo: ${err.message}`);
+    }
+  };
 
-    const rows = listToExport.map((o) => {
-      const dateStr = o.createdAt?.seconds
-        ? new Date(o.createdAt.seconds * 1000).toLocaleString('vi-VN')
-        : (o.createdAt || '');
-      return [
-        `"${o.id || ''}"`,
-        `"${o.s3OrderId || ''}"`,
-        `"${dateStr}"`,
-        `"${(o.customer?.name || 'Khách vãng lai').replace(/"/g, '""')}"`,
-        `"${o.customer?.phone || ''}"`,
-        `"${(o.customer?.address || '').replace(/"/g, '""')}"`,
-        Number(o.total) || 0,
-        `"${o.paymentMethod || 'vietqr'}"`,
-        `"${o.paymentStatus || 'unpaid'}"`,
-        `"${o.status || 'pending'}"`,
-        `"${o.s3SyncStatus || 'pending'}"`
-      ].join(',');
-    });
-
-    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `SkinID_BaoCao_DonHang_${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    setFlash(`Đã xuất báo cáo đối soát ${listToExport.length} đơn hàng sang file CSV Excel thành công.`);
+  const handleSaveBulkCoupons = async (newCoupons) => {
+    try {
+      for (const c of newCoupons) {
+        await saveAdminVoucher(c.code, c);
+      }
+      setVouchers((prev) => [...newCoupons, ...prev]);
+      await finish(`Đã sinh và lưu thành công ${newCoupons.length} mã voucher ngẫu nhiên!`);
+    } catch (err) {
+      setActionError(`Lỗi khi tạo mã voucher hàng loạt: ${err.message}`);
+    }
   };
 
   const finish = async (message) => {
@@ -3658,7 +3649,7 @@ export default function AdminPage() {
                       <th className="py-3.5 px-3 w-32">Thanh toán</th>
                       <th className="py-3.5 px-3 w-32">Trạng thái</th>
                       <th className="py-3.5 px-3 w-36 whitespace-nowrap">Đồng bộ S3 POS</th>
-                      {(isSuperAdmin || effectiveIsSuperAdmin) && <th className="py-3.5 px-3 w-20 text-right whitespace-nowrap">Thao tác</th>}
+                      <th className="py-3.5 px-3 w-28 text-right whitespace-nowrap">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -3781,17 +3772,28 @@ export default function AdminPage() {
                               )}
                             </div>
                           </td>
-                          {(isSuperAdmin || effectiveIsSuperAdmin) && (
-                            <td className="py-3.5 px-3 text-right whitespace-nowrap">
+                          <td className="py-3.5 px-3 text-right whitespace-nowrap">
+                            <div className="inline-flex items-center justify-end gap-1.5">
                               <button
                                 type="button"
-                                onClick={() => remove(`đơn hàng #${order.id.slice(0, 8)}`, () => deleteAdminOrder(order.id), 'Đã xóa đơn hàng.')}
-                                className="px-2.5 py-1 text-rose-600 hover:bg-rose-50 rounded-lg font-bold text-[11px] transition cursor-pointer"
+                                onClick={() => setTimelineOrder(order)}
+                                className="px-2.5 py-1 text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg font-semibold text-[11px] transition cursor-pointer"
+                                title="Xem dòng thời gian & in phiếu giao hàng A5"
                               >
-                                Xóa
+                                Chi tiết
                               </button>
-                            </td>
-                          )}
+                              {order.status !== 'cancelled' && (
+                                <button
+                                  type="button"
+                                  onClick={() => run(() => updateAdminOrder(order.id, { status: 'cancelled' }), `Đã hủy đơn hàng #${order.id.slice(0, 8)}.`)}
+                                  className="px-2.5 py-1 text-rose-600 hover:bg-rose-50 border border-rose-200/80 rounded-lg font-bold text-[11px] transition cursor-pointer"
+                                  title="Hủy đơn hàng"
+                                >
+                                  Hủy
+                                </button>
+                              )}
+                            </div>
+                          </td>
                         </tr>
                       ))
                     )}
@@ -3869,14 +3871,23 @@ export default function AdminPage() {
                   <p className="text-xs text-slate-400 mt-0.5">Khách có thể click sao chép 1 chạm hoặc áp dụng tại giỏ hàng.</p>
                 </div>
                 {effectiveIsAdmin && (
-                  <button
-                    type="button"
-                    onClick={() => setVoucherModal({ isNew: true })}
-                    className="btn-luxury-primary text-xs flex items-center gap-1.5 self-start sm:self-auto"
-                  >
-                    <IconPlus className="w-3.5 h-3.5" />
-                    <span>Thêm Voucher mới</span>
-                  </button>
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <button
+                      type="button"
+                      onClick={() => setIsBulkCouponModalOpen(true)}
+                      className="btn-luxury-secondary text-xs flex items-center gap-1.5"
+                    >
+                      <span>⚡ Tạo hàng loạt</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setVoucherModal({ isNew: true })}
+                      className="btn-luxury-primary text-xs flex items-center gap-1.5"
+                    >
+                      <IconPlus className="w-3.5 h-3.5" />
+                      <span>Thêm Voucher mới</span>
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -5085,6 +5096,7 @@ export default function AdminPage() {
                   <thead>
                     <tr className="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-bold uppercase text-[10px] tracking-wider">
                       <th className="py-3.5 px-4">Họ và tên</th>
+                      <th className="py-3.5 px-4">Hạng RFM & Chi tiêu</th>
                       <th className="py-3.5 px-4">Email</th>
                       <th className="py-3.5 px-4">Số điện thoại</th>
                       <th className="py-3.5 px-4">Địa chỉ giao hàng</th>
@@ -5105,15 +5117,32 @@ export default function AdminPage() {
                           address: c.address,
                           provider: c.provider
                         };
+                        const c360 = calculateCustomer360Metrics(c, orders);
                         return (
                           <tr key={c.id} className="hover:bg-slate-50/70 transition-colors">
                             <td className="py-3.5 px-4 font-semibold text-slate-900">{c.name || 'Khách hàng'}</td>
+                            <td className="py-3.5 px-4">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border inline-block ${c360?.rfmSegment?.badge || 'bg-slate-100 text-slate-700'}`}>
+                                {c360?.rfmSegment?.label || 'Mới'}
+                              </span>
+                              <span className="font-mono font-bold text-slate-800 text-[11px] block mt-0.5">
+                                {money(c360?.totalSpent || 0)} <span className="font-normal text-slate-400">({c360?.orderCount || 0} đơn)</span>
+                              </span>
+                            </td>
                             <td className="py-3.5 px-4 font-mono text-slate-600">{c.email}</td>
                             <td className="py-3.5 px-4 text-slate-700">{c.phone || '—'}</td>
                             <td className="py-3.5 px-4 text-slate-500 max-w-[200px] truncate" title={c.address}>{c.address || '—'}</td>
                             {(isSuperAdmin || isAdmin) && (
                               <td className="py-3.5 px-4 text-right">
                                 <div className="inline-flex items-center justify-end gap-1.5 flex-wrap">
+                                  <button
+                                    type="button"
+                                    onClick={() => setSelectedCustomerFor360(c)}
+                                    className="px-2.5 py-1 text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 rounded-lg font-bold text-[11px] transition cursor-pointer"
+                                    title="Xem hồ sơ khách hàng 360 độ & Quyền riêng tư PDPA"
+                                  >
+                                    Hồ sơ 360°
+                                  </button>
                                   <div className="relative inline-flex items-center">
                                     <span className="w-2 h-2 rounded-full bg-slate-400 absolute left-2.5 pointer-events-none" />
                                     <select
@@ -6092,6 +6121,35 @@ export default function AdminPage() {
           }
           setMediaModalState({ isOpen: false, onSelect: null });
         }}
+      />
+
+      {/* GĐ5: Operations Modals (Timeline & Customer 360 & Bulk Coupons) */}
+      {timelineOrder && (
+        <OrderTimelineModal
+          order={timelineOrder}
+          onClose={() => setTimelineOrder(null)}
+          onUpdateStatus={async (orderId, changes) => {
+            await run(() => updateAdminOrder(orderId, changes), 'Đã cập nhật đơn hàng.');
+            setTimelineOrder((prev) => (prev ? { ...prev, ...changes } : null));
+          }}
+          isAdmin={effectiveIsAdmin}
+          isStaff={effectiveIsStaff}
+        />
+      )}
+      {selectedCustomerFor360 && (
+        <CustomerDetailDrawer
+          user={selectedCustomerFor360}
+          allOrders={orders}
+          allSkinReports={[]}
+          onClose={() => setSelectedCustomerFor360(null)}
+          onRefresh={refresh}
+          actor={effectiveUser}
+        />
+      )}
+      <BulkCouponModal
+        isOpen={isBulkCouponModalOpen}
+        onClose={() => setIsBulkCouponModalOpen(false)}
+        onSaveBulkCoupons={handleSaveBulkCoupons}
       />
 
       {/* 10. COMMAND PALETTE (Ctrl + K) */}
