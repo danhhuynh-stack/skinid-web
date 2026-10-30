@@ -42,6 +42,7 @@ import { DEFAULT_BLOG_ARTICLES } from '../data/blogArticles.js';
 import { CURATED_COMBOS, RETAIL_50_DEALS } from '../data/promotions.js';
 import { assetUrl } from '../assets/index.js';
 import { AVAILABLE_COUPONS } from '../features/cart/services/couponService.js';
+import { BANK_CONFIG } from '../config/bankConfig.js';
 import AdminSidebar from '../features/admin/components/AdminSidebar.jsx';
 import AdminTopbar from '../features/admin/components/AdminTopbar.jsx';
 import AdminImageUploader from '../features/admin/components/AdminImageUploader.jsx';
@@ -5541,7 +5542,7 @@ export default function AdminPage() {
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-slate-500">Số tài khoản / Chủ TK</span>
-                    <strong className="font-mono text-slate-800">1063583549 · DANG DUC MANH</strong>
+                    <strong className="font-mono text-slate-800">{BANK_CONFIG.accountNumber} · {BANK_CONFIG.accountName}</strong>
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-slate-500">Cú pháp đối soát</span>
