@@ -11,7 +11,8 @@ const firebaseMessages = {
   'auth/popup-closed-by-user': 'Cửa sổ đăng nhập Google đã bị đóng.',
   'auth/too-many-requests': 'Có quá nhiều lần thử. Vui lòng thử lại sau.',
   'auth/operation-not-allowed': 'Phương thức đăng nhập này đang tạm ngưng.',
-  'auth/unauthorized-domain': 'Đăng nhập chưa được hỗ trợ trên địa chỉ website này.'
+  'auth/unauthorized-domain': 'Đăng nhập chưa được hỗ trợ trên địa chỉ website này.',
+  'auth/configuration-not-found': 'Dịch vụ xác thực Firebase chưa được kích hoạt trên Firebase Console. Vui lòng vào mục Authentication bấm "Get started" và bật Email/Password.'
 };
 
 function announceProfileUpdate(user) {
