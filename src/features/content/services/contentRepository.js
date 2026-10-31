@@ -89,13 +89,11 @@ function getDefaultVouchersList() {
 export async function fetchVouchers() {
   try {
     const { collection, getDocs } = sdk.firestore;
-    const snapshot = await getDocs(collection(db, 'promotions')).catch(() => ({ empty: true }));
-    if (!snapshot.empty) {
+    const snapshot = await getDocs(collection(db, 'promotions'));
+    if (snapshot) {
       const remote = documents(snapshot);
-      if (remote.length > 0) {
-        setRemoteCoupons(remote);
-        return remote;
-      }
+      setRemoteCoupons(remote);
+      return remote;
     }
   } catch (err) {
     console.warn('[ContentRepository] Firestore fetch vouchers failed, using default list:', err.message);
@@ -145,8 +143,8 @@ export async function deleteVoucher(code) {
   const { doc, deleteDoc } = sdk.firestore;
   await deleteDoc(doc(db, 'promotions', normalizedCode));
 
-  const current = await fetchVouchers().catch(() => []);
-  const filtered = current.filter(v => String(v.code).trim().toUpperCase() !== normalizedCode);
+  const updated = await fetchVouchers().catch(() => []);
+  const filtered = updated.filter(v => String(v.code).trim().toUpperCase() !== normalizedCode);
   setRemoteCoupons(filtered);
 
   if (typeof window !== 'undefined') {

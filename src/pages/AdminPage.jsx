@@ -3907,7 +3907,18 @@ export default function AdminPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {vouchers.map((v) => (
+                      {vouchers.length === 0 ? (
+                        <tr>
+                          <td colSpan={effectiveIsAdmin ? 7 : 6} className="text-center py-10 text-slate-400">
+                            <div className="flex flex-col items-center justify-center gap-1">
+                              <span className="text-2xl">🎟️</span>
+                              <span className="text-xs font-semibold text-slate-500">Chưa có mã voucher nào</span>
+                              <span className="text-[11px] text-slate-400">Bấm &quot;Thêm Voucher mới&quot; hoặc &quot;Tạo hàng loạt&quot; để tạo ưu đãi cho khách hàng.</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        vouchers.map((v) => (
                         <tr key={v.code} className="hover:bg-slate-50/70 transition-colors">
                           <td className="py-3.5 px-4">
                             <span className="font-mono font-bold text-slate-800 text-xs px-2 py-0.5 bg-slate-100 border border-slate-200 rounded-md">
@@ -3955,7 +3966,8 @@ export default function AdminPage() {
                             </td>
                           )}
                         </tr>
-                      ))}
+                      ))
+                    )}
                     </tbody>
                   </table>
                 </div>

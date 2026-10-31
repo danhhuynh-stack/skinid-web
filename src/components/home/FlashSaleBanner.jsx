@@ -39,6 +39,24 @@ function readDynamicCampaign() {
   };
 }
 
+function normalizeVouchersList(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .filter(v => v && v.active !== false && v.code)
+    .slice(0, 3)
+    .map(v => {
+      const isPercent = v.type === 'percent' || v.type === 'percentage';
+      const isShipping = v.type === 'shipping';
+      const val = Number(v.discountValue || v.value) || 0;
+      const minOrder = Number(v.minOrderValue || v.minOrder) || 0;
+      return {
+        code: String(v.code).trim().toUpperCase(),
+        label: isPercent ? `Giảm ${val}%` : isShipping ? 'Freeship' : `Giảm ${Math.round(val / 1000)}K`,
+        sub: v.description || (minOrder ? `Đơn từ ${Math.round(minOrder / 1000)}k` : 'Toàn sàn')
+      };
+    });
+}
+
 function readDynamicVouchers() {
   const fallback = [
     { code: 'SKINID10', label: 'Giảm 10%', sub: 'Đơn từ 200k' },
@@ -51,15 +69,7 @@ function readDynamicVouchers() {
       if (raw !== null) {
         const list = JSON.parse(raw);
         if (Array.isArray(list)) {
-          return list.filter(v => v.active !== false).slice(0, 3).map(v => ({
-            code: v.code,
-            label: v.type === 'percent' || v.type === 'percentage'
-              ? `Giảm ${v.discountValue || v.value}%`
-              : v.type === 'shipping'
-              ? 'Freeship'
-              : `Giảm ${Math.round((v.discountValue || v.value) / 1000)}K`,
-            sub: v.description || (v.minOrderValue ? `Đơn từ ${Math.round(v.minOrderValue / 1000)}k` : 'Toàn sàn')
-          }));
+          return normalizeVouchersList(list);
         }
       }
     }
@@ -82,12 +92,7 @@ export default function FlashSaleBanner() {
         setCampaign(prev => ({ ...prev, ...res.campaign }));
       }
       if (res?.vouchers && Array.isArray(res.vouchers)) {
-        const activeV = res.vouchers.filter(v => v.active !== false).slice(0, 3).map(v => ({
-          code: v.code,
-          label: v.type === 'percent' || v.type === 'percentage' ? `Giảm ${v.discountValue || v.value}%` : v.type === 'shipping' ? 'Freeship' : `Giảm ${Math.round((v.discountValue || v.value) / 1000)}K`,
-          sub: v.description || (v.minOrderValue ? `Đơn từ ${Math.round(v.minOrderValue / 1000)}k` : 'Toàn sàn')
-        }));
-        setVouchers(activeV);
+        setVouchers(normalizeVouchersList(res.vouchers));
       }
     }).catch(() => {});
   }, []);
@@ -95,7 +100,13 @@ export default function FlashSaleBanner() {
   // Lắng nghe cập nhật từ Admin Panel theo thời gian thực
   useEffect(() => {
     const handleCampaignSync = () => setCampaign(readDynamicCampaign());
-    const handleVouchersSync = () => setVouchers(readDynamicVouchers());
+    const handleVouchersSync = (e) => {
+      if (Array.isArray(e?.detail?.vouchers)) {
+        setVouchers(normalizeVouchersList(e.detail.vouchers));
+      } else {
+        setVouchers(readDynamicVouchers());
+      }
+    };
 
     window.addEventListener('storage', handleCampaignSync);
     window.addEventListener('skinid:campaign-updated', handleCampaignSync);
@@ -191,7 +202,7 @@ export default function FlashSaleBanner() {
         </div>
 
         {/* Voucher Fast Strip */}
-        {vouchers.length > 0 && (
+        {Array.isArray(vouchers) && vouchers.length > 0 && (
           <div className="py-4 border-b border-rose-800/40 grid grid-cols-1 sm:grid-cols-3 gap-3 relative z-10">
           {vouchers.map(v => {
             const isCopied = copiedCode === v.code;

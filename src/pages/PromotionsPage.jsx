@@ -138,14 +138,14 @@ export default function PromotionsPage() {
           'from-emerald-500 to-teal-600',
           'from-indigo-500 to-purple-600'
         ];
-        const activeV = res.vouchers.filter(v => v.active !== false).map((v, i) => ({
-          code: v.code,
+        const activeV = res.vouchers.filter(v => v && v.active !== false && v.code).map((v, i) => ({
+          code: String(v.code).trim().toUpperCase(),
           title: v.type === 'percent' || v.type === 'percentage'
-            ? `Giảm ${v.discountValue || v.value}%`
+            ? `Giảm ${Number(v.discountValue || v.value) || 0}%`
             : v.type === 'shipping'
             ? 'Miễn phí vận chuyển'
-            : `Giảm ngay ${formatVoucherPrice(v.discountValue || v.value)}`,
-          desc: v.description || (v.minOrderValue ? `Áp dụng cho đơn từ ${formatVoucherPrice(v.minOrderValue)}.` : 'Áp dụng cho mọi đơn hàng.'),
+            : `Giảm ngay ${formatVoucherPrice(Number(v.discountValue || v.value) || 0)}`,
+          desc: v.description || (v.minOrderValue ? `Áp dụng cho đơn từ ${formatVoucherPrice(Number(v.minOrderValue) || 0)}.` : 'Áp dụng cho mọi đơn hàng.'),
           badge: v.badge || (i === 0 ? 'Phổ biến nhất' : v.type === 'shipping' ? 'Freeship Extra' : 'Ưu đãi hot'),
           color: colors[i % colors.length]
         }));
@@ -153,7 +153,30 @@ export default function PromotionsPage() {
       }
     }).catch(() => {});
 
-    const handleSync = () => setCoupons(readDynamicStorefrontCoupons());
+    const handleSync = (e) => {
+      if (Array.isArray(e?.detail?.vouchers)) {
+        const colors = [
+          'from-rose-500 to-pink-600',
+          'from-amber-500 to-orange-600',
+          'from-emerald-500 to-teal-600',
+          'from-indigo-500 to-purple-600'
+        ];
+        const activeV = e.detail.vouchers.filter(v => v && v.active !== false && v.code).map((v, i) => ({
+          code: String(v.code).trim().toUpperCase(),
+          title: v.type === 'percent' || v.type === 'percentage'
+            ? `Giảm ${Number(v.discountValue || v.value) || 0}%`
+            : v.type === 'shipping'
+            ? 'Miễn phí vận chuyển'
+            : `Giảm ngay ${formatVoucherPrice(Number(v.discountValue || v.value) || 0)}`,
+          desc: v.description || (v.minOrderValue ? `Áp dụng cho đơn từ ${formatVoucherPrice(Number(v.minOrderValue) || 0)}.` : 'Áp dụng cho mọi đơn hàng.'),
+          badge: v.badge || (i === 0 ? 'Phổ biến nhất' : v.type === 'shipping' ? 'Freeship Extra' : 'Ưu đãi hot'),
+          color: colors[i % colors.length]
+        }));
+        setCoupons(activeV);
+      } else {
+        setCoupons(readDynamicStorefrontCoupons());
+      }
+    };
     window.addEventListener('storage', handleSync);
     window.addEventListener('skinid:vouchers-updated', handleSync);
     return () => {

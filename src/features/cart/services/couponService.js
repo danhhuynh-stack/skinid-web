@@ -28,6 +28,7 @@ export const AVAILABLE_COUPONS = {
 };
 
 let inMemoryFirestoreCoupons = {};
+let hasLoadedRemoteCoupons = false;
 
 export function setRemoteCoupons(remoteVouchers = []) {
   if (!Array.isArray(remoteVouchers)) return;
@@ -45,6 +46,7 @@ export function setRemoteCoupons(remoteVouchers = []) {
     };
   });
   inMemoryFirestoreCoupons = map;
+  hasLoadedRemoteCoupons = true;
 }
 
 export function getDynamicCoupons() {
@@ -74,8 +76,8 @@ export function getDynamicCoupons() {
     }
   } catch {}
 
-  // Nếu có cache remote từ Firestore
-  if (Object.keys(inMemoryFirestoreCoupons).length > 0) {
+  // Nếu đã đồng bộ remote từ Firestore (dù rỗng cũng dùng đúng kết quả remote)
+  if (hasLoadedRemoteCoupons) {
     return inMemoryFirestoreCoupons;
   }
 
