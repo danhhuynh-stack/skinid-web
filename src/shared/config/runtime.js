@@ -8,7 +8,7 @@ export const firebaseConfig = Object.freeze({
   measurementId: import.meta.env?.VITE_FIREBASE_MEASUREMENT_ID || 'G-JWWNEXFL94'
 });
 
-const CLOUDFLARE_WORKER_API_URL = import.meta.env?.VITE_WORKER_API_URL || '/api';
+const CLOUDFLARE_WORKER_API_URL = import.meta.env?.VITE_WORKER_API_URL || 'https://skinid-web.fieldman-vn.workers.dev/api';
 
 function resolveApiBaseUrl() {
   if (typeof window === 'undefined') return '/api';

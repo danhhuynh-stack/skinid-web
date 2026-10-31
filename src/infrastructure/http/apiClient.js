@@ -1,7 +1,7 @@
 import { auth } from '../firebase/index.js';
 import { runtimeConfig } from '../../shared/config/runtime.js';
 
-const WORKER_FALLBACK_URL = import.meta.env?.VITE_WORKER_API_URL || '';
+const WORKER_FALLBACK_URL = import.meta.env?.VITE_WORKER_API_URL || 'https://skinid-web.fieldman-vn.workers.dev/api';
 
 function createApiError(payload, status) {
   const message = payload?.message || (status === 404 ? 'Máy chủ xử lý đơn hàng đang chuyển hướng. Vui lòng thử lại.' : 'Không thể hoàn tất yêu cầu.');
