@@ -8,11 +8,11 @@
   },
   "routes": [
     {
-      "pattern": "skinid.vn/*",
+      "pattern": "skinid.vn",
       "custom_domain": true
     },
     {
-      "pattern": "www.skinid.vn/*",
+      "pattern": "www.skinid.vn",
       "custom_domain": true
     }
   ],
