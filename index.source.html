@@ -47,6 +47,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    // Tự động khôi phục khi trình duyệt dính cache cũ hoặc lỗi chunk deploy mới
+    window.addEventListener('vite:preloadError', function() {
+      window.location.reload();
+    });
+    window.addEventListener('error', function(e) {
+      var msg = e && e.message ? String(e.message) : '';
+      if (msg.indexOf('dynamically imported module') !== -1 || msg.indexOf('Loading chunk') !== -1) {
+        window.location.reload();
+      }
+    });
+  </script>
 </head>
 <body>
   <div id="root"></div>

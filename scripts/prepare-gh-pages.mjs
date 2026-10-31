@@ -1,4 +1,4 @@
-﻿import fs from 'node:fs';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -45,13 +45,10 @@ async function prepare() {
   fs.writeFileSync(path.join(rootDir, '404.html'), distIndex, 'utf8');
   console.log('âœ… Synchronized index.html and 404.html from dist/index.html');
 
-  // 3. assets/
+  // 3. assets/ (Giữ lại các file chunk cũ để tránh 404 cho user đang dính cache trình duyệt)
   if (fs.existsSync(path.join(distDir, 'assets'))) {
-    if (fs.existsSync(path.join(rootDir, 'assets'))) {
-      fs.rmSync(path.join(rootDir, 'assets'), { recursive: true, force: true });
-    }
     copyRecursiveSync(path.join(distDir, 'assets'), path.join(rootDir, 'assets'));
-    console.log('âœ… Synchronized clean assets/ directory');
+    console.log('✅ Synchronized assets/ directory with backwards cache retention');
   }
 
   // 4. images/
